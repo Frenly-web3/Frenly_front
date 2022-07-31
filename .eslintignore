@@ -1,0 +1,7 @@
+node_modules
+out
+.eslintrc
+tsconfig.json
+*.css
+*.svg
+package.json
