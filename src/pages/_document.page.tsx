@@ -1,4 +1,4 @@
-import { AppConfig } from '@common/configs/app.config'
+import { AppConfig } from '@configs/app.config'
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 
 // Need to create a custom _document because i18n support is not compatible with `next export`.
@@ -10,6 +10,7 @@ class MyDocument extends Document {
         <Head />
         <body>
           <Main />
+          <div id="portal" />
           <NextScript />
         </body>
       </Html>

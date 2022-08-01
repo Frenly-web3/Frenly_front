@@ -25,7 +25,7 @@
     { "icon": "redux", "extensions": ["store"] },
     { "icon": "route", "extensions": ["routing"] },
     { "icon": "bloc", "extensions": ["blockchain"] },
-    { "icon": "", "extensions": ["constants"] },
+    { "icon": "", "extensions": ["constants"] }
   ],
 
   "javascript.inlayHints.enumMemberValues.enabled": true,
@@ -43,7 +43,9 @@
 
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "package.json": "package-lock.json, yarn.lock, .stylelintrc, .stylelintignore, .eslintrc, .eslintignore, .prettierrc",
+    "package.json": "package-lock.json, yarn.lock, .stylelintrc, .stylelintignore",
+    ".eslintrc": ".eslintignore, .prettierrc",
+    "jest.config.js": "jest.setup.js",
     "styles.ts": "variants.ts, keyframes.ts",
     "index.tsx": "data.ts, utils.ts, data.tsx",
     "index.ts": "data.ts, utils.ts, data.tsx, interfaces.ts"

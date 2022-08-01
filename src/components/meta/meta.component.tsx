@@ -1,4 +1,4 @@
-import { AppConfig } from '@common/configs/app.config'
+import { AppConfig } from '@configs/app.config'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'

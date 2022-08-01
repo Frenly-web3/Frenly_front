@@ -28,6 +28,7 @@
       "plugins": ["@typescript-eslint", "unused-imports", "simple-import-sort"],
       "extends": [
         "airbnb-typescript",
+        "next",
         "next/core-web-vitals",
         "plugin:prettier/recommended"
       ],
@@ -74,6 +75,8 @@
         "class-methods-use-this": "off",
         "no-console": "off",
         "no-empty-pattern": "off",
+        "no-empty": "off",
+        "import/no-named-as-default": "off",
 
         // Errors
 
