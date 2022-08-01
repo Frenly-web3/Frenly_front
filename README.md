@@ -8,7 +8,7 @@ useDapp может генерировать большое количество 
 ## Установка
 
 ```Shell
-npm create next-app <project-name> --example @unistory/unistory
+npx create-next-app <project-name> --example https://github.com/Neca-development/nextjs-rtkquery-template
 
 ```
 
@@ -56,13 +56,13 @@ npm create next-app <project-name> --example @unistory/unistory
         - `photo.model.ts` | Пример модели
         - `photos-response.model.ts` | Пример типизации ответа
       - `photos.slice.ts` | Хранилище части редакса
-      - `photos.api.ts` | rtk query logic
-    - `base-query.ts` | базовый query для rtk, их может быть несколько, в таком случае создаем папку queries
+      - `photos.api.ts` | `rtk query` logic
+    - `base-query.ts` | базовый query для `rtk query`, их может быть несколько, в таком случае создаем папку queries
     - `store.hook.ts` | содержит хуки для взаимодействия с редаксом
     - `store.ts` | создание стора редакс
     - **utils** | вспомогательные функции для взаимодействия с логикой redux
   - **styles** | папка с глобальными стилями
-    `global.scss` | все из папки styles импортируем сюда
+    `global.scss` | все из папки `styles` импортируем сюда
   - `App.tsx` | высший компонент
   - `index.tsx` | точка входа в приложение
 
@@ -120,12 +120,10 @@ Not all data must be in global state!
 ## Comming soon ...
 1. cypress
 2. jest
-3. screenshoot tests
-
-
+3. screenshoot testing
 
 ## Если есть желание улучшить конфиг
 
-1. запустите `git clone https://github.com/Neca-development/react-rtk-template.git`
+1. запустите `git clone https://github.com/Neca-development/nextjs-rtkquery-template.git`
 
 
