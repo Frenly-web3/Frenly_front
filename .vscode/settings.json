@@ -23,7 +23,9 @@
   },
   "vsicons.associations.folders": [
     { "icon": "redux", "extensions": ["store"] },
-    { "icon": "route", "extensions": ["routing"] }
+    { "icon": "route", "extensions": ["routing"] },
+    { "icon": "bloc", "extensions": ["blockchain"] },
+    { "icon": "", "extensions": ["constants"] },
   ],
 
   "javascript.inlayHints.enumMemberValues.enabled": true,

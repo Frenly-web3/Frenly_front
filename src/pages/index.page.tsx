@@ -1,4 +1,4 @@
-import { Meta } from '@layouts/meta/meta'
+import { Meta } from '@components/meta/meta.component'
 import { Main } from '@templates/main.template'
 import { useRouter } from 'next/router'
 

@@ -1,9 +1,9 @@
 {
   "recommendations": [
+    "mikestead.dotenv",
+    "Orta.vscode-jest",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "mikestead.dotenv",
-    "csstools.postcss",
-    "Orta.vscode-jest"
+    "streetsidesoftware.code-spell-checker",
   ]
 }
