@@ -136,10 +136,11 @@ useDapp может генерировать большое количество 
 
 1. запустите `git clone https://github.com/Neca-development/nextjs-rtkquery-template.git`
 2. сделайте все изменения
-3. `npm login --registry https://npm.unistory.app`
-4. _login_ и _password_ можно посмотреть в `Notion`
-5. `npm publish --registry https://npm.unistory.app`
-6. Незабудьте залить изменения в наш репозиторий   
+3. повысьте версию в `package.json` в поле `version`
+4. `npm login --registry https://npm.unistory.app`
+5. _login_ и _password_ можно посмотреть в `Notion`
+6. `npm publish --registry https://npm.unistory.app`
+7. Незабудьте залить изменения в наш репозиторий   
 `git add .`  
 `git commit -m "feat: some changes"`  
 `git push origin <branch name>`  
