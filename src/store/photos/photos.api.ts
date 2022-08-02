@@ -1,8 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 import { baseQueryWithReauth } from '../base-query'
-import type { IPhoto } from './models/photo.model'
-import type { IPhotosResponse } from './models/photos-response.model'
+import type { IGetPhotosDto } from './dto/get-photos.dto'
+import type { IPhoto } from './photo.model'
 
 // Define a service using a base URL and expected endpoints
 export const photosApi = createApi({
@@ -10,7 +10,7 @@ export const photosApi = createApi({
   baseQuery: baseQueryWithReauth,
   tagTypes: ['PHOTOS'],
   endpoints: (builder) => ({
-    getPhotos: builder.query<IPhotosResponse, void>({
+    getPhotos: builder.query<IGetPhotosDto, void>({
       query: () => {
         return {
           url: 'photos',
@@ -18,7 +18,7 @@ export const photosApi = createApi({
         }
       },
       providesTags: ['PHOTOS'],
-      transformResponse: (res: IPhotosResponse) => {
+      transformResponse: (res: IGetPhotosDto) => {
         return res
       },
     }),

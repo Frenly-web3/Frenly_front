@@ -42,6 +42,7 @@
       "@configs/*": ["src/common/configs/*"],
       "@utils/*": ["src/common/utils/*"],
       "@type/*": ["src/common/types/*"],
+      "@enums/*": ["src/commom/enums/*"],
       "@api/*": ["src/api/*"],
       "@styles/*": ["src/styles/*"],
       "@blockchain/*": ["src/blockchain/*"],
