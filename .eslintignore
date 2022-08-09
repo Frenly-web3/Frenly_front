@@ -1,7 +1,8 @@
-node_modules
-out
-.eslintrc
-tsconfig.json
-*.css
-*.svg
-package.json
+config-overrides.js
+webpack.config.js
+declarations.d.ts
+.eslintrc.js
+template
+prepublish.js
+node_modules/
+*.config.js

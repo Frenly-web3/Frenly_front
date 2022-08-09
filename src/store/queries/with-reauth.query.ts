@@ -1,26 +1,12 @@
 import type { FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
-import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query'
 import type {
   BaseQueryApi,
   BaseQueryFn,
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { logout, refreshToken } from '@store/auth/auth.slice'
 import { Mutex } from 'async-mutex'
 
-import { logout, refreshToken } from './auth/auth.slice'
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://jsonplaceholder.typicode.com/',
-  mode: 'cors',
-  // prepareHeaders: (headers, { getState }) => {
-  //   const token = (getState() as RootState).auth?.token
-  //   // If we have a token set in state, let's assume that we should be passing it.
-  //   if (token) {
-  //     headers.set('access-token', `${token}`)
-  //     console.log(token)
-  //   }
-  //   return headers
-  // },
-})
+import { baseQuery } from './base.query'
 
 const mutex = new Mutex()
 

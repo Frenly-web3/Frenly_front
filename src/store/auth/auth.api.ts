@@ -1,7 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-
-import { baseQueryWithReauth } from '../base-query'
-import { setUser } from './auth.slice'
+import { setUser } from '@store/auth/auth.slice'
+import { baseQueryWithReauth } from '@store/queries/with-reauth.query'
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -31,7 +30,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled
           console.log(data)
-        } catch (err) {}
+        } catch {}
       },
     }),
     login: builder.mutation({
@@ -49,7 +48,7 @@ export const authApi = createApi({
           console.log(res.data.data)
 
           await dispatch(setUser({ token: res.data.data.accessToken }))
-        } catch (error) {}
+        } catch {}
       },
     }),
     refreshTokens: builder.query({

@@ -15,11 +15,17 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+
+  "[css][scss]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
   "vsicons.associations.folders": [
     { "icon": "redux", "extensions": ["store"] },
     { "icon": "route", "extensions": ["routing"] },
     { "icon": "bloc", "extensions": ["blockchain"] },
-    { "icon": "", "extensions": ["constants"] }
+    { "icon": "route", "extensions": ["constants"] }
   ],
 
   "javascript.inlayHints.enumMemberValues.enabled": true,

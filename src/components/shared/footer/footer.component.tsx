@@ -1,7 +1,7 @@
 import styles from '@components/shared/footer/footer.module.scss'
 
-export interface IFooterProps {}
+export interface IFooterProperties {}
 
-export default function Footer(props: IFooterProps): JSX.Element {
+export default function Footer(props: IFooterProperties): JSX.Element {
   return <footer className={styles.footer}></footer>
 }

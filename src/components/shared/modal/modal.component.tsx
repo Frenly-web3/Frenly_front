@@ -3,28 +3,28 @@ import type { ReactNode } from 'react'
 import React from 'react'
 import { createPortal } from 'react-dom'
 
-export interface IModalProps {
+export interface IModalProperties {
   className?: string
   children: ReactNode
   isOpen: boolean
   toggle: Function
 }
 
-const Modal = (props: IModalProps) => {
+const Modal = (props: IModalProperties) => {
   const { isOpen, toggle, className, children } = props
 
   return isOpen
     ? createPortal(
         <div className={styles.modal} onClick={() => toggle()}>
           <div
-            className={`${styles.modalContent} ${className && className}`}
+            className={`${styles.modalContent} ${className || ''}`}
             onClick={(e) => e.stopPropagation()}
           >
             <>{children}</>
           </div>
         </div>,
         // @ts-expect-error
-        document.getElementById('portal')
+        document.querySelector('#portal')
       )
     : null
 }

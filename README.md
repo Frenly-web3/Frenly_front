@@ -4,10 +4,16 @@
 
 ## 💾Установка
 
-```Bash
-npm config set "@unistory:registry" "https://npm.unistory.app"
+Если у вас powershell
 
-npm install @unistory/next-rtkquery-template
+```Powershell
+git clone git@github.com:Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> ; cd <ИМЯ ПАКЕТА> ; git remote remove origin ; npm i
+```
+
+Если у вас bash
+
+```Bash
+git clone git@github.com:Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> && cd <ИМЯ ПАКЕТА> && git remote remove origin && npm i
 ```
 
 ## 📁Файловая структура
@@ -73,6 +79,7 @@ npm install @unistory/next-rtkquery-template
 5. [usedapp](https://usedapp-docs.netlify.app/docs)
 6. [husky](https://typicode.github.io/husky/#/)
 7. [next-seo](https://github.com/garmeeh/next-seo)
+8. [use-hooks](https://usehooks-ts.com/)
 
 ## 🆔Наименование
 !!! Данные соглашения были прняты для максимального сходства проектов на `React` и `Next`

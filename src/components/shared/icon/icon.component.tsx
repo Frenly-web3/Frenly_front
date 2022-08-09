@@ -1,10 +1,10 @@
 import iconTypes from './icon.constant'
 
-interface IIconProps {
+interface IIconProperties {
   name: string
 }
 
-const Icon = ({ name, ...props }: IIconProps): JSX.Element => {
+const Icon = ({ name, ...props }: IIconProperties): JSX.Element => {
   const IconComponent = iconTypes[name]
 
   return <IconComponent {...props} />

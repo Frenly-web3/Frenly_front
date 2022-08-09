@@ -2,12 +2,12 @@ import Footer from '@components/shared/footer/footer.component'
 import Header from '@components/shared/header/header.component'
 import type { ReactNode } from 'react'
 
-type IMainProps = {
+type IMainProperties = {
   meta: ReactNode
   children: ReactNode
 }
 
-const Main = (props: IMainProps) => (
+const Main = (props: IMainProperties) => (
   <div className="w-full px-1 text-gray-700 antialiased">
     <Header></Header>
     {props.meta}

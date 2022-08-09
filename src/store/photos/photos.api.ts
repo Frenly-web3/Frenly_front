@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-import { baseQueryWithReauth } from '../base-query'
+import { baseQueryWithReauth } from '../queries/with-reauth.query'
 import type { IGetPhotosDto } from './dto/get-photos.dto'
 import type { IPhoto } from './photo.model'
 
