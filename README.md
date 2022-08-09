@@ -4,13 +4,28 @@
 
 ## 💾Установка
 
-Если у вас powershell
+### HTTPS
+
+#### Если у вас powershell
+
+```Powershell
+git clone https://github.com/Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> ; cd <ИМЯ ПАКЕТА> ; git remote remove origin ; npm i
+```
+
+#### Если у вас bash
+
+```Bash
+git clone https://github.com/Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> && cd <ИМЯ ПАКЕТА> && git remote remove origin && npm i
+```
+### SSH
+
+#### Если у вас powershell
 
 ```Powershell
 git clone git@github.com:Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> ; cd <ИМЯ ПАКЕТА> ; git remote remove origin ; npm i
 ```
 
-Если у вас bash
+#### Если у вас bash
 
 ```Bash
 git clone git@github.com:Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> && cd <ИМЯ ПАКЕТА> && git remote remove origin && npm i
