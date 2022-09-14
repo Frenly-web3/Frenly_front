@@ -23,14 +23,19 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@reduxjs/toolkit": "^1.8.3",
+    "@usedapp/core": "^1.1.5",
     "async-mutex": "^0.3.2",
+    "ethers": "^5.7.1",
+    "graphql": "^16.6.0",
     "next": "^12.2.2",
     "next-seo": "^5.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
     "sass": "^1.54.0",
+    "usedapp": "^1.0.0",
     "usehooks-ts": "^2.6.0"
   },
   "devDependencies": {
