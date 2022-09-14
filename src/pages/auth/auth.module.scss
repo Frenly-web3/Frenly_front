@@ -1,0 +1,26 @@
+.auth{
+  width: 100vw;
+  height: 100vh;
+}
+.content{
+  background-color: rgb(20, 170, 240);
+  width: 412px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+.buttons{
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  display: flex;
+  flex-direction: column;
+}
+.buttonRegistration{
+  padding: 2px;
+  margin: 0 auto;
+  
+  margin: 20px;
+  height: 50px;
+  width: 100px;
+}

@@ -1,0 +1,48 @@
+.myPosts{
+  width: 100vw;
+  height: 100%;
+}
+.content{
+  background-color: rgb(20, 170, 240);
+  width: 412px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+.address{
+  padding-top: 30px;
+  text-align: right;
+}
+.posts{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  &Title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+.buttons{
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  display: flex;
+  flex-direction: column;
+}
+.buttonRegistration{
+  padding: 2px;
+  margin: 0 auto;
+  
+  margin: 20px;
+  height: 50px;
+}
+.search{
+  margin-top: 30px;
+  width: 60%;
+  justify-content: flex-end;
+  margin-left: 110px;
+}
