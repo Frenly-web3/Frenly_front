@@ -60,7 +60,6 @@ export default function AuthPage() {
     }
   }
 
-  console.log('createProfileData', data);
   
 
 
