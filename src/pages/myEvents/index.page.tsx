@@ -24,8 +24,6 @@ const eventsMock = [
 ]
 
 export default function MyEventsPage() {
-  // const addPost = () => {}
-
   // const declinePost = () => {}
 
   return (

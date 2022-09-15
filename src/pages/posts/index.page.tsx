@@ -1,6 +1,10 @@
+import { useQuery } from '@apollo/client'
 import Event from '@components/shared/event/event.component'
 import styles from '@pages/posts/posts.module.scss'
+import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
+import { useEthers } from '@usedapp/core'
 import React from 'react'
+import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 const postsMock = [
   {
@@ -24,9 +28,23 @@ const postsMock = [
 ]
 
 export default function PostsPage() {
+  const { account } = useEthers()
+  const profileId = useGetWalletProfileId(account || '')
+
+  const events = useQuery(GET_PUBLICATIONS, {
+    variables: {
+      request: {
+        profileId,
+        publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+        limit: 10,
+      },
+    },
+  })
+
   // const addPost = () => {}
 
   // const declinePost = () => {}
+  console.log(events)
 
   return (
     <div className={styles.postsPage}>
