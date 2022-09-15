@@ -1,5 +1,7 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import styles from '@pages/auth/auth.module.scss'
+import { login } from '@store/lens/auth/login-user'
+import { CREATE_PROFILE } from '@store/lens/create-profile.mutation'
 import { GET_DEFAULT_PROFILES } from '@store/lens/get-profile.query'
 import { checkAndChangeChainId } from '@store/utils/blockchain'
 import { useEthers } from '@usedapp/core'
@@ -9,8 +11,9 @@ export default function AuthPage() {
   const [isAuth] = useState<boolean>(false)
   const [haveLensProfile] = useState<boolean>(false)
 
-  const { activateBrowserWallet, account, chainId } = useEthers()
+  const { activateBrowserWallet, account, chainId, library } = useEthers()
   // const [createProfile, data] = useMutation(CREATE_PROFILE)
+
 
   const profile = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
@@ -19,6 +22,10 @@ export default function AuthPage() {
       },
     },
   })
+  
+  // @ts-ignore
+  const [mutateFunction, { data, loading, error }]  = useMutation(CREATE_PROFILE);
+
   console.log(profile)
 
   useEffect(() => {
@@ -33,7 +40,21 @@ export default function AuthPage() {
 
   const signUp = async () => {}
 
-  const signIn = async () => {}
+  const signIn = async () => {
+    if(account){
+      await login(account, library);
+    }
+  }
+
+  const createProfileHandler = async () => {
+    if(account){
+      mutateFunction()
+    }
+  }
+
+  console.log('createProfileData', data);
+  
+
 
   return (
     <div className={styles.auth}>
@@ -52,6 +73,11 @@ export default function AuthPage() {
           {!isAuth && account && (
             <button onClick={signIn} className={styles.buttonRegistration}>
               SignIn
+            </button>
+          )}
+           {account && (
+            <button onClick={createProfileHandler} className={styles.buttonRegistration}>
+              Create Profile
             </button>
           )}
           {isAuth && !haveLensProfile && (

@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_PROFILE = gql`
-  mutation ($request: CreateProfileRequest!) {
-    createProfile(request: $request) {
+  mutation {
+    createProfile(request: {
+      handle: "unistoryhackoo"
+    }) {
       ... on RelayerResult {
         txHash
       }
