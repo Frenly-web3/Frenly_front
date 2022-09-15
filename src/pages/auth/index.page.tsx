@@ -48,7 +48,15 @@ export default function AuthPage() {
 
   const createProfileHandler = async () => {
     if(account){
-      mutateFunction()
+      mutateFunction({
+        variables:{
+          request:{
+            handle: account.toLowerCase().slice(0,20),
+            profilePictureUri: null,   
+            followModule: null
+          }
+        }
+      })
     }
   }
 
