@@ -13,8 +13,6 @@ export default function AuthPage() {
 
   const { activateBrowserWallet, account, chainId, library } = useEthers()
   // const [createProfile, data] = useMutation(CREATE_PROFILE)
-
-
   const profile = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
       request: {
@@ -22,9 +20,9 @@ export default function AuthPage() {
       },
     },
   })
-  
+
   // @ts-ignore
-  const [mutateFunction, { data, loading, error }]  = useMutation(CREATE_PROFILE);
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_PROFILE)
 
   console.log(profile)
 
@@ -41,27 +39,24 @@ export default function AuthPage() {
   const signUp = async () => {}
 
   const signIn = async () => {
-    if(account){
-      await login(account, library);
+    if (account) {
+      await login(account, library)
     }
   }
 
   const createProfileHandler = async () => {
-    if(account){
+    if (account) {
       mutateFunction({
-        variables:{
-          request:{
-            handle: account.toLowerCase().slice(0,20),
-            profilePictureUri: null,   
-            followModule: null
-          }
-        }
+        variables: {
+          request: {
+            handle: account.toLowerCase().slice(0, 20),
+            profilePictureUri: null,
+            followModule: null,
+          },
+        },
       })
     }
   }
-
-  
-
 
   return (
     <div className={styles.auth}>
@@ -82,7 +77,7 @@ export default function AuthPage() {
               SignIn
             </button>
           )}
-           {account && (
+          {account && (
             <button onClick={createProfileHandler} className={styles.buttonRegistration}>
               Create Profile
             </button>

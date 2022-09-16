@@ -30,7 +30,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         variables: {
           request: {
             profileId,
-            contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8sN6vl/229',
+            contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8sN6vl/a19',
             collectModule: {
               revertCollectModule: true,
             },
@@ -48,7 +48,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     console.log(data)
 
-    const { typedData } = data.data.createPostTypedData
+    const typedData = data?.data?.createPostTypedData?.typedData
 
     if (!typedData) return
 
