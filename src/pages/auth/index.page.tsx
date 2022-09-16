@@ -1,18 +1,22 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
+import { authApi, useGetNonceQuery, useLoginMutation } from '@store/auth/auth.api'
 import { login } from '@store/lens/auth/login-user'
 import { CREATE_PROFILE } from '@store/lens/create-profile.mutation'
 import { GET_DEFAULT_PROFILES } from '@store/lens/get-profile.query'
+import { useAppDispatch } from '@store/store.hook'
 import { checkAndChangeChainId } from '@store/utils/blockchain'
 import { useEthers } from '@usedapp/core'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { useHaveProfile } from 'src/contract/lens-hub.api'
 
 export default function AuthPage() {
   const [isAuth] = useState<boolean>(false)
   const [haveLensProfile] = useState<boolean>(false)
 
-  const { activateBrowserWallet, account, chainId, library } = useEthers()
+  const { account, chainId, library, activateBrowserWallet } = useEthers()
   // const [createProfile, data] = useMutation(CREATE_PROFILE)
   const profile = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
@@ -22,26 +26,23 @@ export default function AuthPage() {
     },
   })
 
+  const { data: dataNonce } = useGetNonceQuery(account || '', { skip: !account })
+
+  const dispatch = useAppDispatch()
+  const [triggerLogin] = useLoginMutation()
+  const countProfile = useHaveProfile(account || '')
+
   const [mutateFunction, { data, loading, error }] = useMutation(CREATE_PROFILE)
-
-  console.log(profile)
-
   useEffect(() => {
     ;(async () => {
       await checkAndChangeChainId()
     })()
   }, [chainId])
 
+  const router = useRouter()
+
   const connectWallet = async () => {
-    await activateBrowserWallet()
-  }
-
-  const signUp = async () => {}
-
-  const signIn = async () => {
-    if (account) {
-      await login(account, library)
-    }
+    activateBrowserWallet()
   }
 
   const createProfileHandler = async () => {
@@ -55,6 +56,26 @@ export default function AuthPage() {
           },
         },
       })
+    }
+  }
+
+  // const signUp = async () => {}
+  console.log(dataNonce)
+  const signIn = async () => {
+    let dataLogin
+    if (account) {
+      const nonce = dataNonce?.data?.nonce
+
+      if (nonce) {
+        console.log(nonce)
+
+        const signature = await library?.getSigner().signMessage(`Nonce: ${nonce}`)
+        dataLogin = await triggerLogin({ address: account, signature: signature || '' }).unwrap()
+      }
+      console.log(dataLogin)
+
+      await (countProfile == 0 ? createProfileHandler() : login(account, library))
+      router.push('/feed')
     }
   }
 
@@ -82,26 +103,10 @@ export default function AuthPage() {
           )}
           {!isAuth && account && (
             <button
-              onClick={signUp}
-              className="w-full rounded-xl bg-main text-white text-lg py-3 mb-4 font-semibold"
-            >
-              SignUp
-            </button>
-          )}
-          {!isAuth && account && (
-            <button
               onClick={signIn}
               className="w-full rounded-xl bg-main text-white text-lg py-3 mb-4 font-semibold"
             >
               SignIn
-            </button>
-          )}
-          {account && (
-            <button
-              onClick={createProfileHandler}
-              className="w-full rounded-xl bg-main text-white text-lg py-3 mb-4 font-semibold"
-            >
-              Create Profile
             </button>
           )}
           {isAuth && !haveLensProfile && (

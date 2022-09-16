@@ -1,6 +1,6 @@
-import { client } from './../../../pages/_app.page';
-
 import { gql } from '@apollo/client'
+
+import { client } from '../../../pages/_app.page'
 
 const GET_CHALLENGE = `
   query($request: ChallengeRequest!) {
@@ -8,12 +8,12 @@ const GET_CHALLENGE = `
   }
 `
 
-export const generateChallenge = (address:string) => {
-   return client.query({
+export const generateChallenge = (address: string) => {
+  return client.query({
     query: gql(GET_CHALLENGE),
     variables: {
       request: {
-         address,
+        address,
       },
     },
   })
