@@ -24,4 +24,13 @@ module.exports = withBundleAnalyzer({
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
   pageExtensions: ['page.tsx', 'page.ts', 'page.js', 'page.jsx'],
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/auth',
+        permanent: true,
+      },
+    ]
+  },
 })
