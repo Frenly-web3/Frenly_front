@@ -1,6 +1,10 @@
+import { Meta } from '@components/meta/meta.component'
+import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
-import styles from '@pages/myEvents/myEvents.module.scss'
+import Header from '@components/shared/header/header.component'
 import React from 'react'
+
+import styles from './myEvents.module.scss'
 
 const eventsMock = [
   {
@@ -23,22 +27,23 @@ const eventsMock = [
   },
 ]
 
-export default function MyEventsPage() {
+export default function DraftsPage() {
   // const addPost = () => {}
 
   // const declinePost = () => {}
 
   return (
-    <div className={styles.myEvents}>
-      <div className={styles.content}>
-        <div className={styles.address}>
-          {`${'0x0e2f7D1a076100059824c14021919eFB509bA25b'.slice(
-            0,
-            7
-          )}...${'0x0e2f7D1a076100059824c14021919eFB509bA25b'.slice(-7)}`}
+    <>
+      <Meta title="Drafts" description="Your drafts page" />
+
+      <Header title="Drafts" />
+
+      <main>
+        <div className="container">
+          <h3 className="py-2 text-xl font-bold">Today</h3>
         </div>
-        <h3 className={styles.eventsTitle}>My Events</h3>
-        <div className={styles.events}>
+
+        <section>
           {eventsMock.map((el, index) => {
             return (
               <Event
@@ -48,13 +53,15 @@ export default function MyEventsPage() {
                 info={el.info}
                 image={el.image}
                 key={index}
-                itemType="nft"
-                messageType="minted"
+                itemType="token"
+                messageType="sent"
               />
             )
           })}
-        </div>
-      </div>
-    </div>
+        </section>
+      </main>
+
+      <EndOfFeed page="drafts" />
+    </>
   )
 }
