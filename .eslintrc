@@ -9,19 +9,23 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "prettier/prettier": [
-      "warn",
-      {
-        "singleQuote": true,
-        "endOfLine": "auto",
-        "semi": false,
-        "printWidth": 90,
-        "spaceBrackets": true
-      },
-      {
-        "usePrettierrc": false
-      }
-    ]
+    // "prettier/prettier": [
+    //   "warn",
+    //   {
+    //     "singleQuote": true,
+    //     "endOfLine": "auto",
+    //     "semi": false,
+    //     "printWidth": 100,
+    //     "spaceBrackets": true,
+    //     "tabWidth": 2,
+    //     "useTabs": false,
+    //     "arrowParens": "avoid",
+    //     "trailingComma": "es5"
+    //   },
+    //   {
+    //     "usePrettierrc": false
+    //   }
+    // ]
   },
   "overrides": [
     // Configuration for TypeScript files
@@ -47,8 +51,12 @@
             "singleQuote": true,
             "endOfLine": "auto",
             "semi": false,
-            "printWidth": 90,
-            "spaceBrackets": true
+            "printWidth": 100,
+            "spaceBrackets": true,
+            "tabWidth": 2,
+            "useTabs": false,
+            "arrowParens": "avoid",
+            "trailingComma": "es5"
           },
           {
             "usePrettierrc": false
@@ -126,12 +134,21 @@
         "object-curly-spacing": ["warn", "always"],
         "array-bracket-spacing": ["warn", "never"],
         "default-case": "warn",
+        "import/order": "warn",
+        "prefer-destructuring": "warn",
 
         "no-unused-expressions": [
-          "error",
+          "warn",
           {
             "allowShortCircuit": true,
             "allowTernary": true
+          }
+        ],
+
+        "import/no-useless-path-segments": [
+          "warn",
+          {
+            "noUselessIndex": true
           }
         ],
 
@@ -172,9 +189,9 @@
         // Imports rules
         // TODO setup this rule
         "simple-import-sort/imports": "warn",
-        "simple-import-sort/exports": "warn",
-        "unused-imports/no-unused-imports": "warn",
-        "unused-imports/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+        "simple-import-sort/exports": "warn"
+        // "unused-imports/no-unused-imports": "warn",
+        // "unused-imports/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
       }
     }
   ]
