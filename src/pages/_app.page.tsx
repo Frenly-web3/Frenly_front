@@ -49,7 +49,7 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 export const client = new ApolloClient({
-  uri:'https://api-mumbai.lens.dev/',
+  uri: 'https://api-mumbai.lens.dev/',
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 })

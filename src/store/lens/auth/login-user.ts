@@ -1,27 +1,25 @@
-import { refreshToken } from '@store/auth/auth.slice';
+import { refreshToken } from '@store/auth/auth.slice'
 
-import { generateChallenge } from './generate-challenge'
 import { authenticate } from './authenticate'
-import { signMessage } from './ethers-service';
+import { signMessage } from './ethers-service'
+import { generateChallenge } from './generate-challenge'
 
-export const login = async (address:string, lib:any) => {
-
-  
+export const login = async (address: string, lib: any) => {
   // we request a challenge from the server
-  const challengeResponse = await generateChallenge(address);
+  const challengeResponse = await generateChallenge(address)
 
-  console.log('challengeRes', challengeResponse);
-  
-  
+  console.log('challengeRes', challengeResponse)
+
   // sign the text with the wallet
   const signature = await signMessage(lib, challengeResponse.data.challenge.text)
-  
-  const data = await authenticate(address, signature);
 
-  const accessToken = data.data.authenticate.accessToken;
-  const refreshToken = data.data.authenticate.refreshToken;
-  console.log(accessToken);
-  localStorage.setItem('auth_token', accessToken);
+  const data = await authenticate(address, signature)
+
+  const { accessToken } = data.data.authenticate
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const { refreshToken } = data.data.authenticate
+  console.log(accessToken)
+  localStorage.setItem('auth_token', accessToken)
   localStorage.setItem('refreshToken', refreshToken)
 
   // you now have the accessToken and the refreshToken
