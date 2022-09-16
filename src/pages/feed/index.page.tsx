@@ -69,9 +69,9 @@ export default function FeedPage() {
             )
           })}
         </section>
-
-        <EndOfFeed page="feed" />
       </main>
+
+      <EndOfFeed page="feed" />
     </>
   )
 }
