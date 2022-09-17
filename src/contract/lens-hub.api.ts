@@ -3,6 +3,9 @@ import { Contract, ethers } from 'ethers'
 
 import { lensHubABI, lensHubContract } from './lens-hub.contract'
 
+// export const getWalletProfileId = async (address: string, library: any) => {
+//   const contract = createLensContract(library)
+
 //   return await contract.tokenOfOwnerByIndex(address, 0)
 // }
 const lensInterface = new ethers.utils.Interface(lensHubABI)

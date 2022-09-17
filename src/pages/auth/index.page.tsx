@@ -28,11 +28,13 @@ export default function AuthPage() {
 
   const { data: dataNonce } = useGetNonceQuery(account || '', { skip: !account })
 
+  // @ts-ignore
+  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_PROFILE)
+
   const dispatch = useAppDispatch()
   const [triggerLogin] = useLoginMutation()
   const countProfile = useHaveProfile(account || '')
 
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_PROFILE)
   useEffect(() => {
     ;(async () => {
       await checkAndChangeChainId()
@@ -42,7 +44,7 @@ export default function AuthPage() {
   const router = useRouter()
 
   const connectWallet = async () => {
-    activateBrowserWallet()
+    await activateBrowserWallet()
   }
 
   const createProfileHandler = async () => {
@@ -107,6 +109,14 @@ export default function AuthPage() {
               className="w-full rounded-xl bg-main text-white text-lg py-3 mb-4 font-semibold"
             >
               SignIn
+            </button>
+          )}
+          {account && (
+            <button
+              onClick={createProfileHandler}
+              className="w-full rounded-xl bg-main text-white text-lg py-3 font-semibold"
+            >
+              Create Profile
             </button>
           )}
           {isAuth && !haveLensProfile && (

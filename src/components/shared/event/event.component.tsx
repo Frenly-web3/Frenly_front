@@ -1,7 +1,12 @@
+import { useMutation } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import styles from '@components/shared/event/event.module.scss'
+import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
+import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
+import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import Image from 'next/image'
+import { useGetWalletProfileId, usePostWithSig } from 'src/contract/lens-hub.api'
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -29,6 +34,68 @@ export default function Event(props: IEventProperties): JSX.Element {
     messageType,
     itemType,
   } = props
+
+  const { account, library } = useEthers()
+  const profileId = useGetWalletProfileId(account || '')
+  const { state: txHash, send: postWithSig } = usePostWithSig()
+  const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
+
+  const addPost = async () => {
+    console.log(profileId)
+
+    console.log(data)
+    try {
+      await addPostToLens({
+        variables: {
+          request: {
+            profileId,
+            contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8sN6vl/a19',
+            collectModule: {
+              revertCollectModule: true,
+            },
+            referenceModule: {
+              followerOnlyReferenceModule: false,
+            },
+          },
+        },
+      })
+    } catch (error) {
+      console.log(error)
+
+      return
+    }
+
+    console.log(data)
+
+    const typedData = data?.data?.createPostTypedData?.typedData
+
+    if (!typedData) return
+
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      library
+    )
+
+    const { v, r, s } = splitSignature(signature)
+
+    await postWithSig({
+      profileId: typedData.value.profileId,
+      contentURI: typedData.value.contentURI,
+      collectModule: typedData.value.collectModule,
+      collectModuleInitData: typedData.value.collectModuleInitData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleInitData: typedData.value.referenceModuleInitData,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
+    })
+    console.log(txHash)
+  }
 
   const renderMessage = () => {
     let message
@@ -81,7 +148,10 @@ export default function Event(props: IEventProperties): JSX.Element {
 
         {isAddCap && (
           <div className="w-full grid grid-cols-2 gap-2 mt-2">
-            <button className="rounded-full bg-main py-2 text-white text-sm font-semibold">
+            <button
+              onClick={() => addPost()}
+              className="rounded-full bg-main py-2 text-white text-sm font-semibold"
+            >
               Publish
             </button>
             <button className="rounded-full bg-error-bg py-2 text-error text-sm font-semibold">

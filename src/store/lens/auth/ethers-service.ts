@@ -1,3 +1,3 @@
-export function signMessage(lib:any, message:string){
-    return lib.getSigner().signMessage(message);
-} 
+export function signMessage(lib: any, message: string) {
+  return lib.getSigner().signMessage(message)
+}

@@ -4,8 +4,6 @@ import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
 import React from 'react'
 
-import styles from './myEvents.module.scss'
-
 const eventsMock = [
   {
     from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
@@ -26,7 +24,6 @@ const eventsMock = [
     image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
   },
 ]
-
 export default function DraftsPage() {
   // const addPost = () => {}
 
