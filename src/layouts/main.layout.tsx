@@ -9,7 +9,7 @@ type IMainProperties = {
 
 const Main = (props: IMainProperties) => (
   <div className="w-full px-1 text-gray-700 antialiased">
-    <Header></Header>
+    <Header title=""></Header>
     {props.meta}
     <main className="content py-5 text-xl">{props.children}</main>
     <Footer></Footer>

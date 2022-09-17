@@ -1,12 +1,6 @@
 import '../styles/global.scss'
 
-import {
-  ApolloClient,
-  ApolloLink,
-  ApolloProvider,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client'
+import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
 import { store } from '@store/store'
 import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
@@ -19,8 +13,7 @@ const config: Config = {
     // [ChainId.Rinkeby]: infuraProvider,
     // [ChainId.BSC]: "https://bsc-dataseed.binance.org/",
     // [ChainId.BSCTestnet]: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-    [ChainId.Mumbai]:
-      'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
+    [ChainId.Mumbai]: 'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
   },
   notifications: {
     expirationPeriod: 1000,

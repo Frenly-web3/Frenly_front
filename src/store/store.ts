@@ -3,16 +3,13 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 
 import { authApi } from './auth/auth.api'
 import authSlice from './auth/auth.slice'
-import { photosApi } from './photos/photos.api'
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     [authApi.reducerPath]: authApi.reducer,
-    [photosApi.reducerPath]: photosApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, photosApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(authApi.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -956,9 +956,7 @@ export const lensHubABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'enum DataTypes.ProtocolState', name: 'newState', type: 'uint8' },
-    ],
+    inputs: [{ internalType: 'enum DataTypes.ProtocolState', name: 'newState', type: 'uint8' }],
     name: 'setState',
     outputs: [],
     stateMutability: 'nonpayable',

@@ -1,3 +1,5 @@
+import { refreshToken } from '@store/auth/auth.slice'
+
 import { authenticate } from './authenticate'
 import { signMessage } from './ethers-service'
 import { generateChallenge } from './generate-challenge'
@@ -14,6 +16,7 @@ export const login = async (address: string, lib: any) => {
   const data = await authenticate(address, signature)
 
   const { accessToken } = data.data.authenticate
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { refreshToken } = data.data.authenticate
   console.log(accessToken)
   localStorage.setItem('auth_token', accessToken)
