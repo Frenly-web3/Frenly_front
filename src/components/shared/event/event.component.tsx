@@ -146,6 +146,13 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     return `${message} `
   }
+
+  async function commentHandler(){
+    const res = await fetch('/api/comment', {method:"POST", body:JSON.stringify({comment:"AndrewGonnaCode", pubId:1})});
+    console.log('commentRes', await res.json());
+    
+  }
+
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
       {showAuthor && (
@@ -207,7 +214,7 @@ export default function Event(props: IEventProperties): JSX.Element {
                 <img src="/assets/icons/heart.svg" alt="like" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">10</span>
               </button>
-              <button className="flex items-center justify-center py-1 px-2">
+              <button onClick={commentHandler} className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/message.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">3</span>
               </button>
