@@ -1,8 +1,17 @@
+import { useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
-import React from 'react'
+import {
+  useGetFeedQuery,
+  useGetUnpublishedContentQuery,
+  useHasLanceProfileQuery,
+} from '@store/auth/auth.api'
+import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
+import { useEthers } from '@usedapp/core'
+import React, { useEffect, useState } from 'react'
+import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 import styles from './posts.module.scss'
 
@@ -32,6 +41,29 @@ export default function FeedPage() {
 
   // const declinePost = () => {}
 
+  const { account } = useEthers()
+
+  const accountId = useGetWalletProfileId(account || '')
+  const [isReloadProfile, reloadProfile] = useState(false)
+  const { data: dataHasProfile } = useHasLanceProfileQuery(account || '', {
+    skip: !isReloadProfile,
+  })
+  const dataFeeds = useGetFeedQuery({ take: 10, skip: 0 })
+  const drafts = useQuery(GET_PUBLICATIONS, {
+    variables: {
+      request: {
+        publicationIds: ['0x469f-0x07', '0x469f-0x06', '0x469f-0x05'],
+      },
+    },
+  })
+  console.log(dataFeeds)
+
+  useEffect(() => {
+    if (account) {
+      reloadProfile(true)
+    }
+  }, [account])
+  console.log(drafts)
   return (
     <>
       <Meta title="Feed" description="Your Frenly Feed" />
@@ -53,17 +85,20 @@ export default function FeedPage() {
         {/* <h3 className={styles.postsTitle}>Posts</h3> */}
 
         <section>
-          {postsMock.map((el, index) => {
+          {drafts?.data?.publications?.items.map((el: any, index: number) => {
+            const { createdAt, collectModule, profile } = el
             return (
               <Event
                 from={el.from}
-                to={el.to}
-                info={el.info}
-                image={el.image}
+                to={'el.to'}
+                info={'el.info'}
+                image={'el.image'}
                 key={index}
+                name={profile.handle}
+                date={createdAt}
                 showDate={false}
                 showAuthor
-                messageType="sent"
+                messageType="SENT"
                 itemType="nft"
               />
             )
