@@ -9,6 +9,7 @@ import {
 } from '@store/auth/auth.api'
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
 import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
+import { CREATE_MIRROR_TYPED_DATA } from '@store/lens/post/add-mirror.mutation'
 import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
 import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
@@ -16,7 +17,7 @@ import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
-import { useGetWalletProfileId, usePostWithSig } from 'src/contract/lens-hub.api'
+import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -34,6 +35,7 @@ export interface IEventProperties {
   itemType: 'nft' | 'token'
   id: number | string
   totalUpvotes: number
+  totalMirror: number
   refetchInfo?: () => void
 }
 
@@ -52,6 +54,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     itemType,
     id,
     totalUpvotes,
+    totalMirror,
     refetchInfo,
   } = props
 
@@ -60,12 +63,14 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   const profileId = useGetWalletProfileId(account || '')
   const { state: postState, send: postWithSig } = usePostWithSig()
+  const { state: mirrorState, send: mirrorWithSig } = useMirrorWithSig()
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
   const [publishContent] = usePublishContentMutation()
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
   const [removeContent] = useRemoveContentMutation()
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
+  const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
   const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
     variables: {
       request: {
@@ -179,6 +184,52 @@ export default function Event(props: IEventProperties): JSX.Element {
     refetch()
   }
 
+  const mirrorHandler = async () => {
+    const typeD = await mirrorPublication({
+      variables: {
+        request: {
+          profileId,
+          publicationId: id,
+          referenceModule: {
+            followerOnlyReferenceModule: false,
+          },
+        },
+      },
+    })
+
+    const typedData = typeD?.data?.createMirrorTypedData?.typedData
+
+    // if (!typedData) return
+    console.log(typedData)
+
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      library
+    )
+
+    const { v, r, s } = splitSignature(signature)
+
+    const tx = await mirrorWithSig({
+      profileId: typedData.value.profileId,
+      profileIdPointed: typedData.value.profileIdPointed,
+      pubIdPointed: typedData.value.pubIdPointed,
+      referenceModuleData: typedData.value.referenceModuleData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleInitData: typedData.value.referenceModuleInitData,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
+    })
+    console.log(tx)
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && refetchInfo()
+  }
+
   const renderMessage = () => {
     let message
     switch (messageType) {
@@ -271,6 +322,13 @@ export default function Event(props: IEventProperties): JSX.Element {
               <button className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/message.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">3</span>
+              </button>
+              <button
+                onClick={mirrorHandler}
+                className="flex items-center justify-center py-1 px-2"
+              >
+                <img src="/assets/icons/mirror.svg" alt="messages" />
+                <span className="text-xs font-semibold text-gray-darker ml-1">{totalMirror}</span>
               </button>
             </div>
           )}

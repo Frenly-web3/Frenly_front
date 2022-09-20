@@ -101,6 +101,7 @@ export default function FeedPage() {
                 messageType="SENT"
                 itemType="nft"
                 totalUpvotes={stats.totalUpvotes}
+                totalMirror={stats.totalAmountOfMirrors}
                 id={id}
                 refetchInfo={drafts.refetch}
               />
