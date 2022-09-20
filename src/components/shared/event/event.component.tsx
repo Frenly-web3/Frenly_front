@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import styles from '@components/shared/event/event.module.scss'
 import {
@@ -11,6 +11,7 @@ import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
 import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
 import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
+import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
@@ -32,7 +33,8 @@ export interface IEventProperties {
   //  ! item type?
   itemType: 'nft' | 'token'
   id: number | string
-  totalUpvotes?: number
+  totalUpvotes: number
+  refetchInfo?: () => void
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -50,6 +52,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     itemType,
     id,
     totalUpvotes,
+    refetchInfo,
   } = props
 
   const { account, library } = useEthers()
@@ -63,14 +66,26 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [removeContent] = useRemoveContentMutation()
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
+  const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
+    variables: {
+      request: {
+        publicationIds: [id],
+        // profileId: accountId,
+        // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+        // limit: 10,
+      },
+      requestReaction: {
+        profileId,
+      },
+    },
+  })
+  // console.log(publicationIsReact.publications.items[0].reaction)
+
   const addPost = async () => {
     if (id) {
       const publishedPost = await publishContent({
         contentId: id.toString(),
       })
-      // @ts-ignore
-      console.log(publishedPost?.data.data)
-      // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
 
       const typeD = await addPostToLens({
         variables: {
@@ -116,12 +131,6 @@ export default function Event(props: IEventProperties): JSX.Element {
           deadline: typedData.value.deadline,
         },
       })
-      console.log(
-        `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-          receipt?.logs[0]?.topics[2]
-        ).toString(16)}`
-      )
-
       await bindContentIdWithLens({
         contentId: id.toString(),
         lensId: `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
@@ -139,24 +148,35 @@ export default function Event(props: IEventProperties): JSX.Element {
   console.log(profileId, id)
 
   const likeHandler = async () => {
-    await likePostToLens({
-      variables: {
-        request: {
-          profileId,
-          reaction: 'UPVOTE',
-          publicationId: id,
-        },
-      },
-    })
-    // await cancelLikePostToLens({
-    //   variables: {
-    //     request: {
-    //       profileId,
-    //       reaction: 'UPVOTE',
-    //       publicationId: id,
-    //     },
-    //   },
-    // })
+    if (profileId) {
+      console.log(publicationIsReact.publications.items[0].reaction !== 'UPVOTE')
+
+      if (publicationIsReact.publications.items[0].reaction !== 'UPVOTE') {
+        await likePostToLens({
+          variables: {
+            request: {
+              profileId,
+              reaction: 'UPVOTE',
+              publicationId: id,
+            },
+          },
+        })
+      } else {
+        cancelLikePostToLens({
+          variables: {
+            request: {
+              profileId,
+              reaction: 'UPVOTE',
+              publicationId: id,
+            },
+          },
+        })
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && refetchInfo()
+    refetch()
   }
 
   const renderMessage = () => {
