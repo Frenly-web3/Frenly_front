@@ -63,6 +63,7 @@ export default function DraftsPage() {
                 messageType={el.transferType}
                 id={id}
                 totalUpvotes={0}
+                totalMirror={0}
               />
             )
           })}
