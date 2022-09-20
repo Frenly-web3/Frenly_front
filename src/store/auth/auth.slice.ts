@@ -27,16 +27,14 @@ export const authSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload
     },
-    setTokens: (
-      state,
-      action: PayloadAction<{ data: { accessToken: string; refreshToken: string } }>
-    ) => {
-      localStorage.setItem('access-token', action.payload.data.accessToken)
-      localStorage.setItem('refresh-token', action.payload.data.refreshToken)
+    setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+      console.log('acac', action)
+      localStorage.setItem('access-token', action.payload.accessToken)
+      localStorage.setItem('refresh-token', action.payload.refreshToken)
       console.log(action)
 
-      state.accessToken = action.payload.data.accessToken
-      state.refreshToken = action.payload.data.refreshToken
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
     },
     refreshToken: (
       state,

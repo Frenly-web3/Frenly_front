@@ -1,8 +1,11 @@
+import { useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
-import React from 'react'
+import { useGetUnpublishedContentQuery } from '@store/auth/auth.api'
+import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
+import React, { useEffect, useState } from 'react'
 
 const eventsMock = [
   {
@@ -29,6 +32,13 @@ export default function DraftsPage() {
 
   // const declinePost = () => {}
 
+  const [posts, setPosts] = useState<Array<any>>([])
+  const { data: postsData } = useGetUnpublishedContentQuery(null)
+  useEffect(() => {
+    setPosts(postsData?.data)
+  }, [postsData])
+  console.log(posts)
+
   return (
     <>
       <Meta title="Drafts" description="Your drafts page" />
@@ -41,17 +51,20 @@ export default function DraftsPage() {
         </div>
 
         <section>
-          {eventsMock.map((el, index) => {
+          {posts?.map((element, index) => {
+            const { content: el, id, creationDate } = element
             return (
               <Event
                 isAddCap
-                from={el.from}
-                to={el.to}
+                from={el.fromAddress}
+                to={el.toAddress}
                 info={el.info}
-                image={el.image}
+                date={creationDate}
+                image={el.tokenUri}
                 key={index}
-                itemType="token"
-                messageType="sent"
+                itemType="nft"
+                messageType={el.transferType}
+                id={id}
               />
             )
           })}

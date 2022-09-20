@@ -1,5 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { setTokens, setUser } from '@store/auth/auth.slice'
+import { access } from 'node:fs'
 
 import { baseQueryWithReauth } from './base-query'
 
@@ -7,6 +8,7 @@ import { baseQueryWithReauth } from './base-query'
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQueryWithReauth,
+
   endpoints: builder => ({
     sendOtp: builder.mutation({
       query: (body: { phoneNumber: string }) => {
@@ -31,15 +33,6 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled
           console.log(data)
-
-          dispatch(
-            setTokens({
-              data: {
-                accessToken: data.data.accessToken,
-                refreshToken: data.data.refreshToken,
-              },
-            })
-          )
         } catch {}
       },
     }),
@@ -60,7 +53,7 @@ export const authApi = createApi({
           credentials: 'omit',
         }
       },
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
 
@@ -77,12 +70,46 @@ export const authApi = createApi({
       },
     }),
     refreshTokens: builder.query({
-      query: credentials => {
+      query: args => {
         return {
-          url: 'auth/users/refresh-tokens/',
-          method: 'GET',
-          body: { ...credentials },
-          credentials: 'include',
+          url: '/api/auth/refresh-toke',
+          method: 'POST',
+          body: {
+            refreshToken: localStorage.getItem('refresh-token'),
+          },
+          credentials: 'omit',
+        }
+      },
+    }),
+    publishContent: builder.mutation<any, { contentId: string }>({
+      query: args => {
+        console.log(args.contentId)
+
+        return {
+          url: `/api/content/${args.contentId}`,
+          method: 'POST',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    bindWithLensId: builder.mutation<any, { contentId: string; lensId: string }>({
+      query: args => {
+        return {
+          url: `/api/content/${args.contentId}/${args.lensId}`,
+          method: 'PUT',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    removeContent: builder.mutation<any, { contentId: string }>({
+      query: args => {
+        return {
+          url: `/api/content/${args.contentId}`,
+          method: 'DELETE',
+
+          credentials: 'omit',
         }
       },
     }),
@@ -95,10 +122,47 @@ export const authApi = createApi({
         }
       },
     }),
+    hasLanceProfile: builder.query<any, string>({
+      query: address => {
+        return {
+          url: `api/auth/${address}/lens-profile`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
+    getFeed: builder.query<any, { take: number; skip: number }>({
+      query: args => {
+        return {
+          url: `api/content/&take=${args.take}&skip=${args.skip}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
+    getUnpublishedContent: builder.query<any, any>({
+      query: args => {
+        return {
+          url: `/api/content/unpublished`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegistrationMutation, useSendOtpMutation, useGetNonceQuery } =
-  authApi
+export const {
+  useLoginMutation,
+  useRegistrationMutation,
+  useSendOtpMutation,
+  useGetNonceQuery,
+  useGetUnpublishedContentQuery,
+  usePublishContentMutation,
+  useHasLanceProfileQuery,
+  useGetFeedQuery,
+  useBindWithLensIdMutation,
+  useRemoveContentMutation,
+} = authApi

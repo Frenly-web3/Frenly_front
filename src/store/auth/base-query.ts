@@ -11,13 +11,14 @@ const baseQuery = fetchBaseQuery({
   mode: 'cors',
 
   prepareHeaders: (headers, { getState }) => {
-    const aToken = (getState() as RootState).auth?.accessToken
-    const rToken = (getState() as RootState).auth?.refreshToken
+    const aToken = localStorage.getItem('access-token')
+    const rToken = localStorage.getItem('refresh-token')
+    console.log(aToken)
+    console.log(rToken)
     // If we have a token set in state, let's assume that we should be passing it.
-    if (aToken && rToken) {
-      headers.set('access-token', `${aToken}`)
-      headers.set('refresh-token', `${rToken}`)
-    }
+    headers.set('authorization', `Bearer ${aToken}`)
+    // headers.set('refresh-token', `${rToken}`)
+
     return headers
   },
 })
@@ -42,7 +43,7 @@ export const baseQueryWithReauth: BaseQueryFn<
             url: 'api/auth/refresh-token',
             method: 'POST',
             body: {
-              refreshToken: (api.getState() as RootState).auth?.refreshToken,
+              refreshToken: localStorage.getItem('refresh-token'),
             },
           },
           api,

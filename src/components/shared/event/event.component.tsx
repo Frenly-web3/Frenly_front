@@ -1,10 +1,17 @@
 import { useMutation } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import styles from '@components/shared/event/event.module.scss'
+import {
+  useBindWithLensIdMutation,
+  useGetUnpublishedContentQuery,
+  usePublishContentMutation,
+  useRemoveContentMutation,
+} from '@store/auth/auth.api'
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
+import moment from 'moment'
 import Image from 'next/image'
 import { useGetWalletProfileId, usePostWithSig } from 'src/contract/lens-hub.api'
 
@@ -12,14 +19,17 @@ export interface IEventProperties {
   isAddCap?: boolean
   image: string
   from: string
+  date: string
+  name?: string
   to: string
   info: string
   showDate?: boolean
   showAuthor?: boolean
   // ! find out if there will be message types
-  messageType: 'sent' | 'received' | 'minted'
+  messageType: 'SENT' | 'RECEIVE' | 'MINTED'
   //  ! item type?
   itemType: 'nft' | 'token'
+  id?: number
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -27,29 +37,39 @@ export default function Event(props: IEventProperties): JSX.Element {
     isAddCap = false,
     image,
     from,
+    date,
+    name,
     to,
     info,
     showDate = true,
     showAuthor = false,
     messageType,
     itemType,
+    id,
   } = props
 
   const { account, library } = useEthers()
   const profileId = useGetWalletProfileId(account || '')
-  const { state: txHash, send: postWithSig } = usePostWithSig()
+  const { state: postState, send: postWithSig } = usePostWithSig()
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
+  const [publishContent] = usePublishContentMutation()
+  const [bindContentIdWithLens] = useBindWithLensIdMutation()
+  const [removeContent] = useRemoveContentMutation()
 
   const addPost = async () => {
-    console.log(profileId)
+    if (id) {
+      //   const publishedPost = await publishContent({
+      //     contentId: id.toString(),
+      //   })
+      //   console.log(publishedPost.data.data)
+      // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
 
-    console.log(data)
-    try {
-      await addPostToLens({
+      const typeD = await addPostToLens({
         variables: {
           request: {
             profileId,
-            contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8sN6vl/a19',
+            contentURI:
+              'https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a',
             collectModule: {
               revertCollectModule: true,
             },
@@ -59,54 +79,55 @@ export default function Event(props: IEventProperties): JSX.Element {
           },
         },
       })
-    } catch (error) {
-      console.log(error)
 
-      return
+      const typedData = typeD?.data?.createPostTypedData?.typedData
+
+      // if (!typedData) return
+      console.log(typedData)
+
+      const signature = await signedTypeData(
+        typedData.domain,
+        typedData.types,
+        typedData.value,
+        library
+      )
+
+      const { v, r, s } = splitSignature(signature)
+
+      const receipt = await postWithSig({
+        profileId: typedData.value.profileId,
+        contentURI: typedData.value.contentURI,
+        collectModule: typedData.value.collectModule,
+        collectModuleInitData: typedData.value.collectModuleInitData,
+        referenceModule: typedData.value.referenceModule,
+        referenceModuleInitData: typedData.value.referenceModuleInitData,
+        sig: {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        },
+      })
+      await bindContentIdWithLens({ contentId: id.toString(), lensId: '0x09' })
     }
+  }
 
-    console.log(data)
-
-    const typedData = data?.data?.createPostTypedData?.typedData
-
-    if (!typedData) return
-
-    const signature = await signedTypeData(
-      typedData.domain,
-      typedData.types,
-      typedData.value,
-      library
-    )
-
-    const { v, r, s } = splitSignature(signature)
-
-    await postWithSig({
-      profileId: typedData.value.profileId,
-      contentURI: typedData.value.contentURI,
-      collectModule: typedData.value.collectModule,
-      collectModuleInitData: typedData.value.collectModuleInitData,
-      referenceModule: typedData.value.referenceModule,
-      referenceModuleInitData: typedData.value.referenceModuleInitData,
-      sig: {
-        v,
-        r,
-        s,
-        deadline: typedData.value.deadline,
-      },
-    })
-    console.log(txHash)
+  const declinePost = async () => {
+    if (id) {
+      await removeContent({ contentId: id.toString() })
+    }
   }
 
   const renderMessage = () => {
     let message
     switch (messageType) {
-      case 'minted':
+      case 'MINTED':
         message = '🎉 Minted a new '
         break
-      case 'received':
+      case 'RECEIVE':
         message = '📤 Received '
         break
-      case 'sent':
+      case 'SENT':
         message = '📤 Sent '
         break
       default:
@@ -114,7 +135,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     }
     switch (itemType) {
       case 'nft':
-        message += `${messageType !== 'minted' ? 'an' : ''} NFT`
+        message += `${messageType !== 'MINTED' ? 'an' : ''} NFT`
         break
       case 'token':
         message += 'tokens'
@@ -128,11 +149,19 @@ export default function Event(props: IEventProperties): JSX.Element {
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
       {showAuthor && (
-        <Author avatar="/assets/images/temp-avatar.jpg" name="elonmusk" date="Sep, 11 at 9:41 AM" />
+        <Author
+          avatar="/assets/images/temp-avatar.jpg"
+          name={name || ''}
+          date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
+        />
       )}
 
       <div style={{ marginLeft: showAuthor ? 56 : 0 }}>
-        {showDate && <div className="text-base font-normal text-gray mb-1">Sep, 11 at 9:41 AM</div>}
+        {showDate && (
+          <div className="text-base font-normal text-gray mb-1">
+            {`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
+          </div>
+        )}
 
         <h4 className="text-base font-semibold">
           {renderMessage()} to&nbsp;
@@ -149,12 +178,15 @@ export default function Event(props: IEventProperties): JSX.Element {
         {isAddCap && (
           <div className="w-full grid grid-cols-2 gap-2 mt-2">
             <button
-              onClick={() => addPost()}
+              onClick={addPost}
               className="rounded-full bg-main py-2 text-white text-sm font-semibold"
             >
               Publish
             </button>
-            <button className="rounded-full bg-error-bg py-2 text-error text-sm font-semibold">
+            <button
+              onClick={declinePost}
+              className="rounded-full bg-error-bg py-2 text-error text-sm font-semibold"
+            >
               Decline
             </button>
           </div>
