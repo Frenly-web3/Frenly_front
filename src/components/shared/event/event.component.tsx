@@ -13,7 +13,9 @@ import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
+import { useState } from 'react'
 import { useGetWalletProfileId, usePostWithSig } from 'src/contract/lens-hub.api'
+import Comments from '../comments/Comments'
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -55,6 +57,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [publishContent] = usePublishContentMutation()
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
   const [removeContent] = useRemoveContentMutation()
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
   const addPost = async () => {
     if (id) {
@@ -214,13 +217,14 @@ export default function Event(props: IEventProperties): JSX.Element {
                 <img src="/assets/icons/heart.svg" alt="like" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">10</span>
               </button>
-              <button onClick={commentHandler} className="flex items-center justify-center py-1 px-2">
+              <button onClick={()=>setIsCommentsOpen(!isCommentsOpen)} className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/message.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">3</span>
               </button>
             </div>
           )}
         </div>
+        {isCommentsOpen && <Comments/>}
       </div>
     </article>
   )
