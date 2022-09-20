@@ -25,13 +25,13 @@ export default function AuthPage() {
   const { account, chainId, library, activateBrowserWallet } = useEthers()
   const dataHasLens = useHasLanceProfileQuery(account || '', { skip: !account })
   // const [createProfile, data] = useMutation(CREATE_PROFILE)
-  const profile = useQuery(GET_DEFAULT_PROFILES, {
-    variables: {
-      request: {
-        ethereumAddress: account,
-      },
-    },
-  })
+  // const profile = useQuery(GET_DEFAULT_PROFILES, {
+  //   variables: {
+  //     request: {
+  //       ethereumAddress: account,
+  //     },
+  //   },
+  // })
 
   const { data: dataNonce } = useGetNonceQuery(account || '', { skip: !account })
 
@@ -59,9 +59,11 @@ export default function AuthPage() {
       mutateFunction({
         variables: {
           request: {
-            handle: account.toLowerCase().slice(0, 20),
+            handle: `frenly${account.toLowerCase().slice(0, 10)}`,
             profilePictureUri: null,
-            followModule: null,
+            followModule: {
+              freeFollowModule: true,
+            },
           },
         },
       })
@@ -84,8 +86,14 @@ export default function AuthPage() {
       console.log(dataLogin)
       // @ts-ignore
       dispatch(setTokens({ ...dataLogin?.data }))
+      console.log('AaA', account, library)
+
       await login(account, library)
-      await (dataHasLens.isError && createProfileHandler())
+
+      if (Number(countProfile) < 1) {
+        await createProfileHandler()
+      }
+
       reloadProfile(true)
       router.push('/feed')
     }

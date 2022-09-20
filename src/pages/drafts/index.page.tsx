@@ -28,10 +28,7 @@ const eventsMock = [
   },
 ]
 export default function DraftsPage() {
-  // const addPost = () => {}
-
-  // const declinePost = () => {}
-
+  // receipt.logs[0].topics[1]
   const [posts, setPosts] = useState<Array<any>>([])
   const { data: postsData } = useGetUnpublishedContentQuery(null)
   useEffect(() => {
