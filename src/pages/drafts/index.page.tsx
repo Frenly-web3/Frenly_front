@@ -62,6 +62,7 @@ export default function DraftsPage() {
                 itemType="nft"
                 messageType={el.transferType}
                 id={id}
+                totalUpvotes={0}
               />
             )
           })}

@@ -44,6 +44,7 @@ export default function FeedPage() {
   const { data: dataHasProfile } = useHasLanceProfileQuery(account || '', {
     skip: !isReloadProfile,
   })
+
   const dataFeeds = useGetFeedQuery({ take: 10, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
@@ -101,6 +102,7 @@ export default function FeedPage() {
                 itemType="nft"
                 totalUpvotes={stats.totalUpvotes}
                 id={id}
+                refetchInfo={drafts.refetch}
               />
             )
           })}
