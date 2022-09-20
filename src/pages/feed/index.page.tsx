@@ -37,10 +37,6 @@ const postsMock = [
 ]
 
 export default function FeedPage() {
-  // const addPost = () => {}
-
-  // const declinePost = () => {}
-
   const { account } = useEthers()
 
   const accountId = useGetWalletProfileId(account || '')
@@ -52,7 +48,10 @@ export default function FeedPage() {
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
-        publicationIds: ['0x469f-0x07', '0x469f-0x06', '0x469f-0x05'],
+        publicationIds: dataFeeds?.data?.data,
+        // profileId: accountId,
+        // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+        // limit: 10,
       },
     },
   })
@@ -86,12 +85,12 @@ export default function FeedPage() {
 
         <section>
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
-            const { createdAt, collectModule, profile } = el
+            const { createdAt, collectModule, profile, metadata, id, stats } = el
             return (
               <Event
                 from={el.from}
                 to={'el.to'}
-                info={'el.info'}
+                info={metadata.description}
                 image={'el.image'}
                 key={index}
                 name={profile.handle}
@@ -100,6 +99,8 @@ export default function FeedPage() {
                 showAuthor
                 messageType="SENT"
                 itemType="nft"
+                totalUpvotes={stats.totalUpvotes}
+                id={id}
               />
             )
           })}

@@ -8,6 +8,8 @@ import {
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
+import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
+import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
@@ -31,7 +33,8 @@ export interface IEventProperties {
   messageType: 'SENT' | 'RECEIVE' | 'MINTED'
   //  ! item type?
   itemType: 'nft' | 'token'
-  id?: number
+  id: number | string
+  totalUpvotes?: number
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -48,9 +51,12 @@ export default function Event(props: IEventProperties): JSX.Element {
     messageType,
     itemType,
     id,
+    totalUpvotes,
   } = props
 
   const { account, library } = useEthers()
+  console.log(account)
+
   const profileId = useGetWalletProfileId(account || '')
   const { state: postState, send: postWithSig } = usePostWithSig()
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
@@ -59,20 +65,23 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [removeContent] = useRemoveContentMutation()
   const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 
+  const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
+  const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const addPost = async () => {
     if (id) {
-      //   const publishedPost = await publishContent({
-      //     contentId: id.toString(),
-      //   })
-      //   console.log(publishedPost.data.data)
+      const publishedPost = await publishContent({
+        contentId: id.toString(),
+      })
+      // @ts-ignore
+      console.log(publishedPost?.data.data)
       // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
 
       const typeD = await addPostToLens({
         variables: {
           request: {
             profileId,
-            contentURI:
-              'https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a',
+            // @ts-ignore
+            contentURI: publishedPost.data.data,
             collectModule: {
               revertCollectModule: true,
             },
@@ -111,7 +120,18 @@ export default function Event(props: IEventProperties): JSX.Element {
           deadline: typedData.value.deadline,
         },
       })
-      await bindContentIdWithLens({ contentId: id.toString(), lensId: '0x09' })
+      console.log(
+        `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+          receipt?.logs[0]?.topics[2]
+        ).toString(16)}`
+      )
+
+      await bindContentIdWithLens({
+        contentId: id.toString(),
+        lensId: `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+          receipt?.logs[0]?.topics[2]
+        ).toString(16)}`,
+      })
     }
   }
 
@@ -119,6 +139,28 @@ export default function Event(props: IEventProperties): JSX.Element {
     if (id) {
       await removeContent({ contentId: id.toString() })
     }
+  }
+  console.log(profileId, id)
+
+  const likeHandler = async () => {
+    await likePostToLens({
+      variables: {
+        request: {
+          profileId,
+          reaction: 'UPVOTE',
+          publicationId: id,
+        },
+      },
+    })
+    // await cancelLikePostToLens({
+    //   variables: {
+    //     request: {
+    //       profileId,
+    //       reaction: 'UPVOTE',
+    //       publicationId: id,
+    //     },
+    //   },
+    // })
   }
 
   const renderMessage = () => {
@@ -213,9 +255,9 @@ export default function Event(props: IEventProperties): JSX.Element {
           </a>
           {isAddCap === false && (
             <div className="flex items-center">
-              <button className="flex items-center justify-center py-1 px-2">
+              <button onClick={likeHandler} className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/heart.svg" alt="like" />
-                <span className="text-xs font-semibold text-gray-darker ml-1">10</span>
+                <span className="text-xs font-semibold text-gray-darker ml-1">{totalUpvotes}</span>
               </button>
               <button onClick={()=>setIsCommentsOpen(!isCommentsOpen)} className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/message.svg" alt="messages" />

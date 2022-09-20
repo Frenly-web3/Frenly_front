@@ -134,7 +134,7 @@ export const authApi = createApi({
     getFeed: builder.query<any, { take: number; skip: number }>({
       query: args => {
         return {
-          url: `api/content/&take=${args.take}&skip=${args.skip}`,
+          url: `api/content?take=${args.take}&skip=${args.skip}`,
           method: 'GET',
           credentials: 'omit',
         }
