@@ -107,6 +107,7 @@ export const GET_PUBLICATIONS = gql`
     totalAmountOfMirrors
     totalAmountOfCollects
     totalAmountOfComments
+    totalUpvotes
   }
   fragment MetadataOutputFields on MetadataOutput {
     name
