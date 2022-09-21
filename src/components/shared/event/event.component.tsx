@@ -17,6 +17,7 @@ import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
 export interface IEventProperties {
@@ -37,6 +38,7 @@ export interface IEventProperties {
   totalUpvotes: number
   totalMirror: number
   refetchInfo?: () => void
+  profileId: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -56,12 +58,12 @@ export default function Event(props: IEventProperties): JSX.Element {
     totalUpvotes,
     totalMirror,
     refetchInfo,
+    profileId,
   } = props
 
   const { account, library } = useEthers()
-  console.log(account)
 
-  const profileId = useGetWalletProfileId(account || '')
+  const myProfileId = useGetWalletProfileId(account || '')
   const { state: postState, send: postWithSig } = usePostWithSig()
   const { state: mirrorState, send: mirrorWithSig } = useMirrorWithSig()
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
@@ -71,20 +73,18 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
+  const [imageUrl, setImageUrl] = useState()
   const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
     variables: {
       request: {
         publicationIds: [id],
-        // profileId: accountId,
-        // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-        // limit: 10,
       },
       requestReaction: {
-        profileId,
+        profileId: myProfileId,
       },
     },
+    skip: typeof id == 'number',
   })
-  // console.log(publicationIsReact.publications.items[0].reaction)
 
   const addPost = async () => {
     if (id) {
@@ -95,7 +95,7 @@ export default function Event(props: IEventProperties): JSX.Element {
       const typeD = await addPostToLens({
         variables: {
           request: {
-            profileId,
+            profileId: myProfileId,
             // @ts-ignore
             contentURI: publishedPost.data.data,
             collectModule: {
@@ -109,9 +109,6 @@ export default function Event(props: IEventProperties): JSX.Element {
       })
 
       const typedData = typeD?.data?.createPostTypedData?.typedData
-
-      // if (!typedData) return
-      console.log(typedData)
 
       const signature = await signedTypeData(
         typedData.domain,
@@ -150,17 +147,27 @@ export default function Event(props: IEventProperties): JSX.Element {
       await removeContent({ contentId: id.toString() })
     }
   }
-  console.log(profileId, id)
+
+  useEffect(() => {
+    ;(async () => {
+      const imageURL = await fetch(image)
+      if (imageURL && typeof id !== 'number') {
+        console.log(imageURL)
+        // eslint-disable-next-line unicorn/no-await-expression-member
+        setImageUrl((await imageURL.json()).image)
+      }
+    })()
+  }, [image])
 
   const likeHandler = async () => {
-    if (profileId) {
-      console.log(publicationIsReact.publications.items[0].reaction !== 'UPVOTE')
+    if (myProfileId) {
+      console.log(id)
 
       if (publicationIsReact.publications.items[0].reaction !== 'UPVOTE') {
         await likePostToLens({
           variables: {
             request: {
-              profileId,
+              profileId: myProfileId,
               reaction: 'UPVOTE',
               publicationId: id,
             },
@@ -170,7 +177,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         cancelLikePostToLens({
           variables: {
             request: {
-              profileId,
+              profileId: myProfileId,
               reaction: 'UPVOTE',
               publicationId: id,
             },
@@ -188,7 +195,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     const typeD = await mirrorPublication({
       variables: {
         request: {
-          profileId,
+          profileId: myProfileId,
           publicationId: id,
           referenceModule: {
             followerOnlyReferenceModule: false,
@@ -200,8 +207,6 @@ export default function Event(props: IEventProperties): JSX.Element {
     const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
     // if (!typedData) return
-    console.log(typedData)
-
     const signature = await signedTypeData(
       typedData.domain,
       typedData.types,
@@ -225,7 +230,6 @@ export default function Event(props: IEventProperties): JSX.Element {
         deadline: typedData.value.deadline,
       },
     })
-    console.log(tx)
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     refetchInfo && refetchInfo()
   }
@@ -258,12 +262,14 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     return `${message} `
   }
+
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
       {showAuthor && (
         <Author
           avatar="/assets/images/temp-avatar.jpg"
           name={name || ''}
+          profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
         />
       )}
@@ -283,8 +289,9 @@ export default function Event(props: IEventProperties): JSX.Element {
         </h4>
         <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
 
-        <div className="w-full relative h-screen max-h-96 rounded-lg overflow-hidden mt-1">
-          <Image src="/assets/images/temp-nft.jpg" alt="image" layout="fill" objectFit="cover" />
+        <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
+          {/* <Image src={imageUrl} alt="image" layout="fill" objectFit="cover" /> */}
+          <img src={imageUrl} alt="image" className="object-cover" />
         </div>
 
         {isAddCap && (

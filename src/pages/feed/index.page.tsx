@@ -15,27 +15,6 @@ import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 import styles from './posts.module.scss'
 
-const postsMock = [
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-]
-
 export default function FeedPage() {
   const { account } = useEthers()
 
@@ -68,7 +47,7 @@ export default function FeedPage() {
     <>
       <Meta title="Feed" description="Your Frenly Feed" />
 
-      <Header title="Frenly Feed" showAddPost />
+      <Header title="Frenly Feed" showAddPost accountId={accountId} />
 
       <main>
         <div className="container">
@@ -87,25 +66,30 @@ export default function FeedPage() {
         <section>
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
             const { createdAt, collectModule, profile, metadata, id, stats } = el
-            return (
-              <Event
-                from={el.from}
-                to={'el.to'}
-                info={metadata.description}
-                image={'el.image'}
-                key={index}
-                name={profile.handle}
-                date={createdAt}
-                showDate={false}
-                showAuthor
-                messageType="SENT"
-                itemType="nft"
-                totalUpvotes={stats.totalUpvotes}
-                totalMirror={stats.totalAmountOfMirrors}
-                id={id}
-                refetchInfo={drafts.refetch}
-              />
-            )
+            console.log(drafts)
+            if (metadata?.attributes[0].value !== 'URI') {
+              return (
+                <Event
+                  from={el.from}
+                  to={'el.to'}
+                  info={metadata.description}
+                  image={metadata.attributes[0].value || ''}
+                  key={index}
+                  name={profile.handle}
+                  date={createdAt}
+                  showDate={false}
+                  showAuthor
+                  messageType="SENT"
+                  itemType="nft"
+                  totalUpvotes={stats.totalUpvotes}
+                  totalMirror={stats.totalAmountOfMirrors}
+                  id={id}
+                  profileId={profile.id}
+                  refetchInfo={drafts.refetch}
+                />
+              )
+            }
+            return <></>
           })}
         </section>
       </main>
