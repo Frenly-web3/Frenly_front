@@ -48,21 +48,22 @@ export default function FeedPage() {
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
-        publicationIds: dataFeeds?.data?.data,
-        // profileId: accountId,
+        // publicationIds: dataFeeds?.data?.data,
+        profileId: accountId,
         // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+        publicationTypes: ['POST',],
         // limit: 10,
       },
     },
   })
-  console.log(dataFeeds)
+  // console.log(dataFeeds)
 
   useEffect(() => {
     if (account) {
       reloadProfile(true)
     }
   }, [account])
-  console.log(drafts)
+  console.log('publications', drafts)
   return (
     <>
       <Meta title="Feed" description="Your Frenly Feed" />

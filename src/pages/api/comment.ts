@@ -16,7 +16,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     name:pubId + 'comment',
     version:PublicationMetadataVersions.one,
     metadata_id:uuidv4(),
-    description:"comment for publication",
+    description:comment,
     content:comment,
     mainContentFocus:PublicationMainFocus.TEXT_ONLY,
     locale:"en",

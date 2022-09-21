@@ -1,22 +1,30 @@
+import moment from 'moment'
 import Image from 'next/image'
 import React from 'react'
 
 export interface IComment{
-  avatar:string,
-  name:string,
-  date:string
+  metadata:any,
+  profile:any,
+  createdAt:string
 }
 
-const Comment = ({avatar, name, date}:IComment) => {
+const Comment = ({metadata, profile, createdAt}:IComment) => {
+
+  const commentDate = moment(createdAt).fromNow(true);
+  
+  
   return (
-    <figure className="flex items-center">
-    <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden">
-      <Image src={avatar} alt={name} width={40} height={40} />
+    <figure className="flex items-center mb-2">
+    <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
+      <Image src="/assets/images/temp-avatar.jpg" alt={profile.handle} width={24} height={24} />
     </div>
 
-    <figcaption>
-      <div className="text-base font-semibold">{name}</div>
-      <div className="text-base font-normal text-gray">{date}</div>
+    <figcaption className='w-full border-b-[1px] border-border-color pb-4'>
+      <div className="flex justify-between">
+          <div className="text-base font-semibold">{profile?.handle}</div>
+          <div className="text-sm text-gray">{commentDate}</div>
+      </div>
+      <div className="text-base font-normal text-gray">{metadata.content}</div>
     </figcaption>
   </figure>
   )

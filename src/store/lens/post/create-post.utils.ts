@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import { ethers, utils } from 'ethers'
 
 // eslint-disable-next-line unicorn/prefer-module
 const omitDeep = require('omit-deep')
@@ -12,7 +12,6 @@ export const signedTypeData = async (
   signer: any
 ) => {
   return signer
-    .getSigner()
     ._signTypedData(
       omitDeep(domain, '__typename'),
       omitDeep(types, '__typename'),
