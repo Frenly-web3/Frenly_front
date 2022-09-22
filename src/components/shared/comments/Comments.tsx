@@ -36,7 +36,7 @@ const Comments = ({comments, pubId, profileId}:any) => {
     {isLoading ? <Loader show={true}/>:(
     <div className='flex flex-col py-4 relative'>
     <h4 className='text-xl font-bold mb-4'>Comments</h4>
-    {comments?.data?.publications?.items?.map((comment:IComment)=><Comment {...comment}/>)}
+    {comments?.data?.publications?.items?.map((comment:IComment)=><Comment key={comment.id} {...comment}/>)}
       <div className="w-full pt-4 pb-4 flex">
         <div className="flex rounded-2xl bg-light-gray px-4 py-2 w-full mr-2">
              <input style={{background:'transparent'}} value={commentValue} onChange={(e)=>setCommentValue(e.target.value)} type="text" className='outline-none w-full' placeholder='Comment'/>

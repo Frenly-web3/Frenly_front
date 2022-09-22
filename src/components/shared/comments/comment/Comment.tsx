@@ -6,6 +6,7 @@ export interface IComment{
   metadata:any,
   profile:any,
   createdAt:string
+  id:string
 }
 
 const Comment = ({metadata, profile, createdAt}:IComment) => {
