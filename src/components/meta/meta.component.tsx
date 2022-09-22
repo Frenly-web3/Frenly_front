@@ -16,11 +16,7 @@ const Meta = (props: IMetaProperties) => {
     <>
       <Head>
         <meta charSet="utf8" key="charset" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1"
-          key="viewport"
-        />
+        <meta name="viewport" content="width=device-width,initial-scale=1" key="viewport" />
         <link
           rel="apple-touch-icon"
           href={`${router.basePath}/assets/favicon/apple-touch-icon.png`}
@@ -40,11 +36,7 @@ const Meta = (props: IMetaProperties) => {
           href={`${router.basePath}/assets/favicon/favicon-16x16.png`}
           key="icon16"
         />
-        <link
-          rel="icon"
-          href={`${router.basePath}/assets/favicon/favicon.ico`}
-          key="favicon"
-        />
+        <link rel="icon" href={`${router.basePath}/assets/favicon/favicon.ico`} key="favicon" />
       </Head>
       <NextSeo
         title={props.title}

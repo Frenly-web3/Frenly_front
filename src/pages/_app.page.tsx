@@ -1,6 +1,7 @@
 import '../styles/global.scss'
 
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
+import { LoaderContextProvider } from '@components/shared/contexts/loader-context'
 import { store } from '@store/store'
 import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
@@ -52,7 +53,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ApolloProvider client={client}>
       <DAppProvider config={config}>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <LoaderContextProvider>
+            <Component {...pageProps} />
+          </LoaderContextProvider>
         </Provider>
       </DAppProvider>
     </ApolloProvider>

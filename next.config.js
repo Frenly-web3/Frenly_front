@@ -28,7 +28,7 @@ module.exports = withBundleAnalyzer({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
-  pageExtensions: ['page.tsx', 'page.ts', 'page.js', 'page.jsx'],
+  pageExtensions: ['page.tsx', 'page.ts', 'page.js', 'page.jsx', 'tsx', 'ts'],
   async redirects() {
     return [
       {
