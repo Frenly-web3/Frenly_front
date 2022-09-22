@@ -6,11 +6,13 @@ const omitDeep = require('omit-deep')
 // @ts-ignore
 
 export const signedTypeData = async (domain: any, types: any, value: any, signer: any) => {
-  return signer._signTypedData(
-    omitDeep(domain, '__typename'),
-    omitDeep(types, '__typename'),
-    omitDeep(value, '__typename')
-  )
+  return signer
+    .getSigner()
+    ._signTypedData(
+      omitDeep(domain, '__typename'),
+      omitDeep(types, '__typename'),
+      omitDeep(value, '__typename')
+    )
 }
 
 export const splitSignature = (signature: string) => {
