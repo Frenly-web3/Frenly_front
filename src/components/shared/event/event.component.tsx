@@ -18,9 +18,10 @@ import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
-import Comments from '../comments/Comments'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
+
+import Comments from '../comments/Comments'
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -37,7 +38,7 @@ export interface IEventProperties {
   //  ! item type?
   itemType: 'nft' | 'token'
   id: number | string
-  totalUpvotes?: number,
+  totalUpvotes?: number
   totalMirror: number
   refetchInfo?: () => void
   profileId: string
@@ -72,7 +73,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [publishContent] = usePublishContentMutation()
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
   const [removeContent] = useRemoveContentMutation()
-  const [isCommentsOpen, setIsCommentsOpen] = useState(false);
+  const [isCommentsOpen, setIsCommentsOpen] = useState(false)
 
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
@@ -85,11 +86,10 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log('publicationComments', comments?.data?.publications?.items.length);
-  console.log('====================================');
-  console.log('COMMENTS', comments.data.publications.items.length);
-  console.log('====================================');
-
+  console.log('publicationComments', comments?.data?.publications?.items.length)
+  console.log('====================================')
+  console.log('COMMENTS', comments.data.publications.items.length)
+  console.log('====================================')
 
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
   const [imageUrl, setImageUrl] = useState()
@@ -347,9 +347,14 @@ export default function Event(props: IEventProperties): JSX.Element {
                 <img src="/assets/icons/heart.svg" alt="like" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">{totalUpvotes}</span>
               </button>
-              <button onClick={()=>setIsCommentsOpen(!isCommentsOpen)} className="flex items-center justify-center py-1 px-2">
+              <button
+                onClick={() => setIsCommentsOpen(!isCommentsOpen)}
+                className="flex items-center justify-center py-1 px-2"
+              >
                 <img src="/assets/icons/message.svg" alt="messages" />
-                <span className="text-xs font-semibold text-gray-darker ml-1">{comments?.data?.publications?.items?.length}</span>
+                <span className="text-xs font-semibold text-gray-darker ml-1">
+                  {comments?.data?.publications?.items?.length}
+                </span>
               </button>
               <button
                 onClick={mirrorHandler}
@@ -361,7 +366,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             </div>
           )}
         </div>
-        {isCommentsOpen && <Comments comments={comments} pubId={id} profileId={profileId}/>}
+        {isCommentsOpen && <Comments comments={comments} pubId={id} profileId={profileId} />}
       </div>
     </article>
   )

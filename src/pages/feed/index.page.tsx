@@ -31,7 +31,7 @@ export default function FeedPage() {
         // publicationIds: dataFeeds?.data?.data,
         profileId: accountId,
         // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-        publicationTypes: ['POST',],
+        publicationTypes: ['POST'],
         // limit: 10,
       },
     },
@@ -63,7 +63,7 @@ export default function FeedPage() {
         {/* <input className={styles.search} placeholder="Address"></input> */}
         {/* <h3 className={styles.postsTitle}>Posts</h3> */}
 
-        <section className='relative'>
+        <section className="relative">
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
             const { createdAt, collectModule, profile, metadata, id, stats } = el
             console.log(drafts)

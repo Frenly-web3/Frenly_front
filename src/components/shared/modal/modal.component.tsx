@@ -18,7 +18,7 @@ const Modal = (props: IModalProperties) => {
         <div className={styles.modal} onClick={() => toggle()}>
           <div
             className={`${styles.modalContent} ${className || ''}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <>{children}</>
           </div>

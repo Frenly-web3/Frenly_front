@@ -8,7 +8,7 @@ export interface IUser {
 export interface AuthState {
   refreshToken: string | null
   accessToken: string | null
-  isLoading:boolean
+  isLoading: boolean
   user: IUser | null
 }
 
@@ -18,7 +18,7 @@ const initialState: AuthState = {
   refreshToken:
     (typeof window != 'undefined' && localStorage && localStorage.getItem('refresh-token')) || null,
   user: null,
-  isLoading:false
+  isLoading: false,
 }
 
 export const authSlice = createSlice({

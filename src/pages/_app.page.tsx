@@ -1,12 +1,12 @@
 import '../styles/global.scss'
 
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
+import { LoaderContextProvider } from '@components/shared/contexts/loader-context'
 import { store } from '@store/store'
 import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
-import { LoaderContextProvider } from '@components/shared/contexts/LoaderContext'
 
 const config: Config = {
   readOnlyChainId: ChainId.BSCTestnet,
@@ -54,7 +54,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <DAppProvider config={config}>
         <Provider store={store}>
           <LoaderContextProvider>
-            <Component {...pageProps} />  
+            <Component {...pageProps} />
           </LoaderContextProvider>
         </Provider>
       </DAppProvider>
