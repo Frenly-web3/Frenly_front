@@ -201,6 +201,7 @@ export const GET_PUBLICATIONS = gql`
     profile {
       ...ProfileFields
     }
+
     stats {
       ...PublicationStatsFields
     }

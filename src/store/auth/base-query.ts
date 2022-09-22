@@ -16,7 +16,10 @@ const baseQuery = fetchBaseQuery({
     console.log(aToken)
     console.log(rToken)
     // If we have a token set in state, let's assume that we should be passing it.
-    headers.set('authorization', `Bearer ${aToken}`)
+    if (aToken !== undefined) {
+      headers.set('authorization', `Bearer ${aToken}`)
+    }
+
     // headers.set('refresh-token', `${rToken}`)
 
     return headers

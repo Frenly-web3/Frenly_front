@@ -46,3 +46,8 @@ export function usePostWithSig() {
   const { state, send } = useContractFunction(lensContract, 'postWithSig')
   return { state, send }
 }
+
+export function useMirrorWithSig() {
+  const { state, send } = useContractFunction(lensContract, 'mirrorWithSig')
+  return { state, send }
+}

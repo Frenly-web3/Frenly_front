@@ -10,15 +10,17 @@ import {
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
+import { CREATE_MIRROR_TYPED_DATA } from '@store/lens/post/add-mirror.mutation'
 import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
+import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
 import Image from 'next/image'
-import { useState } from 'react'
-import { useGetWalletProfileId, usePostWithSig } from 'src/contract/lens-hub.api'
 import Comments from '../comments/Comments'
+import { useEffect, useState } from 'react'
+import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -36,6 +38,9 @@ export interface IEventProperties {
   itemType: 'nft' | 'token'
   id: number | string
   totalUpvotes?: number,
+  totalMirror: number
+  refetchInfo?: () => void
+  profileId: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -53,12 +58,16 @@ export default function Event(props: IEventProperties): JSX.Element {
     itemType,
     id,
     totalUpvotes,
+    totalMirror,
+    refetchInfo,
+    profileId,
   } = props
 
   const { account, library } = useEthers()
 
-  const profileId = useGetWalletProfileId(account || '')
+  const myProfileId = useGetWalletProfileId(account || '')
   const { state: postState, send: postWithSig } = usePostWithSig()
+  const { state: mirrorState, send: mirrorWithSig } = useMirrorWithSig()
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
   const [publishContent] = usePublishContentMutation()
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
@@ -82,6 +91,20 @@ export default function Event(props: IEventProperties): JSX.Element {
   console.log('====================================');
 
 
+  const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
+  const [imageUrl, setImageUrl] = useState()
+  const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
+    variables: {
+      request: {
+        publicationIds: [id],
+      },
+      requestReaction: {
+        profileId: myProfileId,
+      },
+    },
+    skip: typeof id == 'number',
+  })
+
   const addPost = async () => {
     if (id) {
       const publishedPost = await publishContent({
@@ -93,7 +116,7 @@ export default function Event(props: IEventProperties): JSX.Element {
       const typeD = await addPostToLens({
         variables: {
           request: {
-            profileId,
+            profileId: myProfileId,
             // @ts-ignore
             contentURI: publishedPost.data.data,
             collectModule: {
@@ -107,8 +130,6 @@ export default function Event(props: IEventProperties): JSX.Element {
       })
 
       const typedData = typeD?.data?.createPostTypedData?.typedData
-
-      // if (!typedData) retur
 
       const signature = await signedTypeData(
         typedData.domain,
@@ -133,12 +154,6 @@ export default function Event(props: IEventProperties): JSX.Element {
           deadline: typedData.value.deadline,
         },
       })
-      // console.log(
-      //   `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-      //     receipt?.logs[0]?.topics[2]
-      //   ).toString(16)}`
-      // )
-
       await bindContentIdWithLens({
         contentId: id.toString(),
         lensId: `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
@@ -153,18 +168,91 @@ export default function Event(props: IEventProperties): JSX.Element {
       await removeContent({ contentId: id.toString() })
     }
   }
-  // console.log(profileId, id)
+
+  useEffect(() => {
+    ;(async () => {
+      const imageURL = await fetch(image)
+      if (imageURL && typeof id !== 'number') {
+        console.log(imageURL)
+        // eslint-disable-next-line unicorn/no-await-expression-member
+        setImageUrl((await imageURL.json()).image)
+      }
+    })()
+  }, [image])
 
   const likeHandler = async () => {
-    await likePostToLens({
+    if (myProfileId) {
+      console.log(id)
+
+      if (publicationIsReact.publications.items[0].reaction !== 'UPVOTE') {
+        await likePostToLens({
+          variables: {
+            request: {
+              profileId: myProfileId,
+              reaction: 'UPVOTE',
+              publicationId: id,
+            },
+          },
+        })
+      } else {
+        cancelLikePostToLens({
+          variables: {
+            request: {
+              profileId: myProfileId,
+              reaction: 'UPVOTE',
+              publicationId: id,
+            },
+          },
+        })
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && refetchInfo()
+    refetch()
+  }
+
+  const mirrorHandler = async () => {
+    const typeD = await mirrorPublication({
       variables: {
         request: {
-          profileId,
-          reaction: 'UPVOTE',
+          profileId: myProfileId,
           publicationId: id,
+          referenceModule: {
+            followerOnlyReferenceModule: false,
+          },
         },
       },
     })
+
+    const typedData = typeD?.data?.createMirrorTypedData?.typedData
+
+    // if (!typedData) return
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      library
+    )
+
+    const { v, r, s } = splitSignature(signature)
+
+    const tx = await mirrorWithSig({
+      profileId: typedData.value.profileId,
+      profileIdPointed: typedData.value.profileIdPointed,
+      pubIdPointed: typedData.value.pubIdPointed,
+      referenceModuleData: typedData.value.referenceModuleData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleInitData: typedData.value.referenceModuleInitData,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && refetchInfo()
   }
 
   const renderMessage = () => {
@@ -195,7 +283,6 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     return `${message} `
   }
-  
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
@@ -203,6 +290,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         <Author
           avatar="/assets/images/temp-avatar.jpg"
           name={name || ''}
+          profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
         />
       )}
@@ -222,8 +310,9 @@ export default function Event(props: IEventProperties): JSX.Element {
         </h4>
         <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
 
-        <div className="w-full relative h-screen max-h-96 rounded-lg overflow-hidden mt-1">
-          <Image src="/assets/images/temp-nft.jpg" alt="image" layout="fill" objectFit="cover" />
+        <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
+          {/* <Image src={imageUrl} alt="image" layout="fill" objectFit="cover" /> */}
+          <img src={imageUrl} alt="image" className="object-cover" />
         </div>
 
         {isAddCap && (
@@ -261,6 +350,13 @@ export default function Event(props: IEventProperties): JSX.Element {
               <button onClick={()=>setIsCommentsOpen(!isCommentsOpen)} className="flex items-center justify-center py-1 px-2">
                 <img src="/assets/icons/message.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">{comments?.data?.publications?.items?.length}</span>
+              </button>
+              <button
+                onClick={mirrorHandler}
+                className="flex items-center justify-center py-1 px-2"
+              >
+                <img src="/assets/icons/mirror.svg" alt="messages" />
+                <span className="text-xs font-semibold text-gray-darker ml-1">{totalMirror}</span>
               </button>
             </div>
           )}
