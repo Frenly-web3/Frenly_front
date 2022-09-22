@@ -31,7 +31,6 @@ const Comments = ({ comments, pubId, profileId }: any) => {
     setIsLoading(false)
   }
 
-  useEffect(() => {}, [comments])
 
   return (
     <>
