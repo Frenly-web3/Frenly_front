@@ -1,12 +1,18 @@
 import { createComment } from '@store/lens/comment/create-comment'
 import { useEthers } from '@usedapp/core'
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 
 import { useLoaderContext } from '../contexts/loader-context'
 import Loader from '../loader/loader.component'
 import Comment, { IComment } from './comment/comment.component'
 
-const Comments = ({ comments, pubId, profileId }: any) => {
+interface ICommentsProps{
+  comments:any
+  pubId:string | number,
+  profileId:string
+}
+
+const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
   const [commentValue, setCommentValue] = useState('')
 
   const { isLoading, setIsLoading } = useLoaderContext()

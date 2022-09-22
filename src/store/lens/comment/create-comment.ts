@@ -6,7 +6,7 @@ import { createCommentTypedData } from './create-comment-typed-date'
 
 export const createComment = async (
   profileId: string,
-  pubId: string,
+  pubId: string | number,
   contentURI: string,
   signer: any
 ) => {
