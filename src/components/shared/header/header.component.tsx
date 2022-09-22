@@ -9,10 +9,27 @@ export interface IHeaderProperties {
   isOwner?: boolean
   accountId?: string
   nickname?: string
+  address?: string
+  followHandle?: () => void
+  unfollowHandle?: () => void
+  followers?: number
+  isFollow?: boolean
 }
 
 export default function Header(props: IHeaderProperties): JSX.Element {
-  const { title, showAddPost = false, showPostAuthor = false, isOwner, accountId, nickname } = props
+  const {
+    title,
+    showAddPost = false,
+    showPostAuthor = false,
+    isOwner,
+    accountId,
+    nickname,
+    address,
+    followHandle,
+    unfollowHandle,
+    followers,
+    isFollow,
+  } = props
   const router = useRouter()
 
   return (
@@ -43,7 +60,7 @@ export default function Header(props: IHeaderProperties): JSX.Element {
           </div>
           <div className="m-auto mt-3">
             <Image
-              src={'/assets/images/temp-avatar.jpg'}
+              src={'/assets/images/temp-avatar.png'}
               className="align-center"
               alt="avatar"
               width={96}
@@ -51,13 +68,31 @@ export default function Header(props: IHeaderProperties): JSX.Element {
             />
           </div>
 
-          <div className="text-base font-normal text-gray mb-8 text-center m-auto mt-4">
-            {'Low-key web3 founder, part-time designer, full-time dreamer'}
+          <div className="text-base font-normal text-gray mb-5 text-center m-auto mt-4">
+            {address}
           </div>
-          {!isOwner && (
-            <button className="rounded-full bg-main py-2 text-white text-sm font-semibold w-23 pl-4 pr-4 m-auto mb-8">
-              FOLLOW
-            </button>
+          <div className="text-base font-normal text-gray mb-5 text-center m-auto mt-4">
+            Followers: {followers}
+          </div>
+
+          {!isOwner ? (
+            isFollow ? (
+              <button
+                onClick={unfollowHandle}
+                className="rounded-full bg-main py-2 text-white text-sm font-semibold w-23 pl-4 pr-4 m-auto mb-8"
+              >
+                UNFOLLOW
+              </button>
+            ) : (
+              <button
+                onClick={followHandle}
+                className="rounded-full bg-main py-2 text-white text-sm font-semibold w-23 pl-4 pr-4 m-auto mb-8"
+              >
+                FOLLOW
+              </button>
+            )
+          ) : (
+            ''
           )}
         </div>
       )}

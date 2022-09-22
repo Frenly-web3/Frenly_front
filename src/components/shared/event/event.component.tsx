@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
+import Comments from '@components/shared/comments/comments.component'
 import styles from '@components/shared/event/event.module.scss'
 import {
   useBindWithLensIdMutation,
@@ -7,6 +8,7 @@ import {
   usePublishContentMutation,
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
+import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
@@ -17,11 +19,9 @@ import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
-import Comments from '@components/shared/comments/comments.component'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
-
 
 export interface IEventProperties {
   isAddCap?: boolean
@@ -34,7 +34,7 @@ export interface IEventProperties {
   showDate?: boolean
   showAuthor?: boolean
   // ! find out if there will be message types
-  messageType: 'SENT' | 'RECEIVE' | 'MINTED'
+  messageType: 'SEND' | 'RECEIVE' | 'MINTED'
   //  ! item type?
   itemType: 'nft' | 'token'
   id: number | string
@@ -42,6 +42,8 @@ export interface IEventProperties {
   totalMirror: number
   refetchInfo?: () => void
   profileId: string
+  blockchainType?: 'ETHEREUM' | 'POLYGON'
+  txHash: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -62,6 +64,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     totalMirror,
     refetchInfo,
     profileId,
+    blockchainType,
+    txHash,
   } = props
 
   const { account, library } = useEthers()
@@ -87,6 +91,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
+
   const [imageUrl, setImageUrl] = useState()
   const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
     variables: {
@@ -107,7 +112,7 @@ export default function Event(props: IEventProperties): JSX.Element {
       })
       // @ts-ignore
       // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
-
+      console.log(publishedPost, myProfileId)
       const typeD = await addPostToLens({
         variables: {
           request: {
@@ -117,13 +122,11 @@ export default function Event(props: IEventProperties): JSX.Element {
             collectModule: {
               revertCollectModule: true,
             },
-            referenceModule: {
-              followerOnlyReferenceModule: false,
-            },
+            referenceModule: null,
           },
         },
       })
-
+      console.log(typeD)
       const typedData = typeD?.data?.createPostTypedData?.typedData
 
       const signature = await signedTypeData(
@@ -156,6 +159,9 @@ export default function Event(props: IEventProperties): JSX.Element {
         ).toString(16)}`,
       })
     }
+    refetch()
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && refetchInfo()
   }
 
   const declinePost = async () => {
@@ -164,16 +170,16 @@ export default function Event(props: IEventProperties): JSX.Element {
     }
   }
 
-  useEffect(() => {
-    ;(async () => {
-      const imageURL = await fetch(image)
-      if (imageURL && typeof id !== 'number') {
-        console.log(imageURL)
-        // eslint-disable-next-line unicorn/no-await-expression-member
-        setImageUrl((await imageURL.json()).image)
-      }
-    })()
-  }, [image])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (image && typeof id !== 'number') {
+  //       const imageURL = await fetch(image)
+  //       console.log(imageURL)
+  //       // eslint-disable-next-line unicorn/no-await-expression-member
+  //       setImageUrl((await imageURL.json()).image)
+  //     }
+  //   })()
+  // }, [image])
 
   const likeHandler = async () => {
     if (myProfileId) {
@@ -213,9 +219,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         request: {
           profileId: myProfileId,
           publicationId: id,
-          referenceModule: {
-            followerOnlyReferenceModule: false,
-          },
+          referenceModule: null,
         },
       },
     })
@@ -252,19 +256,23 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   const renderMessage = () => {
     let message
-    switch (messageType) {
+    const messageTypeClone =
+      from == '0x0000000000000000000000000000000000000000' ? 'MINTED' : messageType
+
+    switch (messageTypeClone) {
       case 'MINTED':
         message = '🎉 Minted a new '
         break
       case 'RECEIVE':
         message = '📤 Received '
         break
-      case 'SENT':
+      case 'SEND':
         message = '📤 Sent '
         break
       default:
         break
     }
+
     switch (itemType) {
       case 'nft':
         message += `${messageType !== 'MINTED' ? 'an' : ''} NFT`
@@ -283,7 +291,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     <article className="container border-b border-border-color pt-2 pb-4">
       {showAuthor && (
         <Author
-          avatar="/assets/images/temp-avatar.jpg"
+          avatar="/assets/images/temp-avatar.png"
           name={name || ''}
           profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
@@ -298,16 +306,28 @@ export default function Event(props: IEventProperties): JSX.Element {
         )}
 
         <h4 className="text-base font-semibold">
-          {renderMessage()} to&nbsp;
+          {renderMessage()} {messageType == 'RECEIVE' ? <>from&nbsp;</> : <>to&nbsp;</>}
           <a href="#" className="text-main">
-            {to}
+            {messageType == 'RECEIVE' ? from : to}
           </a>
         </h4>
         <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
 
         <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
-          {/* <Image src={imageUrl} alt="image" layout="fill" objectFit="cover" /> */}
-          <img src={imageUrl} alt="image" className="object-cover" />
+          {image ? (
+            <img
+              src={`http://135.181.216.90:49299/api/token-images/${image}`}
+              alt="image"
+              className="m-auto"
+            />
+          ) : (
+            <img src={'/assets/images/eyes.png'} alt="image" className="m-auto mt-30 mb-30" />
+          )}
+          {/* <img
+            src={ '/assets/images/eyes.gif'}s
+            alt="image"
+            className="object-cover"
+          /> */}
         </div>
 
         {isAddCap && (
@@ -333,8 +353,15 @@ export default function Event(props: IEventProperties): JSX.Element {
             isAddCap ? 'justify-center mt-2' : 'justify-between'
           )}
         >
-          <a href="#" className="text-sm text-main">
-            Check on Etherscan
+          <a
+            href={
+              blockchainType == 'ETHEREUM'
+                ? `https://rinkeby.etherscan.io/tx/${txHash}`
+                : `https://mumbai.polygonscan.com/tx/${txHash}`
+            }
+            className="text-sm text-main"
+          >
+            Check on {blockchainType === 'ETHEREUM' ? 'Etherscan' : 'Polygonscan'}
           </a>
           {isAddCap === false && (
             <div className="flex items-center">

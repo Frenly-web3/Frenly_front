@@ -51,3 +51,13 @@ export function useMirrorWithSig() {
   const { state, send } = useContractFunction(lensContract, 'mirrorWithSig')
   return { state, send }
 }
+
+export function useFollowWithSig() {
+  const { state, send } = useContractFunction(lensContract, 'followWithSig')
+  return { state, send }
+}
+
+export function useUnfollowWithSig() {
+  const { state, send } = useContractFunction(lensContract, 'burnWithSig')
+  return { state, send }
+}
