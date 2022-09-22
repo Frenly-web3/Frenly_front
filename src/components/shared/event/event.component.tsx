@@ -17,10 +17,10 @@ import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
+import Comments from '@components/shared/comments/comments.component'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
-import Comments from '../comments/comments'
 
 
 export interface IEventProperties {
