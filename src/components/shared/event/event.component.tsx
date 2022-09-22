@@ -86,11 +86,6 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log('publicationComments', comments?.data?.publications?.items.length)
-  console.log('====================================')
-  console.log('COMMENTS', comments.data.publications.items.length)
-  console.log('====================================')
-
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
   const [imageUrl, setImageUrl] = useState()
   const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
