@@ -1,74 +1,144 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
 import { useGetUnpublishedContentQuery } from '@store/auth/auth.api'
+import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
+import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
+// import { IS_FOLLOWING } from '@store/lens/account/is-follow.query'
 import { GET_DEFAULT_PROFILES } from '@store/lens/get-profile.query'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
+import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
 import { useEthers } from '@usedapp/core'
 import { useRouter } from 'next/router'
-import { Stats } from 'node:fs'
 import React, { useEffect, useState } from 'react'
-import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
+import {
+  useFollowWithSig,
+  useGetWalletProfileId,
+  useUnfollowWithSig,
+} from 'src/contract/lens-hub.api'
 
-const eventsMock = [
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-  {
-    from: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    to: '0x0e2f7D1a076100059824c14021919eFB509bA25b',
-    info: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png',
-  },
-]
 export default function ProfilePage() {
   // receipt.logs[0].topics[1]
-  const { account } = useEthers()
+  const { account, library } = useEthers()
   const [posts, setPosts] = useState<Array<any>>([])
   const {
     query: { id },
   } = useRouter()
   const accountId = useGetWalletProfileId(account || '')
   const { data: postsData } = useGetUnpublishedContentQuery(null)
-  const { data: dataProfile } = useQuery(GET_DEFAULT_PROFILES, {
+  const { data: dataProfile, refetch: refetchProfile } = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
       request: {
         profileId: id,
       },
     },
   })
+  const { send: followWithSig, state: followWithSigState } = useFollowWithSig()
+  const { send: unfollowWithSig, state: unfollowWithSigState } = useUnfollowWithSig()
   const { data: feeds, refetch } = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
         // publicationIds: dataFeeds?.data?.data,
         profileId: id,
-        publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+        publicationTypes: ['POST', 'MIRROR'],
         limit: 10,
       },
     },
   })
+  const [followToUser, dataFollowToUser] = useMutation(FOLLOW_USER)
+  const [unfollowToUser, dataUnfollowToUser] = useMutation(CREATE_UNFOLLOW_TYPED_DATA)
+
   useEffect(() => {
     setPosts(postsData?.data)
   }, [postsData])
 
-  console.log(feeds)
+  console.log(postsData)
+
+  const followHandler = async () => {
+    const result = await followToUser({
+      variables: {
+        request: {
+          follow: [
+            {
+              profile: id,
+            },
+          ],
+        },
+      },
+    })
+
+    const typedData = result?.data?.createFollowTypedData?.typedData
+
+    // if (!typedData) return
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      library
+    )
+    const { v, r, s } = splitSignature(signature)
+
+    const tx = await followWithSig({
+      follower: account,
+      profileIds: typedData.value.profileIds,
+      datas: typedData.value.datas,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
+    })
+
+    refetchProfile()
+  }
+
+  const unfollowHandler = async () => {
+    const result = await unfollowToUser({
+      variables: {
+        request: {
+          profile: id,
+        },
+      },
+    })
+
+    const typedData = result?.data?.createUnfollowTypedData?.typedData
+
+    // if (!typedData) return
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      library
+    )
+    const { v, r, s } = splitSignature(signature)
+
+    const tx = await unfollowWithSig(typedData.value.tokenId, {
+      v,
+      r,
+      s,
+      deadline: typedData.value.deadline,
+    })
+
+    refetchProfile()
+  }
 
   return (
     <>
       <Meta title="Profile" description="Your profile" />
 
-      <Header title="Profile" isOwner={id === accountId} nickname={dataProfile?.profile.handle} />
+      <Header
+        title="Profile"
+        isOwner={id === accountId}
+        nickname={dataProfile?.profile.handle}
+        address={dataProfile?.profile.ownedBy}
+        followHandle={followHandler}
+        unfollowHandle={unfollowHandler}
+        followers={dataProfile?.profile.stats.totalFollowers}
+        isFollow={dataProfile?.profile.isFollowedByMe}
+      />
 
       <main>
         <div className="container">
@@ -88,7 +158,7 @@ export default function ProfilePage() {
                     to={el.toAddress}
                     info={el.info}
                     date={creationDate}
-                    image={el.tokenUri}
+                    image={el.image}
                     key={index}
                     itemType="nft"
                     messageType={el.transferType}
@@ -96,31 +166,35 @@ export default function ProfilePage() {
                     totalUpvotes={0}
                     totalMirror={0}
                     profileId={id as string}
+                    txHash={el.transactionHash}
+                    blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
                   />
                 )
               })
             : feeds?.publications.items.map((el: any, index: number) => {
                 const { createdAt, collectModule, profile, metadata, id: postId, stats } = el
-                // console.log(metadata?.attributes[0].value)
+                console.log(el)
 
                 return (
                   <Event
-                    from={el.from}
-                    to={'el.to'}
+                    from={metadata.attributes[4].value}
+                    to={metadata.attributes[3].value}
                     info={metadata.description}
-                    image={'metadata.attributes[0].value'}
+                    image={metadata.attributes[0].value}
                     key={index}
                     name={profile.handle}
                     date={createdAt}
                     showDate={false}
                     showAuthor
-                    messageType="SENT"
+                    messageType={metadata.attributes[5].value}
                     itemType="nft"
                     totalUpvotes={stats.totalUpvotes}
                     totalMirror={stats.totalAmountOfMirrors}
                     id={postId}
                     profileId={profile.id}
                     refetchInfo={refetch}
+                    txHash={metadata.attributes[8].value}
+                    blockchainType={metadata.attributes[7].value}
                   />
                 )
               })}

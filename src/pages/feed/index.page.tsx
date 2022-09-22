@@ -28,21 +28,21 @@ export default function FeedPage() {
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
-        // publicationIds: dataFeeds?.data?.data,
-        profileId: accountId,
+        publicationIds: dataFeeds?.data?.data.map((el: any) => el.lensId),
+        // profileId: accountId,
         // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-        publicationTypes: ['POST'],
         // limit: 10,
       },
     },
   })
-  // console.log(dataFeeds)
+  console.log(dataFeeds)
 
   useEffect(() => {
     if (account) {
       reloadProfile(true)
     }
   }, [account])
+  console.log(drafts)
   return (
     <>
       <Meta title="Feed" description="Your Frenly Feed" />
@@ -66,30 +66,30 @@ export default function FeedPage() {
         <section className="relative">
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
             const { createdAt, collectModule, profile, metadata, id, stats } = el
-            console.log(drafts)
-            if (metadata?.attributes[0].value !== 'URI') {
-              return (
-                <Event
-                  from={el.from}
-                  to={'el.to'}
-                  info={metadata.description}
-                  image={metadata.attributes[0].value || ''}
-                  key={index}
-                  name={profile.handle}
-                  date={createdAt}
-                  showDate={false}
-                  showAuthor
-                  messageType="SENT"
-                  itemType="nft"
-                  totalUpvotes={stats.totalUpvotes}
-                  totalMirror={stats.totalAmountOfMirrors}
-                  id={id}
-                  profileId={profile.id}
-                  refetchInfo={drafts.refetch}
-                />
-              )
-            }
-            return <></>
+            console.log(metadata?.attributes[0].value)
+
+            return (
+              <Event
+                from={el.from}
+                to={'el.to'}
+                info={metadata.description}
+                image={dataFeeds.data.data[index].image}
+                key={index}
+                name={profile.handle}
+                date={createdAt}
+                showDate={false}
+                showAuthor
+                messageType={metadata.attributes[5].value}
+                itemType="nft"
+                totalUpvotes={stats.totalUpvotes}
+                totalMirror={stats.totalAmountOfMirrors}
+                id={id}
+                profileId={profile.id}
+                refetchInfo={drafts.refetch}
+                txHash={metadata.attributes[8].value}
+                blockchainType={metadata.attributes[7].value}
+              />
+            )
           })}
         </section>
       </main>

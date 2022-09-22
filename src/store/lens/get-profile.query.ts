@@ -6,6 +6,7 @@ export const GET_DEFAULT_PROFILES = gql`
       id
       name
       bio
+      isFollowedByMe
       attributes {
         displayType
         traitType
