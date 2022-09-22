@@ -3,8 +3,8 @@ import { useEthers } from '@usedapp/core'
 import React, { useEffect, useState } from 'react'
 
 import { useLoaderContext } from '../contexts/loader-context'
-import Loader from '../loader/loader'
-import Comment, { IComment } from './comment/comment'
+import Loader from '../loader/loader.component'
+import Comment, { IComment } from './comment/comment.component'
 
 const Comments = ({ comments, pubId, profileId }: any) => {
   const [commentValue, setCommentValue] = useState('')
