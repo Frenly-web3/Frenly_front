@@ -20,8 +20,8 @@ import moment from 'moment'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
+import Comments from '../comments/comments'
 
-import Comments from '../comments/Comments'
 
 export interface IEventProperties {
   isAddCap?: boolean
