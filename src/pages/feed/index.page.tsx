@@ -63,7 +63,6 @@ export default function FeedPage() {
       reloadProfile(true)
     }
   }, [account])
-  console.log('publications', drafts)
   return (
     <>
       <Meta title="Feed" description="Your Frenly Feed" />
@@ -84,7 +83,7 @@ export default function FeedPage() {
         {/* <input className={styles.search} placeholder="Address"></input> */}
         {/* <h3 className={styles.postsTitle}>Posts</h3> */}
 
-        <section>
+        <section className='relative'>
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
             const { createdAt, collectModule, profile, metadata, id, stats } = el
             return (

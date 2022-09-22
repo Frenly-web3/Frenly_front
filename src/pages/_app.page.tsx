@@ -6,6 +6,7 @@ import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
+import { LoaderContextProvider } from '@components/shared/contexts/LoaderContext'
 
 const config: Config = {
   readOnlyChainId: ChainId.BSCTestnet,
@@ -52,7 +53,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ApolloProvider client={client}>
       <DAppProvider config={config}>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <LoaderContextProvider>
+            <Component {...pageProps} />  
+          </LoaderContextProvider>
         </Provider>
       </DAppProvider>
     </ApolloProvider>

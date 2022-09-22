@@ -76,7 +76,10 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log('publicationComments', comments);
+  console.log('publicationComments', comments?.data?.publications?.items.length);
+  console.log('====================================');
+  console.log('COMMENTS', comments.data.publications.items.length);
+  console.log('====================================');
 
 
   const addPost = async () => {
