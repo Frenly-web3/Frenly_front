@@ -23,6 +23,7 @@ export default function ProfilePage() {
   // receipt.logs[0].topics[1]
   const { account, library } = useEthers()
   const [posts, setPosts] = useState<Array<any>>([])
+  const [isLoading, setIsLoading] = useState(false)
   const {
     query: { id },
   } = useRouter()

@@ -1,18 +1,20 @@
 import { createComment } from '@store/lens/comment/create-comment'
 import { useEthers } from '@usedapp/core'
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 
 import { useLoaderContext } from '../contexts/loader-context'
 import Loader from '../loader/loader.component'
-import Comment, { IComment } from './comment/comment.component'
+import type { IComment } from './comment/comment.component'
+import Comment from './comment/comment.component'
 
-interface ICommentsProps{
-  comments:any
-  pubId:string | number,
-  profileId:string
+interface ICommentsProperties {
+  comments: any
+  pubId: string | number
+  profileId: string
+  refetchComment: () => void
 }
 
-const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
+const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsProperties) => {
   const [commentValue, setCommentValue] = useState('')
 
   const { isLoading, setIsLoading } = useLoaderContext()
@@ -35,9 +37,8 @@ const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
     setIsLoading(true)
     await createComment(profileId, pubId, data.contentURI, signer)
     setIsLoading(false)
+    refetchComment()
   }
-
-
 
   return (
     <>

@@ -23,6 +23,8 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
+import Loader from '../loader/loader.component'
+
 export interface IEventProperties {
   isAddCap?: boolean
   image: string
@@ -78,11 +80,11 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
   const [removeContent] = useRemoveContentMutation()
   const [isCommentsOpen, setIsCommentsOpen] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
 
-  const comments = useQuery(GET_PUBLICATIONS, {
+  const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
         commentsOf: id,
@@ -106,67 +108,74 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const addPost = async () => {
+    setIsLoading(true)
     if (id) {
-      const publishedPost = await publishContent({
-        contentId: id.toString(),
-      })
-      // @ts-ignore
-      // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
-      console.log(publishedPost, myProfileId)
-      const typeD = await addPostToLens({
-        variables: {
-          request: {
-            profileId: myProfileId,
-            // @ts-ignore
-            contentURI: publishedPost.data.data,
-            collectModule: {
-              revertCollectModule: true,
+      try {
+        const publishedPost = await publishContent({
+          contentId: id.toString(),
+        })
+        // @ts-ignore
+        // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
+        console.log(publishedPost, myProfileId)
+        const typeD = await addPostToLens({
+          variables: {
+            request: {
+              profileId: myProfileId,
+              // @ts-ignore
+              contentURI: publishedPost.data.data,
+              collectModule: null,
+              referenceModule: {
+                followerOnlyReferenceModule: false,
+              },
             },
-            referenceModule: null,
           },
-        },
-      })
-      console.log(typeD)
-      const typedData = typeD?.data?.createPostTypedData?.typedData
+        })
+        console.log(typeD)
+        const typedData = typeD?.data?.createPostTypedData?.typedData
 
-      const signature = await signedTypeData(
-        typedData.domain,
-        typedData.types,
-        typedData.value,
-        library
-      )
+        const signature = await signedTypeData(
+          typedData.domain,
+          typedData.types,
+          typedData.value,
+          library
+        )
 
-      const { v, r, s } = splitSignature(signature)
+        const { v, r, s } = splitSignature(signature)
 
-      const receipt = await postWithSig({
-        profileId: typedData.value.profileId,
-        contentURI: typedData.value.contentURI,
-        collectModule: typedData.value.collectModule,
-        collectModuleInitData: typedData.value.collectModuleInitData,
-        referenceModule: typedData.value.referenceModule,
-        referenceModuleInitData: typedData.value.referenceModuleInitData,
-        sig: {
-          v,
-          r,
-          s,
-          deadline: typedData.value.deadline,
-        },
-      })
-      await bindContentIdWithLens({
-        contentId: id.toString(),
-        lensId:
-          Number(receipt?.logs[0]?.topics[2]).toString(16).length === 1
-            ? `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
-                receipt?.logs[0]?.topics[2]
-              ).toString(16)}`
-            : `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-                receipt?.logs[0]?.topics[2]
-              ).toString(16)}`,
-      })
+        const receipt = await postWithSig({
+          profileId: typedData.value.profileId,
+          contentURI: typedData.value.contentURI,
+          collectModule: typedData.value.collectModule,
+          collectModuleInitData: typedData.value.collectModuleInitData,
+          referenceModule: typedData.value.referenceModule,
+          referenceModuleInitData: typedData.value.referenceModuleInitData,
+          sig: {
+            v,
+            r,
+            s,
+            deadline: typedData.value.deadline,
+          },
+        })
+        await bindContentIdWithLens({
+          contentId: id.toString(),
+          lensId:
+            Number(receipt?.logs[0]?.topics[2]).toString(16).length === 1
+              ? `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
+                  receipt?.logs[0]?.topics[2]
+                ).toString(16)}`
+              : `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+                  receipt?.logs[0]?.topics[2]
+                ).toString(16)}`,
+        })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+        refetch()
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        refetchInfo && refetchInfo()
+      }
     }
-    refetch()
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && refetchInfo()
   }
 
   const declinePost = async () => {
@@ -294,6 +303,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
+      <Loader show={isLoading} />
       {showAuthor && (
         <Author
           avatar="/assets/images/temp-avatar.png"
@@ -380,7 +390,7 @@ export default function Event(props: IEventProperties): JSX.Element {
               >
                 <img src="/assets/icons/message.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">
-                  {comments?.data?.publications?.items?.length}
+                  {comments?.publications?.items?.length}
                 </span>
               </button>
               <button
@@ -393,7 +403,14 @@ export default function Event(props: IEventProperties): JSX.Element {
             </div>
           )}
         </div>
-        {isCommentsOpen && <Comments comments={comments} pubId={id} profileId={profileId} />}
+        {isCommentsOpen && (
+          <Comments
+            refetchComment={refetchComments}
+            comments={comments}
+            pubId={id}
+            profileId={profileId}
+          />
+        )}
       </div>
     </article>
   )
