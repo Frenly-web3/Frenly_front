@@ -45,7 +45,7 @@ export const authApi = createApi({
     >({
       query: args => {
         return {
-          url: `/api/auth/${args.address}/signature`,
+          url: `auth/${args.address}/signature`,
           method: 'POST',
           body: {
             signature: args.signature,
@@ -72,7 +72,7 @@ export const authApi = createApi({
     refreshTokens: builder.query({
       query: args => {
         return {
-          url: '/api/auth/refresh-toke',
+          url: 'auth/refresh-toke',
           method: 'POST',
           body: {
             refreshToken: localStorage.getItem('refresh-token'),
@@ -86,7 +86,7 @@ export const authApi = createApi({
         console.log(args.contentId)
 
         return {
-          url: `/api/content/${args.contentId}`,
+          url: `content/${args.contentId}`,
           method: 'POST',
 
           credentials: 'omit',
@@ -96,7 +96,7 @@ export const authApi = createApi({
     bindWithLensId: builder.mutation<any, { contentId: string; lensId: string }>({
       query: args => {
         return {
-          url: `/api/content/${args.contentId}/${args.lensId}`,
+          url: `content/${args.contentId}/${args.lensId}`,
           method: 'PUT',
 
           credentials: 'omit',
@@ -106,7 +106,7 @@ export const authApi = createApi({
     removeContent: builder.mutation<any, { contentId: string }>({
       query: args => {
         return {
-          url: `/api/content/${args.contentId}`,
+          url: `content/${args.contentId}`,
           method: 'DELETE',
 
           credentials: 'omit',
@@ -116,7 +116,7 @@ export const authApi = createApi({
     getNonce: builder.query<any, string>({
       query: address => {
         return {
-          url: `api/auth/${address}/nonce`,
+          url: `auth/${address}/nonce`,
           method: 'GET',
           credentials: 'omit',
         }
@@ -125,7 +125,7 @@ export const authApi = createApi({
     hasLanceProfile: builder.query<any, string>({
       query: address => {
         return {
-          url: `api/auth/${address}/lens-profile`,
+          url: `auth/${address}/lens-profile`,
           method: 'GET',
           credentials: 'omit',
         }
@@ -134,7 +134,7 @@ export const authApi = createApi({
     getFeed: builder.query<any, { take: number; skip: number }>({
       query: args => {
         return {
-          url: `api/content?take=${args.take}&skip=${args.skip}`,
+          url: `content?take=${args.take}&skip=${args.skip}`,
           method: 'GET',
           credentials: 'omit',
         }
@@ -143,7 +143,7 @@ export const authApi = createApi({
     getUnpublishedContent: builder.query<any, any>({
       query: args => {
         return {
-          url: `/api/content/unpublished`,
+          url: `content/unpublished`,
           method: 'GET',
           credentials: 'omit',
         }

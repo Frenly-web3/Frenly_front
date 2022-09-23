@@ -320,7 +320,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
           {image ? (
             <img
-              src={`http://135.181.216.90:49299/api/token-images/${image}`}
+              src={`http://135.181.216.90:49299/rest/token-images/${image}`}
               alt="image"
               className="m-auto"
             />

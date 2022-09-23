@@ -7,7 +7,7 @@ import { Mutex } from 'async-mutex'
 import { logout } from './auth.slice'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: ` http://135.181.216.90:49299/`,
+  baseUrl: ` http://135.181.216.90:49299/rest/`,
   mode: 'cors',
 
   prepareHeaders: (headers, { getState }) => {
@@ -43,7 +43,7 @@ export const baseQueryWithReauth: BaseQueryFn<
       try {
         const refreshResult = await baseQuery(
           {
-            url: 'api/auth/refresh-token',
+            url: 'auth/refresh-token',
             method: 'POST',
             body: {
               refreshToken: localStorage.getItem('refresh-token'),
