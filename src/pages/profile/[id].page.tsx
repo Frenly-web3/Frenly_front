@@ -23,6 +23,7 @@ export default function ProfilePage() {
   // receipt.logs[0].topics[1]
   const { account, library } = useEthers()
   const [posts, setPosts] = useState<Array<any>>([])
+  const [isLoading, setIsLoading] = useState(false)
   const {
     query: { id },
   } = useRouter()
@@ -71,7 +72,7 @@ export default function ProfilePage() {
 
     const typedData = result?.data?.createFollowTypedData?.typedData
 
-    const signer = library?.getSigner();
+    const signer = library?.getSigner()
 
     // if (!typedData) return
     const signature = await signedTypeData(
@@ -108,7 +109,7 @@ export default function ProfilePage() {
 
     const typedData = result?.data?.createUnfollowTypedData?.typedData
 
-    const signer = library?.getSigner();
+    const signer = library?.getSigner()
 
     // if (!typedData) return
     const signature = await signedTypeData(
