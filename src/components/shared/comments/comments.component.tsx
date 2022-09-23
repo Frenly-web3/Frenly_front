@@ -25,7 +25,7 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
 
   async function commentHandler() {
     setIsLoading(true)
-    const res = await fetch('/rest/comment', {
+    const res = await fetch('/api/comment', {
       method: 'POST',
       body: JSON.stringify({ comment: commentValue, pubId }),
     })

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { Contract, ethers } from 'ethers'
 
 import { lensHubABI, lensHubContract } from '../../../contract/lens-hub.contract'
 import { signedTypeData, splitSignature } from '../post/create-post.utils'
@@ -18,8 +18,10 @@ export const createComment = async (
     collectModule: {
       revertCollectModule: true,
     },
+
     referenceModule: {
-      followerOnlyReferenceModule: false,
+      commentsRestricted: false,
+      mirrorsRestricted: false,
     },
   }
   try {
