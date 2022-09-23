@@ -232,8 +232,8 @@ export default function Event(props: IEventProperties): JSX.Element {
             },
           },
         })
-      }catch(err){
-        console.error(err);
+      }catch(error){
+        console.error(error);
       }
         setIsLikeRequest(false);
       }
