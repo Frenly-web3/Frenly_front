@@ -339,6 +339,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             <>from Smart contract&nbsp;</>
           )}
           <a
+            target="_blank"
             href={
               blockchainType === 'ETHEREUM'
                 ? `https://rinkeby.etherscan.io/address/${
@@ -349,6 +350,7 @@ export default function Event(props: IEventProperties): JSX.Element {
                   }`
             }
             className="text-main"
+            rel="noreferrer"
           >
             {from == '0x0000000000000000000000000000000000000000'
               ? contractAddress
@@ -400,12 +402,14 @@ export default function Event(props: IEventProperties): JSX.Element {
           )}
         >
           <a
+            target="_blank"
             href={
               blockchainType == 'ETHEREUM'
                 ? `https://rinkeby.etherscan.io/tx/${txHash}`
                 : `https://mumbai.polygonscan.com/tx/${txHash}`
             }
             className="text-sm text-main"
+            rel="noreferrer"
           >
             Check on {blockchainType === 'ETHEREUM' ? 'Etherscan' : 'Polygonscan'}
           </a>
