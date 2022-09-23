@@ -22,8 +22,8 @@ export const createComment = async (
       followerOnlyReferenceModule: false,
     },
   }
-
-  const result = await createCommentTypedData(createCommentRequest)
+  try {
+    const result = await createCommentTypedData(createCommentRequest)
   const { typedData } = result.data.createCommentTypedData
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value, signer)
@@ -51,6 +51,10 @@ export const createComment = async (
 
   await tx.wait(1)
   console.log(tx.hash)
+  } catch (error) {
+    console.error("Something went wrong", error);
+  }
+
   // 0x64464dc0de5aac614a82dfd946fc0e17105ff6ed177b7d677ddb88ec772c52d3
   // you can look at how to know when its been indexed here:
   //   - https://docs.lens.dev/docs/has-transaction-been-indexed
