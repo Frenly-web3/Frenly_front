@@ -24,35 +24,40 @@ export const createComment = async (
   }
   try {
     const result = await createCommentTypedData(createCommentRequest)
-  const { typedData } = result.data.createCommentTypedData
+    const { typedData } = result.data.createCommentTypedData
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value, signer)
-  const { v, r, s } = splitSignature(signature)
+    const signature = await signedTypeData(
+      typedData.domain,
+      typedData.types,
+      typedData.value,
+      signer
+    )
+    const { v, r, s } = splitSignature(signature)
 
-  const lensHub = new ethers.Contract(lensHubContract, lensHubABI, signer)
+    const lensHub = new ethers.Contract(lensHubContract, lensHubABI, signer)
 
-  const tx = await lensHub.commentWithSig({
-    profileId: typedData.value.profileId,
-    contentURI: typedData.value.contentURI,
-    profileIdPointed: typedData.value.profileIdPointed,
-    pubIdPointed: typedData.value.pubIdPointed,
-    referenceModuleData: typedData.value.referenceModuleData,
-    collectModule: typedData.value.collectModule,
-    collectModuleInitData: typedData.value.collectModuleInitData,
-    referenceModule: typedData.value.referenceModule,
-    referenceModuleInitData: typedData.value.referenceModuleInitData,
-    sig: {
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
-    },
-  })
+    const tx = await lensHub.commentWithSig({
+      profileId: typedData.value.profileId,
+      contentURI: typedData.value.contentURI,
+      profileIdPointed: typedData.value.profileIdPointed,
+      pubIdPointed: typedData.value.pubIdPointed,
+      referenceModuleData: typedData.value.referenceModuleData,
+      collectModule: typedData.value.collectModule,
+      collectModuleInitData: typedData.value.collectModuleInitData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleInitData: typedData.value.referenceModuleInitData,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
+    })
 
-  await tx.wait(1)
-  console.log(tx.hash)
+    await tx.wait(1)
+    console.log(tx.hash)
   } catch (error) {
-    console.error("Something went wrong", error);
+    console.error('Something went wrong', error)
   }
 
   // 0x64464dc0de5aac614a82dfd946fc0e17105ff6ed177b7d677ddb88ec772c52d3

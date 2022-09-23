@@ -1,27 +1,31 @@
 import { createComment } from '@store/lens/comment/create-comment'
 import { useEthers } from '@usedapp/core'
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 
 import { useLoaderContext } from '../contexts/loader-context'
 import Loader from '../loader/loader.component'
-import Comment, { IComment } from './comment/comment.component'
+import type { IComment } from './comment/comment.component'
+import Comment from './comment/comment.component'
 
-interface ICommentsProps{
-  comments:any
-  pubId:string | number,
-  profileId:string
+interface ICommentsProperties {
+  comments: any
+  pubId: string | number
+  profileId: string
+  refetchComment: () => void
 }
 
-const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
+const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsProperties) => {
   const [commentValue, setCommentValue] = useState('')
 
   const { isLoading, setIsLoading } = useLoaderContext()
 
   const { library } = useEthers()
 
+  console.log(comments)
+
   async function commentHandler() {
     setIsLoading(true)
-    const res = await fetch('/api/comment', {
+    const res = await fetch('/rest/comment', {
       method: 'POST',
       body: JSON.stringify({ comment: commentValue, pubId }),
     })
@@ -35,9 +39,8 @@ const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
     setIsLoading(true)
     await createComment(profileId, pubId, data.contentURI, signer)
     setIsLoading(false)
+    refetchComment()
   }
-
-
 
   return (
     <>
@@ -46,7 +49,7 @@ const Comments = ({ comments, pubId, profileId }: ICommentsProps) => {
       ) : (
         <div className="flex flex-col py-4 relative">
           <h4 className="text-xl font-bold mb-4">Comments</h4>
-          {comments?.data?.publications?.items?.map((comment: IComment) => (
+          {comments?.publications?.items?.map((comment: IComment) => (
             <Comment key={comment.id} {...comment} />
           ))}
           <div className="w-full pt-4 pb-4 flex">

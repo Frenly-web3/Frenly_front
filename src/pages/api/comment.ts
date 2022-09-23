@@ -6,7 +6,8 @@ import { Blob, NFTStorage } from 'nft.storage'
 import { v4 as uuidv4 } from 'uuid'
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEFFRERBMzZCZGExYjFlN2JkRDFjOGQxMmUxNzBlQ2M0RkI4QWFmNTYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MDM3MzM4MjQ0OCwibmFtZSI6IlRlc3QifQ.jx5bcyDN5YevIV4WLAN_Qosn6A9JMoUVqALBVtRmNvI"
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEFFRERBMzZCZGExYjFlN2JkRDFjOGQxMmUxNzBlQ2M0RkI4QWFmNTYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MDM3MzM4MjQ0OCwibmFtZSI6IlRlc3QifQ.jx5bcyDN5YevIV4WLAN_Qosn6A9JMoUVqALBVtRmNvI'
   const { comment, pubId } = JSON.parse(req.body)
 
   let contentURI = 'ipfs://'
