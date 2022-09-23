@@ -21,9 +21,11 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
 
   const { library } = useEthers()
 
+  console.log(comments)
+
   async function commentHandler() {
     setIsLoading(true)
-    const res = await fetch('/api/comment', {
+    const res = await fetch('/rest/comment', {
       method: 'POST',
       body: JSON.stringify({ comment: commentValue, pubId }),
     })
@@ -47,7 +49,7 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
       ) : (
         <div className="flex flex-col py-4 relative">
           <h4 className="text-xl font-bold mb-4">Comments</h4>
-          {comments?.data?.publications?.items?.map((comment: IComment) => (
+          {comments?.publications?.items?.map((comment: IComment) => (
             <Comment key={comment.id} {...comment} />
           ))}
           <div className="w-full pt-4 pb-4 flex">
