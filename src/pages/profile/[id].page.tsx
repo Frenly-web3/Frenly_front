@@ -72,12 +72,14 @@ export default function ProfilePage() {
 
     const typedData = result?.data?.createFollowTypedData?.typedData
 
+    const signer = library?.getSigner()
+
     // if (!typedData) return
     const signature = await signedTypeData(
       typedData.domain,
       typedData.types,
       typedData.value,
-      library
+      signer
     )
     const { v, r, s } = splitSignature(signature)
 
@@ -107,12 +109,14 @@ export default function ProfilePage() {
 
     const typedData = result?.data?.createUnfollowTypedData?.typedData
 
+    const signer = library?.getSigner()
+
     // if (!typedData) return
     const signature = await signedTypeData(
       typedData.domain,
       typedData.types,
       typedData.value,
-      library
+      signer
     )
     const { v, r, s } = splitSignature(signature)
 
