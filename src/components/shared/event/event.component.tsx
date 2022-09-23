@@ -156,9 +156,14 @@ export default function Event(props: IEventProperties): JSX.Element {
       })
       await bindContentIdWithLens({
         contentId: id.toString(),
-        lensId: `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-          receipt?.logs[0]?.topics[2]
-        ).toString(16)}`,
+        lensId:
+          Number(receipt?.logs[0]?.topics[2]).toString(16).length === 1
+            ? `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
+                receipt?.logs[0]?.topics[2]
+              ).toString(16)}`
+            : `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+                receipt?.logs[0]?.topics[2]
+              ).toString(16)}`,
       })
     }
     refetch()
