@@ -66,12 +66,13 @@ export default function FeedPage() {
         <section className="relative">
           {drafts?.data?.publications?.items.map((el: any, index: number) => {
             const { createdAt, collectModule, profile, metadata, id, stats } = el
-            console.log(metadata?.attributes[0].value)
+            console.log(metadata?.attributes)
 
             return (
               <Event
-                from={el.from}
-                to={'el.to'}
+                from={metadata?.attributes[4].value}
+                to={metadata?.attributes[3].value}
+                contractAddress={metadata?.attributes[1].value}
                 info={metadata.description}
                 image={dataFeeds.data.data[index].image}
                 key={index}
