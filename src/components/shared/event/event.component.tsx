@@ -1,5 +1,5 @@
+import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
 /* eslint-disable sonarjs/cognitive-complexity */
-import { useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
 import styles from '@components/shared/event/event.module.scss'
@@ -16,6 +16,7 @@ import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
 import { CREATE_MIRROR_TYPED_DATA } from '@store/lens/post/add-mirror.mutation'
 import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
+import { GET_POST_QUERY } from '@store/lens/post/get-post.query'
 import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
@@ -86,6 +87,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
+  const [isLikeRequest, setIsLikeRequest] = useState(false);
 
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     variables: {
@@ -95,10 +97,21 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
+  const {data:postData, refetch:refetchPost} = useQuery(GET_POST_QUERY, {
+    variables:{
+        request:{
+          publicationId:id
+        }
+    }
+  })
+
+  console.log('POST INFO', postData);
+  
+
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
   const [imageUrl, setImageUrl] = useState()
-  const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
+  const { data: publicationIsReact, refetch, } = useQuery(GET_REACTIONS, {
     variables: {
       request: {
         publicationIds: [id],
@@ -201,10 +214,15 @@ export default function Event(props: IEventProperties): JSX.Element {
   // }, [image])
 
   const likeHandler = async () => {
+    console.log('myProfileId', myProfileId); 
+    setIsLikeRequest(true)
     if (myProfileId) {
       console.log(id)
-
-      if (publicationIsReact.publications.items[0].reaction !== 'UPVOTE') {
+      console.log('REACTION BEFORE',publicationIsReact.publications.items[0].reaction);
+      
+      if (publicationIsReact.publications.items[0].reaction == null) {
+        try{
+        setIsLikeRequest(true)
         await likePostToLens({
           variables: {
             request: {
@@ -214,7 +232,14 @@ export default function Event(props: IEventProperties): JSX.Element {
             },
           },
         })
-      } else {
+      }catch(error){
+        console.error(error);
+      }
+        setIsLikeRequest(false);
+      }
+      
+      if(publicationIsReact.publications.items[0].reaction == "UPVOTE"){
+        setIsLikeRequest(true)
         cancelLikePostToLens({
           variables: {
             request: {
@@ -224,12 +249,16 @@ export default function Event(props: IEventProperties): JSX.Element {
             },
           },
         })
+        setIsLikeRequest(false)
       }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && refetchInfo()
-    refetch()
+    refetchInfo && await refetchInfo()
+    await refetch()
+    await refetchPost()
+    setIsLikeRequest(false);
+    console.log('REACTION AFTER',publicationIsReact.publications.items[0].reaction);
   }
 
   const mirrorHandler = async () => {
@@ -307,6 +336,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     return `${message} `
   }
+  
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
@@ -415,9 +445,9 @@ export default function Event(props: IEventProperties): JSX.Element {
           </a>
           {isAddCap === false && (
             <div className="flex items-center">
-              <button onClick={likeHandler} className="flex items-center justify-center py-1 px-2">
+              <button disabled={isLikeRequest} onClick={likeHandler} className={`flex items-center justify-center py-1 px-2 ${isLikeRequest ? 'bg-gray':''}`}>
                 <img src="/assets/icons/heart.svg" alt="like" />
-                <span className="text-xs font-semibold text-gray-darker ml-1">{totalUpvotes}</span>
+                <span className="text-xs font-semibold text-gray-darker ml-1">{postData?.publication?.stats.totalUpvotes}</span>
               </button>
               <button
                 onClick={() => setIsCommentsOpen(!isCommentsOpen)}
