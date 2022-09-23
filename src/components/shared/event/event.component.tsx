@@ -123,7 +123,9 @@ export default function Event(props: IEventProperties): JSX.Element {
               profileId: myProfileId,
               // @ts-ignore
               contentURI: publishedPost.data.data,
-              collectModule: null,
+              collectModule: {
+                revertCollectModule: true,
+              },
               referenceModule: {
                 followerOnlyReferenceModule: false,
               },
@@ -137,7 +139,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           typedData.domain,
           typedData.types,
           typedData.value,
-          library
+          library?.getSigner()
         )
 
         const { v, r, s } = splitSignature(signature)
