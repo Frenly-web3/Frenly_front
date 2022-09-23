@@ -129,11 +129,13 @@ export default function Event(props: IEventProperties): JSX.Element {
       console.log(typeD)
       const typedData = typeD?.data?.createPostTypedData?.typedData
 
+      const signer = library?.getSigner();
+
       const signature = await signedTypeData(
         typedData.domain,
         typedData.types,
         typedData.value,
-        library
+        signer
       )
 
       const { v, r, s } = splitSignature(signature)
@@ -226,12 +228,14 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
+    const signer = library?.getSigner();
+
     // if (!typedData) return
     const signature = await signedTypeData(
       typedData.domain,
       typedData.types,
       typedData.value,
-      library
+      signer
     )
 
     const { v, r, s } = splitSignature(signature)
