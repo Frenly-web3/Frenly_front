@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
@@ -29,6 +30,7 @@ export interface IEventProperties {
   isAddCap?: boolean
   image: string
   from: string
+  contractAddress: string
   date: string
   name?: string
   to: string
@@ -68,6 +70,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     profileId,
     blockchainType,
     txHash,
+    contractAddress,
   } = props
 
   const { account, library } = useEthers()
@@ -325,9 +328,33 @@ export default function Event(props: IEventProperties): JSX.Element {
         )}
 
         <h4 className="text-base font-semibold">
-          {renderMessage()} {messageType == 'RECEIVE' ? <>from&nbsp;</> : <>to&nbsp;</>}
-          <a href="#" className="text-main">
-            {messageType == 'RECEIVE' ? from : to}
+          {renderMessage()}{' '}
+          {from !== '0x0000000000000000000000000000000000000000' ? (
+            messageType == 'RECEIVE' ? (
+              <>from&nbsp;</>
+            ) : (
+              <>to&nbsp;</>
+            )
+          ) : (
+            <>from Smart contract&nbsp;</>
+          )}
+          <a
+            href={
+              blockchainType === 'ETHEREUM'
+                ? `https://rinkeby.etherscan.io/address/${
+                    from == '0x0000000000000000000000000000000000000000' ? contractAddress : from
+                  }`
+                : `https://polygonscan.com/address/${
+                    from == '0x0000000000000000000000000000000000000000' ? contractAddress : from
+                  }`
+            }
+            className="text-main"
+          >
+            {from == '0x0000000000000000000000000000000000000000'
+              ? contractAddress
+              : messageType == 'RECEIVE'
+              ? from
+              : to}
           </a>
         </h4>
         <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>

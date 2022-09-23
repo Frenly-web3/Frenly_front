@@ -173,6 +173,7 @@ export default function ProfilePage() {
                     profileId={id as string}
                     txHash={el.transactionHash}
                     blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
+                    contractAddress={el.contractAddress}
                   />
                 )
               })
@@ -200,6 +201,7 @@ export default function ProfilePage() {
                     refetchInfo={refetch}
                     txHash={metadata.attributes[8].value}
                     blockchainType={metadata.attributes[7].value}
+                    contractAddress={metadata.attributes[1].value}
                   />
                 )
               })}
