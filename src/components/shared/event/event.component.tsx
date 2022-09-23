@@ -1,6 +1,5 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
 /* eslint-disable sonarjs/cognitive-complexity */
-import { useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
 import styles from '@components/shared/event/event.module.scss'
