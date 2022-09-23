@@ -42,7 +42,7 @@ export default function FeedPage() {
       reloadProfile(true)
     }
   }, [account])
-  console.log(drafts)
+  console.log("DRAFTS", drafts)
   return (
     <>
       <Meta title="Feed" description="Your Frenly Feed" />
