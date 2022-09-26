@@ -15,6 +15,7 @@ services:
       - "custom.label=${COMPOSE_PROJECT_NAME}"
       - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
       - "traefik.http.routers.frontend.entrypoints=web"
+      - "io.portainer.accesscontrol.teams=devs,managers"
     networks:
       - default
 
