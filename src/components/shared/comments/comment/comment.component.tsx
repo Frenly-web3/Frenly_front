@@ -15,7 +15,7 @@ const Comment = ({ metadata, profile, createdAt }: IComment) => {
   return (
     <figure className="flex items-center mb-2">
       <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
-        <Image src="/assets/images/temp-avatar.jpg" alt={profile.handle} width={24} height={24} />
+        <Image src="/assets/images/temp-avatar.png" alt={profile.handle} width={24} height={24} />
       </div>
 
       <figcaption className="w-full border-b-[1px] border-border-color pb-4">

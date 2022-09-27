@@ -87,7 +87,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
-  const [isLikeRequest, setIsLikeRequest] = useState(false);
+  const [isLikeRequest, setIsLikeRequest] = useState(false)
 
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     variables: {
@@ -97,21 +97,20 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  const {data:postData, refetch:refetchPost} = useQuery(GET_POST_QUERY, {
-    variables:{
-        request:{
-          publicationId:id
-        }
-    }
+  const { data: postData, refetch: refetchPost } = useQuery(GET_POST_QUERY, {
+    variables: {
+      request: {
+        publicationId: id,
+      },
+    },
   })
 
-  console.log('POST INFO', postData);
-  
+  console.log('POST INFO', postData)
 
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
   const [imageUrl, setImageUrl] = useState()
-  const { data: publicationIsReact, refetch, } = useQuery(GET_REACTIONS, {
+  const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
     variables: {
       request: {
         publicationIds: [id],
@@ -214,31 +213,31 @@ export default function Event(props: IEventProperties): JSX.Element {
   // }, [image])
 
   const likeHandler = async () => {
-    console.log('myProfileId', myProfileId); 
+    console.log('myProfileId', myProfileId)
     setIsLikeRequest(true)
     if (myProfileId) {
       console.log(id)
-      console.log('REACTION BEFORE',publicationIsReact.publications.items[0].reaction);
-      
+      console.log('REACTION BEFORE', publicationIsReact.publications.items[0].reaction)
+
       if (publicationIsReact.publications.items[0].reaction == null) {
-        try{
-        setIsLikeRequest(true)
-        await likePostToLens({
-          variables: {
-            request: {
-              profileId: myProfileId,
-              reaction: 'UPVOTE',
-              publicationId: id,
+        try {
+          setIsLikeRequest(true)
+          await likePostToLens({
+            variables: {
+              request: {
+                profileId: myProfileId,
+                reaction: 'UPVOTE',
+                publicationId: id,
+              },
             },
-          },
-        })
-      }catch(error){
-        console.error(error);
+          })
+        } catch (error) {
+          console.error(error)
+        }
+        setIsLikeRequest(false)
       }
-        setIsLikeRequest(false);
-      }
-      
-      if(publicationIsReact.publications.items[0].reaction == "UPVOTE"){
+
+      if (publicationIsReact.publications.items[0].reaction == 'UPVOTE') {
         setIsLikeRequest(true)
         cancelLikePostToLens({
           variables: {
@@ -254,11 +253,11 @@ export default function Event(props: IEventProperties): JSX.Element {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && await refetchInfo()
+    refetchInfo && (await refetchInfo())
     await refetch()
     await refetchPost()
-    setIsLikeRequest(false);
-    console.log('REACTION AFTER',publicationIsReact.publications.items[0].reaction);
+    setIsLikeRequest(false)
+    console.log('REACTION AFTER', publicationIsReact.publications.items[0].reaction)
   }
 
   const mirrorHandler = async () => {
@@ -281,7 +280,7 @@ export default function Event(props: IEventProperties): JSX.Element {
       typedData.domain,
       typedData.types,
       typedData.value,
-      library
+      signer
     )
 
     const { v, r, s } = splitSignature(signature)
@@ -336,7 +335,6 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     return `${message} `
   }
-  
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
@@ -445,9 +443,17 @@ export default function Event(props: IEventProperties): JSX.Element {
           </a>
           {isAddCap === false && (
             <div className="flex items-center">
-              <button disabled={isLikeRequest} onClick={likeHandler} className={`flex items-center justify-center py-1 px-2 ${isLikeRequest ? 'bg-gray':''}`}>
+              <button
+                disabled={isLikeRequest}
+                onClick={likeHandler}
+                className={`flex items-center justify-center py-1 px-2 ${
+                  isLikeRequest ? 'bg-gray' : ''
+                }`}
+              >
                 <img src="/assets/icons/heart.svg" alt="like" />
-                <span className="text-xs font-semibold text-gray-darker ml-1">{postData?.publication?.stats.totalUpvotes}</span>
+                <span className="text-xs font-semibold text-gray-darker ml-1">
+                  {postData?.publication?.stats.totalUpvotes}
+                </span>
               </button>
               <button
                 onClick={() => setIsCommentsOpen(!isCommentsOpen)}
@@ -473,7 +479,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             refetchComment={refetchComments}
             comments={comments}
             pubId={id}
-            profileId={profileId}
+            profileId={myProfileId}
           />
         )}
       </div>
