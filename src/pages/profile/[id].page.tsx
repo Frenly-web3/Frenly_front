@@ -3,6 +3,7 @@ import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
+import Loader from '@components/shared/loader/loader.component'
 import { useGetUnpublishedContentQuery } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
@@ -151,60 +152,64 @@ export default function ProfilePage() {
         </div>
 
         <section>
-          {id === accountId
-            ? posts?.map((element, index) => {
-                const { content: el, id: postId, creationDate } = element
-                console.log(element)
+          {!accountId ? (
+            <Loader show={true} />
+          ) : id === accountId ? (
+            posts?.map((element, index) => {
+              const { content: el, id: postId, creationDate } = element
+              console.log(element)
 
-                return (
-                  <Event
-                    isAddCap
-                    from={el.fromAddress}
-                    to={el.toAddress}
-                    info={el.info}
-                    date={creationDate}
-                    image={el.image}
-                    key={index}
-                    itemType="nft"
-                    messageType={el.transferType}
-                    id={postId}
-                    totalUpvotes={0}
-                    totalMirror={0}
-                    profileId={id as string}
-                    txHash={el.transactionHash}
-                    blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
-                    contractAddress={el.contractAddress}
-                  />
-                )
-              })
-            : feeds?.publications.items.map((el: any, index: number) => {
-                const { createdAt, collectModule, profile, metadata, id: postId, stats } = el
-                console.log(el)
+              return (
+                <Event
+                  isAddCap
+                  from={el.fromAddress}
+                  to={el.toAddress}
+                  info={el.info}
+                  date={creationDate}
+                  image={el.image}
+                  key={index}
+                  itemType="nft"
+                  messageType={el.transferType}
+                  id={postId}
+                  totalUpvotes={0}
+                  totalMirror={0}
+                  profileId={id as string}
+                  txHash={el.transactionHash}
+                  blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
+                  contractAddress={el.contractAddress}
+                />
+              )
+            })
+          ) : (
+            feeds?.publications.items.map((el: any, index: number) => {
+              const { createdAt, collectModule, profile, metadata, id: postId, stats } = el
+              console.log(el)
 
-                return (
-                  <Event
-                    from={metadata.attributes[4].value}
-                    to={metadata.attributes[3].value}
-                    info={metadata.description}
-                    image={metadata.attributes[0].value}
-                    key={index}
-                    name={profile.handle}
-                    date={createdAt}
-                    showDate={false}
-                    showAuthor
-                    messageType={metadata.attributes[5].value}
-                    itemType="nft"
-                    totalUpvotes={stats.totalUpvotes}
-                    totalMirror={stats.totalAmountOfMirrors}
-                    id={postId}
-                    profileId={profile.id}
-                    refetchInfo={refetch}
-                    txHash={metadata.attributes[8].value}
-                    blockchainType={metadata.attributes[7].value}
-                    contractAddress={metadata.attributes[1].value}
-                  />
-                )
-              })}
+              return (
+                <Event
+                  from={metadata.attributes[4].value}
+                  to={metadata.attributes[3].value}
+                  info={metadata.description}
+                  image={metadata.attributes[0].value}
+                  key={index}
+                  name={profile.handle}
+                  date={createdAt}
+                  showDate={false}
+                  showAuthor
+                  messageType={metadata.attributes[5].value}
+                  itemType="nft"
+                  totalUpvotes={stats.totalUpvotes}
+                  totalMirror={stats.totalAmountOfMirrors}
+                  id={postId}
+                  profileId={profile.id}
+                  refetchInfo={refetch}
+                  txHash={metadata.attributes[8].value}
+                  blockchainType={metadata.attributes[7].value}
+                  contractAddress={metadata.attributes[1].value}
+                />
+              )
+            })
+          )}
         </section>
       </main>
 

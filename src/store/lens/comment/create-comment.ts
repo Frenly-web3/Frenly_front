@@ -10,6 +10,8 @@ export const createComment = async (
   contentURI: string,
   signer: any
 ) => {
+  console.log(profileId, pubId, contentURI, signer)
+
   // hard coded to make the code example clear
   const createCommentRequest = {
     profileId,
@@ -18,11 +20,14 @@ export const createComment = async (
     collectModule: {
       revertCollectModule: true,
     },
-
     referenceModule: {
-      commentsRestricted: false,
-      mirrorsRestricted: false,
+      followerOnlyReferenceModule: false,
     },
+    // referenceModule: {
+    //   commentsRestricted: false,
+    //   mirrorsRestricted: false,
+    //   degreesOfSeparation: 4,
+    // },
   }
   try {
     const result = await createCommentTypedData(createCommentRequest)
