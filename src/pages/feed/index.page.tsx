@@ -24,7 +24,7 @@ export default function FeedPage() {
     skip: !isReloadProfile,
   })
 
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 10, skip: 1 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 10, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
