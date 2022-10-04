@@ -101,7 +101,7 @@ export default function AuthPage() {
 
   return (
     <>
-      <Meta title="Onboarding" description="Log In Page" />
+      <Meta title="Frenly" description="Log In Page" />
 
       <div className="container flex flex-col items-center h-screen">
         <div className="flex flex-1 flex-col items-center justify-center">
