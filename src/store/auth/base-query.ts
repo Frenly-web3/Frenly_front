@@ -7,7 +7,7 @@ import { Mutex } from 'async-mutex'
 import { logout } from './auth.slice'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: ` http://135.181.216.90:49299/rest/`,
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   mode: 'cors',
 
   prepareHeaders: (headers, { getState }) => {
@@ -35,7 +35,7 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (arguments_: string | FetchArgs | never, api: BaseQueryApi, extraOptions: {}) => {
   await mutex.waitForUnlock()
   let result = await baseQuery(arguments_, api, extraOptions)
-
+  console.log(process.env.NEXT_PUBLIC_API_URL)
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()
