@@ -29,7 +29,8 @@ export default function ProfilePage() {
     query: { id },
   } = useRouter()
   const accountId = useGetWalletProfileId(account || '')
-  const { data: postsData } = useGetUnpublishedContentQuery(null)
+  const { data: postsData, refetch: refetchUnpublishedContent } =
+    useGetUnpublishedContentQuery(null)
   const { data: dataProfile, refetch: refetchProfile } = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
       request: {
@@ -55,8 +56,6 @@ export default function ProfilePage() {
   useEffect(() => {
     setPosts(postsData?.data)
   }, [postsData])
-
-  console.log(postsData)
 
   const followHandler = async () => {
     const result = await followToUser({
@@ -131,6 +130,10 @@ export default function ProfilePage() {
     refetchProfile()
   }
 
+  const refetchInfo = async () => {
+    await refetchUnpublishedContent()
+  }
+
   return (
     <>
       <Meta title={'Profile'} description="Your profile" />
@@ -172,6 +175,7 @@ export default function ProfilePage() {
                   id={postId}
                   totalUpvotes={0}
                   totalMirror={0}
+                  refetchInfo={refetchInfo}
                   profileId={id as string}
                   txHash={el.transactionHash}
                   blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
@@ -191,7 +195,6 @@ export default function ProfilePage() {
                 stats,
                 mirrorOf,
               } = el
-              console.log(metadata.attributes)
 
               return (
                 <Event

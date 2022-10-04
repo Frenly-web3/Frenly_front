@@ -37,7 +37,7 @@ export default function FeedPage() {
   })
 
   const refetchInfo = async () => {
-    await refetchFeeds()
+    refetchFeeds()
     await drafts.refetch()
   }
 
@@ -46,7 +46,7 @@ export default function FeedPage() {
       reloadProfile(true)
     }
   }, [account])
-  console.log('DRAFTS', drafts?.data?.publications?.items, dataFeeds?.data?.data)
+
   return (
     <>
       <Meta title="Frenly Feed" description="Your Frenly Feed" />
@@ -75,11 +75,9 @@ export default function FeedPage() {
               let index
               dataFeeds?.data?.forEach((element: any, _index: number) => {
                 if (element.lensId == id) {
-                  console.log(element.lensId, id, dataFeeds?.data[_index])
                   index = _index
                 }
               })
-              console.log(index)
 
               return (
                 <Event

@@ -110,8 +110,6 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log(isMirror, id)
-
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
   const [imageUrl, setImageUrl] = useState()
@@ -137,8 +135,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           contentId: id.toString(),
         })
         // @ts-ignore
-        // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
-        console.log(publishedPost, myProfileId)
+
         const typeD = await addPostToLens({
           variables: {
             request: {
@@ -154,7 +151,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             },
           },
         })
-        console.log(typeD)
+
         const typedData = typeD?.data?.createPostTypedData?.typedData
 
         const signature = await signedTypeData(
@@ -206,6 +203,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     if (id) {
       await removeContent({ contentId: id.toString() })
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && (await refetchInfo())
   }
 
   // useEffect(() => {
