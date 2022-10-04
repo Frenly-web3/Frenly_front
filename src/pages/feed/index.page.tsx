@@ -10,7 +10,7 @@ import {
 } from '@store/auth/auth.api'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { useEthers } from '@usedapp/core'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 import styles from './posts.module.scss'
@@ -24,28 +24,32 @@ export default function FeedPage() {
     skip: !isReloadProfile,
   })
 
-  const dataFeeds = useGetFeedQuery({ take: 10, skip: 0 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 10, skip: 1 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
-        publicationIds: dataFeeds?.data?.data.map((el: any) => el.lensId),
+        publicationIds: dataFeeds?.data.map((el: any) => el.lensId),
         // profileId: accountId,
         // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
         // limit: 10,
       },
     },
   })
-  console.log(dataFeeds)
+
+  const refetchInfo = async () => {
+    await refetchFeeds()
+    await drafts.refetch()
+  }
 
   useEffect(() => {
     if (account) {
       reloadProfile(true)
     }
   }, [account])
-  console.log("DRAFTS", drafts)
+  console.log('DRAFTS', drafts?.data?.publications?.items, dataFeeds?.data?.data)
   return (
     <>
-      <Meta title="Feed" description="Your Frenly Feed" />
+      <Meta title="Frenly Feed" description="Your Frenly Feed" />
 
       <Header title="Frenly Feed" showAddPost accountId={accountId} />
 
@@ -64,34 +68,45 @@ export default function FeedPage() {
         {/* <h3 className={styles.postsTitle}>Posts</h3> */}
 
         <section className="relative">
-          {drafts?.data?.publications?.items.map((el: any, index: number) => {
-            const { createdAt, collectModule, profile, metadata, id, stats } = el
-            console.log(metadata?.attributes)
+          {dataFeeds &&
+            drafts?.data?.publications?.items.map((el: any) => {
+              const { createdAt, collectModule, profile, metadata, id, stats, mirrorOf } = el
 
-            return (
-              <Event
-                from={metadata?.attributes[4].value}
-                to={metadata?.attributes[3].value}
-                contractAddress={metadata?.attributes[1].value}
-                info={metadata.description}
-                image={dataFeeds.data.data[index].image}
-                key={index}
-                name={profile.handle}
-                date={createdAt}
-                showDate={false}
-                showAuthor
-                messageType={metadata.attributes[5].value}
-                itemType="nft"
-                totalUpvotes={stats.totalUpvotes}
-                totalMirror={stats.totalAmountOfMirrors}
-                id={id}
-                profileId={profile.id}
-                refetchInfo={drafts.refetch}
-                txHash={metadata.attributes[8].value}
-                blockchainType={metadata.attributes[7].value}
-              />
-            )
-          })}
+              let index
+              dataFeeds?.data?.forEach((element: any, _index: number) => {
+                if (element.lensId == id) {
+                  console.log(element.lensId, id, dataFeeds?.data[_index])
+                  index = _index
+                }
+              })
+              console.log(index)
+
+              return (
+                <Event
+                  from={metadata?.attributes[4].value}
+                  to={metadata?.attributes[3].value}
+                  contractAddress={metadata?.attributes[1].value}
+                  info={metadata.description}
+                  image={dataFeeds?.data[Number(index)]?.image}
+                  key={id}
+                  name={profile.handle}
+                  date={createdAt}
+                  showDate={false}
+                  showAuthor
+                  messageType={metadata.attributes[5].value}
+                  itemType="nft"
+                  totalUpvotes={stats.totalUpvotes}
+                  totalMirror={stats.totalAmountOfMirrors}
+                  id={id}
+                  profileId={profile.id}
+                  refetchInfo={refetchInfo}
+                  txHash={metadata.attributes[8].value}
+                  blockchainType={metadata.attributes[7].value}
+                  isMirror={dataFeeds?.data[Number(index)]?.isMirror}
+                  handleMirror={mirrorOf?.profile.handle}
+                />
+              )
+            })}
         </section>
       </main>
 

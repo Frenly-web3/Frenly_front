@@ -6,6 +6,7 @@ import styles from '@components/shared/event/event.module.scss'
 import {
   useBindWithLensIdMutation,
   useGetUnpublishedContentQuery,
+  useMirrorPostMutation,
   usePublishContentMutation,
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
@@ -45,10 +46,12 @@ export interface IEventProperties {
   id: number | string
   totalUpvotes?: number
   totalMirror: number
-  refetchInfo?: () => void
+  refetchInfo?: () => Promise<any>
   profileId: string
   blockchainType?: 'ETHEREUM' | 'POLYGON'
   txHash: string
+  isMirror: boolean
+  handleMirror?: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -72,6 +75,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     blockchainType,
     txHash,
     contractAddress,
+    isMirror,
+    handleMirror,
   } = props
 
   const { account, library } = useEthers()
@@ -105,7 +110,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log('POST INFO', postData)
+  console.log(isMirror, id)
 
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
@@ -121,6 +126,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
     skip: typeof id == 'number',
   })
+
+  const [mirrorPost] = useMirrorPostMutation()
 
   const addPost = async () => {
     setIsLoading(true)
@@ -190,7 +197,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         setIsLoading(false)
         refetch()
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        refetchInfo && refetchInfo()
+        refetchInfo && (await refetchInfo())
       }
     }
   }
@@ -270,6 +277,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         },
       },
     })
+    console.log(typeD)
 
     const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
@@ -299,8 +307,24 @@ export default function Event(props: IEventProperties): JSX.Element {
         deadline: typedData.value.deadline,
       },
     })
+
+    console.log(tx?.logs)
+
+    const newLensId =
+      Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
+        ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
+            tx?.logs[0]?.topics[2]
+          ).toString(16)}`
+        : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+            tx?.logs[0]?.topics[2]
+          ).toString(16)}`
+
+    console.log('ids', id, newLensId)
+
+    await mirrorPost({ lensId: id as string, newLensId })
+
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && refetchInfo()
+    refetchInfo && (await refetchInfo())
   }
 
   const renderMessage = () => {
@@ -345,6 +369,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           name={name || ''}
           profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
+          fromMirror={isMirror ? handleMirror : undefined}
         />
       )}
 

@@ -133,7 +133,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      <Meta title="Profile" description="Your profile" />
+      <Meta title={'Profile'} description="Your profile" />
 
       <Header
         title="Profile"
@@ -157,7 +157,6 @@ export default function ProfilePage() {
           ) : id === accountId ? (
             posts?.map((element, index) => {
               const { content: el, id: postId, creationDate } = element
-              console.log(element)
 
               return (
                 <Event
@@ -177,13 +176,22 @@ export default function ProfilePage() {
                   txHash={el.transactionHash}
                   blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
                   contractAddress={el.contractAddress}
+                  isMirror={true}
                 />
               )
             })
           ) : (
             feeds?.publications.items.map((el: any, index: number) => {
-              const { createdAt, collectModule, profile, metadata, id: postId, stats } = el
-              console.log(el)
+              const {
+                createdAt,
+                collectModule,
+                profile,
+                metadata,
+                id: postId,
+                stats,
+                mirrorOf,
+              } = el
+              console.log(metadata.attributes)
 
               return (
                 <Event
@@ -206,6 +214,8 @@ export default function ProfilePage() {
                   txHash={metadata.attributes[8].value}
                   blockchainType={metadata.attributes[7].value}
                   contractAddress={metadata.attributes[1].value}
+                  isMirror={!!mirrorOf}
+                  handleMirror={mirrorOf?.profile?.handle}
                 />
               )
             })
