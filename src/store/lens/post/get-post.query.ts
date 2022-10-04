@@ -1,22 +1,22 @@
-import { client } from './../../../pages/_app.page';
-
 // this is showing you how you use it with react for example
 // if your using node or something else you can import using
 // @apollo/client/core!
 import { gql } from '@apollo/client'
 
+import { client } from '../../../pages/_app.page'
+
 export const GET_POST_QUERY = gql`
-  query($request: PublicationQueryRequest!) {
+  query ($request: PublicationQueryRequest!) {
     publication(request: $request) {
-        __typename 
-        ... on Post {
-          ...PostFields
-        }
-        ... on Comment {
-          ...CommentFields
-        }
-        ... on Mirror {
-          ...MirrorFields
+      __typename
+      ... on Post {
+        ...PostFields
+      }
+      ... on Comment {
+        ...CommentFields
+      }
+      ... on Mirror {
+        ...MirrorFields
       }
     }
   }
@@ -36,7 +36,7 @@ export const GET_POST_QUERY = gql`
       key
       value
     }
-        isFollowedByMe
+    isFollowedByMe
     isFollowing(who: null)
     followNftAddress
     metadata
@@ -96,15 +96,15 @@ export const GET_POST_QUERY = gql`
         recipient
       }
       ... on ProfileFollowModuleSettings {
-       type
+        type
       }
       ... on RevertFollowModuleSettings {
-       type
+        type
       }
     }
   }
 
-  fragment PublicationStatsFields on PublicationStats { 
+  fragment PublicationStatsFields on PublicationStats {
     totalAmountOfMirrors
     totalAmountOfCollects
     totalAmountOfComments
@@ -137,9 +137,9 @@ export const GET_POST_QUERY = gql`
   fragment CollectModuleFields on CollectModule {
     __typename
     ... on FreeCollectModuleSettings {
-        type
-        followerOnly
-        contractAddress
+      type
+      followerOnly
+      contractAddress
     }
     ... on FeeCollectModuleSettings {
       type
@@ -215,9 +215,9 @@ export const GET_POST_QUERY = gql`
       }
     }
     appId
-        hidden
-        reaction(request: null)
-        mirrors(by: null)
+    hidden
+    reaction(request: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
@@ -242,20 +242,20 @@ export const GET_POST_QUERY = gql`
       }
     }
     appId
-        hidden
-        reaction(request: null)
+    hidden
+    reaction(request: null)
     hasCollectedByMe
   }
 
   fragment MirrorFields on Mirror {
     ...MirrorBaseFields
     mirrorOf {
-     ... on Post {
-        ...PostFields          
-     }
-     ... on Comment {
-        ...CommentFields          
-     }
+      ... on Post {
+        ...PostFields
+      }
+      ... on Comment {
+        ...CommentFields
+      }
     }
   }
 
@@ -280,9 +280,9 @@ export const GET_POST_QUERY = gql`
       }
     }
     appId
-        hidden
-        reaction(request: null)
-        mirrors(by: null)
+    hidden
+    reaction(request: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
@@ -296,10 +296,10 @@ export const GET_POST_QUERY = gql`
         ...MirrorBaseFields
         mirrorOf {
           ... on Post {
-             ...PostFields          
+            ...PostFields
           }
           ... on Comment {
-             ...CommentMirrorOfFields        
+            ...CommentMirrorOfFields
           }
         }
       }
@@ -313,7 +313,7 @@ export const GET_POST_QUERY = gql`
         ...PostFields
       }
       ... on Mirror {
-         ...MirrorBaseFields
+        ...MirrorBaseFields
       }
     }
   }

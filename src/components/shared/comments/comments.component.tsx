@@ -11,7 +11,7 @@ interface ICommentsProperties {
   comments: any
   pubId: string | number
   profileId: string
-  refetchComment:any
+  refetchComment: any
 }
 
 const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsProperties) => {
