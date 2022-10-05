@@ -5,7 +5,7 @@ pipeline {
     REGISTRY_HOST_REMOTE = credentials('docker-registry-domain')
     JENKINS_SERVER = credentials('jenkins-server')
     GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1').toLowerCase().trim()
-    SLACK_CHANNEL = 'C042KE1SV0A'
+    SLACK_CHANNEL = ''
   }
 
   stages {
@@ -69,7 +69,7 @@ pipeline {
                 LOKI = credentials('LOKI')
                 DOCKER = credentials('DOCKER')
                 SSH_PROFILE = ''
-                COMPOSE_PROJECT_NAME = ''
+                COMPOSE_PROJECT_NAME = 'frenly'
                 FOLDER = 'frontend'
                 DOMAIN = ''
                 PRODUCTION_URL = ''
@@ -123,7 +123,7 @@ pipeline {
           }
 
           environment {
-            COMPOSE_PROJECT_NAME = 'socialfi'
+            COMPOSE_PROJECT_NAME = 'frenly'
             ENV_FILE = '.development.env'
           }
 
