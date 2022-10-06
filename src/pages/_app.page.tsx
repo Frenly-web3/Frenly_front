@@ -23,7 +23,7 @@ const config: Config = {
   autoConnect: true,
 }
 
-const httpLink = new HttpLink({ uri: 'https://api-mumbai.lens.dev/' })
+const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_LENS_URL })
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 const authLink = new ApolloLink((operation, forward) => {
@@ -34,7 +34,7 @@ const authLink = new ApolloLink((operation, forward) => {
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
-      'x-access-token': token !== undefined ? `Bearer ${token}` : '',
+      'x-access-token': token !== undefined || token !== null ? `Bearer ${token}` : '',
     },
   })
 
