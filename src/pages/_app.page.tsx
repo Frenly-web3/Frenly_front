@@ -43,7 +43,7 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 export const client = new ApolloClient({
-  uri: 'https://api-mumbai.lens.dev/',
+  uri: process.env.NEXT_PUBLIC_LENS_URL,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 })
