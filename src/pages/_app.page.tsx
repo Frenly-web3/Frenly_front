@@ -29,12 +29,14 @@ const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_LENS_URL })
 const authLink = new ApolloLink((operation, forward) => {
   // Retrieve the authorization token from local storage.
   // if your using node etc you have to handle your auth different
-  const token = localStorage.getItem('auth_token')
-
+  let token
+  if (typeof window !== 'undefined') {
+    token = window.localStorage.getItem('auth_token')
+  }
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
-      'x-access-token': token !== undefined || token !== null ? `Bearer ${token}` : '',
+      'x-access-token': token ? `Bearer ${token}` : '',
     },
   })
 
