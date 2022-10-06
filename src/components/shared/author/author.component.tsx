@@ -7,10 +7,11 @@ interface IAuthorProperties {
   name: string
   date: string
   profileId: string
+  fromMirror?: string
 }
 
 export default function Author(props: IAuthorProperties) {
-  const { avatar, name, date, profileId } = props
+  const { avatar, name, date, profileId, fromMirror } = props
   const router = useRouter()
   return (
     <figure className="flex items-center">
@@ -23,6 +24,11 @@ export default function Author(props: IAuthorProperties) {
 
       <figcaption>
         <div className="text-base font-semibold">{name}</div>
+        {fromMirror !== undefined && (
+          <div className="text-base font-normal">
+            🪞 mirrored from <span className="font-bold">{fromMirror}</span>
+          </div>
+        )}
         <div className="text-base font-normal text-gray">{date}</div>
       </figcaption>
     </figure>

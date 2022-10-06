@@ -6,6 +6,7 @@ import styles from '@components/shared/event/event.module.scss'
 import {
   useBindWithLensIdMutation,
   useGetUnpublishedContentQuery,
+  useMirrorPostMutation,
   usePublishContentMutation,
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
@@ -45,10 +46,12 @@ export interface IEventProperties {
   id: number | string
   totalUpvotes?: number
   totalMirror: number
-  refetchInfo?: () => void
+  refetchInfo?: () => Promise<any>
   profileId: string
   blockchainType?: 'ETHEREUM' | 'POLYGON'
   txHash: string
+  isMirror: boolean
+  handleMirror?: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -72,6 +75,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     blockchainType,
     txHash,
     contractAddress,
+    isMirror,
+    handleMirror,
   } = props
 
   const { account, library } = useEthers()
@@ -105,8 +110,6 @@ export default function Event(props: IEventProperties): JSX.Element {
     },
   })
 
-  console.log('POST INFO', postData)
-
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
   const [imageUrl, setImageUrl] = useState()
@@ -122,6 +125,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     skip: typeof id == 'number',
   })
 
+  const [mirrorPost] = useMirrorPostMutation()
+
   const addPost = async () => {
     setIsLoading(true)
     if (id) {
@@ -130,8 +135,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           contentId: id.toString(),
         })
         // @ts-ignore
-        // https://ipfs.io/ipfs/bafkreihis6blexvb3h2jrpxlrgfdb42xke3cyr7aq3zkv76nfyc6h65v4a
-        console.log(publishedPost, myProfileId)
+
         const typeD = await addPostToLens({
           variables: {
             request: {
@@ -147,7 +151,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             },
           },
         })
-        console.log(typeD)
+
         const typedData = typeD?.data?.createPostTypedData?.typedData
 
         const signature = await signedTypeData(
@@ -190,7 +194,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         setIsLoading(false)
         refetch()
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        refetchInfo && refetchInfo()
+        refetchInfo && (await refetchInfo())
       }
     }
   }
@@ -199,6 +203,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     if (id) {
       await removeContent({ contentId: id.toString() })
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    refetchInfo && (await refetchInfo())
   }
 
   // useEffect(() => {
@@ -270,6 +276,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         },
       },
     })
+    console.log(typeD)
 
     const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
@@ -299,8 +306,24 @@ export default function Event(props: IEventProperties): JSX.Element {
         deadline: typedData.value.deadline,
       },
     })
+
+    console.log(tx?.logs)
+
+    const newLensId =
+      Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
+        ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
+            tx?.logs[0]?.topics[2]
+          ).toString(16)}`
+        : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+            tx?.logs[0]?.topics[2]
+          ).toString(16)}`
+
+    console.log('ids', id, newLensId)
+
+    await mirrorPost({ lensId: id as string, newLensId })
+
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && refetchInfo()
+    refetchInfo && (await refetchInfo())
   }
 
   const renderMessage = () => {
@@ -345,6 +368,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           name={name || ''}
           profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
+          fromMirror={isMirror ? handleMirror : undefined}
         />
       )}
 
@@ -392,7 +416,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
           {image ? (
             <img
-              src={`http://135.181.216.90:49299/rest/token-images/${image}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
               alt="image"
               className="m-auto"
             />

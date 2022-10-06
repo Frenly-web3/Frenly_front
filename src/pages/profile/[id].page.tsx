@@ -4,7 +4,7 @@ import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
 import Loader from '@components/shared/loader/loader.component'
-import { useGetUnpublishedContentQuery } from '@store/auth/auth.api'
+import { useAddAddressForTrackMutation, useGetUnpublishedContentQuery } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
 // import { IS_FOLLOWING } from '@store/lens/account/is-follow.query'
@@ -23,13 +23,16 @@ import {
 export default function ProfilePage() {
   // receipt.logs[0].topics[1]
   const { account, library } = useEthers()
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [addressValue, setAddressValue] = useState('')
   const [posts, setPosts] = useState<Array<any>>([])
   const [isLoading, setIsLoading] = useState(false)
   const {
     query: { id },
   } = useRouter()
   const accountId = useGetWalletProfileId(account || '')
-  const { data: postsData } = useGetUnpublishedContentQuery(null)
+  const { data: postsData, refetch: refetchUnpublishedContent } =
+    useGetUnpublishedContentQuery(null)
   const { data: dataProfile, refetch: refetchProfile } = useQuery(GET_DEFAULT_PROFILES, {
     variables: {
       request: {
@@ -51,12 +54,17 @@ export default function ProfilePage() {
   })
   const [followToUser, dataFollowToUser] = useMutation(FOLLOW_USER)
   const [unfollowToUser, dataUnfollowToUser] = useMutation(CREATE_UNFOLLOW_TYPED_DATA)
+  const [addAddressToTrack] = useAddAddressForTrackMutation()
 
   useEffect(() => {
     setPosts(postsData?.data)
   }, [postsData])
 
-  console.log(postsData)
+  useEffect(() => {
+    if (account == process.env.NEXT_PUBLIC_ADMIN_ADDRESS) {
+      setIsAdmin(true)
+    }
+  }, [account])
 
   const followHandler = async () => {
     const result = await followToUser({
@@ -131,9 +139,22 @@ export default function ProfilePage() {
     refetchProfile()
   }
 
+  const refetchInfo = async () => {
+    await refetchUnpublishedContent()
+  }
+
+  const addAddressHandler = async () => {
+    if (addressValue) {
+      setIsLoading(true)
+      await addAddressToTrack({ address: addressValue })
+      setAddressValue('')
+      setIsLoading(false)
+    }
+  }
+
   return (
     <>
-      <Meta title="Profile" description="Your profile" />
+      <Meta title={isAdmin ? 'Admin' : 'Profile'} description="Your profile" />
 
       <Header
         title="Profile"
@@ -147,6 +168,27 @@ export default function ProfilePage() {
       />
 
       <main>
+        <Loader show={isLoading} />
+        {isAdmin && (
+          <div className="container pt-4 pb-4 flex">
+            <div className="flex rounded-2xl bg-light-gray px-4 py-2 w-full mr-2">
+              <input
+                style={{ background: 'transparent' }}
+                value={addressValue}
+                onChange={e => setAddressValue(e.target.value)}
+                type="text"
+                className="outline-none w-full"
+                placeholder="Add address for track"
+              />
+            </div>
+            <button
+              onClick={addAddressHandler}
+              className="flex items-center justify-center py-1 px-2"
+            >
+              <img src="/assets/icons/send-icon.svg" alt="messages" />
+            </button>
+          </div>
+        )}
         <div className="container">
           <h3 className="py-2 text-xl font-bold">Today</h3>
         </div>
@@ -157,7 +199,6 @@ export default function ProfilePage() {
           ) : id === accountId ? (
             posts?.map((element, index) => {
               const { content: el, id: postId, creationDate } = element
-              console.log(element)
 
               return (
                 <Event
@@ -173,17 +214,26 @@ export default function ProfilePage() {
                   id={postId}
                   totalUpvotes={0}
                   totalMirror={0}
+                  refetchInfo={refetchInfo}
                   profileId={id as string}
                   txHash={el.transactionHash}
                   blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
                   contractAddress={el.contractAddress}
+                  isMirror={true}
                 />
               )
             })
           ) : (
             feeds?.publications.items.map((el: any, index: number) => {
-              const { createdAt, collectModule, profile, metadata, id: postId, stats } = el
-              console.log(el)
+              const {
+                createdAt,
+                collectModule,
+                profile,
+                metadata,
+                id: postId,
+                stats,
+                mirrorOf,
+              } = el
 
               return (
                 <Event
@@ -206,6 +256,8 @@ export default function ProfilePage() {
                   txHash={metadata.attributes[8].value}
                   blockchainType={metadata.attributes[7].value}
                   contractAddress={metadata.attributes[1].value}
+                  isMirror={!!mirrorOf}
+                  handleMirror={mirrorOf?.profile?.handle}
                 />
               )
             })

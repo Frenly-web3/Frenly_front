@@ -93,6 +93,30 @@ export const authApi = createApi({
         }
       },
     }),
+    mirrorPost: builder.mutation<any, { lensId: string; newLensId: string }>({
+      query: args => {
+        console.log(args.lensId, args.newLensId)
+
+        return {
+          url: `content/${args.lensId}/repost/${args.newLensId}`,
+          method: 'POST',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    addAddressForTrack: builder.mutation<any, { address: string }>({
+      query: args => {
+        console.log(args.address)
+
+        return {
+          url: `admin/user/${args.address}`,
+          method: 'POST',
+
+          credentials: 'omit',
+        }
+      },
+    }),
     bindWithLensId: builder.mutation<any, { contentId: string; lensId: string }>({
       query: args => {
         return {
@@ -165,4 +189,6 @@ export const {
   useGetFeedQuery,
   useBindWithLensIdMutation,
   useRemoveContentMutation,
+  useMirrorPostMutation,
+  useAddAddressForTrackMutation,
 } = authApi
