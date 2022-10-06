@@ -105,6 +105,18 @@ export const authApi = createApi({
         }
       },
     }),
+    addAddressForTrack: builder.mutation<any, { address: string }>({
+      query: args => {
+        console.log(args.address)
+
+        return {
+          url: `admin/user/${args.address}`,
+          method: 'POST',
+
+          credentials: 'omit',
+        }
+      },
+    }),
     bindWithLensId: builder.mutation<any, { contentId: string; lensId: string }>({
       query: args => {
         return {
@@ -178,4 +190,5 @@ export const {
   useBindWithLensIdMutation,
   useRemoveContentMutation,
   useMirrorPostMutation,
+  useAddAddressForTrackMutation,
 } = authApi
