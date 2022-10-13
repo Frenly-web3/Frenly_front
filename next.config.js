@@ -11,12 +11,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     return config
   },
 })
+
 module.exports = withBundleAnalyzer({
   images: {
-    domains: ['https://ipfs.io/ipfs/bafybeidf3o6jqhkajn5aelq6pwzhamp65bp6xvpa6zv7c3rvmpugq3ga4q'],
+    domains: ['135.181.216.90'],
   },
-})
-module.exports = withBundleAnalyzer({
   eslint: {
     dirs: ['.'],
   },

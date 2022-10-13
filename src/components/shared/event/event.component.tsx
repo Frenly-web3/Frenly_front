@@ -4,9 +4,11 @@ import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
 import styles from '@components/shared/event/event.module.scss'
 import {
+  useBindAdminPostMutation,
   useBindWithLensIdMutation,
   useGetUnpublishedContentQuery,
   useMirrorPostMutation,
+  usePublishAdminPostMutation,
   usePublishContentMutation,
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
@@ -22,10 +24,12 @@ import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
+import error from 'next/error'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
+import { useUpdate } from '../header/use-update-user.hook'
 import Loader from '../loader/loader.component'
 
 export interface IEventProperties {
@@ -52,6 +56,8 @@ export interface IEventProperties {
   txHash: string
   isMirror: boolean
   handleMirror?: string
+  isAdmin?: boolean
+  creator: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -77,6 +83,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     contractAddress,
     isMirror,
     handleMirror,
+    isAdmin,
+    creator,
   } = props
 
   const { account, library } = useEthers()
@@ -87,13 +95,23 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [addPostToLens, data] = useMutation(CREATE_POST_TYPED_DATA)
   const [publishContent] = usePublishContentMutation()
   const [bindContentIdWithLens] = useBindWithLensIdMutation()
+  const [publishAdminPost] = usePublishAdminPostMutation()
+  const [bindAdminContent] = useBindAdminPostMutation()
   const [removeContent] = useRemoveContentMutation()
   const [isCommentsOpen, setIsCommentsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const [isLikeRequest, setIsLikeRequest] = useState(false)
-
+  const {
+    userInfo,
+    updateUserInfo,
+    refetchUserInfo,
+    name: username,
+    description,
+    avatar,
+    uploadImage,
+  } = useUpdate(creator)
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -126,17 +144,23 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const [mirrorPost] = useMirrorPostMutation()
+  console.log(userInfo)
 
   const addPost = async () => {
     setIsLoading(true)
     if (id) {
-      try {
-        const publishedPost = await publishContent({
-          contentId: id.toString(),
-        })
-        // @ts-ignore
+      console.log(id)
 
-        const typeD = await addPostToLens({
+      try {
+        const publishedPost = isAdmin
+          ? await publishAdminPost({ contentId: id.toString() })
+          : await publishContent({
+              contentId: id.toString(),
+            })
+        // @ts-ignore
+        console.log('publishedPot:', publishedPost)
+
+        const postOptionsInfo = {
           variables: {
             request: {
               profileId: myProfileId,
@@ -146,11 +170,13 @@ export default function Event(props: IEventProperties): JSX.Element {
                 revertCollectModule: true,
               },
               referenceModule: {
-                followerOnlyReferenceModule: false,
+                followerOnlyReferenceModule: isAdmin,
               },
             },
           },
-        })
+        }
+
+        const typeD = await addPostToLens(postOptionsInfo)
 
         const typedData = typeD?.data?.createPostTypedData?.typedData
 
@@ -177,7 +203,13 @@ export default function Event(props: IEventProperties): JSX.Element {
             deadline: typedData.value.deadline,
           },
         })
-        await bindContentIdWithLens({
+        console.log(
+          'lensId',
+          `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+            receipt?.logs[0]?.topics[2]
+          ).toString(16)}`
+        )
+        const bindArguments = {
           contentId: id.toString(),
           lensId:
             Number(receipt?.logs[0]?.topics[2]).toString(16).length === 1
@@ -187,9 +219,12 @@ export default function Event(props: IEventProperties): JSX.Element {
               : `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
                   receipt?.logs[0]?.topics[2]
                 ).toString(16)}`,
-        })
-      } catch (error) {
-        console.log(error)
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        isAdmin ? await bindAdminContent(bindArguments) : await bindContentIdWithLens(bindArguments)
+      } catch (error_) {
+        console.log(error_)
       } finally {
         setIsLoading(false)
         refetch()
@@ -237,8 +272,8 @@ export default function Event(props: IEventProperties): JSX.Element {
               },
             },
           })
-        } catch (error) {
-          console.error(error)
+        } catch (error_) {
+          console.error(error_)
         }
         setIsLikeRequest(false)
       }
@@ -267,63 +302,70 @@ export default function Event(props: IEventProperties): JSX.Element {
   }
 
   const mirrorHandler = async () => {
-    const typeD = await mirrorPublication({
-      variables: {
-        request: {
-          profileId: myProfileId,
-          publicationId: id,
-          referenceModule: null,
+    setIsLoading(true)
+    try {
+      const typeD = await mirrorPublication({
+        variables: {
+          request: {
+            profileId: myProfileId,
+            publicationId: id,
+            referenceModule: null,
+          },
         },
-      },
-    })
-    console.log(typeD)
+      })
 
-    const typedData = typeD?.data?.createMirrorTypedData?.typedData
+      console.log(typeD)
 
-    const signer = library?.getSigner()
+      const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
-    // if (!typedData) return
-    const signature = await signedTypeData(
-      typedData.domain,
-      typedData.types,
-      typedData.value,
-      signer
-    )
+      const signer = library?.getSigner()
 
-    const { v, r, s } = splitSignature(signature)
+      // if (!typedData) return
+      const signature = await signedTypeData(
+        typedData.domain,
+        typedData.types,
+        typedData.value,
+        signer
+      )
 
-    const tx = await mirrorWithSig({
-      profileId: typedData.value.profileId,
-      profileIdPointed: typedData.value.profileIdPointed,
-      pubIdPointed: typedData.value.pubIdPointed,
-      referenceModuleData: typedData.value.referenceModuleData,
-      referenceModule: typedData.value.referenceModule,
-      referenceModuleInitData: typedData.value.referenceModuleInitData,
-      sig: {
-        v,
-        r,
-        s,
-        deadline: typedData.value.deadline,
-      },
-    })
+      const { v, r, s } = splitSignature(signature)
 
-    console.log(tx?.logs)
+      const tx = await mirrorWithSig({
+        profileId: typedData.value.profileId,
+        profileIdPointed: typedData.value.profileIdPointed,
+        pubIdPointed: typedData.value.pubIdPointed,
+        referenceModuleData: typedData.value.referenceModuleData,
+        referenceModule: typedData.value.referenceModule,
+        referenceModuleInitData: typedData.value.referenceModuleInitData,
+        sig: {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        },
+      })
 
-    const newLensId =
-      Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
-        ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
-            tx?.logs[0]?.topics[2]
-          ).toString(16)}`
-        : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-            tx?.logs[0]?.topics[2]
-          ).toString(16)}`
+      console.log(tx?.logs)
 
-    console.log('ids', id, newLensId)
+      const newLensId =
+        Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
+          ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
+              tx?.logs[0]?.topics[2]
+            ).toString(16)}`
+          : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
+              tx?.logs[0]?.topics[2]
+            ).toString(16)}`
 
-    await mirrorPost({ lensId: id as string, newLensId })
+      console.log('ids', id, newLensId)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && (await refetchInfo())
+      await mirrorPost({ lensId: id as string, newLensId })
+    } catch (error_) {
+      console.log(error_)
+    } finally {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      refetchInfo && (await refetchInfo())
+      setIsLoading(false)
+    }
   }
 
   const renderMessage = () => {
@@ -364,8 +406,12 @@ export default function Event(props: IEventProperties): JSX.Element {
       <Loader show={isLoading} />
       {showAuthor && (
         <Author
-          avatar="/assets/images/temp-avatar.png"
-          name={name || ''}
+          avatar={
+            avatar && avatar !== null
+              ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
+              : '/assets/images/temp-avatar.png'
+          }
+          name={username !== null ? username : name}
           profileId={profileId}
           date={`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
           fromMirror={isMirror ? handleMirror : undefined}
@@ -457,7 +503,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             target="_blank"
             href={
               blockchainType == 'ETHEREUM'
-                ? `https://rinkeby.etherscan.io/tx/${txHash}`
+                ? `https://etherscan.io/tx/${txHash}`
                 : `https://mumbai.polygonscan.com/tx/${txHash}`
             }
             className="text-sm text-main"

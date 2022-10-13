@@ -4,7 +4,11 @@ import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
 import Loader from '@components/shared/loader/loader.component'
-import { useAddAddressForTrackMutation, useGetUnpublishedContentQuery } from '@store/auth/auth.api'
+import {
+  useAddAddressForTrackMutation,
+  useGetAdminPostQuery,
+  useGetUnpublishedContentQuery,
+} from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
 // import { IS_FOLLOWING } from '@store/lens/account/is-follow.query'
@@ -27,6 +31,7 @@ export default function ProfilePage() {
   const [addressValue, setAddressValue] = useState('')
   const [posts, setPosts] = useState<Array<any>>([])
   const [isLoading, setIsLoading] = useState(false)
+
   const {
     query: { id },
   } = useRouter()
@@ -55,56 +60,75 @@ export default function ProfilePage() {
   const [followToUser, dataFollowToUser] = useMutation(FOLLOW_USER)
   const [unfollowToUser, dataUnfollowToUser] = useMutation(CREATE_UNFOLLOW_TYPED_DATA)
   const [addAddressToTrack] = useAddAddressForTrackMutation()
+  const { data: dataAdminPosts, refetch: refetchAdminPosts } = useGetAdminPostQuery(
+    {},
+    { skip: !isAdmin }
+  )
 
   useEffect(() => {
-    setPosts(postsData?.data)
-  }, [postsData])
+    if (isAdmin) {
+      setPosts(dataAdminPosts?.data)
+    } else {
+      setPosts(postsData?.data)
+    }
+  }, [postsData, dataAdminPosts, isAdmin])
 
+  console.log(postsData)
   useEffect(() => {
     if (account == process.env.NEXT_PUBLIC_ADMIN_ADDRESS) {
       setIsAdmin(true)
     }
-  }, [account])
+    if (account && dataProfile) {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
+    }
+  }, [account, dataProfile])
 
   const followHandler = async () => {
-    const result = await followToUser({
-      variables: {
-        request: {
-          follow: [
-            {
-              profile: id,
-            },
-          ],
+    try {
+      const result = await followToUser({
+        variables: {
+          request: {
+            follow: [
+              {
+                profile: id,
+              },
+            ],
+          },
         },
-      },
-    })
+      })
 
-    const typedData = result?.data?.createFollowTypedData?.typedData
+      const typedData = result?.data?.createFollowTypedData?.typedData
 
-    const signer = library?.getSigner()
+      const signer = library?.getSigner()
 
-    // if (!typedData) return
-    const signature = await signedTypeData(
-      typedData.domain,
-      typedData.types,
-      typedData.value,
-      signer
-    )
-    const { v, r, s } = splitSignature(signature)
+      // if (!typedData) return
+      const signature = await signedTypeData(
+        typedData.domain,
+        typedData.types,
+        typedData.value,
+        signer
+      )
+      const { v, r, s } = splitSignature(signature)
 
-    const tx = await followWithSig({
-      follower: account,
-      profileIds: typedData.value.profileIds,
-      datas: typedData.value.datas,
-      sig: {
-        v,
-        r,
-        s,
-        deadline: typedData.value.deadline,
-      },
-    })
-
-    refetchProfile()
+      const tx = await followWithSig({
+        follower: account,
+        profileIds: typedData.value.profileIds,
+        datas: typedData.value.datas,
+        sig: {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        },
+      })
+    } catch (error_) {
+      console.log(error_)
+    } finally {
+      refetchProfile()
+      setIsLoading(false)
+    }
   }
 
   const unfollowHandler = async () => {
@@ -196,32 +220,38 @@ export default function ProfilePage() {
         <section>
           {!accountId ? (
             <Loader show={true} />
-          ) : id === accountId ? (
-            posts?.map((element, index) => {
-              const { content: el, id: postId, creationDate } = element
+          ) : id == accountId ? (
+            posts?.map((el, index) => {
+              // const { content: el, id: postId, creationDate } = element
+              console.log(el)
 
-              return (
-                <Event
-                  isAddCap
-                  from={el.fromAddress}
-                  to={el.toAddress}
-                  info={el.info}
-                  date={creationDate}
-                  image={el.image}
-                  key={index}
-                  itemType="nft"
-                  messageType={el.transferType}
-                  id={postId}
-                  totalUpvotes={0}
-                  totalMirror={0}
-                  refetchInfo={refetchInfo}
-                  profileId={id as string}
-                  txHash={el.transactionHash}
-                  blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
-                  contractAddress={el.contractAddress}
-                  isMirror={true}
-                />
-              )
+              if (index < 10) {
+                return (
+                  <Event
+                    isAddCap
+                    from={el.fromAddress}
+                    to={el.toAddress}
+                    info={el.info}
+                    date={el.creationDate}
+                    image={el.image}
+                    key={index}
+                    itemType="nft"
+                    messageType={el.transferType}
+                    id={el.id}
+                    totalUpvotes={0}
+                    totalMirror={0}
+                    refetchInfo={refetchInfo}
+                    profileId={id as string}
+                    txHash={el.transactionHash}
+                    blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
+                    contractAddress={el.contractAddress}
+                    isMirror={el.isMirror}
+                    isAdmin={isAdmin}
+                    creator={''}
+                  />
+                )
+              }
+              return <></>
             })
           ) : (
             feeds?.publications.items.map((el: any, index: number) => {
@@ -240,7 +270,7 @@ export default function ProfilePage() {
                   from={metadata.attributes[4].value}
                   to={metadata.attributes[3].value}
                   info={metadata.description}
-                  image={metadata.attributes[0].value}
+                  image={metadata.attributes[9].value}
                   key={index}
                   name={profile.handle}
                   date={createdAt}
@@ -258,6 +288,7 @@ export default function ProfilePage() {
                   contractAddress={metadata.attributes[1].value}
                   isMirror={!!mirrorOf}
                   handleMirror={mirrorOf?.profile?.handle}
+                  creator={profile.ownedBy}
                 />
               )
             })
