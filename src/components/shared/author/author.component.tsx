@@ -22,7 +22,7 @@ export default function Author(props: IAuthorProperties) {
         onClick={() => router.push(`/profile/${profileId}`)}
         className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden"
       >
-        <Image src={avatar} alt={name} width={40} height={40} />
+        <img src={avatar} alt={name} className={`w-10 h-10`} />
       </button>
 
       <figcaption>
