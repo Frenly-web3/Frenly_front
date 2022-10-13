@@ -18,7 +18,7 @@ const Comment = ({ metadata, profile, createdAt }: IComment) => {
   return (
     <figure className="flex items-center mb-2">
       <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
-        <Image
+        <img
           src={
             avatar && avatar !== null
               ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
@@ -27,10 +27,8 @@ const Comment = ({ metadata, profile, createdAt }: IComment) => {
           onClick={() => {
             router.push(`profile/${profile.id}`)
           }}
-          className={`cursor-pointer`}
+          className={`cursor-pointer w-7 h-7`}
           alt={username === null ? profile.handle : username}
-          width={24}
-          height={24}
         />
       </div>
 
