@@ -103,7 +103,7 @@ export default function FeedPage() {
                   txHash={metadata.attributes[8].value}
                   blockchainType={metadata.attributes[7].value}
                   isMirror={dataFeeds?.data[Number(index)]?.isMirror}
-                  handleMirror={mirrorOf?.profile.handle}
+                  handleMirror={mirrorOf?.profile.ownedBy}
                   creator={profile.ownedBy}
                 />
               )
