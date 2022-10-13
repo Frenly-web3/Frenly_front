@@ -83,9 +83,9 @@ export default function FeedPage() {
 
               return (
                 <Event
-                  from={metadata?.attributes[4].value}
-                  to={metadata?.attributes[3].value}
-                  contractAddress={metadata?.attributes[1].value}
+                  from={metadata?.attributes[4]?.value}
+                  to={metadata?.attributes[3]?.value}
+                  contractAddress={metadata?.attributes[1]?.value}
                   info={metadata.description}
                   image={dataFeeds?.data[Number(index)]?.image}
                   key={id}

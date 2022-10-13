@@ -267,25 +267,25 @@ export default function ProfilePage() {
 
               return (
                 <Event
-                  from={metadata.attributes[4].value}
-                  to={metadata.attributes[3].value}
-                  info={metadata.description}
-                  image={metadata.attributes[9].value}
+                  from={metadata?.attributes[4]?.value}
+                  to={metadata?.attributes[3]?.value}
+                  info={metadata?.description}
+                  image={metadata?.attributes[9]?.value}
                   key={index}
                   name={profile.handle}
                   date={createdAt}
                   showDate={false}
                   showAuthor
-                  messageType={metadata.attributes[5].value}
+                  messageType={metadata?.attributes[5]?.value}
                   itemType="nft"
                   totalUpvotes={stats.totalUpvotes}
                   totalMirror={stats.totalAmountOfMirrors}
                   id={postId}
                   profileId={profile.id}
                   refetchInfo={refetch}
-                  txHash={metadata.attributes[8].value}
-                  blockchainType={metadata.attributes[7].value}
-                  contractAddress={metadata.attributes[1].value}
+                  txHash={metadata?.attributes[8]?.value}
+                  blockchainType={metadata?.attributes[7]?.value}
+                  contractAddress={metadata?.attributes[1]?.value}
                   isMirror={!!mirrorOf}
                   handleMirror={mirrorOf?.profile?.handle}
                   creator={profile.ownedBy}
