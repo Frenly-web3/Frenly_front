@@ -426,7 +426,35 @@ export default function Event(props: IEventProperties): JSX.Element {
         )}
 
         <h4 className="text-base font-semibold">
-          {renderMessage()}{' '}
+          {creator === process.env.NEXT_PUBLIC_ADMIN_ADDRESS && (
+            <>
+              <a
+                target="_blank"
+                href={
+                  blockchainType === 'ETHEREUM'
+                    ? `https://etherscan.io/address/${messageType == 'RECEIVE' ? to : from}`
+                    : `https://polygonscan.com/address/${messageType == 'RECEIVE' ? to : from}`
+                }
+                className="text-main"
+                rel="noreferrer"
+              >
+                {from == '0x0000000000000000000000000000000000000000'
+                  ? `🎉 ${to}`
+                  : messageType == 'RECEIVE'
+                  ? `📤 ${to}`
+                  : `📤 ${from}`}
+              </a>
+              <>
+                {' '}
+                {from == '0x0000000000000000000000000000000000000000'
+                  ? `minted a new`
+                  : messageType == 'RECEIVE'
+                  ? `received`
+                  : `sent`}
+              </>
+            </>
+          )}
+          {creator !== process.env.NEXT_PUBLIC_ADMIN_ADDRESS && renderMessage()}{' '}
           {from !== '0x0000000000000000000000000000000000000000' ? (
             messageType == 'RECEIVE' ? (
               <>from&nbsp;</>
@@ -440,7 +468,7 @@ export default function Event(props: IEventProperties): JSX.Element {
             target="_blank"
             href={
               blockchainType === 'ETHEREUM'
-                ? `https://rinkeby.etherscan.io/address/${
+                ? `https://etherscan.io/address/${
                     from == '0x0000000000000000000000000000000000000000' ? contractAddress : from
                   }`
                 : `https://polygonscan.com/address/${

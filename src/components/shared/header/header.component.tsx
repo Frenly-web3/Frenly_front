@@ -136,14 +136,14 @@ export default function Header(props: IHeaderProperties): JSX.Element {
           <div
             className={`m-auto mt-3 ${
               isOwner && 'cursor-pointer'
-            } relative flex items-center justify-center`}
+            } relative flex items-center justify-center w-24 h-24`}
           >
-            <Image
+            <img
               src={previewValue}
-              className="align-center absolute"
+              className="align-center absolute w-full h-full"
               alt="avatar"
-              width={96}
-              height={96}
+              // width={96}
+              // height={96}
             />
             {isOwner && (
               <div
