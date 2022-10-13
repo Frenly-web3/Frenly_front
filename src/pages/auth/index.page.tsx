@@ -1,11 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
-import {
-  authApi,
-  useGetNonceQuery,
-  useHasLanceProfileQuery,
-  useLoginMutation,
-} from '@store/auth/auth.api'
+import { useGetNonceQuery, useHasLanceProfileQuery, useLoginMutation } from '@store/auth/auth.api'
 import { setTokens } from '@store/auth/auth.slice'
 import { login } from '@store/lens/auth/login-user'
 import { CREATE_PROFILE } from '@store/lens/create-profile.mutation'
@@ -36,7 +31,7 @@ export default function AuthPage() {
   const { data: dataNonce } = useGetNonceQuery(account || '', { skip: !account })
 
   // @ts-ignore
-  const [mutateFunction, { data, loading, error }] = useMutation(CREATE_PROFILE)
+  const [mutateFunction] = useMutation(CREATE_PROFILE)
 
   const dispatch = useAppDispatch()
   const [triggerLogin] = useLoginMutation()
