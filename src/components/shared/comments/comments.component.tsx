@@ -32,12 +32,11 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
     const data = await res.json()
     setIsLoading(false)
 
-    setCommentValue('')
-
     const signer = library?.getSigner()
 
     setIsLoading(true)
     await createComment(profileId, pubId, data.contentURI, signer)
+    setCommentValue('')
     setIsLoading(false)
     refetchComment()
   }

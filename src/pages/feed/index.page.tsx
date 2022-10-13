@@ -35,6 +35,7 @@ export default function FeedPage() {
       },
     },
   })
+  console.log(dataFeeds)
 
   const refetchInfo = async () => {
     refetchFeeds()
@@ -78,6 +79,7 @@ export default function FeedPage() {
                   index = _index
                 }
               })
+              console.log(profile)
 
               return (
                 <Event
@@ -102,6 +104,7 @@ export default function FeedPage() {
                   blockchainType={metadata.attributes[7].value}
                   isMirror={dataFeeds?.data[Number(index)]?.isMirror}
                   handleMirror={mirrorOf?.profile.handle}
+                  creator={profile.ownedBy}
                 />
               )
             })}

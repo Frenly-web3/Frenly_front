@@ -71,31 +71,36 @@ export default function AuthPage() {
   }
 
   // const signUp = async () => {}
-  console.log(dataHasLens)
+
   const signIn = async () => {
-    let dataLogin
-    if (account) {
-      const nonce = dataNonce?.data?.nonce
+    try {
+      let dataLogin
+      if (account) {
+        const nonce = dataNonce?.data?.nonce
 
-      if (nonce) {
-        console.log(nonce)
+        if (nonce) {
+          console.log(nonce)
 
-        const signature = await library?.getSigner().signMessage(`Nonce: ${nonce}`)
-        dataLogin = await triggerLogin({ address: account, signature: signature || '' }).unwrap()
+          const signature = await library?.getSigner().signMessage(`Nonce: ${nonce}`)
+          dataLogin = await triggerLogin({ address: account, signature: signature || '' }).unwrap()
+        }
+        console.log(dataLogin)
+        // @ts-ignore
+        dispatch(setTokens({ ...dataLogin?.data }))
+        console.log('AaA', account, library)
+
+        await login(account, library)
+        console.log(countProfile)
+
+        if (Number(countProfile) < 1) {
+          await createProfileHandler()
+        }
+
+        reloadProfile(true)
+        router.push('/feed')
       }
-      console.log(dataLogin)
-      // @ts-ignore
-      dispatch(setTokens({ ...dataLogin?.data }))
-      console.log('AaA', account, library)
-
-      await login(account, library)
-
-      if (Number(countProfile) < 1) {
-        await createProfileHandler()
-      }
-
-      reloadProfile(true)
-      router.push('/feed')
+    } catch (error_) {
+      console.log(error_)
     }
   }
 

@@ -127,11 +127,78 @@ export const authApi = createApi({
         }
       },
     }),
+    publishAdminPost: builder.mutation<any, { contentId: string }>({
+      query: args => {
+        return {
+          url: `admin/content/${args.contentId}`,
+          method: 'PUT',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    bindAdminPost: builder.mutation<any, { contentId: string; lensId: string }>({
+      query: args => {
+        return {
+          url: `admin/bind/${args.contentId}/${args.lensId}`,
+          method: 'PUT',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    uploadInfo: builder.mutation<any, { username: string; description: string }>({
+      query: args => {
+        return {
+          url: `user`,
+          method: 'PUT',
+          body: args,
+          credentials: 'omit',
+        }
+      },
+    }),
+    uploadImage: builder.mutation<any, { avatar: File }>({
+      query: args => {
+        const formData = new FormData()
+        formData.append('avatar', args.avatar)
+        // console.log(formData)
+        // for (const [name, value] of formData) {
+        //   console.log(`${name} = ${value}`) // key1=value1, потом key2=value2
+        // }
+        console.log(args.avatar)
+        return {
+          url: `user/avatar`,
+          method: 'PUT',
+          body: formData,
+          credentials: 'omit',
+        }
+      },
+    }),
     removeContent: builder.mutation<any, { contentId: string }>({
       query: args => {
         return {
           url: `content/${args.contentId}`,
           method: 'DELETE',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    getAdminPost: builder.query<any, any>({
+      query: args => {
+        return {
+          url: `admin`,
+          method: 'GET',
+
+          credentials: 'omit',
+        }
+      },
+    }),
+    getUserInfo: builder.query<any, { address: string }>({
+      query: args => {
+        return {
+          url: `user/${args.address}`,
+          method: 'GET',
 
           credentials: 'omit',
         }
@@ -191,4 +258,10 @@ export const {
   useRemoveContentMutation,
   useMirrorPostMutation,
   useAddAddressForTrackMutation,
+  useGetAdminPostQuery,
+  usePublishAdminPostMutation,
+  useBindAdminPostMutation,
+  useGetUserInfoQuery,
+  useUploadInfoMutation,
+  useUploadImageMutation,
 } = authApi
