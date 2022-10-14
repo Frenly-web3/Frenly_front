@@ -66,43 +66,47 @@ export default function FeedPage() {
 
         <section className="relative">
           {dataFeeds &&
-            drafts?.data?.publications?.items.map((el: any) => {
-              const { createdAt, collectModule, profile, metadata, id, stats, mirrorOf } = el
+            drafts?.data?.publications?.items
+              // .filter((el: any) => {
+              //   return el.profile.ownedBy === process.env.NEXT_PUBLIC_ADMIN_ADDRESS
+              // })
+              .map((el: any) => {
+                const { createdAt, collectModule, profile, metadata, id, stats, mirrorOf } = el
 
-              let index
-              dataFeeds?.data?.forEach((element: any, _index: number) => {
-                if (element.lensId == id) {
-                  index = _index
-                }
-              })
+                let index
+                dataFeeds?.data?.forEach((element: any, _index: number) => {
+                  if (element.lensId == id) {
+                    index = _index
+                  }
+                })
 
-              return (
-                <Event
-                  from={metadata?.attributes[4]?.value}
-                  to={metadata?.attributes[3]?.value}
-                  contractAddress={metadata?.attributes[1]?.value}
-                  info={metadata?.name}
-                  image={dataFeeds?.data[Number(index)]?.image}
-                  key={id}
-                  name={profile.handle}
-                  date={createdAt}
-                  showDate={false}
-                  showAuthor
-                  messageType={metadata.attributes[5].value}
-                  itemType="nft"
-                  totalUpvotes={stats.totalUpvotes}
-                  totalMirror={stats.totalAmountOfMirrors}
-                  id={id}
-                  profileId={profile.id}
-                  refetchInfo={refetchInfo}
-                  txHash={metadata.attributes[8].value}
-                  blockchainType={metadata.attributes[7].value}
-                  isMirror={dataFeeds?.data[Number(index)]?.isMirror}
-                  handleMirror={mirrorOf?.profile.ownedBy}
-                  creator={profile.ownedBy}
-                />
-              )
-            })}
+                return (
+                  <Event
+                    from={metadata?.attributes[4]?.value}
+                    to={metadata?.attributes[3]?.value}
+                    contractAddress={metadata?.attributes[1]?.value}
+                    info={metadata?.name}
+                    image={dataFeeds?.data[Number(index)]?.image}
+                    key={id}
+                    name={profile.handle}
+                    date={createdAt}
+                    showDate={false}
+                    showAuthor
+                    messageType={metadata.attributes[5].value}
+                    itemType="nft"
+                    totalUpvotes={stats.totalUpvotes}
+                    totalMirror={stats.totalAmountOfMirrors}
+                    id={id}
+                    profileId={profile.id}
+                    refetchInfo={refetchInfo}
+                    txHash={metadata.attributes[8].value}
+                    blockchainType={metadata.attributes[7].value}
+                    isMirror={dataFeeds?.data[Number(index)]?.isMirror}
+                    handleMirror={mirrorOf?.profile.ownedBy}
+                    creator={profile.ownedBy}
+                  />
+                )
+              })}
         </section>
       </main>
 
