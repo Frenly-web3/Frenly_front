@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
+import { MetamaskError } from '@components/metamask-error/metamask-error.component'
 import {
   authApi,
   useGetNonceQuery,
@@ -22,7 +23,8 @@ export default function AuthPage() {
   const [isAuth] = useState<boolean>(false)
   const [haveLensProfile] = useState<boolean>(false)
   const [isReloadProfile, reloadProfile] = useState(false)
-  const { account, chainId, library, activateBrowserWallet } = useEthers()
+  const [noMetamask, setNoMetamask] = useState(false)
+  const { account, chainId, library, activateBrowserWallet, error: errorMetamask } = useEthers()
   const dataHasLens = useHasLanceProfileQuery(account || '', { skip: !account })
   // const [createProfile, data] = useMutation(CREATE_PROFILE)
   // const profile = useQuery(GET_DEFAULT_PROFILES, {
@@ -44,7 +46,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     ;(async () => {
-      await checkAndChangeChainId()
+      await checkAndChangeChainId(setNoMetamask)
     })()
   }, [chainId])
 
@@ -102,7 +104,7 @@ export default function AuthPage() {
   return (
     <>
       <Meta title="Frenly" description="Log In Page" />
-
+      <MetamaskError show={noMetamask} />
       <div className="container flex flex-col items-center h-screen">
         <div className="flex flex-1 flex-col items-center justify-center">
           <Image src="/assets/images/eyes.gif" alt="eyes" width={85} height={85} />
