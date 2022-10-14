@@ -505,7 +505,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           )}
         >
           <div className="flex flex-col">
-            <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
+            <div className="text-sm font-normal text-gray-darker mt-1">FrenlyPost</div>
             <a
               target="_blank"
               href={

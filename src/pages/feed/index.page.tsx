@@ -24,7 +24,7 @@ export default function FeedPage() {
     skip: !isReloadProfile,
   })
 
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 10, skip: 0 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -36,6 +36,7 @@ export default function FeedPage() {
     },
   })
 
+  console.log(drafts)
   const refetchInfo = async () => {
     refetchFeeds()
     await drafts.refetch()

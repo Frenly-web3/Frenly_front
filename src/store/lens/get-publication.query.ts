@@ -44,7 +44,7 @@ export const GET_PUBLICATIONS = gql`
       value
     }
     isFollowedByMe
-    isFollowing(who: null)
+    isFollowing(who: "0x148A580403141CC82f4522FB1a9569C421C7969F")
     followNftAddress
     metadata
     isDefault
