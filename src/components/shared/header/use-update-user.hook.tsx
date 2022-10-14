@@ -10,7 +10,6 @@ export function useUpdate(address: string) {
   const { data: userInfo, refetch: refetchUserInfo } = useGetUserInfoQuery({
     address,
   })
-  console.log(address)
 
   const [uploadImage] = useUploadImageMutation()
 

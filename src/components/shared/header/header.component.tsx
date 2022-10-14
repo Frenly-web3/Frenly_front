@@ -1,8 +1,10 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import Author from '@components/shared/author/author.component'
+import { useEthers } from '@usedapp/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 import Loader from '../loader/loader.component'
 import { useUpdate } from './use-update-user.hook'
@@ -36,10 +38,12 @@ export default function Header(props: IHeaderProperties): JSX.Element {
     isFollow,
   } = props
   const router = useRouter()
+  const { account } = useEthers()
   const [isEdit, setIsEdit] = useState(false)
   // const [isDescEdit, setIsDescEdit] = useState(false)
   const { userInfo, updateUserInfo, refetchUserInfo, name, description, avatar, uploadImage } =
-    useUpdate(address || '')
+    useUpdate(address || account || '')
+  const lensId = useGetWalletProfileId(account || '')
   const [nameValue, setNameValue] = useState(name === null ? nickname : name)
   const [descValue, setDescValue] = useState(description === null ? address : description)
   const [previewValue, setPreviewValue] = useState(
@@ -77,11 +81,8 @@ export default function Header(props: IHeaderProperties): JSX.Element {
     }
   }
 
-  console.log(userInfo)
-
   const changeImageHandle = (imageUrl: any) => {
     setIsEdit(true)
-    console.log(imageUrl)
     const preview = URL.createObjectURL(imageUrl)
     setPreviewValue(preview)
     setFileImage(imageUrl)
@@ -92,16 +93,27 @@ export default function Header(props: IHeaderProperties): JSX.Element {
       <Loader show={isLoading} />
       {showAddPost ? (
         <>
-          <div className="flex justify-between mb-1">
-            <Image src="/assets/icons/eyesLogo.svg" alt="eyes" width={28} height={24} />
-            <button
-              className="bg-main py-1 px-4 text-center text-white rounded-full font-semibold"
-              onClick={() => router.push(`/profile/${accountId}`)}
-            >
-              Add post
-            </button>
+          <div className="flex justify-between mb-1 sticky border-b border-border-color pt-2 pb-4">
+            <div className="flex flex-row justify-between">
+              <Image src="/assets/icons/eyesLogo.svg" alt="eyes" width={28} height={24} />
+              <h2 className="text-4xl font-bold ml-3">{title}</h2>
+            </div>
+
+            <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
+              <img
+                src={
+                  avatar && avatar !== null
+                    ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
+                    : '/assets/images/temp-avatar.png'
+                }
+                alt={'avatar'}
+                onClick={() => {
+                  router.push(`profile/${lensId}`)
+                }}
+                className={`cursor-pointer w-7 h-7`}
+              />
+            </div>
           </div>
-          <h2 className="text-4xl font-bold">{title}</h2>
         </>
       ) : (
         <div className="flex flex-col justify-center border-b border-border-color">

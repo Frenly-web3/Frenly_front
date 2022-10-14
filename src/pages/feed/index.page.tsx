@@ -35,7 +35,6 @@ export default function FeedPage() {
       },
     },
   })
-  console.log(dataFeeds)
 
   const refetchInfo = async () => {
     refetchFeeds()
@@ -52,12 +51,9 @@ export default function FeedPage() {
     <>
       <Meta title="Frenly Feed" description="Your Frenly Feed" />
 
-      <Header title="Frenly Feed" showAddPost accountId={accountId} />
+      <Header title="frenly feed" showAddPost accountId={accountId} />
 
       <main>
-        <div className="container">
-          <h3 className="py-2 text-xl font-bold">Yesterday</h3>
-        </div>
         {/* <div className={styles.address}>
             {`${'0x0e2f7D1a076100059824c14021919eFB509bA25b'.slice(
               0,
@@ -79,14 +75,13 @@ export default function FeedPage() {
                   index = _index
                 }
               })
-              console.log(profile)
 
               return (
                 <Event
                   from={metadata?.attributes[4]?.value}
                   to={metadata?.attributes[3]?.value}
                   contractAddress={metadata?.attributes[1]?.value}
-                  info={metadata.description}
+                  info={metadata?.name}
                   image={dataFeeds?.data[Number(index)]?.image}
                   key={id}
                   name={profile.handle}

@@ -79,18 +79,13 @@ export default function AuthPage() {
         const nonce = dataNonce?.data?.nonce
 
         if (nonce) {
-          console.log(nonce)
-
           const signature = await library?.getSigner().signMessage(`Nonce: ${nonce}`)
           dataLogin = await triggerLogin({ address: account, signature: signature || '' }).unwrap()
         }
-        console.log(dataLogin)
         // @ts-ignore
         dispatch(setTokens({ ...dataLogin?.data }))
-        console.log('AaA', account, library)
 
         await login(account, library)
-        console.log(countProfile)
 
         if (Number(countProfile) < 1) {
           await createProfileHandler()
@@ -132,11 +127,6 @@ export default function AuthPage() {
               className="w-full rounded-xl bg-main text-white text-lg py-3 mb-4 font-semibold"
             >
               SignIn
-            </button>
-          )}
-          {isAuth && !haveLensProfile && (
-            <button className="w-full rounded-xl bg-main text-white text-lg py-3 font-semibold">
-              Buy Lens Profile
             </button>
           )}
         </div>

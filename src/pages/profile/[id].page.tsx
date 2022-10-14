@@ -73,7 +73,6 @@ export default function ProfilePage() {
     }
   }, [postsData, dataAdminPosts, isAdmin])
 
-  console.log(postsData)
   useEffect(() => {
     if (account == process.env.NEXT_PUBLIC_ADMIN_ADDRESS) {
       setIsAdmin(true)
@@ -223,35 +222,33 @@ export default function ProfilePage() {
           ) : id == accountId ? (
             posts?.map((el, index) => {
               // const { content: el, id: postId, creationDate } = element
-              console.log(el)
-
-              if (index < 10) {
-                return (
-                  <Event
-                    isAddCap
-                    from={el.fromAddress}
-                    to={el.toAddress}
-                    info={el.info}
-                    date={el.creationDate}
-                    image={el.image}
-                    key={index}
-                    itemType="nft"
-                    messageType={el.transferType}
-                    id={el.id}
-                    totalUpvotes={0}
-                    totalMirror={0}
-                    refetchInfo={refetchInfo}
-                    profileId={id as string}
-                    txHash={el.transactionHash}
-                    blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
-                    contractAddress={el.contractAddress}
-                    isMirror={el.isMirror}
-                    isAdmin={isAdmin}
-                    creator={''}
-                  />
-                )
-              }
-              return <></>
+              // if (index < 10) {
+              return (
+                <Event
+                  isAddCap
+                  from={el.fromAddress}
+                  to={el.toAddress}
+                  info={el.info}
+                  date={el.creationDate}
+                  image={el.image}
+                  key={index}
+                  itemType="nft"
+                  messageType={el.transferType}
+                  id={el.id}
+                  totalUpvotes={0}
+                  totalMirror={0}
+                  refetchInfo={refetchInfo}
+                  profileId={id as string}
+                  txHash={el.transactionHash}
+                  blockchainType={el.blockchainType == 0 ? 'ETHEREUM' : 'POLYGON'}
+                  contractAddress={el.contractAddress}
+                  isMirror={el.isMirror}
+                  isAdmin={isAdmin}
+                  creator={''}
+                />
+              )
+              // }
+              // return <></>
             })
           ) : (
             feeds?.publications.items.map((el: any, index: number) => {

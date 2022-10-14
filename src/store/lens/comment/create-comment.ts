@@ -10,8 +10,6 @@ export const createComment = async (
   contentURI: string,
   signer: any
 ) => {
-  console.log(profileId, pubId, contentURI, signer)
-
   // hard coded to make the code example clear
   const createCommentRequest = {
     profileId,
@@ -62,7 +60,6 @@ export const createComment = async (
     })
 
     await tx.wait(1)
-    console.log(tx.hash)
   } catch (error) {
     console.error('Something went wrong', error)
   }
