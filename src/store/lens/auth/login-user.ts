@@ -8,8 +8,6 @@ export const login = async (address: string, lib: any) => {
   // we request a challenge from the server
   const challengeResponse = await generateChallenge(address)
 
-  console.log('challengeRes', challengeResponse)
-
   // sign the text with the wallet
   const signature = await signMessage(lib, challengeResponse.data.challenge.text)
 
@@ -18,7 +16,6 @@ export const login = async (address: string, lib: any) => {
   const { accessToken } = data.data.authenticate
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const { refreshToken } = data.data.authenticate
-  console.log(accessToken)
   localStorage.setItem('auth_token', accessToken)
   localStorage.setItem('refreshToken', refreshToken)
 

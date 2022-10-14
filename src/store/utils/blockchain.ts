@@ -6,7 +6,6 @@ export const checkAndChangeChainId = async () => {
   const isMainnet = false
   // @ts-ignore
   const chain = Number.parseInt(window.ethereum.chainId, 16)
-  console.log(chain, ChainId.Mumbai, `0x${ChainId.Mumbai.toString(16)}`)
   if (!isMainnet) {
     if (chain !== ChainId.Mumbai) {
       try {
@@ -17,8 +16,6 @@ export const checkAndChangeChainId = async () => {
         })
       } catch (error: any) {
         if (error.code === 4902) {
-          console.log('sss')
-
           // @ts-ignore
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',

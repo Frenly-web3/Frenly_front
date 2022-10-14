@@ -21,8 +21,6 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
 
   const { library } = useEthers()
 
-  console.log(comments)
-
   async function commentHandler() {
     setIsLoading(true)
     const res = await fetch('/api/comment', {

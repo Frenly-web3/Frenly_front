@@ -160,7 +160,7 @@ export const authApi = createApi({
     uploadImage: builder.mutation<any, { avatar: File }>({
       query: args => {
         const formData = new FormData()
-        formData.append('avatar', args.avatar)
+        formData.append('avatar', args.avatar, args.avatar.name)
         // console.log(formData)
         // for (const [name, value] of formData) {
         //   console.log(`${name} = ${value}`) // key1=value1, потом key2=value2

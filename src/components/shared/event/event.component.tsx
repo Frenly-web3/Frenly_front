@@ -144,21 +144,16 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const [mirrorPost] = useMirrorPostMutation()
-  console.log(userInfo)
 
   const addPost = async () => {
     setIsLoading(true)
     if (id) {
-      console.log(id)
-
       try {
         const publishedPost = isAdmin
           ? await publishAdminPost({ contentId: id.toString() })
           : await publishContent({
               contentId: id.toString(),
             })
-        // @ts-ignore
-        console.log('publishedPot:', publishedPost)
 
         const postOptionsInfo = {
           variables: {
@@ -203,12 +198,6 @@ export default function Event(props: IEventProperties): JSX.Element {
             deadline: typedData.value.deadline,
           },
         })
-        console.log(
-          'lensId',
-          `0x${Number(receipt?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-            receipt?.logs[0]?.topics[2]
-          ).toString(16)}`
-        )
         const bindArguments = {
           contentId: id.toString(),
           lensId:
@@ -246,7 +235,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   //   ;(async () => {
   //     if (image && typeof id !== 'number') {
   //       const imageURL = await fetch(image)
-  //       console.log(imageURL)
+  //       (imageURL)
   //       // eslint-disable-next-line unicorn/no-await-expression-member
   //       setImageUrl((await imageURL.json()).image)
   //     }
@@ -254,12 +243,8 @@ export default function Event(props: IEventProperties): JSX.Element {
   // }, [image])
 
   const likeHandler = async () => {
-    console.log('myProfileId', myProfileId)
     setIsLikeRequest(true)
     if (myProfileId) {
-      console.log(id)
-      console.log('REACTION BEFORE', publicationIsReact.publications.items[0].reaction)
-
       if (publicationIsReact.publications.items[0].reaction == null) {
         try {
           setIsLikeRequest(true)
@@ -298,7 +283,6 @@ export default function Event(props: IEventProperties): JSX.Element {
     await refetch()
     await refetchPost()
     setIsLikeRequest(false)
-    console.log('REACTION AFTER', publicationIsReact.publications.items[0].reaction)
   }
 
   const mirrorHandler = async () => {
@@ -313,8 +297,6 @@ export default function Event(props: IEventProperties): JSX.Element {
           },
         },
       })
-
-      console.log(typeD)
 
       const typedData = typeD?.data?.createMirrorTypedData?.typedData
 
@@ -345,8 +327,6 @@ export default function Event(props: IEventProperties): JSX.Element {
         },
       })
 
-      console.log(tx?.logs)
-
       const newLensId =
         Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
           ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
@@ -355,8 +335,6 @@ export default function Event(props: IEventProperties): JSX.Element {
           : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
               tx?.logs[0]?.topics[2]
             ).toString(16)}`
-
-      console.log('ids', id, newLensId)
 
       await mirrorPost({ lensId: id as string, newLensId })
     } catch (error_) {
@@ -485,7 +463,6 @@ export default function Event(props: IEventProperties): JSX.Element {
               : to}
           </a>
         </h4>
-        <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
 
         <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
           {image ? (
@@ -527,18 +504,21 @@ export default function Event(props: IEventProperties): JSX.Element {
             isAddCap ? 'justify-center mt-2' : 'justify-between'
           )}
         >
-          <a
-            target="_blank"
-            href={
-              blockchainType == 'ETHEREUM'
-                ? `https://etherscan.io/tx/${txHash}`
-                : `https://mumbai.polygonscan.com/tx/${txHash}`
-            }
-            className="text-sm text-main"
-            rel="noreferrer"
-          >
-            Check on {blockchainType === 'ETHEREUM' ? 'Etherscan' : 'Polygonscan'}
-          </a>
+          <div className="flex flex-col">
+            <div className="text-sm font-normal text-gray-darker mt-1">{info}</div>
+            <a
+              target="_blank"
+              href={
+                blockchainType == 'ETHEREUM'
+                  ? `https://etherscan.io/tx/${txHash}`
+                  : `https://mumbai.polygonscan.com/tx/${txHash}`
+              }
+              className="text-sm text-main"
+              rel="noreferrer"
+            >
+              {blockchainType === 'ETHEREUM' ? 'Etherscan' : 'Polygonscan'}
+            </a>
+          </div>
           {isAddCap === false && (
             <div className="flex items-center">
               <button
