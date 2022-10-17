@@ -59,7 +59,7 @@ export default function FeedPage() {
         <section className="relative">
           {dataFeeds &&
             dataFeeds?.data.map((el: any) => {
-              const { lensId, image } = el
+              const { lensId, image, isMirror } = el
 
               let index
               drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
@@ -73,7 +73,7 @@ export default function FeedPage() {
                   drafts?.data?.publications?.items[Number(index)]
                 console.log('===================================================')
                 console.log('Lens', id)
-                console.log('Back', lensId)
+                console.log('Back', el)
                 console.log('===================================================')
 
                 return (
@@ -82,7 +82,7 @@ export default function FeedPage() {
                     to={metadata?.attributes[3]?.value}
                     contractAddress={metadata?.attributes[1]?.value}
                     info={metadata?.name}
-                    image={dataFeeds?.data[Number(index)]?.image}
+                    image={metadata?.attributes[9]?.value}
                     key={id}
                     name={profile.handle}
                     date={createdAt}
@@ -97,7 +97,7 @@ export default function FeedPage() {
                     refetchInfo={refetchInfo}
                     txHash={metadata.attributes[8].value}
                     blockchainType={metadata.attributes[7].value}
-                    isMirror={dataFeeds?.data[Number(index)]?.isMirror}
+                    isMirror={isMirror}
                     handleMirror={mirrorOf?.profile.ownedBy}
                     creator={profile.ownedBy}
                   />
