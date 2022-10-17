@@ -1,6 +1,7 @@
 import { createComment } from '@store/lens/comment/create-comment'
 import { useEthers } from '@usedapp/core'
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { useLoaderContext } from '../contexts/loader-context'
 import Loader from '../loader/loader.component'
@@ -22,21 +23,25 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
   const { library } = useEthers()
 
   async function commentHandler() {
-    setIsLoading(true)
-    const res = await fetch('/api/comment', {
-      method: 'POST',
-      body: JSON.stringify({ comment: commentValue, pubId }),
-    })
-    const data = await res.json()
-    setIsLoading(false)
+    try {
+      setIsLoading(true)
+      const res = await fetch('/api/comment', {
+        method: 'POST',
+        body: JSON.stringify({ comment: commentValue, pubId }),
+      })
+      const data = await res.json()
+      setIsLoading(false)
 
-    const signer = library?.getSigner()
+      const signer = library?.getSigner()
 
-    setIsLoading(true)
-    await createComment(profileId, pubId, data.contentURI, signer)
-    setCommentValue('')
-    setIsLoading(false)
-    refetchComment()
+      setIsLoading(true)
+      await createComment(profileId, pubId, data.contentURI, signer)
+    } catch {
+    } finally {
+      setCommentValue('')
+      setIsLoading(false)
+      refetchComment()
+    }
   }
 
   return (

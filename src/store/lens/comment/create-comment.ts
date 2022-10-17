@@ -1,4 +1,5 @@
 import { Contract, ethers } from 'ethers'
+import { toast } from 'react-toastify'
 
 import { lensHubABI, lensHubContract } from '../../../contract/lens-hub.contract'
 import { signedTypeData, splitSignature } from '../post/create-post.utils'
@@ -62,6 +63,7 @@ export const createComment = async (
     await tx.wait(1)
   } catch (error) {
     console.error('Something went wrong', error)
+    toast.error(String(error))
   }
 
   // 0x64464dc0de5aac614a82dfd946fc0e17105ff6ed177b7d677ddb88ec772c52d3
