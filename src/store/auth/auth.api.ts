@@ -147,6 +147,15 @@ export const authApi = createApi({
         }
       },
     }),
+    subscribeUser: builder.mutation<any, { address: string }>({
+      query: ({ address }) => {
+        return {
+          url: `user/subscribe/${address}`,
+          method: 'POST',
+          credentials: 'omit',
+        }
+      },
+    }),
     uploadInfo: builder.mutation<any, { username: string; description: string }>({
       query: args => {
         return {
@@ -231,6 +240,15 @@ export const authApi = createApi({
         }
       },
     }),
+    getFilteredFeed: builder.query<any, { take: number; skip: number }>({
+      query: args => {
+        return {
+          url: `content/filtered?take=${args.take}&skip=${args.skip}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
     getUnpublishedContent: builder.query<any, any>({
       query: args => {
         return {
@@ -264,4 +282,6 @@ export const {
   useGetUserInfoQuery,
   useUploadInfoMutation,
   useUploadImageMutation,
+  useSubscribeUserMutation,
+  useGetFilteredFeedQuery,
 } = authApi

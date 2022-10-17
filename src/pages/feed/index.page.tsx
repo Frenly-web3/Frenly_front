@@ -1,13 +1,10 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
-import {
-  useGetFeedQuery,
-  useGetUnpublishedContentQuery,
-  useHasLanceProfileQuery,
-} from '@store/auth/auth.api'
+import { useGetFilteredFeedQuery, useHasLanceProfileQuery } from '@store/auth/auth.api'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { useEthers } from '@usedapp/core'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -24,7 +21,8 @@ export default function FeedPage() {
     skip: !isReloadProfile,
   })
 
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
+  // const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 20, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -35,8 +33,8 @@ export default function FeedPage() {
       },
     },
   })
-
-  console.log(drafts)
+  // console.log('Back', dataFeeds)
+  // console.log('Lens', drafts)
   const refetchInfo = async () => {
     refetchFeeds()
     await drafts.refetch()
@@ -55,31 +53,21 @@ export default function FeedPage() {
       <Header title="frenly feed" showAddPost accountId={accountId} />
 
       <main>
-        {/* <div className={styles.address}>
-            {`${'0x0e2f7D1a076100059824c14021919eFB509bA25b'.slice(
-              0,
-              7
-            )}...${'0x0e2f7D1a076100059824c14021919eFB509bA25b'.slice(-7)}`}
-          </div> */}
-
-        {/* <input className={styles.search} placeholder="Address"></input> */}
-        {/* <h3 className={styles.postsTitle}>Posts</h3> */}
-
         <section className="relative">
           {dataFeeds &&
-            drafts?.data?.publications?.items
-              // .filter((el: any) => {
-              //   return el.profile.ownedBy === process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-              // })
-              .map((el: any) => {
-                const { createdAt, collectModule, profile, metadata, id, stats, mirrorOf } = el
+            dataFeeds?.data.map((el: any) => {
+              const { lensId, image } = el
 
-                let index
-                dataFeeds?.data?.forEach((element: any, _index: number) => {
-                  if (element.lensId == id) {
-                    index = _index
-                  }
-                })
+              let index
+              drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
+                if (element.id == lensId) {
+                  index = _index
+                }
+              })
+
+              if (drafts?.data?.publications?.items[Number(index)]) {
+                const { createdAt, profile, metadata, id, stats, mirrorOf } =
+                  drafts?.data?.publications?.items[Number(index)]
 
                 return (
                   <Event
@@ -107,7 +95,9 @@ export default function FeedPage() {
                     creator={profile.ownedBy}
                   />
                 )
-              })}
+              }
+              return <></>
+            })}
         </section>
       </main>
 
