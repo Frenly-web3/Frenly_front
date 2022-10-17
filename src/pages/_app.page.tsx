@@ -1,4 +1,5 @@
 import '../styles/global.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
 import { LoaderContextProvider } from '@components/shared/contexts/loader-context'
@@ -7,6 +8,7 @@ import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
 
 const config: Config = {
   readOnlyChainId: ChainId.BSCTestnet,
@@ -57,6 +59,18 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <Provider store={store}>
           <LoaderContextProvider>
             <Component {...pageProps} />
+            <ToastContainer
+              position="bottom-left"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
           </LoaderContextProvider>
         </Provider>
       </DAppProvider>

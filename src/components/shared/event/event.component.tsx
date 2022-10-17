@@ -27,6 +27,7 @@ import moment from 'moment'
 import error from 'next/error'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
 
 import { useUpdate } from '../header/use-update-user.hook'
@@ -330,7 +331,8 @@ export default function Event(props: IEventProperties): JSX.Element {
 
       await mirrorPost({ lensId: id as string, newLensId })
     } catch (error_) {
-      console.log(error_)
+      console.log(String(error_))
+      toast.error(String(error_))
     } finally {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       refetchInfo && (await refetchInfo())
