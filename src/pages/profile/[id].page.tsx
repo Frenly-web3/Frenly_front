@@ -8,6 +8,7 @@ import {
   useAddAddressForTrackMutation,
   useGetAdminPostQuery,
   useGetUnpublishedContentQuery,
+  useSubscribeUserMutation,
 } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
@@ -64,6 +65,8 @@ export default function ProfilePage() {
     {},
     { skip: !isAdmin }
   )
+  const [subscribeUser] = useSubscribeUserMutation()
+  console.log(dataProfile)
 
   useEffect(() => {
     if (isAdmin) {
@@ -122,6 +125,7 @@ export default function ProfilePage() {
           deadline: typedData.value.deadline,
         },
       })
+      await subscribeUser({ address: dataProfile?.profile?.ownedBy as string })
     } catch (error_) {
       console.log(error_)
     } finally {
