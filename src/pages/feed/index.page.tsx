@@ -71,6 +71,10 @@ export default function FeedPage() {
               if (drafts?.data?.publications?.items[Number(index)]) {
                 const { createdAt, profile, metadata, id, stats, mirrorOf } =
                   drafts?.data?.publications?.items[Number(index)]
+                console.log('===================================================')
+                console.log('Lens', id)
+                console.log('Back', lensId)
+                console.log('===================================================')
 
                 return (
                   <Event
