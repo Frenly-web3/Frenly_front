@@ -288,7 +288,7 @@ export default function ProfilePage() {
                   blockchainType={metadata?.attributes[7]?.value}
                   contractAddress={metadata?.attributes[1]?.value}
                   isMirror={!!mirrorOf}
-                  handleMirror={mirrorOf?.profile?.handle}
+                  handleMirror={mirrorOf?.profile?.ownedBy}
                   creator={profile.ownedBy}
                 />
               )

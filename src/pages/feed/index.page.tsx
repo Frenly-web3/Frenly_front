@@ -9,6 +9,7 @@ import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { useEthers } from '@usedapp/core'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
+import { lensHubABI } from 'src/contract/lens-hub.contract'
 
 import styles from './posts.module.scss'
 
@@ -26,7 +27,9 @@ export default function FeedPage() {
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
-        publicationIds: dataFeeds?.data.map((el: any) => el.lensId),
+        publicationIds: dataFeeds?.data
+          .filter((el: any) => el.lensId !== null)
+          .map((el: any) => el.lensId),
         // profileId: accountId,
         // publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
         // limit: 10,
