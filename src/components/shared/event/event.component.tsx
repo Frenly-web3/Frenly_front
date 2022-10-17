@@ -103,15 +103,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const [isLikeRequest, setIsLikeRequest] = useState(false)
-  const {
-    userInfo,
-    updateUserInfo,
-    refetchUserInfo,
-    name: username,
-    description,
-    avatar,
-    uploadImage,
-  } = useUpdate(creator)
+  const { name: username, description, avatar, uploadImage } = useUpdate(creator)
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -403,7 +395,7 @@ export default function Event(props: IEventProperties): JSX.Element {
           </div>
         )}
 
-        <h4 className="text-base font-semibold">
+        <h4 className="text-base font-semibold break-words">
           {creator === process.env.NEXT_PUBLIC_ADMIN_ADDRESS && (
             <>
               <a
