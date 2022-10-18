@@ -66,7 +66,6 @@ export default function ProfilePage() {
     { skip: !isAdmin }
   )
   const [subscribeUser] = useSubscribeUserMutation()
-  console.log(dataProfile)
 
   useEffect(() => {
     if (isAdmin) {
@@ -168,6 +167,7 @@ export default function ProfilePage() {
 
   const refetchInfo = async () => {
     await refetchUnpublishedContent()
+    await refetchAdminPosts()
   }
 
   const addAddressHandler = async () => {

@@ -249,6 +249,28 @@ export const authApi = createApi({
         }
       },
     }),
+    getAdminContentMetadata: builder.query<any, { contentId: string }>({
+      query: ({ contentId }) => {
+        console.log(contentId)
+
+        return {
+          url: `admin/content/${contentId}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
+    getContentMetadata: builder.query<any, { contentId: string }>({
+      query: ({ contentId }) => {
+        console.log(contentId)
+
+        return {
+          url: `content/${contentId}/metadata`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+    }),
     getUnpublishedContent: builder.query<any, any>({
       query: args => {
         return {
@@ -284,4 +306,6 @@ export const {
   useUploadImageMutation,
   useSubscribeUserMutation,
   useGetFilteredFeedQuery,
+  useGetContentMetadataQuery,
+  useGetAdminContentMetadataQuery,
 } = authApi

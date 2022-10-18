@@ -7,7 +7,9 @@ import Header from '@components/shared/header/header.component'
 import { useGetFilteredFeedQuery, useHasLanceProfileQuery } from '@store/auth/auth.api'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { useEthers } from '@usedapp/core'
+import router from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 import { lensHubABI } from 'src/contract/lens-hub.contract'
 
@@ -36,7 +38,7 @@ export default function FeedPage() {
       },
     },
   })
-  // console.log('Back', dataFeeds)
+  // console.log('Back', dataFeeds?.data)
   // console.log('Lens', drafts)
   const refetchInfo = async () => {
     refetchFeeds()
@@ -46,6 +48,8 @@ export default function FeedPage() {
   useEffect(() => {
     if (account) {
       reloadProfile(true)
+    } else {
+      toast.warn('Connect your wallet')
     }
   }, [account])
 
@@ -58,53 +62,51 @@ export default function FeedPage() {
       <main>
         <section className="relative">
           {dataFeeds &&
-            dataFeeds?.data.map((el: any) => {
-              const { lensId, image, isMirror } = el
+            dataFeeds?.data
+              .filter((el: any) => el.lensId !== null)
+              .map((el: any) => {
+                const { lensId, image, isMirror } = el
 
-              let index
-              drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
-                if (element.id == lensId) {
-                  index = _index
+                let index
+                drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
+                  if (element.id == lensId) {
+                    index = _index
+                  }
+                })
+
+                if (drafts?.data?.publications?.items[Number(index)]) {
+                  const { createdAt, profile, metadata, id, stats, mirrorOf } =
+                    drafts?.data?.publications?.items[Number(index)]
+
+                  return (
+                    <Event
+                      from={metadata?.attributes[4]?.value}
+                      to={metadata?.attributes[3]?.value}
+                      contractAddress={metadata?.attributes[1]?.value}
+                      info={metadata?.name}
+                      image={metadata?.attributes[9]?.value}
+                      key={id}
+                      name={profile.handle}
+                      date={createdAt}
+                      showDate={false}
+                      showAuthor
+                      messageType={metadata.attributes[5].value}
+                      itemType="nft"
+                      totalUpvotes={stats.totalUpvotes}
+                      totalMirror={stats.totalAmountOfMirrors}
+                      id={id}
+                      profileId={profile.id}
+                      refetchInfo={refetchInfo}
+                      txHash={metadata.attributes[8].value}
+                      blockchainType={metadata.attributes[7].value}
+                      isMirror={isMirror}
+                      handleMirror={mirrorOf?.profile.ownedBy}
+                      creator={profile.ownedBy}
+                    />
+                  )
                 }
-              })
-
-              if (drafts?.data?.publications?.items[Number(index)]) {
-                const { createdAt, profile, metadata, id, stats, mirrorOf } =
-                  drafts?.data?.publications?.items[Number(index)]
-                console.log('===================================================')
-                console.log('Lens', id)
-                console.log('Back', el)
-                console.log('===================================================')
-
-                return (
-                  <Event
-                    from={metadata?.attributes[4]?.value}
-                    to={metadata?.attributes[3]?.value}
-                    contractAddress={metadata?.attributes[1]?.value}
-                    info={metadata?.name}
-                    image={metadata?.attributes[9]?.value}
-                    key={id}
-                    name={profile.handle}
-                    date={createdAt}
-                    showDate={false}
-                    showAuthor
-                    messageType={metadata.attributes[5].value}
-                    itemType="nft"
-                    totalUpvotes={stats.totalUpvotes}
-                    totalMirror={stats.totalAmountOfMirrors}
-                    id={id}
-                    profileId={profile.id}
-                    refetchInfo={refetchInfo}
-                    txHash={metadata.attributes[8].value}
-                    blockchainType={metadata.attributes[7].value}
-                    isMirror={isMirror}
-                    handleMirror={mirrorOf?.profile.ownedBy}
-                    creator={profile.ownedBy}
-                  />
-                )
-              }
-              return <></>
-            })}
+                return <></>
+              })}
         </section>
       </main>
 
