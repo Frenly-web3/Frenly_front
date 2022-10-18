@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import { MetamaskError } from '@components/metamask-error/metamask-error.component'
+import Loader from '@components/shared/loader/loader.component'
 import {
   authApi,
   useGetNonceQuery,
@@ -24,16 +25,9 @@ export default function AuthPage() {
   const [haveLensProfile] = useState<boolean>(false)
   const [isReloadProfile, reloadProfile] = useState(false)
   const [noMetamask, setNoMetamask] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { account, chainId, library, activateBrowserWallet, error: errorMetamask } = useEthers()
   const dataHasLens = useHasLanceProfileQuery(account || '', { skip: !account })
-  // const [createProfile, data] = useMutation(CREATE_PROFILE)
-  // const profile = useQuery(GET_DEFAULT_PROFILES, {
-  //   variables: {
-  //     request: {
-  //       ethereumAddress: account,
-  //     },
-  //   },
-  // })
 
   const { data: dataNonce } = useGetNonceQuery(account || '', { skip: !account })
 
@@ -53,7 +47,14 @@ export default function AuthPage() {
   const router = useRouter()
 
   const connectWallet = async () => {
-    await activateBrowserWallet()
+    setIsLoading(true)
+    try {
+      activateBrowserWallet()
+    } catch (error_) {
+      console.log(error_)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const createProfileHandler = async () => {
@@ -75,6 +76,7 @@ export default function AuthPage() {
   // const signUp = async () => {}
 
   const signIn = async () => {
+    setIsLoading(true)
     try {
       let dataLogin
       if (account) {
@@ -92,18 +94,20 @@ export default function AuthPage() {
         if (Number(countProfile) < 1) {
           await createProfileHandler()
         }
-
-        reloadProfile(true)
         router.push('/feed')
       }
     } catch (error_) {
       console.log(error_)
+    } finally {
+      reloadProfile(true)
+      setIsLoading(false)
     }
   }
 
   return (
     <>
       <Meta title="Frenly" description="Log In Page" />
+      <Loader show={isLoading} />
       <MetamaskError show={noMetamask} />
       <div className="container flex flex-col items-center h-screen">
         <div className="flex flex-1 flex-col items-center justify-center">

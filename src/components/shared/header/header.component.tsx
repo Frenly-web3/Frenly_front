@@ -4,6 +4,7 @@ import { useEthers } from '@usedapp/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useGetWalletProfileId } from 'src/contract/lens-hub.api'
 
 import Loader from '../loader/loader.component'
@@ -62,6 +63,13 @@ export default function Header(props: IHeaderProperties): JSX.Element {
         : '/assets/images/temp-avatar.png'
     )
   }, [nickname, address, name, description, avatar, isOwner])
+
+  useEffect(() => {
+    if (!account) {
+      toast.warn('Connect your wallet')
+      // router.push('/feed')
+    }
+  }, [account, router])
 
   const saveHandle = async () => {
     setIsLoading(true)
@@ -136,14 +144,12 @@ export default function Header(props: IHeaderProperties): JSX.Element {
             ) : (
               <h3
                 onDoubleClick={() => isOwner && setIsEdit(true)}
-                className={`py-2 z-100 text-xl font-bold ${isOwner && 'cursor-pointer'}`}
+                className={`py-2 z-100 text-xl pr-4 font-bold ${isOwner && 'cursor-pointer'}`}
               >
                 {nameValue}
               </h3>
             )}
-            <button>
-              <Image src="/assets/icons/share.svg" alt="back" width={18} height={24} />
-            </button>
+            <button></button>
           </div>
           <div
             className={`m-auto mt-3 ${

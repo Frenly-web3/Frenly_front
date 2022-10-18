@@ -49,16 +49,18 @@ export const baseQueryWithReauth: BaseQueryFn<
           api,
           extraOptions
         )
+        console.log(refreshResult)
 
         if (refreshResult.data) {
           // @ts-ignore
-          api.dispatch(refreshToken(refreshResult.data))
-
+          localStorage.setItem('access-token', refreshResult.data.accessToken)
+          // @ts-ignore
+          localStorage.setItem('refresh-token', refreshResult.data.refreshToken)
           // retry the initial query
           result = await baseQuery(arguments_, api, extraOptions)
         } else {
-          api.dispatch(logout())
-          // window.location.pathname = '/login'
+          localStorage.clear()
+          window.location.pathname = '/auth'
         }
       } finally {
         release()

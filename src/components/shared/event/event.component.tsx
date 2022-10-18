@@ -3,9 +3,12 @@ import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
 import styles from '@components/shared/event/event.module.scss'
+import { useAppDispatch } from '@hooks/use-app-dispatch.hook'
 import {
+  authApi,
   useBindAdminPostMutation,
   useBindWithLensIdMutation,
+  useGetContentMetadataQuery,
   useGetUnpublishedContentQuery,
   useMirrorPostMutation,
   usePublishAdminPostMutation,
@@ -89,7 +92,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   } = props
 
   const { account, library } = useEthers()
-
+  const dispatch = useAppDispatch()
   const myProfileId = useGetWalletProfileId(account || '')
   const { state: postState, send: postWithSig } = usePostWithSig()
   const { state: mirrorState, send: mirrorWithSig } = useMirrorWithSig()
@@ -140,20 +143,25 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   const addPost = async () => {
     setIsLoading(true)
+
     if (id) {
       try {
-        const publishedPost = isAdmin
-          ? await publishAdminPost({ contentId: id.toString() })
-          : await publishContent({
-              contentId: id.toString(),
-            })
+        const contentMetadata = await (isAdmin
+          ? dispatch(
+              authApi.endpoints.getAdminContentMetadata.initiate({ contentId: id.toString() })
+            ).unwrap()
+          : dispatch(
+              authApi.endpoints.getContentMetadata.initiate({ contentId: id.toString() })
+            ).unwrap())
+
+        console.log(contentMetadata)
 
         const postOptionsInfo = {
           variables: {
             request: {
               profileId: myProfileId,
               // @ts-ignore
-              contentURI: publishedPost.data.data,
+              contentURI: contentMetadata.data,
               collectModule: {
                 revertCollectModule: true,
               },
@@ -191,6 +199,13 @@ export default function Event(props: IEventProperties): JSX.Element {
             deadline: typedData.value.deadline,
           },
         })
+
+        await (isAdmin
+          ? publishAdminPost({ contentId: id.toString() })
+          : publishContent({
+              contentId: id.toString(),
+            }))
+
         const bindArguments = {
           contentId: id.toString(),
           lensId:
@@ -464,6 +479,7 @@ export default function Event(props: IEventProperties): JSX.Element {
               src={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
               alt="image"
               className="m-auto"
+              onDoubleClick={likeHandler}
             />
           ) : (
             <img src={'/assets/images/eyes.png'} alt="image" className="m-auto mt-30 mb-30" />
