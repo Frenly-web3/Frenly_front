@@ -44,7 +44,7 @@ const Comment = ({ metadata, profile, createdAt }: IComment) => {
           </div>
           <div className="text-sm text-gray">{commentDate}</div>
         </div>
-        <div className="text-base font-normal text-gray">{metadata.content}</div>
+        <div className="text-base font-normal text-gray break-words">{metadata.content}</div>
       </figcaption>
     </figure>
   )

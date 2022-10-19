@@ -13,6 +13,7 @@ import {
   useMirrorPostMutation,
   usePublishAdminPostMutation,
   usePublishContentMutation,
+  useRemoveAdminContentMutation,
   useRemoveContentMutation,
 } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
@@ -102,6 +103,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [publishAdminPost] = usePublishAdminPostMutation()
   const [bindAdminContent] = useBindAdminPostMutation()
   const [removeContent] = useRemoveContentMutation()
+  const [removeAdminContent] = useRemoveAdminContentMutation()
   const [isCommentsOpen, setIsCommentsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
@@ -109,6 +111,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [isLikeRequest, setIsLikeRequest] = useState(false)
   const { name: username, description, avatar, uploadImage } = useUpdate(creator)
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
+    skip: isAddCap,
     variables: {
       request: {
         commentsOf: id,
@@ -117,6 +120,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const { data: postData, refetch: refetchPost } = useQuery(GET_POST_QUERY, {
+    skip: isAddCap,
     variables: {
       request: {
         publicationId: id,
@@ -127,7 +131,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
 
   const [imageUrl, setImageUrl] = useState()
-  const { data: publicationIsReact, refetch } = useQuery(GET_REACTIONS, {
+  const { data: publicationIsReact, refetch: refetchLikes } = useQuery(GET_REACTIONS, {
     variables: {
       request: {
         publicationIds: [id],
@@ -222,9 +226,9 @@ export default function Event(props: IEventProperties): JSX.Element {
         isAdmin ? await bindAdminContent(bindArguments) : await bindContentIdWithLens(bindArguments)
       } catch (error_) {
         console.log(error_)
+        toast.error(String(error_))
       } finally {
         setIsLoading(false)
-        refetch()
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         refetchInfo && (await refetchInfo())
       }
@@ -232,11 +236,20 @@ export default function Event(props: IEventProperties): JSX.Element {
   }
 
   const declinePost = async () => {
-    if (id) {
-      await removeContent({ contentId: id.toString() })
+    try {
+      setIsLoading(true)
+      if (id) {
+        await (isAdmin
+          ? removeAdminContent({ contentId: id.toString() })
+          : removeContent({ contentId: id.toString() }))
+      }
+    } catch (error_) {
+      toast.error(String(error_))
+    } finally {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      refetchInfo && (await refetchInfo())
+      setIsLoading(false)
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && (await refetchInfo())
   }
 
   // useEffect(() => {
@@ -288,7 +301,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     refetchInfo && (await refetchInfo())
-    await refetch()
+    await refetchLikes()
     await refetchPost()
     setIsLikeRequest(false)
   }
@@ -565,6 +578,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         {isCommentsOpen && (
           <Comments
             refetchComment={refetchComments}
+            refetchInfo={refetchInfo}
             comments={comments}
             pubId={id}
             profileId={myProfileId}

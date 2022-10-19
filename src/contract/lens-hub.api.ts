@@ -61,3 +61,8 @@ export function useUnfollowWithSig() {
   const { state, send } = useContractFunction(lensContract, 'burnWithSig')
   return { state, send }
 }
+
+export function useSetFollowModuleWithSig() {
+  const { state, send } = useContractFunction(lensContract, 'setFollowModuleWithSig')
+  return { state, send }
+}

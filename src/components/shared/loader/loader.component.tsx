@@ -12,7 +12,7 @@ export const Loader = ({ show }: any) => {
         role="dialog"
         aria-modal="true"
       >
-        <div className="min-h-screen pt-4 pb-20 text-center block p-0">
+        <div className="min-h-screen pb-20 text-center block p-0">
           <div
             className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
             aria-hidden="true"
