@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
@@ -11,17 +11,23 @@ import {
   useSubscribeUserMutation,
 } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
+import { APPROVE_MODULE } from '@store/lens/account/approve-module.query'
+import { SET_FOLLOW_DATA } from '@store/lens/account/set-follow.mutation'
 import { CREATE_UNFOLLOW_TYPED_DATA } from '@store/lens/account/unfollow.mutation'
 // import { IS_FOLLOWING } from '@store/lens/account/is-follow.query'
 import { GET_DEFAULT_PROFILES } from '@store/lens/get-profile.query'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { signedTypeData, splitSignature } from '@store/lens/post/create-post.utils'
-import { useEthers } from '@usedapp/core'
-import { useRouter } from 'next/router'
+import { useEthers, useSendTransaction } from '@usedapp/core'
+import { ethers } from 'ethers'
+import router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import { LENS_FOLLOW_NFT_ABI } from 'src/contract/lens-follow.contract'
 import {
   useFollowWithSig,
   useGetWalletProfileId,
+  useSetFollowModuleWithSig,
   useUnfollowWithSig,
 } from 'src/contract/lens-hub.api'
 
@@ -46,9 +52,14 @@ export default function ProfilePage() {
       },
     },
   })
+  const { sendTransaction: sendTx } = useSendTransaction()
+  const [setFollowModule] = useMutation(SET_FOLLOW_DATA)
+  const [approveModule] = useLazyQuery(APPROVE_MODULE)
   const { send: followWithSig, state: followWithSigState } = useFollowWithSig()
   const { send: unfollowWithSig, state: unfollowWithSigState } = useUnfollowWithSig()
+  const { send: setFollowModuleWithSig } = useSetFollowModuleWithSig()
   const { data: feeds, refetch } = useQuery(GET_PUBLICATIONS, {
+    skip: id == accountId,
     variables: {
       request: {
         // publicationIds: dataFeeds?.data?.data,
@@ -61,11 +72,13 @@ export default function ProfilePage() {
   const [followToUser, dataFollowToUser] = useMutation(FOLLOW_USER)
   const [unfollowToUser, dataUnfollowToUser] = useMutation(CREATE_UNFOLLOW_TYPED_DATA)
   const [addAddressToTrack] = useAddAddressForTrackMutation()
+  const [isFreeFollow, setFreeFollow] = useState(dataProfile?.profile?.followModule !== null)
   const { data: dataAdminPosts, refetch: refetchAdminPosts } = useGetAdminPostQuery(
     {},
     { skip: !isAdmin }
   )
   const [subscribeUser] = useSubscribeUserMutation()
+  console.log(dataProfile?.profile)
 
   useEffect(() => {
     if (isAdmin) {
@@ -84,18 +97,59 @@ export default function ProfilePage() {
     } else {
       setIsLoading(true)
     }
-  }, [account, dataProfile])
+    if (id == null) {
+      toast.warn('Connect your wallet')
+      // router.push('/auth')
+    }
+  }, [account, dataProfile, id])
 
   const followHandler = async () => {
     try {
+      setIsLoading(true)
+      if (dataProfile?.profile?.followModule !== null) {
+        const approveResult = await approveModule({
+          variables: {
+            request: {
+              currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+              value: '0.01',
+              followModule: 'FeeFollowModule',
+            },
+          },
+        })
+        console.log('asdas', approveResult)
+
+        const txApprove = await sendTx({
+          to: approveResult.data.generateModuleCurrencyApprovalData.to,
+          from: approveResult.data.generateModuleCurrencyApprovalData.from,
+          data: approveResult.data.generateModuleCurrencyApprovalData.data,
+        })
+
+        console.log('approve module: txHash mined', txApprove)
+      }
+
       const result = await followToUser({
         variables: {
           request: {
-            follow: [
-              {
-                profile: id,
-              },
-            ],
+            follow:
+              dataProfile.profile.followModule == null
+                ? [
+                    {
+                      profile: id,
+                    },
+                  ]
+                : [
+                    {
+                      profile: id,
+                      followModule: {
+                        feeFollowModule: {
+                          amount: {
+                            currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+                            value: '0.01',
+                          },
+                        },
+                      },
+                    },
+                  ],
           },
         },
       })
@@ -127,6 +181,7 @@ export default function ProfilePage() {
       await subscribeUser({ address: dataProfile?.profile?.ownedBy as string })
     } catch (error_) {
       console.log(error_)
+      toast.error(String(error_))
     } finally {
       refetchProfile()
       setIsLoading(false)
@@ -134,35 +189,109 @@ export default function ProfilePage() {
   }
 
   const unfollowHandler = async () => {
-    const result = await unfollowToUser({
-      variables: {
-        request: {
-          profile: id,
+    try {
+      setIsLoading(true)
+      console.log(id)
+
+      const result = await unfollowToUser({
+        variables: {
+          request: {
+            profile: id,
+          },
         },
-      },
-    })
+      })
 
-    const typedData = result?.data?.createUnfollowTypedData?.typedData
+      const typedData = result?.data?.createUnfollowTypedData?.typedData
+      const signer = library?.getSigner()
 
-    const signer = library?.getSigner()
+      // if (!typedData) return
+      const signature = await signedTypeData(
+        typedData.domain,
+        typedData.types,
+        typedData.value,
+        signer
+      )
+      const { v, r, s } = splitSignature(signature)
 
-    // if (!typedData) return
-    const signature = await signedTypeData(
-      typedData.domain,
-      typedData.types,
-      typedData.value,
-      signer
-    )
-    const { v, r, s } = splitSignature(signature)
+      // load up the follower nft contract
+      const followNftContract = new ethers.Contract(
+        typedData.domain.verifyingContract,
+        LENS_FOLLOW_NFT_ABI,
+        signer
+      )
+      const burnTx = await followNftContract.burnWithSig(typedData.value.tokenId, {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      })
 
-    const tx = await unfollowWithSig(typedData.value.tokenId, {
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
-    })
+      await burnTx.wait()
+    } catch (error_) {
+      toast.error(String(error_))
+    } finally {
+      refetchProfile()
+      setIsLoading(false)
+    }
+  }
 
-    refetchProfile()
+  const changeFollowModule = async () => {
+    try {
+      setIsLoading(true)
+
+      const result = await setFollowModule({
+        variables: {
+          request: {
+            profileId: accountId,
+            followModule: isFreeFollow
+              ? {
+                  freeFollowModule: true,
+                }
+              : {
+                  feeFollowModule: {
+                    amount: {
+                      currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+                      value: '0.01',
+                    },
+                    recipient: account,
+                  },
+                },
+          },
+        },
+      })
+
+      const typedData = result?.data?.createSetFollowModuleTypedData?.typedData
+
+      console.log('set follow module: typedData', typedData)
+
+      const signer = library?.getSigner()
+
+      const signature = await signedTypeData(
+        typedData.domain,
+        typedData.types,
+        typedData.value,
+        signer
+      )
+      console.log('set follow module: signature', signature)
+
+      const { v, r, s } = splitSignature(signature)
+
+      const tx = await setFollowModuleWithSig({
+        profileId: typedData.value.profileId,
+        followModule: typedData.value.followModule,
+        followModuleInitData: typedData.value.followModuleInitData,
+        sig: {
+          v,
+          r,
+          s,
+          deadline: typedData.value.deadline,
+        },
+      })
+    } catch (error_) {
+      toast.error(String(error_))
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const refetchInfo = async () => {
@@ -188,10 +317,14 @@ export default function ProfilePage() {
         isOwner={id === accountId}
         nickname={dataProfile?.profile.handle}
         address={dataProfile?.profile.ownedBy}
+        isFollowModule={dataProfile?.profile?.followModule !== null}
         followHandle={followHandler}
         unfollowHandle={unfollowHandler}
         followers={dataProfile?.profile.stats.totalFollowers}
         isFollow={dataProfile?.profile.isFollowedByMe}
+        isFreeFollow={isFreeFollow}
+        setFreeFollow={setFreeFollow}
+        changeFollowModule={changeFollowModule}
       />
 
       <main>
@@ -216,9 +349,6 @@ export default function ProfilePage() {
             </button>
           </div>
         )}
-        <div className="container">
-          <h3 className="py-2 text-xl font-bold">Today</h3>
-        </div>
 
         <section>
           {!accountId ? (

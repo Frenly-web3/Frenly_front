@@ -193,6 +193,16 @@ export const authApi = createApi({
         }
       },
     }),
+    removeAdminContent: builder.mutation<any, { contentId: string }>({
+      query: args => {
+        return {
+          url: `admin/content/${args.contentId}`,
+          method: 'DELETE',
+
+          credentials: 'omit',
+        }
+      },
+    }),
     getAdminPost: builder.query<any, any>({
       query: args => {
         return {
@@ -308,4 +318,5 @@ export const {
   useGetFilteredFeedQuery,
   useGetContentMetadataQuery,
   useGetAdminContentMetadataQuery,
+  useRemoveAdminContentMutation,
 } = authApi

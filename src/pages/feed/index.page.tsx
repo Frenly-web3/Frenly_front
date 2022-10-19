@@ -48,8 +48,6 @@ export default function FeedPage() {
   useEffect(() => {
     if (account) {
       reloadProfile(true)
-    } else {
-      toast.warn('Connect your wallet')
     }
   }, [account])
 

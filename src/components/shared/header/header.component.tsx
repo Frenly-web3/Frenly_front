@@ -22,6 +22,10 @@ export interface IHeaderProperties {
   unfollowHandle?: () => void
   followers?: number
   isFollow?: boolean
+  isFreeFollow?: boolean
+  setFreeFollow?: (state: boolean) => void
+  changeFollowModule?: () => void
+  isFollowModule?: boolean
 }
 
 export default function Header(props: IHeaderProperties): JSX.Element {
@@ -37,6 +41,10 @@ export default function Header(props: IHeaderProperties): JSX.Element {
     unfollowHandle,
     followers,
     isFollow,
+    isFreeFollow,
+    setFreeFollow,
+    changeFollowModule,
+    isFollowModule,
   } = props
   const router = useRouter()
   const { account } = useEthers()
@@ -54,6 +62,7 @@ export default function Header(props: IHeaderProperties): JSX.Element {
   )
   const [fileImage, setFileImage] = useState()
   const [isLoading, setIsLoading] = useState(false)
+
   useEffect(() => {
     setNameValue(name === null ? nickname : name)
     setDescValue(description === null ? address : description)
@@ -64,12 +73,12 @@ export default function Header(props: IHeaderProperties): JSX.Element {
     )
   }, [nickname, address, name, description, avatar, isOwner])
 
-  useEffect(() => {
-    if (!account) {
-      toast.warn('Connect your wallet')
-      // router.push('/feed')
-    }
-  }, [account, router])
+  // useEffect(() => {
+  //   if (!account) {
+  //     toast.warn('Connect your wallet')
+  //     router.push('/feed')
+  //   }
+  // }, [account, router])
 
   const saveHandle = async () => {
     setIsLoading(true)
@@ -137,8 +146,8 @@ export default function Header(props: IHeaderProperties): JSX.Element {
                 type="text"
                 className={`py-2 z-100 text-xl font-bold ${
                   isOwner && 'cursor-pointer'
-                } border border-solid border-gray-100
-                rounded focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none font-normal text-gray`}
+                }  border-solid border-gray-100 border-b-2 w-70
+                 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none font-normal text-gray`}
                 placeholder="Input your name"
               />
             ) : (
@@ -183,20 +192,37 @@ export default function Header(props: IHeaderProperties): JSX.Element {
             )}
           </div>
           {isEdit ? (
-            <input
-              style={{ background: 'transparent' }}
-              value={descValue}
-              onChange={e => setDescValue(e.target.value)}
-              className="form-control
+            <>
+              <input
+                style={{ background: 'transparent' }}
+                value={descValue}
+                onChange={e => setDescValue(e.target.value)}
+                className="form-control
               flex
               justify-center
               flex-col
               text-base z-100 cursor-pointer font-normal text-gray mb-5 text-center m-auto mt-4 w-70 break-words
-              border border-solid border-gray-100 focus:bg-white focus:border-blue-600 focus:outline-none
-              rounded
+              border-b-2 border-solid border-gray-100 focus:bg-white focus:border-blue-600 focus:outline-none
             "
-              placeholder="Input your description"
-            />
+                placeholder="Input your description"
+              />
+              <div className="form-check m-auto">
+                <input
+                  className="h-4 w-4 border mb-5 border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  type="checkbox"
+                  onClick={async () => {
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    setFreeFollow && setFreeFollow(!isFreeFollow)
+                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                    changeFollowModule && (await changeFollowModule())
+                  }}
+                  checked={isFreeFollow}
+                />
+                <label className="form-check-label inline-block text-gray-800">
+                  Check if you want paid subscription
+                </label>
+              </div>
+            </>
           ) : (
             <div
               onDoubleClick={() => isOwner && setIsEdit(true)}
@@ -232,7 +258,7 @@ export default function Header(props: IHeaderProperties): JSX.Element {
                 onClick={followHandle}
                 className="rounded-full bg-main py-2 text-white text-sm font-semibold w-23 pl-4 pr-4 m-auto mb-8"
               >
-                FOLLOW
+                {isFollowModule ? 'BUY FOLLOW' : 'FREE FOLLOW'}
               </button>
             )
           ) : (

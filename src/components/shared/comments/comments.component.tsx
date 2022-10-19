@@ -12,10 +12,17 @@ interface ICommentsProperties {
   comments: any
   pubId: string | number
   profileId: string
-  refetchComment: any
+  refetchComment: () => void
+  refetchInfo?: () => Promise<any>
 }
 
-const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsProperties) => {
+const Comments = ({
+  comments,
+  pubId,
+  profileId,
+  refetchComment,
+  refetchInfo,
+}: ICommentsProperties) => {
   const [commentValue, setCommentValue] = useState('')
 
   const { isLoading, setIsLoading } = useLoaderContext()
@@ -36,11 +43,14 @@ const Comments = ({ comments, pubId, profileId, refetchComment }: ICommentsPrope
 
       setIsLoading(true)
       await createComment(profileId, pubId, data.contentURI, signer)
-    } catch {
+    } catch (error) {
+      toast.error(String(error))
     } finally {
       setCommentValue('')
       setIsLoading(false)
       refetchComment()
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      refetchInfo && (await refetchInfo())
     }
   }
 
