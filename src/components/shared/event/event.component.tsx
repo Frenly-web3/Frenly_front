@@ -1,8 +1,8 @@
-import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
+/* eslint-disable sonarjs/no-nested-template-literals */
 /* eslint-disable sonarjs/cognitive-complexity */
+import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
-import styles from '@components/shared/event/event.module.scss'
 import { useAppDispatch } from '@hooks/use-app-dispatch.hook'
 import {
   authApi,
@@ -28,8 +28,7 @@ import { GET_REACTIONS } from '@store/lens/post/get-reaction.query'
 import { useEthers } from '@usedapp/core'
 import clsx from 'clsx'
 import moment from 'moment'
-import error from 'next/error'
-import Image from 'next/image'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useGetWalletProfileId, useMirrorWithSig, usePostWithSig } from 'src/contract/lens-hub.api'
@@ -403,6 +402,14 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
+      <Head>
+        <meta name="twitter:card" content="app"></meta>
+        <meta
+          name="twitter:image"
+          content={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
+        ></meta>
+      </Head>
+
       <Loader show={isLoading} />
       {showAuthor && (
         <Author
@@ -572,6 +579,40 @@ export default function Event(props: IEventProperties): JSX.Element {
                 <img src="/assets/icons/mirror.svg" alt="messages" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">{totalMirror}</span>
               </button>
+
+              <a
+                className="flex items-center justify-center w-8 h-8  py-1 px-2"
+                href={`https://twitter.com/intent/tweet?hashtags=Frenly,LENS&url=${`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}&text=${`👀 Frenly post ${renderMessage()} ${
+                  from == '0x0000000000000000000000000000000000000000'
+                    ? contractAddress
+                    : messageType == 'RECEIVE'
+                    ? to
+                    : from
+                } ${
+                  from !== '0x0000000000000000000000000000000000000000'
+                    ? messageType == 'RECEIVE'
+                      ? 'from'
+                      : 'to'
+                    : 'from Smart contract'
+                } ${
+                  from == '0x0000000000000000000000000000000000000000'
+                    ? contractAddress
+                    : messageType == 'RECEIVE'
+                    ? from
+                    : to
+                }
+                  Find and post by gm.frenly.cc
+                  `} ${
+                  blockchainType == 'ETHEREUM'
+                    ? `https://etherscan.io/tx/${txHash}`
+                    : `https://mumbai.polygonscan.com/tx/${txHash}`
+                }
+                `}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img className={'w-full h-full'} src="/assets/icons/twitter.svg" alt="twitter" />
+              </a>
             </div>
           )}
         </div>
