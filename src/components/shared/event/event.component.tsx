@@ -1,6 +1,7 @@
 /* eslint-disable sonarjs/no-nested-template-literals */
 /* eslint-disable sonarjs/cognitive-complexity */
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client'
+import Description from '@components/add-description-modal/description.component'
 import Author from '@components/shared/author/author.component'
 import Comments from '@components/shared/comments/comments.component'
 import { useAppDispatch } from '@hooks/use-app-dispatch.hook'
@@ -62,6 +63,7 @@ export interface IEventProperties {
   handleMirror?: string
   isAdmin?: boolean
   creator: string
+  mirrorDescription?: string
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -89,6 +91,7 @@ export default function Event(props: IEventProperties): JSX.Element {
     handleMirror,
     isAdmin,
     creator,
+    mirrorDescription,
   } = props
 
   const { account, library } = useEthers()
@@ -108,7 +111,9 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const [isLikeRequest, setIsLikeRequest] = useState(false)
+  const [descriptionMirror, setDescriptionMirror] = useState('')
   const { name: username, description, avatar, uploadImage } = useUpdate(creator)
+  const [isDescriptionView, setIsDescriptionView] = useState(false)
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     skip: isAddCap,
     variables: {
@@ -306,6 +311,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   }
 
   const mirrorHandler = async () => {
+    setIsDescriptionView(false)
     setIsLoading(true)
     try {
       const typeD = await mirrorPublication({
@@ -356,7 +362,7 @@ export default function Event(props: IEventProperties): JSX.Element {
               tx?.logs[0]?.topics[2]
             ).toString(16)}`
 
-      await mirrorPost({ lensId: id as string, newLensId })
+      await mirrorPost({ lensId: id as string, newLensId, description: descriptionMirror })
     } catch (error_) {
       console.log(String(error_))
       toast.error(String(error_))
@@ -409,7 +415,12 @@ export default function Event(props: IEventProperties): JSX.Element {
           content={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
         ></meta>
       </Head>
-
+      <Description
+        show={isDescriptionView}
+        descriptionHandler={mirrorHandler}
+        description={descriptionMirror}
+        setDescription={setDescriptionMirror}
+      />
       <Loader show={isLoading} />
       {showAuthor && (
         <Author
@@ -492,7 +503,9 @@ export default function Event(props: IEventProperties): JSX.Element {
               : to}
           </a>
         </h4>
-
+        {mirrorDescription && (
+          <div className="text-base font-normal text-gray-darker mt-1">{mirrorDescription}</div>
+        )}
         <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
           {image ? (
             <img
@@ -573,7 +586,7 @@ export default function Event(props: IEventProperties): JSX.Element {
                 </span>
               </button>
               <button
-                onClick={mirrorHandler}
+                onClick={() => setIsDescriptionView(true)}
                 className="flex items-center justify-center py-1 px-2"
               >
                 <img src="/assets/icons/mirror.svg" alt="messages" />

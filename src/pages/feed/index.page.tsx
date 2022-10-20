@@ -25,7 +25,7 @@ export default function FeedPage() {
   })
 
   // const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 20, skip: 0 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 40, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -41,8 +41,12 @@ export default function FeedPage() {
   // console.log('Back', dataFeeds?.data)
   // console.log('Lens', drafts)
   const refetchInfo = async () => {
-    refetchFeeds()
-    await drafts.refetch()
+    try {
+      refetchFeeds()
+      await drafts.refetch()
+    } catch {
+      toast.warn('Something went wrong reload page')
+    }
   }
 
   useEffect(() => {
@@ -63,7 +67,8 @@ export default function FeedPage() {
             dataFeeds?.data
               .filter((el: any) => el.lensId !== null)
               .map((el: any) => {
-                const { lensId, image, isMirror } = el
+                const { lensId, image, isMirror, mirrorDescription } = el
+                console.log(el)
 
                 let index
                 drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
@@ -100,6 +105,7 @@ export default function FeedPage() {
                       isMirror={isMirror}
                       handleMirror={mirrorOf?.profile.ownedBy}
                       creator={profile.ownedBy}
+                      mirrorDescription={mirrorDescription}
                     />
                   )
                 }
