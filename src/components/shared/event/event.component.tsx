@@ -595,7 +595,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
               <a
                 className="flex items-center justify-center w-8 h-8  py-1 px-2"
-                href={`https://twitter.com/intent/tweet?hashtags=Frenly,LENS&url=${`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}&text=${`👀 Frenly post ${renderMessage()} ${
+                href={`https://twitter.com/intent/tweet?hashtags=Frenly,LENS&url=${`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}&text=${`I use 👀 Frenly ${renderMessage()} ${
                   from == '0x0000000000000000000000000000000000000000'
                     ? contractAddress
                     : messageType == 'RECEIVE'
