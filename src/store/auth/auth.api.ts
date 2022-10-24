@@ -28,13 +28,6 @@ export const authApi = createApi({
           credentials: 'include',
         }
       },
-
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          console.log(data)
-        } catch {}
-      },
     }),
     login: builder.mutation<
       { refreshToken: string; accessToken: string },
@@ -83,8 +76,6 @@ export const authApi = createApi({
     }),
     publishContent: builder.mutation<any, { contentId: string }>({
       query: args => {
-        console.log(args.contentId)
-
         return {
           url: `content/${args.contentId}`,
           method: 'POST',
@@ -95,8 +86,6 @@ export const authApi = createApi({
     }),
     mirrorPost: builder.mutation<any, { lensId: string; newLensId: string; description: string }>({
       query: ({ lensId, newLensId, description }) => {
-        console.log(lensId, newLensId)
-
         return {
           url: `content/${lensId}/repost/${newLensId}`,
           method: 'POST',
@@ -109,8 +98,6 @@ export const authApi = createApi({
     }),
     addAddressForTrack: builder.mutation<any, { address: string }>({
       query: args => {
-        console.log(args.address)
-
         return {
           url: `admin/user/${args.address}`,
           method: 'POST',
@@ -172,11 +159,7 @@ export const authApi = createApi({
       query: args => {
         const formData = new FormData()
         formData.append('avatar', args.avatar, args.avatar.name)
-        // console.log(formData)
-        // for (const [name, value] of formData) {
-        //   console.log(`${name} = ${value}`) // key1=value1, потом key2=value2
-        // }
-        console.log(args.avatar)
+
         return {
           url: `user/avatar`,
           method: 'PUT',
@@ -263,8 +246,6 @@ export const authApi = createApi({
     }),
     getAdminContentMetadata: builder.query<any, { contentId: string }>({
       query: ({ contentId }) => {
-        console.log(contentId)
-
         return {
           url: `admin/content/${contentId}`,
           method: 'GET',
@@ -274,8 +255,6 @@ export const authApi = createApi({
     }),
     getContentMetadata: builder.query<any, { contentId: string }>({
       query: ({ contentId }) => {
-        console.log(contentId)
-
         return {
           url: `content/${contentId}/metadata`,
           method: 'GET',

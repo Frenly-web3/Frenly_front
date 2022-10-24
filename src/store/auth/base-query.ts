@@ -49,8 +49,6 @@ export const baseQueryWithReauth: BaseQueryFn<
           api,
           extraOptions
         )
-        console.log(refreshResult)
-
         if (refreshResult.data) {
           // @ts-ignore
           localStorage.setItem('access-token', refreshResult.data.accessToken)

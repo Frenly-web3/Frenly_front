@@ -78,7 +78,6 @@ export default function ProfilePage() {
     { skip: !isAdmin }
   )
   const [subscribeUser] = useSubscribeUserMutation()
-  console.log(dataProfile?.profile)
 
   useEffect(() => {
     if (isAdmin) {
@@ -116,15 +115,12 @@ export default function ProfilePage() {
             },
           },
         })
-        console.log('asdas', approveResult)
 
         const txApprove = await sendTx({
           to: approveResult.data.generateModuleCurrencyApprovalData.to,
           from: approveResult.data.generateModuleCurrencyApprovalData.from,
           data: approveResult.data.generateModuleCurrencyApprovalData.data,
         })
-
-        console.log('approve module: txHash mined', txApprove)
       }
 
       const result = await followToUser({
@@ -191,7 +187,6 @@ export default function ProfilePage() {
   const unfollowHandler = async () => {
     try {
       setIsLoading(true)
-      console.log(id)
 
       const result = await unfollowToUser({
         variables: {
@@ -262,8 +257,6 @@ export default function ProfilePage() {
 
       const typedData = result?.data?.createSetFollowModuleTypedData?.typedData
 
-      console.log('set follow module: typedData', typedData)
-
       const signer = library?.getSigner()
 
       const signature = await signedTypeData(
@@ -272,8 +265,6 @@ export default function ProfilePage() {
         typedData.value,
         signer
       )
-      console.log('set follow module: signature', signature)
-
       const { v, r, s } = splitSignature(signature)
 
       const tx = await setFollowModuleWithSig({
@@ -359,6 +350,8 @@ export default function ProfilePage() {
               // if (index < 10) {
               return (
                 <Event
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                   isAddCap
                   from={el.fromAddress}
                   to={el.toAddress}
@@ -398,6 +391,8 @@ export default function ProfilePage() {
 
               return (
                 <Event
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                   from={metadata?.attributes[4]?.value}
                   to={metadata?.attributes[3]?.value}
                   info={metadata?.description}
