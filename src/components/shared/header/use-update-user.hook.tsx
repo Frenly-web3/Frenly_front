@@ -7,7 +7,11 @@ import { useEthers } from '@usedapp/core'
 import { useEffect } from 'react'
 
 export function useUpdate(address: string) {
-  const { data: userInfo, refetch: refetchUserInfo } = useGetUserInfoQuery({
+  const {
+    data: userInfo,
+    refetch: refetchUserInfo,
+    ...otherData
+  } = useGetUserInfoQuery({
     address,
   })
 
@@ -17,7 +21,7 @@ export function useUpdate(address: string) {
 
   useEffect(() => {
     refetchUserInfo()
-  }, [address])
+  }, [address, refetchUserInfo])
 
   return {
     avatar: userInfo?.data?.avatar,
@@ -27,5 +31,6 @@ export function useUpdate(address: string) {
     refetchUserInfo,
     updateUserInfo,
     uploadImage,
+    isLoading: otherData.isLoading,
   }
 }

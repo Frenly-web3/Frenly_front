@@ -4,6 +4,7 @@ import { Meta } from '@components/meta/meta.component'
 import EndOfFeed from '@components/shared/end-of-feed/end-of-feed.component'
 import Event from '@components/shared/event/event.component'
 import Header from '@components/shared/header/header.component'
+import Loader from '@components/shared/loader/loader.component'
 import { useGetFilteredFeedQuery, useHasLanceProfileQuery } from '@store/auth/auth.api'
 import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { useEthers } from '@usedapp/core'
@@ -23,9 +24,9 @@ export default function FeedPage() {
   const { data: dataHasProfile } = useHasLanceProfileQuery(account || '', {
     skip: !isReloadProfile,
   })
-
+  const [isLoading, setIsLoading] = useState(false)
   // const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 40, skip: 0 })
+  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 30, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -38,8 +39,8 @@ export default function FeedPage() {
       },
     },
   })
-  // console.log('Back', dataFeeds?.data)
-  // console.log('Lens', drafts)
+  console.log(drafts)
+
   const refetchInfo = async () => {
     try {
       refetchFeeds()
@@ -55,12 +56,25 @@ export default function FeedPage() {
     }
   }, [account])
 
+  useEffect(() => {
+    setIsLoading(true)
+  }, [])
+
+  useEffect(() => {
+    if (drafts) {
+      setIsLoading(drafts.loading)
+    } else {
+      setIsLoading(true)
+    }
+  }, [drafts, drafts.loading])
+
   return (
     <>
       <Meta title="Frenly Feed" description="Your Frenly Feed" />
 
       <Header title="frenly feed" showAddPost accountId={accountId} />
 
+      <Loader show={isLoading} />
       <main>
         <section className="relative">
           {dataFeeds &&
@@ -68,7 +82,6 @@ export default function FeedPage() {
               .filter((el: any) => el.lensId !== null)
               .map((el: any) => {
                 const { lensId, image, isMirror, mirrorDescription } = el
-                console.log(el)
 
                 let index
                 drafts?.data?.publications?.items?.forEach((element: any, _index: number) => {
@@ -83,6 +96,8 @@ export default function FeedPage() {
 
                   return (
                     <Event
+                      isLoading={isLoading}
+                      setIsLoading={setIsLoading}
                       from={metadata?.attributes[4]?.value}
                       to={metadata?.attributes[3]?.value}
                       contractAddress={metadata?.attributes[1]?.value}

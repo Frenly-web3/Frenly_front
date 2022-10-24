@@ -23,7 +23,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.7.0",
     "@reduxjs/toolkit": "^1.8.3",
     "@usedapp/core": "^1.1.5",
     "async-mutex": "^0.3.2",

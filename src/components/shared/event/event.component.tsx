@@ -64,6 +64,8 @@ export interface IEventProperties {
   isAdmin?: boolean
   creator: string
   mirrorDescription?: string
+  isLoading: boolean
+  setIsLoading: (state: boolean) => void
 }
 
 export default function Event(props: IEventProperties): JSX.Element {
@@ -92,6 +94,8 @@ export default function Event(props: IEventProperties): JSX.Element {
     isAdmin,
     creator,
     mirrorDescription,
+    isLoading,
+    setIsLoading,
   } = props
 
   const { account, library } = useEthers()
@@ -107,12 +111,17 @@ export default function Event(props: IEventProperties): JSX.Element {
   const [removeContent] = useRemoveContentMutation()
   const [removeAdminContent] = useRemoveAdminContentMutation()
   const [isCommentsOpen, setIsCommentsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [likePostToLens, dataLikes] = useMutation(LIKE_TO_POST)
   const [cancelLikePostToLens, dataCancelLikes] = useMutation(CANCEL_LIKE_TO_POST)
   const [isLikeRequest, setIsLikeRequest] = useState(false)
   const [descriptionMirror, setDescriptionMirror] = useState('')
-  const { name: username, description, avatar, uploadImage } = useUpdate(creator)
+  const {
+    name: username,
+    description,
+    avatar,
+    uploadImage,
+    isLoading: creatorLoading,
+  } = useUpdate(creator)
   const [isDescriptionView, setIsDescriptionView] = useState(false)
   const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
     skip: isAddCap,
@@ -148,6 +157,10 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const [mirrorPost] = useMirrorPostMutation()
+
+  useEffect(() => {
+    setIsLoading(creatorLoading)
+  }, [creatorLoading, setIsLoading])
 
   const addPost = async () => {
     setIsLoading(true)
@@ -421,7 +434,6 @@ export default function Event(props: IEventProperties): JSX.Element {
         description={descriptionMirror}
         setDescription={setDescriptionMirror}
       />
-      <Loader show={isLoading} />
       {showAuthor && (
         <Author
           avatar={

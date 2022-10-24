@@ -359,6 +359,8 @@ export default function ProfilePage() {
               // if (index < 10) {
               return (
                 <Event
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                   isAddCap
                   from={el.fromAddress}
                   to={el.toAddress}
@@ -398,6 +400,8 @@ export default function ProfilePage() {
 
               return (
                 <Event
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
                   from={metadata?.attributes[4]?.value}
                   to={metadata?.attributes[3]?.value}
                   info={metadata?.description}
