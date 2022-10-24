@@ -175,8 +175,6 @@ export default function Event(props: IEventProperties): JSX.Element {
               authApi.endpoints.getContentMetadata.initiate({ contentId: id.toString() })
             ).unwrap())
 
-        console.log(contentMetadata)
-
         const postOptionsInfo = {
           variables: {
             request: {

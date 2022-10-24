@@ -49,8 +49,6 @@ export default function AuthPage() {
   //   setIsLoading(userInfo.loading)
   // }, [userInfo.loading])
 
-  // console.log(userInfo)
-
   const router = useRouter()
 
   const connectWallet = async () => {

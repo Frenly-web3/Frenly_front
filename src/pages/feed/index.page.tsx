@@ -39,7 +39,6 @@ export default function FeedPage() {
       },
     },
   })
-  console.log(drafts)
 
   const refetchInfo = async () => {
     try {
