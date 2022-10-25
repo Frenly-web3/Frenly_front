@@ -26,7 +26,11 @@ export default function FeedPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   // const { data: dataFeeds, refetch: refetchFeeds } = useGetFeedQuery({ take: 20, skip: 0 })
-  const { data: dataFeeds, refetch: refetchFeeds } = useGetFilteredFeedQuery({ take: 30, skip: 0 })
+  const {
+    data: dataFeeds,
+    refetch: refetchFeeds,
+    ...sss
+  } = useGetFilteredFeedQuery({ take: 30, skip: 0 })
   const drafts = useQuery(GET_PUBLICATIONS, {
     variables: {
       request: {
@@ -39,6 +43,8 @@ export default function FeedPage() {
       },
     },
   })
+
+  console.log(sss)
 
   const refetchInfo = async () => {
     try {

@@ -17,7 +17,6 @@ import { checkAndChangeChainId } from '@store/utils/blockchain'
 import { useEthers } from '@usedapp/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { userInfo } from 'node:os'
 import React, { useEffect, useState } from 'react'
 import { useHaveProfile } from 'src/contract/lens-hub.api'
 
