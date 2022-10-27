@@ -371,7 +371,7 @@ export default function ProfilePage() {
                   contractAddress={el.contractAddress}
                   isMirror={el.isMirror}
                   isAdmin={isAdmin}
-                  creator={''}
+                  creator={account as string}
                 />
               )
               // }
