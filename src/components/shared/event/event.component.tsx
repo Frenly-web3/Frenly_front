@@ -280,7 +280,7 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   const likeHandler = async () => {
     setIsLikeRequest(true)
-
+    setIsLoading(true)
     if (myProfileId) {
       try {
         if (publicationIsReact.publications.items[0].reaction == null) {
@@ -312,6 +312,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         await refetchLikes()
         await refetchPost()
         setIsLikeRequest(false)
+        setIsLoading(false)
       }
     }
   }
