@@ -19,7 +19,7 @@ import {
 } from '@store/auth/auth.api'
 import { FOLLOW_USER } from '@store/lens/account/add-follow.mutation'
 import { CREATE_POST_TYPED_DATA } from '@store/lens/add-post.mutation'
-import { GET_PUBLICATIONS } from '@store/lens/get-publication.query'
+import { GET_COMMENTS, GET_PUBLICATIONS } from '@store/lens/get-publication.query'
 import { LIKE_TO_POST } from '@store/lens/post/add-like.mutation'
 import { CREATE_MIRROR_TYPED_DATA } from '@store/lens/post/add-mirror.mutation'
 import { CANCEL_LIKE_TO_POST } from '@store/lens/post/cancel-like.mutation'
@@ -123,11 +123,11 @@ export default function Event(props: IEventProperties): JSX.Element {
     isLoading: creatorLoading,
   } = useUpdate(creator)
   const [isDescriptionView, setIsDescriptionView] = useState(false)
-  const { data: comments, refetch: refetchComments } = useQuery(GET_PUBLICATIONS, {
+  const { data: comments, refetch: refetchComments } = useQuery(GET_COMMENTS, {
     skip: isAddCap,
     variables: {
       request: {
-        commentsOf: id,
+        commentsOf: id as string,
       },
     },
   })
@@ -142,7 +142,7 @@ export default function Event(props: IEventProperties): JSX.Element {
   })
 
   const [mirrorPublication, dataMirrorPublication] = useMutation(CREATE_MIRROR_TYPED_DATA)
-
+  console.log(id, comments, postData)
   const [imageUrl, setImageUrl] = useState()
   const { data: publicationIsReact, refetch: refetchLikes } = useQuery(GET_REACTIONS, {
     variables: {
@@ -185,7 +185,7 @@ export default function Event(props: IEventProperties): JSX.Element {
                 revertCollectModule: true,
               },
               referenceModule: {
-                followerOnlyReferenceModule: isAdmin,
+                followerOnlyReferenceModule: false,
               },
             },
           },

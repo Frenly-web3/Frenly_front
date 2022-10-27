@@ -37,11 +37,9 @@ const Comments = ({
         body: JSON.stringify({ comment: commentValue, pubId }),
       })
       const data = await res.json()
-      setIsLoading(false)
 
       const signer = library?.getSigner()
 
-      setIsLoading(true)
       await createComment(profileId, pubId, data.contentURI, signer)
     } catch (error) {
       toast.error(String(error))

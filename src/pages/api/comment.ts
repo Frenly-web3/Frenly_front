@@ -14,7 +14,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   const commentMetadata: ILensMetadata = {
     name: `${pubId}comment`,
-    version: PublicationMetadataVersions.one,
+    version: PublicationMetadataVersions.two,
     metadata_id: uuidv4(),
     description: comment,
     content: comment,

@@ -1,11 +1,4 @@
 import { gql } from '@apollo/client'
-import { original } from '@reduxjs/toolkit'
-import { id } from 'ethers/lib/utils'
-import next from 'next'
-import { profile } from 'node:console'
-import { on } from 'node:events'
-import { request } from 'node:http'
-import { url } from 'node:inspector'
 
 export const GET_PUBLICATIONS = gql`
   query ($request: PublicationsQueryRequest!) {
@@ -44,7 +37,7 @@ export const GET_PUBLICATIONS = gql`
       value
     }
     isFollowedByMe
-    isFollowing(who: "0x148A580403141CC82f4522FB1a9569C421C7969F")
+    isFollowing(who: null)
     followNftAddress
     metadata
     isDefault
