@@ -33,7 +33,7 @@ import {
 
 export default function ProfilePage() {
   // receipt.logs[0].topics[1]
-  const { account, library } = useEthers()
+  const { account, library, active } = useEthers()
   const [isAdmin, setIsAdmin] = useState(false)
   const [addressValue, setAddressValue] = useState('')
   const [posts, setPosts] = useState<Array<any>>([])
@@ -101,6 +101,13 @@ export default function ProfilePage() {
       // router.push('/auth')
     }
   }, [account, dataProfile, id])
+
+  useEffect(() => {
+    console.log(active)
+    if (!active) {
+      router.push('/auth')
+    }
+  }, [active])
 
   const followHandler = async () => {
     try {

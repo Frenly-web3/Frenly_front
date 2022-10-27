@@ -49,12 +49,11 @@ export default function FeedPage() {
   }
 
   useEffect(() => {
-    if (!account) {
+    console.log(active)
+    if (!active) {
       router.push('/auth')
-    } else {
-      router.push('/feed')
     }
-  }, [account, router])
+  }, [active])
 
   useEffect(() => {
     if (account) {
