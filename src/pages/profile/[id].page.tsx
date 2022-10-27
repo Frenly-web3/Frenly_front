@@ -320,7 +320,7 @@ export default function ProfilePage() {
 
       <main>
         <Loader show={isLoading} />
-        {isAdmin && (
+        {isAdmin && id == accountId && (
           <div className="container pt-4 pb-4 flex">
             <div className="flex rounded-2xl bg-light-gray px-4 py-2 w-full mr-2">
               <input
@@ -371,7 +371,7 @@ export default function ProfilePage() {
                   contractAddress={el.contractAddress}
                   isMirror={el.isMirror}
                   isAdmin={isAdmin}
-                  creator={''}
+                  creator={account as string}
                 />
               )
               // }

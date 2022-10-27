@@ -1,7 +1,15 @@
 import '../styles/global.scss'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { ApolloClient, ApolloLink, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  ApolloLink,
+  ApolloProvider,
+  from,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
 import { LoaderContextProvider } from '@components/shared/contexts/loader-context'
 import { store } from '@store/store'
 import type { Config } from '@usedapp/core'
@@ -41,15 +49,23 @@ const authLink = new ApolloLink((operation, forward) => {
       'x-access-token': token ? `Bearer ${token}` : '',
     },
   })
-
   // Call the next link in the middleware chain.
+  return forward(operation)
+})
 
+const errorLink = onError(({ forward, operation, graphQLErrors }) => {
+  graphQLErrors?.forEach(error => {
+    console.log(error)
+    if (error.extensions.code == 'UNAUTHENTICATED') {
+      window.location.pathname = '/auth'
+    }
+  })
   return forward(operation)
 })
 
 export const client = new ApolloClient({
   uri: process.env.NEXT_PUBLIC_LENS_URL,
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
 })
 

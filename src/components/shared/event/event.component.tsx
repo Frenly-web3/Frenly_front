@@ -280,9 +280,10 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   const likeHandler = async () => {
     setIsLikeRequest(true)
+
     if (myProfileId) {
-      if (publicationIsReact.publications.items[0].reaction == null) {
-        try {
+      try {
+        if (publicationIsReact.publications.items[0].reaction == null) {
           setIsLikeRequest(true)
           await likePostToLens({
             variables: {
@@ -293,32 +294,26 @@ export default function Event(props: IEventProperties): JSX.Element {
               },
             },
           })
-        } catch (error_) {
-          console.error(error_)
-        }
-        setIsLikeRequest(false)
-      }
-
-      if (publicationIsReact.publications.items[0].reaction == 'UPVOTE') {
-        setIsLikeRequest(true)
-        cancelLikePostToLens({
-          variables: {
-            request: {
-              profileId: myProfileId,
-              reaction: 'UPVOTE',
-              publicationId: id,
+        } else if (publicationIsReact.publications.items[0].reaction == 'UPVOTE') {
+          setIsLikeRequest(true)
+          cancelLikePostToLens({
+            variables: {
+              request: {
+                profileId: myProfileId,
+                reaction: 'UPVOTE',
+                publicationId: id,
+              },
             },
-          },
-        })
+          })
+        }
+      } finally {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        refetchInfo && (await refetchInfo())
+        await refetchLikes()
+        await refetchPost()
         setIsLikeRequest(false)
       }
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    refetchInfo && (await refetchInfo())
-    await refetchLikes()
-    await refetchPost()
-    setIsLikeRequest(false)
   }
 
   const mirrorHandler = async () => {
@@ -419,13 +414,6 @@ export default function Event(props: IEventProperties): JSX.Element {
 
   return (
     <article className="container border-b border-border-color pt-2 pb-4">
-      <Head>
-        <meta name="twitter:card" content="app"></meta>
-        <meta
-          name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
-        ></meta>
-      </Head>
       <Description
         show={isDescriptionView}
         descriptionHandler={mirrorHandler}
@@ -454,7 +442,7 @@ export default function Event(props: IEventProperties): JSX.Element {
         )}
 
         <h4 className="text-base font-semibold break-words">
-          {creator === process.env.NEXT_PUBLIC_ADMIN_ADDRESS && (
+          {(creator === process.env.NEXT_PUBLIC_ADMIN_ADDRESS || isMirror) && (
             <>
               <a
                 target="_blank"
@@ -482,7 +470,7 @@ export default function Event(props: IEventProperties): JSX.Element {
               </>
             </>
           )}
-          {creator !== process.env.NEXT_PUBLIC_ADMIN_ADDRESS && renderMessage()}{' '}
+          {creator !== process.env.NEXT_PUBLIC_ADMIN_ADDRESS && !isMirror && renderMessage()}{' '}
           {from !== '0x0000000000000000000000000000000000000000' ? (
             messageType == 'RECEIVE' ? (
               <>from&nbsp;</>
@@ -576,10 +564,8 @@ export default function Event(props: IEventProperties): JSX.Element {
             <div className="flex items-center">
               <button
                 disabled={isLikeRequest}
-                onClick={likeHandler}
-                className={`flex items-center justify-center py-1 px-2 ${
-                  isLikeRequest ? 'bg-gray' : ''
-                }`}
+                onClick={!isLikeRequest ? likeHandler : () => {}}
+                className={`flex items-center justify-center py-1 px-2`}
               >
                 <img src="/assets/icons/heart.svg" alt="like" />
                 <span className="text-xs font-semibold text-gray-darker ml-1">

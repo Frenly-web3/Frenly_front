@@ -125,7 +125,11 @@ export default function Header(props: IHeaderProperties): JSX.Element {
                 }
                 alt={'avatar'}
                 onClick={() => {
-                  router.push(`profile/${lensId}`)
+                  if (lensId !== null) {
+                    router.push(`profile/${lensId}`)
+                  } else {
+                    router.push('/auth')
+                  }
                 }}
                 className={`cursor-pointer w-7 h-7`}
               />
