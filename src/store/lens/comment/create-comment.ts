@@ -12,6 +12,8 @@ export const createComment = async (
   signer: any
 ) => {
   // hard coded to make the code example clear
+  console.log(profileId, pubId, contentURI)
+
   const createCommentRequest = {
     profileId,
     publicationId: pubId,
@@ -38,6 +40,8 @@ export const createComment = async (
       typedData.value,
       signer
     )
+    console.log(signature)
+
     const { v, r, s } = splitSignature(signature)
 
     const lensHub = new ethers.Contract(lensHubContract, lensHubABI, signer)
