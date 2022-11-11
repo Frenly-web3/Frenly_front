@@ -3,7 +3,10 @@
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/shared/**/*.{js,ts,jsx,tsx}",
+    "./src/features/**/*.{js,ts,jsx,tsx}",
+    "./src/widgets/**/*.{js,ts,jsx,tsx}",
+    "./src/entities/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},

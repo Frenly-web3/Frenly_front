@@ -4,7 +4,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     })
 
@@ -13,28 +12,31 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 module.exports = withBundleAnalyzer({
-  images: {
-    domains: ['135.181.216.90'],
-  },
   eslint: {
     dirs: ['.'],
   },
+  images: {
+    domains: ['flatspacenfts.unistory.app'],
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+
+    return config
+  },
+  env: {
+    
+    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    
+  },
   poweredByHeader: false,
   trailingSlash: true,
-  
   basePath: '',
   // The starter code load resources from `public` folder with `router.basePath` in React components.
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
-  pageExtensions: ['page.tsx', 'page.ts', 'page.js', 'page.jsx', 'tsx', 'ts'],
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/auth',
-        permanent: true,
-      },
-    ]
-  },
+  pageExtensions: ['page.tsx', 'page.ts', 'page.js', 'page.jsx'],
 })

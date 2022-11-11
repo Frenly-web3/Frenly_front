@@ -1,30 +1,22 @@
-import '../styles/global.scss'
-import 'react-toastify/dist/ReactToastify.css'
+import '@shared/styles/global.scss'
 
-import {
-  ApolloClient,
-  ApolloLink,
-  ApolloProvider,
-  from,
-  HttpLink,
-  InMemoryCache,
-} from '@apollo/client'
-import { onError } from '@apollo/client/link/error'
-import { LoaderContextProvider } from '@components/shared/contexts/loader-context'
-import { store } from '@store/store'
+import { ApolloProvider } from '@apollo/client'
+import { store } from '@app/store'
+import { client } from '@shared/api'
+import { LoaderContextProvider } from '@shared/lib'
+import { Loader } from '@shared/ui'
 import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
 import type { AppProps } from 'next/app'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
 const config: Config = {
-  readOnlyChainId: ChainId.BSCTestnet,
+  readOnlyChainId: ChainId.Polygon,
   readOnlyUrls: {
-    // [ChainId.Rinkeby]: infuraProvider,
-    // [ChainId.BSC]: "https://bsc-dataseed.binance.org/",
-    // [ChainId.BSCTestnet]: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-    [ChainId.Mumbai]: 'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
+    [ChainId.Mumbai]:
+      'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
   },
   notifications: {
     expirationPeriod: 1000,
@@ -32,42 +24,6 @@ const config: Config = {
   },
   autoConnect: true,
 }
-
-const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_LENS_URL })
-
-// example how you can pass in the x-access-token into requests using `ApolloLink`
-const authLink = new ApolloLink((operation, forward) => {
-  // Retrieve the authorization token from local storage.
-  // if your using node etc you have to handle your auth different
-  let token
-  if (typeof window !== 'undefined') {
-    token = window.localStorage.getItem('auth_token')
-  }
-  // Use the setContext method to set the HTTP headers.
-  operation.setContext({
-    headers: {
-      'x-access-token': token ? `Bearer ${token}` : '',
-    },
-  })
-  // Call the next link in the middleware chain.
-  return forward(operation)
-})
-
-const errorLink = onError(({ forward, operation, graphQLErrors }) => {
-  graphQLErrors?.forEach(error => {
-    console.log(error)
-    if (error.extensions.code == 'UNAUTHENTICATED') {
-      window.location.pathname = '/auth'
-    }
-  })
-  return forward(operation)
-})
-
-export const client = new ApolloClient({
-  uri: process.env.NEXT_PUBLIC_LENS_URL,
-  link: from([errorLink, authLink, httpLink]),
-  cache: new InMemoryCache(),
-})
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -88,6 +44,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               pauseOnHover
               theme="light"
             />
+            <Loader />
           </LoaderContextProvider>
         </Provider>
       </DAppProvider>
