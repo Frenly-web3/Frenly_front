@@ -10,10 +10,7 @@ import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 export default function FeedPage() {
   const [takeCount, setTakeCount] = useState(0)
 
-  const { posts: chunkPosts } = useGetFilteredPosts({
-    take: 4,
-    skip: 4 * takeCount,
-  })
+  const getChunkPosts = useGetFilteredPosts()
 
   const [posts, setPosts] = useState<IPost[]>([])
 
@@ -21,20 +18,23 @@ export default function FeedPage() {
   const viewerProfileLensId = useGetWalletProfileId(account as string)
   const { avatar } = UserModelService.useUserInfo({ address: account as string })
 
-  const nextLoad = () => {
-    console.log('==================nextload================')
-
+  const nextLoad = async () => {
     setTakeCount((previousState) => previousState + 1)
   }
 
   useEffect(() => {
-    console.log(chunkPosts)
-    if (takeCount == 0) {
-      setPosts(chunkPosts)
-    } else {
-      setPosts([...posts, ...chunkPosts])
-    }
-  }, [chunkPosts])
+    ;(async () => {
+      const { posts: respPost } = await getChunkPosts({ take: 4, skip: takeCount * 4 })
+      console.log(respPost)
+      if (posts?.length > 0) {
+        setPosts([...posts, ...respPost])
+      } else {
+        setPosts(respPost)
+      }
+    })()
+  }, [takeCount, posts, getChunkPosts])
+
+  console.log(posts)
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function FeedPage() {
       <main>
         <section className="relative">
           <InfiniteScroll
-            dataLength={50}
+            dataLength={posts?.length}
             next={nextLoad}
             hasMore={true}
             loader={<>Loading...</>}
