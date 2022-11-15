@@ -1,4 +1,6 @@
 export * from './constants'
 export * from './use-blockchain.hook'
+export * from './use-comment-with-sig.hook'
+export * from './use-get-address.hook'
 export * from './use-get-profile-id.hook'
 export * from './use-mirror-with-sig.hook'

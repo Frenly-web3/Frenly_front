@@ -29,7 +29,8 @@ module.exports = {
       'border-color': '#D7DDF3',
       'error': '#FF005C',
       'error-bg': 'rgba(255, 0, 0, 0.1)',
-      'light-bg': '#ECF2FF'
+      'light-bg': '#ECF2FF',
+      'is-liked': 'rgba(252, 165, 165, 0.8 )',
     }
   },
   plugins: [],

@@ -1,54 +1,55 @@
 import { useGetPublicationsStats } from '@shared/api'
-import { useLoaderContext } from '@shared/lib'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 
 import { likePostLens, unlikePostLens, useGetIsReact } from '../api'
 
 export function useLikePost({ publicationId }: { publicationId: string }) {
   const [isLiking, setIsLiking] = useState(false)
-  const { setIsLoading } = useLoaderContext()
   const { account } = useBlockchain()
+  const [amountLikes, setAmountLike] = useState<number>(0)
+  const [liked, setLiked] = useState<boolean>(false)
 
   const viewerProfileLensId = useGetWalletProfileId(account as string)
 
-  const { data: isReact, refetch: refetchIsReact } = useGetIsReact({
+  const { data: isReact } = useGetIsReact({
     publicationId,
     viewerProfileLensId,
   })
 
-  const { data: publicationStats, refetch: refetchPublicationsStats } =
-    useGetPublicationsStats({ publicationId })
+  const { data: publicationStats } = useGetPublicationsStats({ publicationId })
+
+  useEffect(() => {
+    setAmountLike(publicationStats?.publication?.stats?.totalUpvotes)
+    setLiked(isReact?.publications?.items[0]?.reaction !== null)
+  }, [publicationStats, isReact])
 
   const likeUnlikePost = useCallback(async () => {
-    await refetchIsReact()
+    // await refetchIsReact()
     setIsLiking(true)
-    setIsLoading(true)
+    // setIsLoading(true)
+
     try {
-      if (isReact?.publications?.items[0]?.reaction == null) {
+      if (!liked) {
+        setAmountLike((previous) => previous + 1)
+        setLiked(true)
         await likePostLens({ publicationId, viewerProfileLensId })
-      } else if (isReact?.publications?.items[0]?.reaction == 'UPVOTE') {
+      } else {
+        setAmountLike((previous) => previous - 1)
+        setLiked(false)
         await unlikePostLens({ publicationId, viewerProfileLensId })
       }
     } catch (error) {
       console.error(error)
     } finally {
-      await refetchPublicationsStats()
-      await refetchIsReact()
       setIsLiking(false)
-      setIsLoading(false)
     }
-  }, [
-    isReact?.publications?.items,
-    publicationId,
-    refetchIsReact,
-    refetchPublicationsStats,
-    viewerProfileLensId,
-  ])
+  }, [liked, publicationId, viewerProfileLensId])
 
   return {
     isLiking,
     likeUnlikePost,
-    amountLikes: publicationStats?.publication?.stats?.totalUpvotes,
+    amountLikes,
+    liked,
   }
 }

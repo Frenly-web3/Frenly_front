@@ -44,7 +44,7 @@ export const Comment = ({
           >
             {userInfo?.username}
           </div>
-          <div className="text-sm text-gray">{commentDate}</div>
+          <div className="text-sm text-gray">{commentDate} ago</div>
         </div>
         <div className="text-base font-normal text-gray break-words">{description}</div>
       </figcaption>

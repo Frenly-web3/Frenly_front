@@ -1,81 +1,99 @@
 import { contentApi, useGetLensPublications } from '@shared/api'
 import { NetworkEnum } from '@shared/lib'
-import { useCallback, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
 
 interface IGetFilteredPosts {
   posts: IPost[]
+  isSuccess: boolean
+  lensIsLoading: boolean
+  hasMore: boolean
 }
 
-export const useGetFilteredPosts = () => {
-  const [postsData, setPostsData] = useState<any[]>()
+export const useGetFilteredPosts = ({
+  take,
+  skip,
+}: {
+  take: number
+  skip: number
+}): IGetFilteredPosts => {
+  const { data: postsData, isSuccess } = contentApi.useGetFilteredFeedQuery({
+    take,
+    skip,
+  })
 
-  const [getFilteredFeed] = contentApi.useLazyGetFilteredFeedQuery()
-  const backPost = postsData?.filter((el: any) => el.lensId !== null)
-  const { data: lensPosts } = useGetLensPublications(backPost)
-  return useCallback(
-    async ({
-      take,
-      skip,
-    }: {
-      take: number
-      skip: number
-    }): Promise<IGetFilteredPosts> => {
-      const data = await getFilteredFeed({ take, skip })
-      console.log(data)
+  const [postsSum, setPostsSum] = useState<IPost[]>([])
+  const { data: lensPosts, loading: lensIsLoading } = useGetLensPublications(postsData)
+  const [hasMore, setHasMore] = useState(true)
 
-      setPostsData(data?.data)
+  useEffect(() => {
+    if (!postsData) {
+      return
+    }
+    if (!lensPosts && lensIsLoading) {
+      return
+    }
+    const posts: IPost[] = postsData?.map((post: any): IPost => {
+      // const { profile, metadata, createdAt, id, mirrorOf, stats } = post
+      const {
+        isMirror,
+        mirrorDescription,
+        transferType,
+        id: idBack,
+        image,
+        transactionHash,
+        creationDate,
+        fromAddress,
+        toAddress,
+        // lensId,
+        contractAddress,
+        lensId,
+      } = post
 
-      console.log(postsData)
-
-      const posts = lensPosts?.publications?.items?.map((post: any): IPost => {
-        const { profile, metadata, createdAt, id, mirrorOf, stats } = post
-
-        let postBack
-
-        if (backPost) {
-          postBack = backPost?.find((el: any) => {
-            return el.lensId === id
-          })
-        }
-
-        const {
-          isMirror,
-          mirrorDescription,
-          transferType,
-          id: idBack,
-          image,
-          transactionHash,
-        } = postBack
-
-        return {
-          creatorLensId: profile.id,
-          date: createdAt,
-          from: metadata.attributes[4].value,
-          isMirror,
-          mirrorDescription,
-          mirrorFrom: isMirror ? mirrorOf?.profile?.ownedBy : null,
-          network:
-            metadata.attributes[7].value == 'ETHEREUM'
-              ? NetworkEnum.Ethereum
-              : NetworkEnum.Polygon,
-          postType: convertTransferTypeToEnum(transferType),
-          to: metadata.attributes[3].value,
-          totalComments: stats.totalAmountOfComments,
-          totalLikes: stats.totalUpvotes,
-          totalMirrors: stats.totalAmountOfMirrors,
-          txHash: transactionHash,
-          lensId: id,
-          id: idBack,
-          image,
-          contractAddress: metadata.attributes[1].value,
-          creatorAddress: profile.ownedBy,
-        }
+      const postLens = lensPosts?.publications?.items?.find((el: any) => {
+        return lensId == el?.id
       })
-      return { posts }
-    },
-    [backPost, getFilteredFeed, lensPosts?.publications?.items, postsData]
+      if (!postLens) {
+        return {} as IPost
+      }
+      const { profile, mirrorOf, metadata } = postLens
+      return {
+        creatorLensId: profile?.id,
+        date: creationDate,
+        from: fromAddress,
+        isMirror,
+        mirrorDescription,
+        mirrorFrom: isMirror ? mirrorOf?.profile?.ownedBy : null,
+        mirrorFromId: isMirror ? mirrorOf?.profile?.id : null,
+        network:
+          metadata?.attributes[7]?.value == 'ETHEREUM'
+            ? NetworkEnum.Ethereum
+            : NetworkEnum.Polygon,
+        postType: convertTransferTypeToEnum(transferType),
+        to: toAddress,
+        txHash: transactionHash,
+        lensId,
+        id: idBack,
+        image,
+        contractAddress,
+        creatorAddress: profile?.ownedBy,
+      }
+    })
+    if (posts?.length === 0) {
+      setHasMore(false)
+    }
+    if (posts) {
+      setPostsSum((previous) => [
+        ...previous,
+        ...posts.filter((post) => Object.keys(post).length > 0),
+      ])
+    }
+  }, [postsData, lensPosts, lensIsLoading])
+
+  return useMemo(
+    () => ({ posts: postsSum, lensIsLoading, isSuccess, hasMore }),
+    [hasMore, isSuccess, lensIsLoading, postsSum]
   )
 }

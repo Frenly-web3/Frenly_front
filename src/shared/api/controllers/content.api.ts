@@ -18,11 +18,15 @@ export const contentApi = createApi({
         }
       },
       transformResponse: (res: any, meta: any) => {
-        return res.data.filter((el: any) => {
-          console.log(el)
+        return res.data
+          .filter((el: any) => {
+            console.log(el)
 
-          return el.lensId !== null
-        })
+            return el.lensId !== null
+          })
+          .filter((el: any) => {
+            return el.lensId !== '0xNaN-0xNaN'
+          })
       },
     }),
     getUnpublishedContent: builder.query<any, any>({
@@ -83,6 +87,19 @@ export const contentApi = createApi({
 
           credentials: 'omit',
         }
+      },
+    }),
+    getCommentMetadata: builder.query<any, { lensId: string; comment: string }>({
+      query: ({ lensId, comment }) => {
+        return {
+          url: `content/comment/metadata`,
+          method: 'POST',
+          body: { lensId, comment },
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: any) => {
+        return res?.data
       },
     }),
     removeContent: builder.mutation<any, { contentId: string }>({

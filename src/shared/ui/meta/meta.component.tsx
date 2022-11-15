@@ -1,9 +1,10 @@
+import type { RoleEnum } from '@shared/lib'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 
 type IMetaProperties = {
-  title: string
+  title: RoleEnum | string
   description: string
   canonical?: string
 }

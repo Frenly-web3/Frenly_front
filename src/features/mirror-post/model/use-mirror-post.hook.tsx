@@ -1,4 +1,5 @@
 import { contentApi, useGetPublicationsStats } from '@shared/api'
+import { useConvertResponseToPublicationId } from '@shared/lib'
 import { useCallback, useState } from 'react'
 import {
   useBlockchain,
@@ -23,7 +24,7 @@ export function useMirrorPost({ publicationId }: IUseMirrorPost) {
 
   const { data: publicationStats, refetch: refetchPublicationsStats } =
     useGetPublicationsStats({ publicationId })
-
+  const convertTxToPublicationId = useConvertResponseToPublicationId()
   const [mirrorPostBack] = contentApi.useMirrorPostMutation()
 
   const [descriptionMirror, setDescriptionMirror] = useState('')
@@ -57,14 +58,7 @@ export function useMirrorPost({ publicationId }: IUseMirrorPost) {
         },
       })
 
-      const newLensId =
-        Number(tx?.logs[0]?.topics[2]).toString(16).length === 1
-          ? `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x0${Number(
-              tx?.logs[0]?.topics[2]
-            ).toString(16)}`
-          : `0x${Number(tx?.logs[0]?.topics[1]).toString(16)}-0x${Number(
-              tx?.logs[0]?.topics[2]
-            ).toString(16)}`
+      const newLensId = convertTxToPublicationId({ tx })
       console.log(newLensId)
 
       await mirrorPostBack({
@@ -78,16 +72,7 @@ export function useMirrorPost({ publicationId }: IUseMirrorPost) {
       setIsShowDescription(false)
       await refetchPublicationsStats()
     }
-  }, [
-    descriptionMirror,
-    mirrorPostBack,
-    mirrorWithSig,
-    publicationId,
-    refetchPublicationsStats,
-    signTypedData,
-    splitSignature,
-    viewerProfileLensId,
-  ])
+  }, [descriptionMirror, publicationId, viewerProfileLensId])
 
   return {
     amountMirrors: publicationStats?.publication?.stats?.totalAmountOfMirrors,

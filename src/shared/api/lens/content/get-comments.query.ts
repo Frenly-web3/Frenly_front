@@ -8,6 +8,7 @@ const GET_COMMENTS = gql`
           id
           metadata {
             description
+            content
           }
           profile {
             id

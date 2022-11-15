@@ -1,6 +1,7 @@
 import type { IPost } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import React from 'react'
+import { useGetWalletProfileId } from 'src/blockchain'
 
 import { PostCardContext } from '../model'
 import { PostCardAuthor } from './post-card-author.component'
@@ -12,23 +13,25 @@ interface IPostCardProperties extends IPost {
 }
 
 export const PostCard = (props: IPostCardProperties) => {
-  const { creatorAddress, mirrorFrom, children, lensId } = props
+  const { creatorLensId, mirrorFrom, children, lensId } = props
 
-  const { avatar, name: username } = UserModelService.useUserInfo({
-    address: creatorAddress as string,
-  })
-  const { name: fromMirrorName } = UserModelService.useUserInfo({
-    address: mirrorFrom as string,
+  const { user: creatorInfo } = UserModelService.useUserInfo({
+    profileId: creatorLensId as string,
   })
 
+  const mirrorLensId = useGetWalletProfileId(mirrorFrom as string)
+
+  const { user: creatorMirrorInfo } = UserModelService.useUserInfo({
+    profileId: mirrorLensId as string,
+  })
   const memoizedContextValue = React.useMemo(
     () => ({
       ...props,
-      creatorAvatar: avatar,
-      creatorUsername: username,
-      fromMirrorName,
+      creatorAvatar: creatorInfo.avatar,
+      creatorUsername: creatorInfo.name,
+      fromMirrorName: creatorMirrorInfo.name,
     }),
-    [avatar, fromMirrorName, props, username]
+    [creatorInfo, creatorMirrorInfo, props]
   )
 
   return (

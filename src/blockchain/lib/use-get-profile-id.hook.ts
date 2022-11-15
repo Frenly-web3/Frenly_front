@@ -1,6 +1,6 @@
 import { useBlockchain } from './use-blockchain.hook'
 
-export function useGetWalletProfileId(address: String) {
+export function useGetWalletProfileId(address: string) {
   const { useCall, contracts } = useBlockchain()
 
   const { value, error } =

@@ -14,7 +14,13 @@ export function useBlockchain() {
   )
 
   const contracts = { lensContract }
-  return { ...useEthers(), useCall, contracts, useContractFunction }
+  return {
+    ...useEthers(),
+    useCall,
+    contracts,
+    useContractFunction,
+    signer: useEthers().library?.getSigner(),
+  }
 }
 
 export function useSignTypedData() {

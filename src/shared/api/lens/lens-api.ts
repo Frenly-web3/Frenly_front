@@ -1,6 +1,9 @@
 import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 
+// eslint-disable-next-line import/no-cycle
+import { refreshAuthTokenLens } from './user'
+
 const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_LENS_URL })
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
@@ -10,7 +13,6 @@ const authLink = new ApolloLink((operation, forward) => {
   let token
   if (typeof window !== 'undefined') {
     token = window.localStorage.getItem('access-token-lens')
-    console.log(token)
   }
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
@@ -25,10 +27,18 @@ const authLink = new ApolloLink((operation, forward) => {
 })
 
 const errorLink = onError(({ forward, operation, graphQLErrors }) => {
-  graphQLErrors?.forEach((error) => {
-    console.log(error)
+  graphQLErrors?.forEach(async (error) => {
     if (error.extensions.code == 'UNAUTHENTICATED') {
-      window.location.pathname = '/auth'
+      try {
+        const token = localStorage.getItem('refresh-token-lens')
+        const refreshTokens = await refreshAuthTokenLens({
+          refreshToken: token as string,
+        })
+        localStorage.setItem('access-token-lens', refreshTokens.accessToken)
+        localStorage.setItem('refresh-token-lens', refreshTokens.refreshToken)
+      } catch {
+        window.location.pathname = '/auth'
+      }
     }
   })
   return forward(operation)

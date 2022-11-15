@@ -1,16 +1,15 @@
 import { IconButton } from '@shared/ui'
 import React from 'react'
 
-import { useCommentPost } from '../model'
-
 interface ICommentButton {
   publicationId: string
   setIsOpenComment: (state: boolean) => void
   isOpenComment: boolean
+  amountComments: number
 }
 export const CommentButton = (props: ICommentButton) => {
-  const { publicationId, setIsOpenComment, isOpenComment } = props
-  const { amountComments } = useCommentPost({ publicationId })
+  const { setIsOpenComment, isOpenComment, amountComments } = props
+
   return (
     <div>
       <IconButton

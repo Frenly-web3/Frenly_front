@@ -10,12 +10,10 @@ export interface IPost {
   postType: PostTypeEnum | null
   isMirror: boolean | null
   mirrorFrom: string | null
+  mirrorFromId: string | null
   mirrorDescription: string | null
   txHash: string | null
   network: NetworkEnum | null
-  totalLikes: number | null
-  totalComments: number | null
-  totalMirrors: number | null
   image: string | null
   contractAddress: string | null
   creatorAddress: string | null
