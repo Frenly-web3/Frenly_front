@@ -7,6 +7,8 @@ module.exports = {
     "./src/features/**/*.{js,ts,jsx,tsx}",
     "./src/widgets/**/*.{js,ts,jsx,tsx}",
     "./src/entities/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,js}",
+    "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   theme: {
     extend: {},
@@ -33,5 +35,5 @@ module.exports = {
       'is-liked': 'rgba(252, 165, 165, 0.8 )',
     }
   },
-  plugins: [],
+  plugins: [require('tw-elements/dist/plugin')],
 }

@@ -4,6 +4,7 @@ import React from 'react'
 import { useGetWalletProfileId } from 'src/blockchain'
 
 import { PostCardContext } from '../model'
+import { PostCardAdding } from './post-card-adding.component'
 import { PostCardAuthor } from './post-card-author.component'
 import { PostCardContent } from './post-card-content.component'
 import { PostCardReactions } from './post-card-reactions.component'
@@ -13,7 +14,7 @@ interface IPostCardProperties extends IPost {
 }
 
 export const PostCard = (props: IPostCardProperties) => {
-  const { creatorLensId, mirrorFrom, children, lensId } = props
+  const { creatorLensId, mirrorFrom, children } = props
 
   const { user: creatorInfo } = UserModelService.useUserInfo({
     profileId: creatorLensId as string,
@@ -37,7 +38,6 @@ export const PostCard = (props: IPostCardProperties) => {
   return (
     <PostCardContext.Provider value={memoizedContextValue}>
       <article className="container border-b border-border-color pt-2 pb-4">
-        {lensId}
         {children}
       </article>
     </PostCardContext.Provider>
@@ -49,3 +49,5 @@ PostCard.Author = PostCardAuthor
 PostCard.Content = PostCardContent
 
 PostCard.Reactions = PostCardReactions
+
+PostCard.Adding = PostCardAdding

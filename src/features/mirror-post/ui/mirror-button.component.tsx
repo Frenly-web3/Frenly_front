@@ -5,10 +5,11 @@ import { useMirrorPost } from '../model'
 
 interface IMirrorButton {
   publicationId: string
+  refetchFilteredFeed: () => void
 }
 
 export const MirrorButton = (props: IMirrorButton) => {
-  const { publicationId } = props
+  const { publicationId, refetchFilteredFeed } = props
 
   const {
     amountMirrors,
@@ -17,7 +18,7 @@ export const MirrorButton = (props: IMirrorButton) => {
     setDescriptionMirror,
     isShowDescription,
     setIsShowDescription,
-  } = useMirrorPost({ publicationId })
+  } = useMirrorPost({ publicationId, refetchFilteredFeed })
 
   const mirrorButtonHandler = () => {
     setIsShowDescription(true)

@@ -44,7 +44,7 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
         ) : (
           <h3
             onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-            className={`py-2 z-100 text-xl pr-4 font-bold text-center ${
+            className={`py-2 z-100 text-xl pr-4 font-bold m-auto text-center ${
               checkIsOwner && 'cursor-pointer'
             }`}
           >

@@ -31,15 +31,15 @@ export const contentApi = createApi({
     }),
     getUnpublishedContent: builder.query<any, any>({
       providesTags: ['CONTENT'],
-      query: (args) => {
+      query: ({ take, skip }: { take: number; skip: number }) => {
         return {
-          url: `content/unpublished`,
+          url: `content/unpublished/?take=${take}&skip=${skip}`,
           method: 'GET',
           credentials: 'omit',
         }
       },
       transformResponse: (res: any) => {
-        return res.data
+        return res?.data
       },
     }),
     getContentMetadata: builder.query<any, { contentId: string }>({

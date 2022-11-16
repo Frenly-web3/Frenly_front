@@ -1,1 +1,1 @@
-export const SIZE_POST_CHUNK = 4
+export const SIZE_POST_CHUNK = 5

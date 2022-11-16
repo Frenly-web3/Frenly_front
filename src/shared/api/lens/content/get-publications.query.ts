@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client'
+import { SIZE_POST_CHUNK } from '@shared/lib/constants'
 
 const GET_PUBLICATIONS = gql`
   query getPublicationsInfo($request: PublicationsQueryRequest!) {
@@ -41,6 +42,11 @@ const GET_PUBLICATIONS = gql`
           }
         }
       }
+      pageInfo {
+        totalCount
+        prev
+        next
+      }
     }
   }
 `
@@ -51,6 +57,28 @@ export const useGetLensPublications = (dataFeeds: any) => {
     variables: {
       request: {
         publicationIds: dataFeeds?.map((el: any) => el.lensId),
+      },
+    },
+  })
+}
+
+export const useGetLensPublicationsForUser = ({
+  profileId,
+  cursor,
+  skip,
+}: {
+  profileId: string
+  cursor: string | null
+  skip: boolean
+}) => {
+  return useQuery(GET_PUBLICATIONS, {
+    skip,
+    variables: {
+      request: {
+        profileId,
+        publicationTypes: ['POST', 'MIRROR'],
+        cursor,
+        limit: SIZE_POST_CHUNK,
       },
     },
   })

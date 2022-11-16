@@ -20,7 +20,7 @@ export const LikeButton = (props: ILikeButton) => {
       <IconButton
         disabled={isLiking}
         onClick={likePostHandler}
-        image="/assets/icons/heart.svg"
+        image={`/assets/icons/heart.svg`}
         amount={amountLikes}
       />
     </div>

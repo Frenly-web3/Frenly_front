@@ -61,21 +61,15 @@ export function useCommentPost({
 
         const { v, r, s } = await splitSignature({ signature: signature as string })
 
+        const { deadline, ...omitTypedData } = typedData.value
+
         await commentWithSig({
-          profileId: typedData.value.profileId,
-          contentURI: typedData.value.contentURI,
-          profileIdPointed: typedData.value.profileIdPointed,
-          pubIdPointed: typedData.value.pubIdPointed,
-          referenceModuleData: typedData.value.referenceModuleData,
-          collectModule: typedData.value.collectModule,
-          collectModuleInitData: typedData.value.collectModuleInitData,
-          referenceModule: typedData.value.referenceModule,
-          referenceModuleInitData: typedData.value.referenceModuleInitData,
+          ...omitTypedData,
           sig: {
             v,
             r,
             s,
-            deadline: typedData.value.deadline,
+            deadline,
           },
         })
 

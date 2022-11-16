@@ -10,10 +10,11 @@ import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 export default function FeedPage() {
   const [takeCount, setTakeCount] = useState(0)
 
-  const { posts, lensIsLoading, isSuccess, hasMore } = useGetFilteredPosts({
-    take: SIZE_POST_CHUNK,
-    skip: SIZE_POST_CHUNK * takeCount,
-  })
+  const { posts, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed } =
+    useGetFilteredPosts({
+      take: SIZE_POST_CHUNK,
+      skip: SIZE_POST_CHUNK * takeCount,
+    })
 
   const { account } = useBlockchain()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
@@ -47,7 +48,7 @@ export default function FeedPage() {
                 <PostCard {...post} key={`${post.lensId} ${index}`}>
                   <PostCard.Author />
                   <PostCard.Content />
-                  <PostCard.Reactions />
+                  <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
                 </PostCard>
               )
             })}

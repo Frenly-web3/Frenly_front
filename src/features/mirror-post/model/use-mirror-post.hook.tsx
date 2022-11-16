@@ -13,8 +13,9 @@ import { mirrorPostMutation } from '../api'
 
 interface IUseMirrorPost {
   publicationId: string
+  refetchFilteredFeed: () => void
 }
-export function useMirrorPost({ publicationId }: IUseMirrorPost) {
+export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirrorPost) {
   const { account } = useBlockchain()
 
   const viewerProfileLensId = useGetWalletProfileId(account as string)
@@ -43,18 +44,15 @@ export function useMirrorPost({ publicationId }: IUseMirrorPost) {
 
       const { v, r, s } = await splitSignature({ signature: signature as string })
 
+      const { deadline, ...omitTypedData } = typedData.value
+
       const tx = await mirrorWithSig({
-        profileId: typedData.value.profileId,
-        profileIdPointed: typedData.value.profileIdPointed,
-        pubIdPointed: typedData.value.pubIdPointed,
-        referenceModuleData: typedData.value.referenceModuleData,
-        referenceModule: typedData.value.referenceModule,
-        referenceModuleInitData: typedData.value.referenceModuleInitData,
+        ...omitTypedData,
         sig: {
           v,
           r,
           s,
-          deadline: typedData.value.deadline,
+          deadline,
         },
       })
 
@@ -65,12 +63,13 @@ export function useMirrorPost({ publicationId }: IUseMirrorPost) {
         lensId: publicationId as string,
         newLensId,
         description: descriptionMirror,
-      })
+      }).unwrap()
     } catch (error) {
       console.log(error)
     } finally {
-      setIsShowDescription(false)
       await refetchPublicationsStats()
+      refetchFilteredFeed()
+      setIsShowDescription(false)
     }
   }, [descriptionMirror, publicationId, viewerProfileLensId])
 

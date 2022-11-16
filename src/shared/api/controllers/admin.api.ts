@@ -10,17 +10,15 @@ export const adminApi = createApi({
   endpoints: (builder) => ({
     getUnpublishedPost: builder.query<any, any>({
       providesTags: ['ADMIN'],
-      query: (args) => {
+      query: ({ take, skip }: { take: number; skip: number }) => {
         return {
-          url: `admin`,
+          url: `admin?take=${take}&skip=${skip}`,
           method: 'GET',
           credentials: 'omit',
         }
       },
       transformResponse: (res: any) => {
-        return res.data
-          .filter((el: any) => el.lensId !== null)
-          .map((el: any) => el.lensId)
+        return res?.data
       },
     }),
     getPostMetadata: builder.query<any, { contentId: string }>({

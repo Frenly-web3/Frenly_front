@@ -10,6 +10,7 @@ interface IGetFilteredPosts {
   isSuccess: boolean
   lensIsLoading: boolean
   hasMore: boolean
+  refetchFilteredFeed: () => void
 }
 
 export const useGetFilteredPosts = ({
@@ -19,7 +20,11 @@ export const useGetFilteredPosts = ({
   take: number
   skip: number
 }): IGetFilteredPosts => {
-  const { data: postsData, isSuccess } = contentApi.useGetFilteredFeedQuery({
+  const {
+    data: postsData,
+    isSuccess,
+    refetch: refetchFilteredFeed,
+  } = contentApi.useGetFilteredFeedQuery({
     take,
     skip,
   })
@@ -93,7 +98,7 @@ export const useGetFilteredPosts = ({
   }, [postsData, lensPosts, lensIsLoading])
 
   return useMemo(
-    () => ({ posts: postsSum, lensIsLoading, isSuccess, hasMore }),
+    () => ({ posts: postsSum, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed }),
     [hasMore, isSuccess, lensIsLoading, postsSum]
   )
 }

@@ -10,7 +10,12 @@ import { useState } from 'react'
 import { usePostCardContext } from '../model'
 import { CommentList } from './comment-list.component'
 
-export function PostCardReactions() {
+interface IPostCardReactions {
+  refetchFilteredFeed: () => void
+}
+
+export function PostCardReactions(props: IPostCardReactions) {
+  const { refetchFilteredFeed } = props
   const { lensId: publicationId, network, txHash } = usePostCardContext()
   const [isOpenComments, setIsOpenComments] = useState(false)
   const { comments, setCommentsValue } = useGetCommentsByPostId({
@@ -28,7 +33,10 @@ export function PostCardReactions() {
             isOpenComment={isOpenComments}
             setIsOpenComment={setIsOpenComments}
           />
-          <MirrorButton publicationId={publicationId as string} />
+          <MirrorButton
+            publicationId={publicationId as string}
+            refetchFilteredFeed={refetchFilteredFeed}
+          />
         </div>
       </div>
       {isOpenComments && (
