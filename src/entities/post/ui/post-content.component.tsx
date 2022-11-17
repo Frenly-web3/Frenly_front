@@ -1,5 +1,5 @@
 import type { NetworkEnum } from '@shared/lib'
-import { PostTypeEnum } from '@shared/lib'
+import { PostTypeEnum, useRenderMessage } from '@shared/lib'
 import { TimeDate } from '@shared/ui'
 import React from 'react'
 
@@ -37,41 +37,7 @@ export const PostContent = (props: IPostContentProperties) => {
     isMirror,
   } = props
 
-  const renderMessage = () => {
-    let message
-    const messageTypeClone =
-      from == '0x0000000000000000000000000000000000000000'
-        ? PostTypeEnum.Minted
-        : messageType
-
-    switch (messageTypeClone) {
-      case PostTypeEnum.Minted:
-        message = '🎉 Minted a new '
-        break
-      case PostTypeEnum.Received:
-        message = '📤 Received '
-        break
-      case PostTypeEnum.Send:
-        message = '📤 Sent '
-        break
-      default:
-        break
-    }
-
-    switch (itemType) {
-      case 'nft':
-        message += `${messageType !== PostTypeEnum.Minted ? 'an' : ''} NFT`
-
-        break
-      case 'token':
-        message += 'tokens'
-        break
-      default:
-        break
-    }
-
-    return `${message} `
-  }
+  const renderMessage = useRenderMessage()
 
   return (
     <div style={{ marginLeft: showAuthor ? 56 : 0 }}>
@@ -112,7 +78,7 @@ export const PostContent = (props: IPostContentProperties) => {
         )}
         {creatorAddress !== process.env.NEXT_PUBLIC_ADMIN_ADDRESS &&
           !isMirror &&
-          renderMessage()}{' '}
+          renderMessage({ from, itemType, postType: messageType })}{' '}
         {from !== '0x0000000000000000000000000000000000000000' ? (
           messageType == PostTypeEnum.Received ? (
             <>from&nbsp;</>

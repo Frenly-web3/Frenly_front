@@ -11,7 +11,7 @@ export const IconButton = (props: IButtonProperties) => {
       onClick={onClick}
       className={`flex items-center justify-center py-1 px-2`}
     >
-      <img src={image} alt={image} />
+      <img src={image} alt={image} className="w-4 h-4" />
       {amount !== null && (
         <span className="text-xs font-semibold text-gray-darker ml-1">{amount}</span>
       )}
