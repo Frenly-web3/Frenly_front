@@ -3,6 +3,7 @@ import { useGetCommentsByPostId } from '@entities/comment'
 import { CommentButton, CommentSend } from '@features/comment-post'
 import { LikeButton } from '@features/like-post'
 import { MirrorButton } from '@features/mirror-post'
+import { TwitterButton } from '@features/twitter-post'
 import type { NetworkEnum } from '@shared/lib'
 import { TransactionLink } from '@shared/ui'
 import { useState } from 'react'
@@ -16,7 +17,16 @@ interface IPostCardReactions {
 
 export function PostCardReactions(props: IPostCardReactions) {
   const { refetchFilteredFeed } = props
-  const { lensId: publicationId, network, txHash } = usePostCardContext()
+  const {
+    lensId: publicationId,
+    network,
+    txHash,
+    image,
+    contractAddress,
+    from,
+    to,
+    postType,
+  } = usePostCardContext()
   const [isOpenComments, setIsOpenComments] = useState(false)
   const { comments, setCommentsValue } = useGetCommentsByPostId({
     publicationId: publicationId as string,
@@ -37,6 +47,15 @@ export function PostCardReactions(props: IPostCardReactions) {
             <MirrorButton
               publicationId={publicationId as string}
               refetchFilteredFeed={refetchFilteredFeed}
+            />
+            <TwitterButton
+              contractAddress={contractAddress}
+              from={from}
+              image={image}
+              network={network}
+              postType={postType}
+              to={to}
+              txHash={txHash}
             />
           </div>
         ) : (
