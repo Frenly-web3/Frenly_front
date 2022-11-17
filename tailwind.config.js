@@ -3,7 +3,12 @@
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./src/shared/**/*.{js,ts,jsx,tsx}",
+    "./src/features/**/*.{js,ts,jsx,tsx}",
+    "./src/widgets/**/*.{js,ts,jsx,tsx}",
+    "./src/entities/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{html,js}",
+    "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   theme: {
     extend: {},
@@ -26,8 +31,9 @@ module.exports = {
       'border-color': '#D7DDF3',
       'error': '#FF005C',
       'error-bg': 'rgba(255, 0, 0, 0.1)',
-      'light-bg': '#ECF2FF'
+      'light-bg': '#ECF2FF',
+      'is-liked': 'rgba(252, 165, 165, 0.8 )',
     }
   },
-  plugins: [],
+  plugins: [require('tw-elements/dist/plugin')],
 }
