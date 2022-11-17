@@ -61,6 +61,13 @@ export const useUserInfo = ({
       },
       refetchUserInfo,
     }),
-    [address, isAdmin, profileId, userInfo, userStatus]
+    [
+      address,
+      isAdmin,
+      profileId,
+      userInfo,
+      userStatus,
+      userInfoLens?.profile?.stats?.totalFollowers,
+    ]
   )
 }
