@@ -153,7 +153,7 @@ export const PostContent = (props: IPostContentProperties) => {
         </div>
       )}
       <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
-        {image ? (
+        {image && image !== null ? (
           <img
             src={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
             alt="image"

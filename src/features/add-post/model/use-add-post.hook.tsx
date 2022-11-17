@@ -1,9 +1,18 @@
 import { UserModelService } from '@entities/user'
-import { adminApi, contentApi } from '@shared/api'
-import { RoleEnum, useLoaderContext } from '@shared/lib'
+import { adminApi, contentApi, useCreatePostTypedData } from '@shared/api'
+import {
+  RoleEnum,
+  useConvertResponseToPublicationId,
+  useLoaderContext,
+} from '@shared/lib'
 import { useCallback } from 'react'
-import { toast } from 'react-toastify'
-import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
+import {
+  useBlockchain,
+  useGetWalletProfileId,
+  usePostWithSig,
+  useSignTypedData,
+  useSplitSignature,
+} from 'src/blockchain'
 
 interface IAddPost {
   backId: number
@@ -16,11 +25,81 @@ export const useAddPost = ({ backId }: IAddPost) => {
 
   const viewerProfileId = useGetWalletProfileId(account as string)
 
+  const splitSignature = useSplitSignature()
+  const signTypedData = useSignTypedData()
+
   const { user } = UserModelService.useUserInfo({ profileId: viewerProfileId })
+
+  const [getAdminPostMetadata] = adminApi.useLazyGetPostMetadataQuery()
+  const [getUserPostMetadata] = contentApi.useLazyGetContentMetadataQuery()
+
   const [removeAdminContent] = adminApi.useRemoveContentMutation()
   const [removeContent] = contentApi.useRemoveContentMutation()
 
-  const addPost = useCallback(() => {}, [])
+  const { createPostTypedData } = useCreatePostTypedData()
+
+  const { send: postWithSig } = usePostWithSig()
+
+  const [publishAdminPost] = adminApi.usePublishPostMutation()
+  const [publishUserPost] = contentApi.usePublishContentMutation()
+
+  const convertTxToPublicationId = useConvertResponseToPublicationId()
+
+  const [bindAdminContent] = adminApi.useBindPostWithLensMutation()
+  const [bindUserContent] = contentApi.useBindWithLensIdMutation()
+
+  const addPost = useCallback(async () => {
+    const isAdmin = user.role == RoleEnum.Admin
+    try {
+      setIsLoading(true)
+      const contentMetadata = await (isAdmin
+        ? getAdminPostMetadata({ contentId: backId.toString() })
+        : getUserPostMetadata({ contentId: backId.toString() }))
+      const result = await createPostTypedData({
+        contentURI: contentMetadata?.data,
+        profileId: viewerProfileId,
+      })
+
+      const typedData = result?.data?.createPostTypedData?.typedData
+
+      const signature = await signTypedData({ typedData })
+
+      const { v, r, s } = await splitSignature({ signature: signature as string })
+
+      const { deadline, ...omitTypedData } = typedData.value
+
+      const tx = await postWithSig({
+        ...omitTypedData,
+        sig: {
+          v,
+          r,
+          s,
+          deadline,
+        },
+      })
+
+      const newLensId = convertTxToPublicationId({ tx })
+
+      await (isAdmin
+        ? publishAdminPost({ contentId: backId.toString() })
+        : publishUserPost({
+            contentId: backId.toString(),
+          }))
+
+      const bindArguments = {
+        contentId: backId.toString(),
+        lensId: newLensId,
+      }
+
+      await (isAdmin ? bindAdminContent(bindArguments) : bindUserContent(bindArguments))
+    } catch (error_) {
+      console.log(error_)
+      // toast.error(String(error_))
+    } finally {
+      setIsLoading(false)
+    }
+  }, [backId, user.role])
+
   const declinePost = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -28,7 +107,8 @@ export const useAddPost = ({ backId }: IAddPost) => {
         ? removeAdminContent({ contentId: backId.toString() }).unwrap()
         : removeContent({ contentId: backId.toString() }).unwrap())
     } catch (error_) {
-      toast.error(String(error_))
+      // toast.error(String(error_))
+      console.log(error_)
     } finally {
       setIsLoading(false)
     }

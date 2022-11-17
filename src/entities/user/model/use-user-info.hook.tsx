@@ -30,19 +30,21 @@ export const useUserInfo = ({
   useEffect(() => {
     refetchUserInfo()
     refetchUserLensInfo()
-  }, [address, profileId])
+  }, [address, profileId, account])
 
   useEffect(() => {
     if (account === address) {
       setUserStatus(UserStatusEnum.Owner)
       return
     }
+    console.log('++++++++++++++++++++++++++++++', userInfoLens?.profile?.isFollowing)
+
     if (userInfoLens?.profile?.isFollowing) {
       setUserStatus(UserStatusEnum.Following)
       return
     }
     setUserStatus(UserStatusEnum.Viewer)
-  }, [account, address, userInfoLens])
+  }, [account, address, userInfoLens, profileId])
 
   return useMemo(
     () => ({

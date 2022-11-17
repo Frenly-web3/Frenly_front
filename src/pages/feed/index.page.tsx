@@ -45,7 +45,7 @@ export default function FeedPage() {
             {posts?.map((post, index) => {
               return (
                 // @ts-ignore
-                <PostCard {...post} key={`${post.lensId} ${index}`}>
+                <PostCard {...post} key={`${post.lensId}_${index}_${post.txHash}`}>
                   <PostCard.Author />
                   <PostCard.Content />
                   <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />

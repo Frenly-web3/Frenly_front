@@ -69,10 +69,12 @@ export default function ProfilePage() {
         >
           {unpublishedPosts?.map((post, index) => {
             return (
-              <PostCard {...post} key={`${post.lensId} ${index}`}>
+              <PostCard {...post} key={`${post.lensId}_${index}_${post.txHash}`}>
                 {/* <PostCard.Author /> */}
-                <PostCard.Content />
-                <PostCard.Adding />
+                <PostCard.Content
+                  key={`content_${post.lensId}_${index}_${post.txHash}`}
+                />
+                <PostCard.Adding key={`adding_${post.lensId}_${index}_${post.txHash}`} />
               </PostCard>
             )
           })}
@@ -89,10 +91,17 @@ export default function ProfilePage() {
         >
           {publishedPosts?.map((post, index) => {
             return (
-              <PostCard {...post} key={`${post.lensId} ${index}`}>
-                <PostCard.Author />
-                <PostCard.Content />
-                <PostCard.Reactions refetchFilteredFeed={() => console.log('ss')} />
+              <PostCard {...post} key={`${post.lensId}_${post.date}_${post.txHash}`}>
+                <PostCard.Author
+                  key={`author_${post.lensId}_${post.date}_${post.txHash}`}
+                />
+                <PostCard.Content
+                  key={`content_${post.lensId}_${post.date}_${post.txHash}`}
+                />
+                <PostCard.Reactions
+                  key={`reactions_ ${post.lensId}_${post.date}_${post.txHash}`}
+                  refetchFilteredFeed={() => console.log('ss')}
+                />
               </PostCard>
             )
           })}

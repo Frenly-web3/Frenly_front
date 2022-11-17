@@ -20,9 +20,6 @@ export const useGetPublishedContentForUser = ({
   profileId,
   skip = true,
 }: IGetPublishedContentForUserInput): IGetPublishedContentForUserOutput => {
-  // if (skip) {
-  //   return {} as IGetPublishedContentForUserOutput
-  // }
   const [cursor, setCursor] = useState<string | null>(null)
   const [hasMore, setHasMore] = useState(true)
   const [posts, setPosts] = useState<IPost[]>([])
@@ -42,6 +39,9 @@ export const useGetPublishedContentForUser = ({
     setPosts([])
     setHasMore(true)
   }
+  useEffect(() => {
+    setZeroPosts()
+  }, [profileId])
 
   console.log(publicationsForUser?.publications?.pageInfo)
 
@@ -79,7 +79,7 @@ export const useGetPublishedContentForUser = ({
     if (publishedPosts) {
       setPosts((previous) => [...previous, ...publishedPosts])
     }
-  }, [publicationsForUser, loading])
+  }, [publicationsForUser, loading, profileId])
 
   return {
     publishedPosts: posts,

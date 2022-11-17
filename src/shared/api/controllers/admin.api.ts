@@ -22,13 +22,15 @@ export const adminApi = createApi({
       },
     }),
     getPostMetadata: builder.query<any, { contentId: string }>({
-      providesTags: ['ADMIN'],
       query: ({ contentId }) => {
         return {
           url: `admin/content/${contentId}`,
           method: 'GET',
           credentials: 'omit',
         }
+      },
+      transformResponse: (res: any) => {
+        return res?.data
       },
     }),
     addUserForTrack: builder.mutation<any, { address: string }>({

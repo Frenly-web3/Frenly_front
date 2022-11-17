@@ -12,13 +12,13 @@ export function PostCardAdding(props: IPostCardAdding) {
 
   const { id: backId, network, txHash } = usePostCardContext()
 
-  const { declinePost } = useAddPost({ backId: backId as number })
+  const { declinePost, addPost } = useAddPost({ backId: backId as number })
 
   return (
     <div className="flex flex-col align-middle">
       <div className="w-full grid grid-cols-2 gap-2 mt-2 pl-14">
         <button
-          onClick={() => console.log('as')}
+          onClick={addPost}
           className="rounded-full bg-main py-2 text-white text-sm font-semibold"
         >
           Publish

@@ -50,6 +50,9 @@ export const contentApi = createApi({
           credentials: 'omit',
         }
       },
+      transformResponse: (res: any) => {
+        return res?.data
+      },
     }),
     publishContent: builder.mutation<any, { contentId: string }>({
       invalidatesTags: ['CONTENT'],

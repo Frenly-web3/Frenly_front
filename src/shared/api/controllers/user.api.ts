@@ -32,6 +32,16 @@ export const userApi = createApi({
         }
       },
     }),
+    subscribeUser: builder.mutation<any, { address: string }>({
+      invalidatesTags: ['USER', 'ADMIN'],
+      query: ({ address }) => {
+        return {
+          url: `user/subscribe/${address}`,
+          method: 'POST',
+          credentials: 'omit',
+        }
+      },
+    }),
     uploadUserAvatar: builder.mutation<any, { avatar: File }>({
       invalidatesTags: ['USER', 'ADMIN'],
       query: ({ avatar }) => {

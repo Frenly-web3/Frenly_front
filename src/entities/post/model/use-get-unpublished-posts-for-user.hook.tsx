@@ -104,7 +104,7 @@ export const useGetUnpublishedPostsForUser = ({
     if (posts) {
       setMappedPosts((previous) => [...previous, ...mappedPost])
     }
-  }, [posts, isLoading])
+  }, [posts, isLoading, unpublishedPosts, unpublishedPostsAdmin])
 
   return useMemo(
     () => ({

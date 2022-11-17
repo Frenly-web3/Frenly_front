@@ -20,6 +20,7 @@ export function useBlockchain() {
     contracts,
     useContractFunction,
     signer: useEthers().library?.getSigner(),
+    ethers,
   }
 }
 
