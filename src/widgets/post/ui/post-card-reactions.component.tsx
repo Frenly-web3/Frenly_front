@@ -25,19 +25,23 @@ export function PostCardReactions(props: IPostCardReactions) {
     <>
       <div className={`mt-1 flex items-center justify-between pl-14`}>
         <TransactionLink network={network as NetworkEnum} txHash={txHash as string} />
-        <div className="flex items-center">
-          <LikeButton publicationId={publicationId as string} />
-          <CommentButton
-            amountComments={comments?.length}
-            publicationId={publicationId as string}
-            isOpenComment={isOpenComments}
-            setIsOpenComment={setIsOpenComments}
-          />
-          <MirrorButton
-            publicationId={publicationId as string}
-            refetchFilteredFeed={refetchFilteredFeed}
-          />
-        </div>
+        {publicationId ? (
+          <div className="flex items-center">
+            <LikeButton publicationId={publicationId as string} />
+            <CommentButton
+              amountComments={comments?.length}
+              publicationId={publicationId as string}
+              isOpenComment={isOpenComments}
+              setIsOpenComment={setIsOpenComments}
+            />
+            <MirrorButton
+              publicationId={publicationId as string}
+              refetchFilteredFeed={refetchFilteredFeed}
+            />
+          </div>
+        ) : (
+          <div className="m-auto mt-4 w-72 h-3 rounded-full bg-gray animate-pulse"></div>
+        )}
       </div>
       {isOpenComments && (
         <>

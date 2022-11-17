@@ -42,14 +42,20 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
             placeholder="Input your name"
           />
         ) : (
-          <h3
-            onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-            className={`py-2 z-100 text-xl pr-4 font-bold m-auto text-center ${
-              checkIsOwner && 'cursor-pointer'
-            }`}
-          >
-            {username}
-          </h3>
+          <>
+            {username ? (
+              <h3
+                onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
+                className={`py-2 z-100 text-xl pr-4 font-bold m-auto text-center ${
+                  checkIsOwner && 'cursor-pointer'
+                }`}
+              >
+                {username}
+              </h3>
+            ) : (
+              <div className="m-auto w-5/12 h-4 rounded-full bg-gray animate-pulse mr-40"></div>
+            )}
+          </>
         )}
       </div>
       <ImageUpload profileId={profileId} />
@@ -69,14 +75,20 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
           />
         </>
       ) : (
-        <div
-          onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-          className={`text-base z-100 ${
-            checkIsOwner && 'cursor-pointer'
-          } font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
-        >
-          {description}
-        </div>
+        <>
+          {description ? (
+            <div
+              onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
+              className={`text-base z-100 ${
+                checkIsOwner && 'cursor-pointer'
+              } font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
+            >
+              {description}
+            </div>
+          ) : (
+            <div className="m-auto mt-4 w-44 h-4 rounded-full bg-gray animate-pulse"></div>
+          )}
+        </>
       )}
       {isEditMode && <ProfileButton onClick={saveHandle}>SAVE</ProfileButton>}
     </>

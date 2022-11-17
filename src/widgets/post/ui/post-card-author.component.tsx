@@ -11,6 +11,7 @@ export function PostCardAuthor() {
     creatorLensId,
     fromMirrorName,
     mirrorFromId,
+    isMirror,
   } = usePostCardContext()
 
   return (
@@ -29,6 +30,7 @@ export function PostCardAuthor() {
       date={date as string}
       fromMirror={fromMirrorName as string}
       fromMirrorId={mirrorFromId as string}
+      isMirror={isMirror as boolean}
     />
   )
 }

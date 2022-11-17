@@ -20,24 +20,28 @@ export function Header(props: IHeaderProperties): JSX.Element {
             <h2 className="text-4xl font-bold ml-3">frenly feed</h2>
           </div>
 
-          <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
-            <img
-              src={
-                avatar && avatar !== null
-                  ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
-                  : '/assets/images/temp-avatar.png'
-              }
-              alt={'avatar'}
-              onClick={() => {
-                if (userLensId !== null) {
-                  router.push(`profile/${userLensId}`)
-                } else {
-                  router.push('/auth')
+          {avatar ? (
+            <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
+              <img
+                src={
+                  avatar && avatar !== null
+                    ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
+                    : '/assets/images/temp-avatar.png'
                 }
-              }}
-              className={`cursor-pointer w-7 h-7`}
-            />
-          </div>
+                alt={'avatar'}
+                onClick={() => {
+                  if (userLensId !== null) {
+                    router.push(`profile/${userLensId}`)
+                  } else {
+                    router.push('/auth')
+                  }
+                }}
+                className={`cursor-pointer w-7 h-7`}
+              />
+            </div>
+          ) : (
+            <div className="mt-4 w-7 h-7 rounded-full bg-gray animate-pulse"></div>
+          )}
         </div>
       </>
     </header>

@@ -32,5 +32,6 @@ export const useUploadAvatar = ({ profileId }: { profileId: string }) => {
   return {
     changeImageHandle,
     previewValue,
+    avatar: user?.avatar,
   }
 }
