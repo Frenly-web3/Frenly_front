@@ -1,5 +1,5 @@
 import { contentApi, useGetLensPublications } from '@shared/api'
-import { NetworkEnum } from '@shared/lib'
+import { NetworkEnum, SellerTypeEnum, TokenTypeEnum } from '@shared/lib'
 import { useEffect, useMemo, useState } from 'react'
 
 import { convertTransferTypeToEnum } from '../lib'
@@ -30,13 +30,19 @@ export const useGetFilteredPosts = ({
   })
 
   const [postsSum, setPostsSum] = useState<IPost[]>([])
-  const { data: lensPosts, loading: lensIsLoading } = useGetLensPublications(postsData)
+  const { data: lensPosts, loading: lensIsLoading } = useGetLensPublications(
+    postsData?.filter((post: any) => {
+      return !('signedObject' in post)
+    })
+  )
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
     if (!postsData) {
       return
     }
+    console.log(postsData)
+
     if (!lensPosts && lensIsLoading) {
       return
     }
@@ -55,11 +61,40 @@ export const useGetFilteredPosts = ({
         // lensId,
         contractAddress,
         lensId,
+        collectionName,
+        sellPrice,
+        signedObject,
       } = post
 
       const postLens = lensPosts?.publications?.items?.find((el: any) => {
         return lensId == el?.id
       })
+      if (signedObject) {
+        return {
+          creatorLensId: null,
+          date: creationDate,
+          from: null,
+          isMirror: null,
+          mirrorDescription: null,
+          mirrorFrom: null,
+          mirrorFromId: null,
+          network: NetworkEnum.Ethereum,
+          postType: null,
+          to: null,
+          txHash: null,
+          lensId: null,
+          id: idBack,
+          image,
+          contractAddress,
+          creatorAddress: fromAddress,
+          nameCollection: collectionName,
+          sellerType: SellerTypeEnum.ForSale,
+          tokenId: '',
+          tokenType: TokenTypeEnum.ERC721,
+          price: sellPrice,
+          signedObject,
+        }
+      }
       if (!postLens) {
         return {} as IPost
       }
@@ -81,9 +116,15 @@ export const useGetFilteredPosts = ({
         txHash: transactionHash,
         lensId,
         id: idBack,
-        image,
+        image: `${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`,
         contractAddress,
         creatorAddress: profile?.ownedBy,
+        nameCollection: '',
+        sellerType: SellerTypeEnum.NotForSale,
+        tokenId: '',
+        tokenType: TokenTypeEnum.ERC721,
+        price: null,
+        signedObject: null,
       }
     })
     if (posts?.length === 0) {

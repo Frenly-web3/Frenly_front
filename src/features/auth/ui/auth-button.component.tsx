@@ -1,19 +1,20 @@
+import { useLoaderContext } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
 import { useBlockchain } from 'src/blockchain'
 
 import { useAuth } from '../model'
 
-type Properties = {}
+interface IAuthButtonProperties {}
 
-export const AuthButton = (props: Properties) => {
+export const AuthButton = (props: IAuthButtonProperties) => {
+  const {} = props
+
   const { account, activateBrowserWallet } = useBlockchain()
-  const { login, loginLens, logout, hasProfile, createProfileLens } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
+  const { login, loginLens, logout, hasProfile, createProfile } = useAuth()
+  const { setIsLoading } = useLoaderContext()
   const router = useRouter()
-
-  console.log(isLoading)
 
   const signUpHandle = async () => {
     try {
@@ -24,7 +25,7 @@ export const AuthButton = (props: Properties) => {
       const hasLensProfile = await hasProfile(account as string)
 
       if (!hasLensProfile) {
-        await createProfileLens()
+        await createProfile()
       }
 
       router.push('/feed')

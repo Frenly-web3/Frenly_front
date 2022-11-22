@@ -18,6 +18,7 @@ export function useBlockchain() {
     ...useEthers(),
     useCall,
     contracts,
+    ChainId,
     useContractFunction,
     signer: useEthers().library?.getSigner(),
     ethers,

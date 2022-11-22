@@ -13,13 +13,15 @@ import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
 const config: Config = {
-  readOnlyChainId: ChainId.Polygon,
+  readOnlyChainId: ChainId.Mumbai,
   readOnlyUrls: {
     [ChainId.Mumbai]:
       'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
+    [ChainId.Mainnet]:
+      'https://eth-mainnet.g.alchemy.com/v2/JANw7_5C171cj-buFVibsh1jIZAwe4Yq',
   },
   notifications: {
-    expirationPeriod: 1000,
+    expirationPeriod: 10_000,
     checkInterval: 200_000,
   },
   autoConnect: true,

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import React from 'react'
 import { createPortal } from 'react-dom'
 
@@ -12,7 +11,11 @@ export const Modal = (props: IModalProperties) => {
 
   return show
     ? createPortal(
-        <div className={`bg-black ${show ? 'fixed inset-0 z-50 bg-opacity-50' : ''}`}>
+        <div
+          className={`absolute bg-black ${
+            show ? 'fixed inset-0 z-40 bg-opacity-50' : ''
+          }`}
+        >
           <div
             className="fixed z-50 inset-0"
             aria-labelledby="modal-title"
@@ -39,13 +42,6 @@ export const Modal = (props: IModalProperties) => {
                   className="absolute top-1/2 left-1/2 bg-white  pt-5 pb-4 sm:p-6 sm:pb-4 text-center"
                 >
                   <div className="flex flex-col justify-center items-center p-8">
-                    <Image
-                      src="/assets/images/eyes.gif"
-                      alt="eyes"
-                      width={85}
-                      height={85}
-                      className={'w-20 h-20'}
-                    />
                     {children || ''}
                   </div>
                 </div>

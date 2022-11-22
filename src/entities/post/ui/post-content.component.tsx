@@ -33,7 +33,6 @@ export const PostContent = (props: IPostContentProperties) => {
     contractAddress,
     mirrorDescription,
     itemType = 'nft',
-    image,
     isMirror,
   } = props
 
@@ -118,21 +117,6 @@ export const PostContent = (props: IPostContentProperties) => {
           {mirrorDescription}
         </div>
       )}
-      <div className="relative max-h-96 rounded-lg overflow-hidden mt-1">
-        {image && image !== null ? (
-          <img
-            src={`${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`}
-            alt="image"
-            className="m-auto"
-          />
-        ) : (
-          <img
-            src={'/assets/images/eyes.png'}
-            alt="image"
-            className="m-auto mt-30 mb-30"
-          />
-        )}
-      </div>
     </div>
   )
 }

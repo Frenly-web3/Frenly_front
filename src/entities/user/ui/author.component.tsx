@@ -10,7 +10,7 @@ interface IAuthorProperties {
   profileId: string
   fromMirror?: string
   fromMirrorId?: string
-  isMirror: boolean
+  isMirror: boolean | null
 }
 
 export function Author(props: IAuthorProperties) {
@@ -22,7 +22,7 @@ export function Author(props: IAuthorProperties) {
   }
   return (
     <figure className="flex items-center">
-      {avatar !== '/assets/images/temp-avatar.png' ? (
+      {avatar && avatar !== '/assets/images/temp-avatar.png' ? (
         <button
           onClick={() => routeToProfile({ idProfile: profileId })}
           className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden"
@@ -45,6 +45,7 @@ export function Author(props: IAuthorProperties) {
           <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>
         )}
         {isMirror &&
+          isMirror !== null &&
           (fromMirror ? (
             <div className="text-base font-normal">
               🪞 mirrored from{' '}

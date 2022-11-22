@@ -1,5 +1,5 @@
 import { adminApi, contentApi } from '@shared/api'
-import { NetworkEnum, RoleEnum } from '@shared/lib'
+import { NetworkEnum, RoleEnum, SellerTypeEnum } from '@shared/lib'
 import { SIZE_POST_CHUNK } from '@shared/lib/constants'
 import { useEffect, useMemo, useState } from 'react'
 import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
@@ -90,11 +90,18 @@ export const useGetUnpublishedPostsForUser = ({
         txHash: transactionHash,
         lensId,
         id: idBack,
-        image,
+        image: `${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`,
         contractAddress,
         creatorAddress: account as string,
+        nameCollection: null,
+        sellerType: SellerTypeEnum.NotForSale,
+        tokenId: null,
+        tokenType: null,
+        price: null,
+        signedObject: null,
       }
     })
+    // https://gm.frenly.cc/rest/token-images/undefined
     console.log(mappedPost)
 
     if (mappedPost?.length == 0) {

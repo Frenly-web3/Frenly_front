@@ -30,7 +30,7 @@ export function PostCardAuthor() {
       date={date as string}
       fromMirror={fromMirrorName as string}
       fromMirrorId={mirrorFromId as string}
-      isMirror={isMirror as boolean}
+      isMirror={isMirror}
     />
   )
 }

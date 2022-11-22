@@ -1,5 +1,6 @@
 import { useCheckIsOwner } from '@shared/lib'
 import { BackButtonComponent, ProfileButton } from '@shared/ui'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 import { useUploadUserInfo } from '../model'
@@ -22,19 +23,19 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
     saveHandle,
     status,
   } = useUploadUserInfo({ profileId })
-
+  const router = useRouter()
   const checkIsOwner = useCheckIsOwner({ status })
   return (
     <>
       <div className="py-2 flex justify-between">
-        <BackButtonComponent />
+        <BackButtonComponent onClick={() => router.push('/feed')} />
         {isEditMode ? (
           <input
             style={{ background: 'transparent' }}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             type="text"
-            className={`py-2 z-100 text-xl font-bold ${
+            className={`m-auto z-100 text-xl font-bold ${
               checkIsOwner && 'cursor-pointer'
             }  border-solid border-gray-100 border-b-2 w-70 
           

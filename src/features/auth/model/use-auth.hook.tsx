@@ -1,10 +1,10 @@
 import { UserModelService } from '@entities/user'
-import { authApi } from '@shared/api'
+import { authApi, useCreateProfileLens } from '@shared/api'
 import { useAppDispatch } from '@shared/lib'
 import { useCallback } from 'react'
 import { useBlockchain, useSignMessage } from 'src/blockchain'
 
-import { createProfile, getChallenge, loginLensMutation } from '../api'
+import { getChallenge, loginLensMutation } from '../api'
 
 export function useAuth() {
   const { account } = useBlockchain()
@@ -16,6 +16,7 @@ export function useAuth() {
   const setTokensDispatch = useAppDispatch(UserModelService.actions.setTokens)
   const setTokensLensDispatch = useAppDispatch(UserModelService.actions.setTokensLens)
   const deleteTokensDispatch = useAppDispatch(UserModelService.actions.revertInitialState)
+  const { createProfileLens } = useCreateProfileLens()
   const signMessage = useSignMessage()
 
   const loginLens = useCallback(async () => {
@@ -74,8 +75,8 @@ export function useAuth() {
     }
   }, [account, getNonce, loginMutation, setAuthDispatch, setTokensDispatch, signMessage])
 
-  const createProfileLens = useCallback(async () => {
-    await createProfile({ address: account as string })
+  const createProfile = useCallback(async () => {
+    await createProfileLens({ account: account as string })
   }, [account])
 
   const logout = useCallback(async () => {
@@ -90,5 +91,5 @@ export function useAuth() {
     [hasLensProfile]
   )
 
-  return { login, loginLens, logout, hasProfile, createProfileLens }
+  return { login, loginLens, logout, hasProfile, createProfile }
 }

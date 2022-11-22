@@ -1,14 +1,17 @@
 import { useBlockchain } from './use-blockchain.hook'
 
 export function useGetWalletProfileId(address: string) {
-  const { useCall, contracts } = useBlockchain()
+  const { useCall, contracts, ChainId } = useBlockchain()
 
   const { value, error } =
-    useCall({
-      contract: contracts.lensContract,
-      method: 'tokenOfOwnerByIndex',
-      args: [address, 0],
-    }) ?? {}
+    useCall(
+      {
+        contract: contracts.lensContract,
+        method: 'tokenOfOwnerByIndex',
+        args: [address, 0],
+      },
+      { chainId: ChainId.Mumbai }
+    ) ?? {}
 
   if (error) {
     console.error(error.message)

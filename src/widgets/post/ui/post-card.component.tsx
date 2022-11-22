@@ -7,17 +7,24 @@ import { PostCardContext } from '../model'
 import { PostCardAdding } from './post-card-adding.component'
 import { PostCardAuthor } from './post-card-author.component'
 import { PostCardContent } from './post-card-content.component'
+import { PostCardImage } from './post-card-image.component'
+import { PostCardOrder } from './post-card-order.component'
 import { PostCardReactions } from './post-card-reactions.component'
+import { PostCardSubscription } from './post-card-subscription.component'
 
 interface IPostCardProperties extends IPost {
   children: React.ReactNode
 }
 
 export const PostCard = (props: IPostCardProperties) => {
-  const { creatorLensId, mirrorFrom, children } = props
+  const { creatorLensId, mirrorFrom, children, creatorAddress } = props
+
+  const creatorLensIdViaAddress = useGetWalletProfileId(creatorAddress as string)
+
+  console.log(creatorLensIdViaAddress)
 
   const { user: creatorInfo } = UserModelService.useUserInfo({
-    profileId: creatorLensId as string,
+    profileId: creatorLensId || creatorLensIdViaAddress,
   })
 
   const mirrorLensId = useGetWalletProfileId(mirrorFrom as string)
@@ -51,3 +58,9 @@ PostCard.Content = PostCardContent
 PostCard.Reactions = PostCardReactions
 
 PostCard.Adding = PostCardAdding
+
+PostCard.Subscription = PostCardSubscription
+
+PostCard.Image = PostCardImage
+
+PostCard.Order = PostCardOrder

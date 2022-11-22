@@ -1,4 +1,9 @@
-import type { NetworkEnum, PostTypeEnum } from '@shared/lib'
+import type {
+  NetworkEnum,
+  PostTypeEnum,
+  SellerTypeEnum,
+  TokenTypeEnum,
+} from '@shared/lib'
 
 export interface IPost {
   creatorLensId: string | null
@@ -17,4 +22,10 @@ export interface IPost {
   image: string | null
   contractAddress: string | null
   creatorAddress: string | null
+  sellerType: SellerTypeEnum
+  nameCollection: string | null
+  tokenId: number | string | null
+  tokenType: TokenTypeEnum | null
+  price: string | null
+  signedObject: string | null
 }

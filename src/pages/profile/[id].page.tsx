@@ -74,6 +74,7 @@ export default function ProfilePage() {
                 <PostCard.Content
                   key={`content_${post.lensId}_${index}_${post.txHash}`}
                 />
+                <PostCard.Image />
                 <PostCard.Adding key={`adding_${post.lensId}_${index}_${post.txHash}`} />
               </PostCard>
             )
@@ -98,6 +99,7 @@ export default function ProfilePage() {
                 <PostCard.Content
                   key={`content_${post.lensId}_${post.date}_${post.txHash}`}
                 />
+                <PostCard.Image />
                 <PostCard.Reactions
                   key={`reactions_ ${post.lensId}_${post.date}_${post.txHash}`}
                   refetchFilteredFeed={() => console.log('ss')}
