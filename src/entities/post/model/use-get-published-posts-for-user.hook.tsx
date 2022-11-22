@@ -1,5 +1,5 @@
 import { useGetLensPublicationsForUser } from '@shared/api'
-import { NetworkEnum } from '@shared/lib'
+import { NetworkEnum, SellerTypeEnum } from '@shared/lib'
 import { useEffect, useState } from 'react'
 
 import { convertTransferTypeToEnum } from '../lib'
@@ -67,9 +67,15 @@ export const useGetPublishedContentForUser = ({
           txHash: metadata?.attributes[8]?.value,
           lensId: id,
           id: null,
-          image: metadata?.attributes[9]?.value,
+          image: `${process.env.NEXT_PUBLIC_API_URL}token-images/${metadata?.attributes[9]?.value}`,
           contractAddress: metadata?.attributes[1]?.value,
           creatorAddress: profile?.ownedBy,
+          sellerType: SellerTypeEnum.NotForSale,
+          nameCollection: null,
+          tokenId: null,
+          tokenType: null,
+          price: null,
+          signedObject: null,
         }
       }
     )
@@ -80,7 +86,6 @@ export const useGetPublishedContentForUser = ({
       setPosts((previous) => [...previous, ...publishedPosts])
     }
   }, [publicationsForUser, loading, profileId])
-
   return {
     publishedPosts: posts,
     fetchMorePosts,

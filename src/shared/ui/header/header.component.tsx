@@ -40,7 +40,16 @@ export function Header(props: IHeaderProperties): JSX.Element {
               />
             </div>
           ) : (
-            <div className="mt-4 w-7 h-7 rounded-full bg-gray animate-pulse"></div>
+            <div
+              onClick={() => {
+                if (userLensId !== null) {
+                  router.push(`profile/${userLensId}`)
+                } else {
+                  router.push('/auth')
+                }
+              }}
+              className="mt-4 w-7 h-7 rounded-full bg-gray animate-pulse"
+            ></div>
           )}
         </div>
       </>

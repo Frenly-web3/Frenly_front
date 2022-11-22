@@ -25,6 +25,9 @@ export const authApi = createApi({
           credentials: 'omit',
         }
       },
+      transformResponse: (res: any) => {
+        return res?.data
+      },
     }),
     validateUserSignature: builder.mutation<
       { refreshToken: string; accessToken: string },

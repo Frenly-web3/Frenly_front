@@ -12,7 +12,8 @@ export const convertTransferTypeToEnum = (transferType: string) => {
       return PostTypeEnum.Minted
     }
     default: {
-      throw new Error('Incorrect transfer type')
+      console.error('Incorrect post type')
+      return PostTypeEnum.Received
     }
   }
 }

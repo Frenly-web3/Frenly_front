@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 
 import { baseQueryWithReauth } from '../base-query'
+import type { ICreateSellOrderDTO } from '../dto/content.dto'
 
 // Define a service using a base URL and expected endpoints
 export const contentApi = createApi({
@@ -112,6 +113,31 @@ export const contentApi = createApi({
           url: `content/${contentId}`,
           method: 'DELETE',
 
+          credentials: 'omit',
+        }
+      },
+    }),
+    createSellOrder: builder.mutation<any, ICreateSellOrderDTO>({
+      invalidatesTags: ['CONTENT'],
+      query: ({ collectionName, image, price, signedObject, walletAddress }) => {
+        // const formData = new FormData()
+        // formData.set('walletAddress', walletAddress)
+        // formData.set('price', price)
+        // formData.set('collectionName', collectionName.toString())
+        // formData.set('signedObject', signedObject)
+        // formData.set('image', image)
+        // console.log(formData)
+
+        return {
+          url: `zeroex/sell`,
+          method: 'POST',
+          body: {
+            walletAddress,
+            price: Number(price),
+            collectionName,
+            signedObject,
+            image,
+          },
           credentials: 'omit',
         }
       },

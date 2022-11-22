@@ -1,5 +1,7 @@
 export * from './comment-list.component'
 export * from './post-card.component'
+export * from './post-card-adding.component'
 export * from './post-card-author.component'
 export * from './post-card-content.component'
+export * from './post-card-image.component'
 export * from './post-card-reactions.component'

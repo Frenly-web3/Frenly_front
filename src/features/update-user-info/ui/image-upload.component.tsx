@@ -11,13 +11,13 @@ export const ImageUpload = (props: IImageUploadProperties) => {
   const { profileId } = props
   const { status } = useUploadUserInfo({ profileId })
   const checkIsOwner = useCheckIsOwner({ status })
-  const { changeImageHandle, previewValue, avatar } = useUploadAvatar({
+  const { changeImageHandle, previewValue } = useUploadAvatar({
     profileId,
   })
 
   return (
     <>
-      {avatar ? (
+      {profileId ? (
         <div
           className={`m-auto mt-3 ${
             checkIsOwner && 'cursor-pointer'

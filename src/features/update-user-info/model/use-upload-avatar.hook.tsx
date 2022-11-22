@@ -22,12 +22,16 @@ export const useUploadAvatar = ({ profileId }: { profileId: string }) => {
   }, [user])
 
   const changeImageHandle = useCallback(async ({ imageUrl }: { imageUrl: any }) => {
-    const preview = URL.createObjectURL(imageUrl)
-    setPreviewValue(preview)
-    if (imageUrl) {
-      return
+    try {
+      const preview = URL.createObjectURL(imageUrl)
+      setPreviewValue(preview)
+      if (!imageUrl) {
+        return
+      }
+      await uploadImage({ avatar: imageUrl }).unwrap()
+    } catch (error) {
+      console.log(error)
     }
-    await uploadImage({ avatar: imageUrl })
   }, [])
   return {
     changeImageHandle,
