@@ -38,7 +38,7 @@ export const Comment = ({
         <div className="flex justify-between">
           <div
             onClick={() => {
-              router.push(`profile/${profileId}`)
+              router.push(`/profile/${profileId}`)
             }}
             className={`cursor-pointer text-base font-semibold`}
           >

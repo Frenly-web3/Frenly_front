@@ -11,8 +11,12 @@ export const useGetENSByAddress = ({ address }: { address: string }) => {
   useEffect(() => {
     if (address !== null) {
       ;(async () => {
-        const respName = await provider.lookupAddress(address)
-        setName(respName)
+        try {
+          const respName = await provider?.lookupAddress(address)
+          setName(respName)
+        } catch {
+          setName(null)
+        }
       })()
     }
   }, [address])
