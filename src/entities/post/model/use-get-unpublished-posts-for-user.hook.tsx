@@ -21,7 +21,6 @@ interface IGetPublishedContentForUserOutput {
 }
 
 export const useGetUnpublishedPostsForUser = ({
-  profileId,
   skipReq,
   role,
 }: IGetUnpublishedPostsForUserInput): IGetPublishedContentForUserOutput => {
@@ -54,12 +53,10 @@ export const useGetUnpublishedPostsForUser = ({
     setHasMore(true)
   }
 
-  console.log(mappedPosts)
   const posts = role !== RoleEnum.User ? unpublishedPostsAdmin : unpublishedPosts
   const isLoading = role !== RoleEnum.User ? isLoadingAdmin : isLoadingUser
   useEffect(() => {
     setHasMore(true)
-    console.log('asdasd', posts)
 
     const mappedPost = posts?.map((post: any): IPost => {
       const {
@@ -94,15 +91,13 @@ export const useGetUnpublishedPostsForUser = ({
         contractAddress,
         creatorAddress: account as string,
         nameCollection: null,
-        sellerType: SellerTypeEnum.NotForSale,
+        sellerType: SellerTypeEnum.NftTransfer,
         tokenId: null,
         tokenType: null,
         price: null,
         signedObject: null,
       }
     })
-    // https://gm.frenly.cc/rest/token-images/undefined
-    console.log(mappedPost)
 
     if (mappedPost?.length == 0) {
       setHasMore(false)

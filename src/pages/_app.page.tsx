@@ -1,4 +1,5 @@
 import '@shared/styles/global.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { ApolloProvider } from '@apollo/client'
 import { store } from '@app/store'
@@ -13,7 +14,7 @@ import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
 const config: Config = {
-  readOnlyChainId: ChainId.Mumbai,
+  readOnlyChainId: ChainId.Mumbai | ChainId.Mainnet,
   readOnlyUrls: {
     [ChainId.Mumbai]:
       'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
@@ -25,6 +26,7 @@ const config: Config = {
     checkInterval: 200_000,
   },
   autoConnect: true,
+  noMetamaskDeactivate: true,
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
@@ -33,7 +35,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <DAppProvider config={config}>
         <Provider store={store}>
           <LoaderContextProvider>
-            <Component {...pageProps} />
             <ToastContainer
               position="bottom-left"
               autoClose={5000}
@@ -46,6 +47,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               pauseOnHover
               theme="light"
             />
+            <Component {...pageProps} />
+
             <Loader />
           </LoaderContextProvider>
         </Provider>

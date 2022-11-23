@@ -1,6 +1,7 @@
 import { contentApi, useGetPublicationsStats } from '@shared/api'
-import { useConvertResponseToPublicationId } from '@shared/lib'
+import { useConvertResponseToPublicationId, useLoaderContext } from '@shared/lib'
 import { useCallback, useState } from 'react'
+import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useGetWalletProfileId,
@@ -17,7 +18,7 @@ interface IUseMirrorPost {
 }
 export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirrorPost) {
   const { account } = useBlockchain()
-
+  const { setIsLoading } = useLoaderContext()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
   const signTypedData = useSignTypedData()
   const splitSignature = useSplitSignature()
@@ -33,6 +34,8 @@ export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirror
 
   const mirrorPost = useCallback(async () => {
     try {
+      setIsLoading(true)
+      setIsShowDescription(false)
       const typedDataResponse = await mirrorPostMutation({
         publicationId,
         viewerProfileLensId,
@@ -57,19 +60,26 @@ export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirror
       })
 
       const newLensId = convertTxToPublicationId({ tx })
-      console.log(newLensId)
+
+      if (newLensId == '0xNaN-0xNaN') {
+        throw new Error('Incorrect new lens id')
+      }
 
       await mirrorPostBack({
         lensId: publicationId as string,
         newLensId,
         description: descriptionMirror,
       }).unwrap()
+      toast.success('You successfully created mirror.', {
+        icon: '✨',
+      })
     } catch (error) {
       console.log(error)
     } finally {
       await refetchPublicationsStats()
       refetchFilteredFeed()
-      setIsShowDescription(false)
+
+      setIsLoading(false)
     }
   }, [descriptionMirror, publicationId, viewerProfileLensId])
 

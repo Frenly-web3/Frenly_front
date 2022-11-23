@@ -17,8 +17,6 @@ export const loginLensMutation = ({
   address: string
   signature: string
 }) => {
-  console.log(address, signature)
-
   return client.mutate({
     mutation: gql(AUTHENTICATION),
     variables: {

@@ -1,4 +1,10 @@
-import { ChainId, useCall, useContractFunction, useEthers } from '@usedapp/core'
+import {
+  ChainId,
+  useCall,
+  useContractFunction,
+  useEthers,
+  useLookupAddress,
+} from '@usedapp/core'
 import { BigNumber, Contract, ethers, utils } from 'ethers'
 import { useCallback } from 'react'
 
@@ -16,6 +22,7 @@ export function useBlockchain() {
   const contracts = { lensContract }
   return {
     ...useEthers(),
+    useLookupAddress,
     useCall,
     contracts,
     ChainId,

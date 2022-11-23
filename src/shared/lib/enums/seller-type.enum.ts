@@ -1,4 +1,6 @@
 export enum SellerTypeEnum {
-  'NotForSale',
-  'ForSale',
+  'NftTransfer',
+  'SellOrder',
+  'SellEvent',
+  'BuyEvent',
 }

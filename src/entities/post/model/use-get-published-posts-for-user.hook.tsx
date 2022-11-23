@@ -43,8 +43,6 @@ export const useGetPublishedContentForUser = ({
     setZeroPosts()
   }, [profileId])
 
-  console.log(publicationsForUser?.publications?.pageInfo)
-
   useEffect(() => {
     const publishedPosts = publicationsForUser?.publications?.items?.map(
       (el: any): IPost => {
@@ -70,7 +68,7 @@ export const useGetPublishedContentForUser = ({
           image: `${process.env.NEXT_PUBLIC_API_URL}token-images/${metadata?.attributes[9]?.value}`,
           contractAddress: metadata?.attributes[1]?.value,
           creatorAddress: profile?.ownedBy,
-          sellerType: SellerTypeEnum.NotForSale,
+          sellerType: SellerTypeEnum.NftTransfer,
           nameCollection: null,
           tokenId: null,
           tokenType: null,

@@ -27,7 +27,7 @@ export const Comment = ({
               : '/assets/images/temp-avatar.png'
           }
           onClick={() => {
-            router.push(`profile/${profileId}`)
+            router.push(`/profile/${profileId}`)
           }}
           className={`cursor-pointer w-7 h-7`}
           alt={userInfo?.avatar}

@@ -1,6 +1,5 @@
 import type { NetworkEnum } from '@shared/lib'
 import { PostTypeEnum, useRenderMessage } from '@shared/lib'
-import { TimeDate } from '@shared/ui'
 import React from 'react'
 
 interface IPostContentProperties {
@@ -24,7 +23,6 @@ interface IPostContentProperties {
 export const PostContent = (props: IPostContentProperties) => {
   const {
     showAuthor,
-    date,
     blockchainType,
     messageType,
     from,
@@ -40,8 +38,6 @@ export const PostContent = (props: IPostContentProperties) => {
 
   return (
     <div style={{ marginLeft: showAuthor ? 56 : 0 }}>
-      {date && <TimeDate date={date} />}
-
       <h4 className="text-base font-semibold break-words">
         {(creatorAddress === process.env.NEXT_PUBLIC_ADMIN_ADDRESS || isMirror) && (
           <>

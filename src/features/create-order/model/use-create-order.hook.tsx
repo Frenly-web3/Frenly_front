@@ -1,8 +1,9 @@
 import { contentApi } from '@shared/api'
-import { ETHEREUM_ADDRESS, TokenTypeEnum } from '@shared/lib'
+import { ETHEREUM_ADDRESS, TokenTypeEnum, useLoaderContext } from '@shared/lib'
 import type { SwappableAssetV4 } from '@traderxyz/nft-swap-sdk'
 import { NftSwapV4 } from '@traderxyz/nft-swap-sdk'
 import { useCallback, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useBlockchain } from 'src/blockchain'
 
 interface ICreateOrderInput {
@@ -30,6 +31,7 @@ export const useCreateOrder = ({
 
   const [createSellOrder] = contentApi.useCreateSellOrderMutation()
 
+  const { setIsLoading } = useLoaderContext()
   useEffect(() => {
     if (Number.isNaN(Number(price)) && price.length > 0) {
       setPrice('')
@@ -40,10 +42,8 @@ export const useCreateOrder = ({
     price,
     setPrice,
     createOrder: useCallback(async () => {
-      console.log(tokenAddressMaker, tokenAddressTaker, tokenId, tokenType)
-
       try {
-        console.log(tokenAddressMaker, tokenId)
+        setIsLoading(true)
         await switchNetwork(ChainId.Mainnet)
         const makerOrderERC721: SwappableAssetV4 = {
           tokenAddress: tokenAddressMaker,
@@ -63,12 +63,11 @@ export const useCreateOrder = ({
 
         const takerOrder: SwappableAssetV4 = {
           tokenAddress: tokenAddressTaker,
-          amount: price + '0'.repeat(17),
+          amount: (Number(price) * 10e17).toString(),
           type: TokenTypeEnum.ERC20,
         }
         // @ts-ignore
         const nftSwapSdk = new NftSwapV4(library, signer, ChainId.Mainnet)
-        console.log(makerOrder, takerOrder)
 
         const approvalStatusForMaker = await nftSwapSdk.loadApprovalStatus(
           makerOrder,
@@ -80,19 +79,12 @@ export const useCreateOrder = ({
             makerOrder,
             account as string
           )
-          const approvalTxReceipt = await approvalTx.wait()
-          console.log(approvalTxReceipt)
+          await approvalTx.wait()
         }
         // @ts-ignore
         const order = nftSwapSdk.buildOrder(makerOrder, takerOrder, account as string)
 
-        console.log(order)
-
         const signedOrder = await nftSwapSdk.signOrder(order)
-        // const postedOrder = await nftSwapSdk.postOrder(signedOrder, ChainId.Mainnet)
-        // console.log(postedOrder)
-
-        console.log(JSON.stringify(signedOrder))
 
         await createSellOrder({
           collectionName,
@@ -102,12 +94,19 @@ export const useCreateOrder = ({
           walletAddress: account as string,
         }).unwrap()
 
+        toast('You successfully created order.', {
+          icon: '✨',
+        })
         closeForm()
         setPrice('')
       } catch (error) {
+        toast.error('Something went wrong. Try again.', {
+          icon: '😢',
+        })
         console.log(error)
       } finally {
         await switchNetwork(ChainId.Mumbai)
+        setIsLoading(false)
       }
     }, [
       account,

@@ -1,23 +1,18 @@
 import { useGetFilteredPosts } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import { SellerTypeEnum } from '@shared/lib'
-import { SIZE_POST_CHUNK } from '@shared/lib/constants'
 import { EndOfPage, Header, Meta, ScrollLoader } from '@shared/ui'
 import { PostCard } from '@widgets/post'
-import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 
 export default function FeedPage() {
-  const [takeCount, setTakeCount] = useState(0)
+  // const [takeCount, setTakeCount] = useState(0)
 
   const { account } = useBlockchain()
 
-  const { posts, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed } =
-    useGetFilteredPosts({
-      take: SIZE_POST_CHUNK,
-      skip: SIZE_POST_CHUNK * takeCount,
-    })
+  const { posts, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed, setTakeCount } =
+    useGetFilteredPosts()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
   const { user } = UserModelService.useUserInfo({
     profileId: viewerProfileLensId as string,
@@ -50,10 +45,13 @@ export default function FeedPage() {
                   <PostCard.Author />
                   <PostCard.Content />
                   <PostCard.Image />
-                  {post.sellerType === SellerTypeEnum.NotForSale && (
+                  <PostCard.Subscription />
+                  {post.sellerType === SellerTypeEnum.NftTransfer && (
                     <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
                   )}
-                  {post.sellerType === SellerTypeEnum.ForSale && <PostCard.Order />}
+                  {post.sellerType === SellerTypeEnum.SellOrder && (
+                    <PostCard.Order refetchFilteredFeed={refetchFilteredFeed} />
+                  )}
                 </PostCard>
               )
             })}

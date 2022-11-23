@@ -5,6 +5,7 @@ import {
 } from '@shared/api'
 import { useLoaderContext } from '@shared/lib'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useCommentWithSig,
@@ -57,8 +58,6 @@ export function useCommentPost({
         const typedData = result?.data?.createCommentTypedData?.typedData
 
         const signature = await signTypeData({ typedData })
-        console.log(signature)
-
         const { v, r, s } = await splitSignature({ signature: signature as string })
 
         const { deadline, ...omitTypedData } = typedData.value
@@ -76,7 +75,11 @@ export function useCommentPost({
         setComments({ content: comment })
         setAmountComments((previous) => previous + 1)
         setCommentValue('')
+        toast.success('Post was successfully commented.', { icon: '💫' })
       } catch {
+        toast.error('Something went wrong. Try again.', {
+          icon: '😢',
+        })
       } finally {
         setIsLoading(false)
       }

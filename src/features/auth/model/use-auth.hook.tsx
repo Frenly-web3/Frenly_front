@@ -22,7 +22,6 @@ export function useAuth() {
   const loginLens = useCallback(async () => {
     try {
       const challengeData = await getChallenge(account as string)
-      console.log(challengeData)
 
       const { challenge } = challengeData.data
 
@@ -32,7 +31,6 @@ export function useAuth() {
           address: account as string,
           signature: signature as string,
         })
-        console.log(dataTokens)
 
         const { accessToken, refreshToken } = dataTokens.data.authenticate
 
@@ -60,12 +58,9 @@ export function useAuth() {
           address: account as string,
           signature: signature as string,
         })
-        console.log(dataTokens)
 
         // @ts-ignore
         const { accessToken, refreshToken } = dataTokens.data.data
-
-        console.log(accessToken)
 
         setAuthDispatch({ isAuth: true })
         setTokensDispatch({ accessToken, refreshToken })
