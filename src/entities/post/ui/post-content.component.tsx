@@ -68,6 +68,7 @@ export const PostContent = (props: IPostContentProperties) => {
                 : messageType == PostTypeEnum.Received
                 ? `received`
                 : `sent`}
+              NFT
             </>
           </>
         )}

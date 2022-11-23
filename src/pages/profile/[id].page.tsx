@@ -60,11 +60,13 @@ export default function ProfilePage() {
         </Switcher>
       )}
 
-      <div className="flex justify-end items-end container py-3">
-        <div className="w-40">
-          <Button onClick={() => push('/nfts')}>My NFT`s</Button>
+      {user.status == UserStatusEnum.Owner && (
+        <div className="flex justify-end items-end container py-3">
+          <div className="w-40">
+            <Button onClick={() => push('/nfts')}>My NFT`s</Button>
+          </div>
         </div>
-      </div>
+      )}
       {!isShowAddedPost && user.status == UserStatusEnum.Owner && (
         <InfiniteScroll
           dataLength={unpublishedPosts?.length}
