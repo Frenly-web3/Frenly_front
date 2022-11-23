@@ -48,8 +48,6 @@ export const userSlice = createSlice({
         refreshToken: string
       }>
     ) => {
-      console.log('ACtion', action.payload)
-
       window?.localStorage?.setItem('access-token', action.payload.accessToken)
       window?.localStorage?.setItem('refresh-token', action.payload.refreshToken)
 

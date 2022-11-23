@@ -1,5 +1,6 @@
 import { contentApi, useGetLensPublications } from '@shared/api'
-import { NetworkEnum, SellerTypeEnum, TokenTypeEnum } from '@shared/lib'
+import { NetworkEnum, SellerTypeEnum, SIZE_POST_CHUNK, TokenTypeEnum } from '@shared/lib'
+import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { convertTransferTypeToEnum } from '../lib'
@@ -11,22 +12,15 @@ interface IGetFilteredPosts {
   lensIsLoading: boolean
   hasMore: boolean
   refetchFilteredFeed: () => void
+  setTakeCount: Dispatch<SetStateAction<number>>
 }
 
-export const useGetFilteredPosts = ({
-  take,
-  skip,
-}: {
-  take: number
-  skip: number
-}): IGetFilteredPosts => {
-  const {
-    data: postsData,
-    isSuccess,
-    refetch: refetchFilteredFeed,
-  } = contentApi.useGetFilteredFeedQuery({
-    take,
-    skip,
+export const useGetFilteredPosts = (): IGetFilteredPosts => {
+  const [takeCount, setTakeCount] = useState(0)
+
+  const { data: postsData, isSuccess } = contentApi.useGetFilteredFeedQuery({
+    take: SIZE_POST_CHUNK,
+    skip: SIZE_POST_CHUNK * takeCount,
   })
 
   const [postsSum, setPostsSum] = useState<IPost[]>([])
@@ -37,11 +31,16 @@ export const useGetFilteredPosts = ({
   )
   const [hasMore, setHasMore] = useState(true)
 
+  const reloadPosts = () => {
+    setPostsSum([])
+    setTakeCount(0)
+  }
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(() => {
     if (!postsData) {
       return
     }
-    console.log(postsData)
 
     if (!lensPosts && lensIsLoading) {
       return
@@ -64,11 +63,13 @@ export const useGetFilteredPosts = ({
         collectionName,
         sellPrice,
         signedObject,
+        postType,
       } = post
 
       const postLens = lensPosts?.publications?.items?.find((el: any) => {
         return lensId == el?.id
       })
+
       if (signedObject) {
         return {
           creatorLensId: null,
@@ -88,7 +89,34 @@ export const useGetFilteredPosts = ({
           contractAddress,
           creatorAddress: fromAddress,
           nameCollection: collectionName,
-          sellerType: SellerTypeEnum.ForSale,
+          sellerType: postType,
+          tokenId: '',
+          tokenType: TokenTypeEnum.ERC721,
+          price: sellPrice,
+          signedObject,
+        }
+      }
+
+      if (postType == 2 || postType == 3) {
+        return {
+          creatorLensId: null,
+          date: creationDate,
+          from: fromAddress,
+          isMirror: null,
+          mirrorDescription: null,
+          mirrorFrom: null,
+          mirrorFromId: null,
+          network: NetworkEnum.Ethereum,
+          postType: null,
+          to: toAddress,
+          txHash: null,
+          lensId: null,
+          id: idBack,
+          image,
+          contractAddress,
+          creatorAddress: postType === SellerTypeEnum.SellEvent ? fromAddress : toAddress,
+          nameCollection: collectionName,
+          sellerType: postType,
           tokenId: '',
           tokenType: TokenTypeEnum.ERC721,
           price: sellPrice,
@@ -120,7 +148,7 @@ export const useGetFilteredPosts = ({
         contractAddress,
         creatorAddress: profile?.ownedBy,
         nameCollection: '',
-        sellerType: SellerTypeEnum.NotForSale,
+        sellerType: postType,
         tokenId: '',
         tokenType: TokenTypeEnum.ERC721,
         price: null,
@@ -139,7 +167,14 @@ export const useGetFilteredPosts = ({
   }, [postsData, lensPosts, lensIsLoading])
 
   return useMemo(
-    () => ({ posts: postsSum, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed }),
+    () => ({
+      posts: postsSum,
+      lensIsLoading,
+      isSuccess,
+      hasMore,
+      refetchFilteredFeed: reloadPosts,
+      setTakeCount,
+    }),
     [hasMore, isSuccess, lensIsLoading, postsSum]
   )
 }

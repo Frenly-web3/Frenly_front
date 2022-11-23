@@ -23,10 +23,10 @@ export const MirrorButton = (props: IMirrorButton) => {
   const mirrorButtonHandler = () => {
     setIsShowDescription(true)
   }
-
   return (
     <>
       <DescriptionModal
+        closeModal={() => setIsShowDescription(false)}
         show={isShowDescription}
         description={descriptionMirror}
         descriptionHandler={mirrorPost}

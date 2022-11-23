@@ -15,15 +15,10 @@ const baseQuery = fetchBaseQuery({
 
   prepareHeaders: (headers, { getState }) => {
     const aToken = localStorage.getItem('access-token')
-    const rToken = localStorage.getItem('refresh-token')
-    console.log(aToken)
-    console.log(rToken)
     // If we have a token set in state, let's assume that we should be passing it.
     if (aToken !== undefined) {
       headers.set('authorization', `Bearer ${aToken}`)
     }
-
-    // headers.set('refresh-token', `${rToken}`)
 
     return headers
   },
@@ -41,7 +36,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 ) => {
   await mutex.waitForUnlock()
   let result = await baseQuery(arguments_, api, extraOptions)
-  console.log(process.env.NEXT_PUBLIC_API_URL)
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire()

@@ -21,8 +21,6 @@ export const contentApi = createApi({
       transformResponse: (res: any, meta: any) => {
         return res.data
           .filter((el: any) => {
-            console.log(el)
-
             return el.lensId !== null
           })
           .filter((el: any) => {
@@ -120,14 +118,6 @@ export const contentApi = createApi({
     createSellOrder: builder.mutation<any, ICreateSellOrderDTO>({
       invalidatesTags: ['CONTENT'],
       query: ({ collectionName, image, price, signedObject, walletAddress }) => {
-        // const formData = new FormData()
-        // formData.set('walletAddress', walletAddress)
-        // formData.set('price', price)
-        // formData.set('collectionName', collectionName.toString())
-        // formData.set('signedObject', signedObject)
-        // formData.set('image', image)
-        // console.log(formData)
-
         return {
           url: `zeroex/sell`,
           method: 'POST',
@@ -138,6 +128,26 @@ export const contentApi = createApi({
             signedObject,
             image,
           },
+          credentials: 'omit',
+        }
+      },
+    }),
+    acceptOrder: builder.mutation<any, { id: number }>({
+      invalidatesTags: ['CONTENT'],
+      query: ({ id }) => {
+        return {
+          url: `zeroex/accept/${id}`,
+          method: 'POST',
+          credentials: 'omit',
+        }
+      },
+    }),
+    declineOrder: builder.mutation<any, { id: number }>({
+      invalidatesTags: ['CONTENT'],
+      query: ({ id }) => {
+        return {
+          url: `zeroex/decline/${id}`,
+          method: 'DELETE',
           credentials: 'omit',
         }
       },

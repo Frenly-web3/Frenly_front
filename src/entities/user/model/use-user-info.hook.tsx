@@ -37,7 +37,6 @@ export const useUserInfo = ({
       setUserStatus(UserStatusEnum.Owner)
       return
     }
-    console.log('++++++++++++++++++++++++++++++', userInfoLens?.profile?.isFollowing)
 
     if (userInfoLens?.profile?.isFollowing) {
       setUserStatus(UserStatusEnum.Following)

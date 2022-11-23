@@ -36,8 +36,6 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   const { unfollowWithSig } = useUnfollowWithSig()
 
   useEffect(() => {
-    console.log('Status', user)
-
     switch (user?.status) {
       case UserStatusEnum.Owner: {
         setFollowUnfollowState(null)
@@ -59,11 +57,8 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   }, [profileId, user?.status])
 
   const followUser = async () => {
-    console.log('FOLLOW')
     try {
       setIsLoading(true)
-
-      console.log(profileId)
 
       const result = await createFollowTypedData({ followProfileId: profileId })
 
@@ -97,8 +92,6 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   }
 
   const unfollowUser = async () => {
-    console.log('UNFOLLOW')
-
     try {
       setIsLoading(true)
 
@@ -135,8 +128,6 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   }
 
   const followUnfollowHandler = useCallback(async () => {
-    console.log('HANDLER')
-
     if (followUnfollowState == Subscription.FOLLOW) {
       await followUser()
     } else if (followUnfollowState == Subscription.UNFOLLOW) {
@@ -148,8 +139,8 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
     () => ({
       followUnfollowHandler,
       followUnfollowState,
-      followerAmount: user?.totalFollowers,
+      followerAmount: user.totalFollowers as number,
     }),
-    [followUnfollowState, user?.totalFollowers]
+    [followUnfollowState, user, profileId]
   )
 }

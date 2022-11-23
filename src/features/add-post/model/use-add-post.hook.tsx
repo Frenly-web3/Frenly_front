@@ -6,6 +6,7 @@ import {
   useLoaderContext,
 } from '@shared/lib'
 import { useCallback } from 'react'
+import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useGetWalletProfileId,
@@ -92,9 +93,13 @@ export const useAddPost = ({ backId }: IAddPost) => {
       }
 
       await (isAdmin ? bindAdminContent(bindArguments) : bindUserContent(bindArguments))
+
+      toast.success('You successfully created post.', { icon: '💫' })
     } catch (error_) {
       console.log(error_)
-      // toast.error(String(error_))
+      toast.error('Something went wrong. Try again.', {
+        icon: '😢',
+      })
     } finally {
       setIsLoading(false)
     }
@@ -106,9 +111,13 @@ export const useAddPost = ({ backId }: IAddPost) => {
       await (user.role === RoleEnum.Admin
         ? removeAdminContent({ contentId: backId.toString() }).unwrap()
         : removeContent({ contentId: backId.toString() }).unwrap())
+      toast.success('You successfully declined post.', { icon: '❌' })
     } catch (error_) {
       // toast.error(String(error_))
       console.log(error_)
+      toast.error('Something went wrong. Try again.', {
+        icon: '😢',
+      })
     } finally {
       setIsLoading(false)
     }

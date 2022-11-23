@@ -7,7 +7,6 @@ interface ICommentListProperties {
 }
 export const CommentList = React.memo((props: ICommentListProperties) => {
   const { comments } = props
-  console.log(comments)
 
   return (
     <div className="flex flex-col py-4 relative pl-14">

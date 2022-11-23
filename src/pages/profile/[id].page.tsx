@@ -4,7 +4,7 @@ import {
 } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import { UserStatusEnum } from '@shared/lib'
-import { EndOfPage, Meta, ScrollLoader, Switcher } from '@shared/ui'
+import { Button, EndOfPage, Meta, ScrollLoader, Switcher } from '@shared/ui'
 import { PostCard } from '@widgets/post'
 import { UserProfileWidget } from '@widgets/user-profile'
 import { useRouter } from 'next/router'
@@ -14,6 +14,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 export default function ProfilePage() {
   const {
     query: { id },
+    push,
   } = useRouter()
 
   const [isShowAddedPost, setShowAddedPost] = useState(false)
@@ -59,6 +60,11 @@ export default function ProfilePage() {
         </Switcher>
       )}
 
+      <div className="flex justify-end items-end container py-3">
+        <div className="w-40">
+          <Button onClick={() => push('/nfts')}>My NFT`s</Button>
+        </div>
+      </div>
       {!isShowAddedPost && user.status == UserStatusEnum.Owner && (
         <InfiniteScroll
           dataLength={unpublishedPosts?.length}

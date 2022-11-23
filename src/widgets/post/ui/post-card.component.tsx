@@ -21,8 +21,6 @@ export const PostCard = (props: IPostCardProperties) => {
 
   const creatorLensIdViaAddress = useGetWalletProfileId(creatorAddress as string)
 
-  console.log(creatorLensIdViaAddress)
-
   const { user: creatorInfo } = UserModelService.useUserInfo({
     profileId: creatorLensId || creatorLensIdViaAddress,
   })

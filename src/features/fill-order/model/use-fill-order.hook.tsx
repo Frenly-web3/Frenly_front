@@ -1,63 +1,49 @@
-import { ETHEREUM_ADDRESS, TokenTypeEnum } from '@shared/lib'
-import type { SignedNftOrderV4, SwappableAssetV4 } from '@traderxyz/nft-swap-sdk'
+import { contentApi } from '@shared/api'
+import { ETHEREUM_ADDRESS, TokenTypeEnum, useLoaderContext } from '@shared/lib'
+import type { SwappableAssetV4 } from '@traderxyz/nft-swap-sdk'
 import { NftSwapV4 } from '@traderxyz/nft-swap-sdk'
 import { useCallback } from 'react'
+import { toast } from 'react-toastify'
 import { useBlockchain } from 'src/blockchain'
 
-interface ICreateOrderInput {
+interface IFillOrderInput {
   tokenAddressTaker?: string
-  tokenType: TokenTypeEnum
-  tokenId: string
   price: string
-  signedOrder: SignedNftOrderV4
+  signedOrder: string
+  postId: number
+  refetchFilteredFeed: () => void
 }
 
 export const useFillOrder = ({
   tokenAddressTaker = ETHEREUM_ADDRESS,
-  tokenId,
-  tokenType,
   price,
   signedOrder,
-}: ICreateOrderInput) => {
+  postId,
+  refetchFilteredFeed,
+}: IFillOrderInput) => {
   const { account, signer, library, switchNetwork, ChainId } = useBlockchain()
+  const { setIsLoading } = useLoaderContext()
+  const [acceptOrder] = contentApi.useAcceptOrderMutation()
+  const [declineOrder] = contentApi.useDeclineOrderMutation()
+
   return {
     cancelOrder: useCallback(async () => {
       try {
-        await switchNetwork(ChainId.Mainnet)
-
-        const takerOrder: SwappableAssetV4 = {
-          tokenAddress: tokenAddressTaker,
-          amount: price,
-          type: TokenTypeEnum.ERC20,
-        }
-
-        // @ts-ignore
-        const nftSwapSdk = new NftSwapV4(library, signer, ChainId.Mainnet)
-
-        const approvalStatusForMaker = await nftSwapSdk.loadApprovalStatus(
-          takerOrder,
-          account as string
-        )
-
-        if (!approvalStatusForMaker.contractApproved) {
-          const approvalTx = await nftSwapSdk.approveTokenOrNftByAsset(
-            takerOrder,
-            account as string
-          )
-          const approvalTxReceipt = await approvalTx.wait()
-          console.log(approvalTxReceipt)
-        }
-
-        const fillTx = await nftSwapSdk.fillSignedOrder(signedOrder)
-        const fillTxReceipt = await nftSwapSdk.awaitTransactionHash(fillTx.hash)
-        console.log(fillTxReceipt)
-      } catch {
+        setIsLoading(true)
+        await declineOrder({ id: postId })
+        toast.success('The order was successfully deleted', {
+          icon: '❌',
+        })
+      } catch (error) {
+        console.log(error)
       } finally {
-        await switchNetwork(ChainId.Mumbai)
+        refetchFilteredFeed()
+        setIsLoading(false)
       }
-    }, []),
+    }, [postId]),
     fillOrder: useCallback(async () => {
       try {
+        setIsLoading(true)
         await switchNetwork(ChainId.Mainnet)
 
         const takerOrder: SwappableAssetV4 = {
@@ -69,35 +55,53 @@ export const useFillOrder = ({
         // @ts-ignore
         const nftSwapSdk = new NftSwapV4(library, signer, ChainId.Mainnet)
 
-        const approvalStatusForMaker = await nftSwapSdk.loadApprovalStatus(
-          takerOrder,
-          account as string
-        )
-
-        if (!approvalStatusForMaker.contractApproved) {
-          const approvalTx = await nftSwapSdk.approveTokenOrNftByAsset(
+        if (tokenAddressTaker !== ETHEREUM_ADDRESS) {
+          const approvalStatusForMaker = await nftSwapSdk.loadApprovalStatus(
             takerOrder,
             account as string
           )
-          const approvalTxReceipt = await approvalTx.wait()
-          console.log(approvalTxReceipt)
+
+          if (!approvalStatusForMaker.contractApproved) {
+            const approvalTx = await nftSwapSdk.approveTokenOrNftByAsset(
+              takerOrder,
+              account as string
+            )
+            await approvalTx.wait()
+          }
         }
 
-        const fillTx = await nftSwapSdk.fillSignedOrder(signedOrder)
-        const fillTxReceipt = await nftSwapSdk.awaitTransactionHash(fillTx.hash)
-        console.log(fillTxReceipt)
-      } catch {
+        const parsedSignedOrder = JSON.parse(signedOrder)
+
+        const fillTx = await nftSwapSdk.fillSignedOrder(parsedSignedOrder)
+        await nftSwapSdk.awaitTransactionHash(fillTx.hash)
+
+        await acceptOrder({ id: postId })
+        refetchFilteredFeed()
+
+        toast.success('You have successfully bought an NFT.', {
+          icon: '✨',
+        })
+      } catch (error: any) {
+        if (error.code == 'INSUFFICIENT_FUNDS') {
+          toast.error('You don`t have enough ETHs to Buy this NFT.', {
+            icon: '😢',
+          })
+        } else {
+          toast.error('Something went wrong. Try again.', {
+            icon: '😢',
+          })
+        }
       } finally {
         await switchNetwork(ChainId.Mumbai)
+        setIsLoading(false)
       }
     }, [
       ChainId.Mainnet,
       ChainId.Mumbai,
       account,
-      library,
+      postId,
       price,
       signedOrder,
-      signer,
       tokenAddressTaker,
     ]),
   }

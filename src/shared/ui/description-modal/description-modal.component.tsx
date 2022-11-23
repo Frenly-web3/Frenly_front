@@ -7,10 +7,11 @@ interface IDescriptionProperties {
   description: string
   setDescription: (state: string) => void
   descriptionHandler: () => void
+  closeModal: () => void
 }
 
 export const DescriptionModal = (props: IDescriptionProperties) => {
-  const { show, description, setDescription, descriptionHandler } = props
+  const { show, description, setDescription, descriptionHandler, closeModal } = props
   return (
     <Modal show={show}>
       <div className="w-full pt-4 pb-4 flex">
@@ -24,7 +25,10 @@ export const DescriptionModal = (props: IDescriptionProperties) => {
             placeholder="Description"
           />
         </div>
-        <button className="flex items-center justify-center py-1 px-2 w-9 h-9">
+        <button
+          onClick={closeModal}
+          className="flex items-center justify-center py-1 px-2 w-9 h-9"
+        >
           <img src="/assets/images/close-icon.png" alt="close" />
         </button>
         <button

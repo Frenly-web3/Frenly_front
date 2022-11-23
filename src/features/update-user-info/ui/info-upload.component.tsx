@@ -1,7 +1,8 @@
-import { useCheckIsOwner } from '@shared/lib'
+import { useCheckIsOwner, useGetENSByAddress } from '@shared/lib'
 import { BackButtonComponent, ProfileButton } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { useGetWalletAddress } from 'src/blockchain'
 
 import { useUploadUserInfo } from '../model'
 import { ImageUpload } from './image-upload.component'
@@ -12,6 +13,10 @@ interface IInfoUploadProperties {
 
 export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const { profileId } = props
+
+  const profileAddress = useGetWalletAddress({ tokenId: profileId })
+
+  const ens = useGetENSByAddress({ address: profileAddress })
 
   const {
     isEditMode,
@@ -77,17 +82,22 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
         </>
       ) : (
         <>
+          <div
+            className={`text-base z-100 font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
+          >
+            {ens || profileAddress}
+          </div>
           {description ? (
             <div
               onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
               className={`text-base z-100 ${
                 checkIsOwner && 'cursor-pointer'
-              } font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
+              } font-normal text-gray mb-5 text-center m-auto mt-2 w-80 break-words`}
             >
               {description}
             </div>
           ) : (
-            <div className="m-auto mt-4 w-44 h-4 rounded-full bg-gray animate-pulse"></div>
+            <div className="m-auto mt-2 w-44 h-4 rounded-full bg-gray animate-pulse"></div>
           )}
         </>
       )}
