@@ -1,18 +1,24 @@
 import { UserModelService } from '@entities/user'
-import { adminApi, contentApi, useCreatePostTypedData } from '@shared/api'
+import {
+  adminApi,
+  contentApi,
+  // useCreatePostTypedData,
+  useCreatePostViaDispatcher,
+} from '@shared/api'
 import {
   RoleEnum,
   useConvertResponseToPublicationId,
   useLoaderContext,
+  useWaitTxInfo,
 } from '@shared/lib'
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useGetWalletProfileId,
-  usePostWithSig,
-  useSignTypedData,
-  useSplitSignature,
+  // usePostWithSig,
+  // useSignTypedData,
+  // useSplitSignature,
 } from 'src/blockchain'
 
 interface IAddPost {
@@ -26,8 +32,8 @@ export const useAddPost = ({ backId }: IAddPost) => {
 
   const viewerProfileId = useGetWalletProfileId(account as string)
 
-  const splitSignature = useSplitSignature()
-  const signTypedData = useSignTypedData()
+  // const splitSignature = useSplitSignature()
+  // const signTypedData = useSignTypedData()
 
   const { user } = UserModelService.useUserInfo({ profileId: viewerProfileId })
 
@@ -37,9 +43,10 @@ export const useAddPost = ({ backId }: IAddPost) => {
   const [removeAdminContent] = adminApi.useRemoveContentMutation()
   const [removeContent] = contentApi.useRemoveContentMutation()
 
-  const { createPostTypedData } = useCreatePostTypedData()
+  // const { createPostTypedData } = useCreatePostTypedData()
+  const { createPostViaDispatcher } = useCreatePostViaDispatcher()
 
-  const { send: postWithSig } = usePostWithSig()
+  // const { send: postWithSig } = usePostWithSig()
 
   const [publishAdminPost] = adminApi.usePublishPostMutation()
   const [publishUserPost] = contentApi.usePublishContentMutation()
@@ -49,6 +56,64 @@ export const useAddPost = ({ backId }: IAddPost) => {
   const [bindAdminContent] = adminApi.useBindPostWithLensMutation()
   const [bindUserContent] = contentApi.useBindWithLensIdMutation()
 
+  const { pollUntilIndexed } = useWaitTxInfo()
+
+  // const addPost = useCallback(async () => {
+  //   const isAdmin = user.role == RoleEnum.Admin
+  //   try {
+  //     setIsLoading(true)
+  //     const contentMetadata = await (isAdmin
+  //       ? getAdminPostMetadata({ contentId: backId.toString() })
+  //       : getUserPostMetadata({ contentId: backId.toString() }))
+  //     const result = await createPostTypedData({
+  //       contentURI: contentMetadata?.data,
+  //       profileId: viewerProfileId,
+  //     })
+
+  //     const typedData = result?.data?.createPostTypedData?.typedData
+
+  //     const signature = await signTypedData({ typedData })
+
+  //     const { v, r, s } = await splitSignature({ signature: signature as string })
+
+  //     const { deadline, ...omitTypedData } = typedData.value
+
+  //     const tx = await postWithSig({
+  //       ...omitTypedData,
+  //       sig: {
+  //         v,
+  //         r,
+  //         s,
+  //         deadline,
+  //       },
+  //     })
+
+  //     const newLensId = convertTxToPublicationId({ tx })
+
+  //     await (isAdmin
+  //       ? publishAdminPost({ contentId: backId.toString() })
+  //       : publishUserPost({
+  //           contentId: backId.toString(),
+  //         }))
+
+  //     const bindArguments = {
+  //       contentId: backId.toString(),
+  //       lensId: newLensId,
+  //     }
+
+  //     await (isAdmin ? bindAdminContent(bindArguments) : bindUserContent(bindArguments))
+
+  //     toast.success('You successfully created post.', { icon: '💫' })
+  //   } catch (error_) {
+  //     console.log(error_)
+  //     toast.error('Something went wrong. Try again.', {
+  //       icon: '😢',
+  //     })
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }, [backId, user.role])
+
   const addPost = useCallback(async () => {
     const isAdmin = user.role == RoleEnum.Admin
     try {
@@ -56,30 +121,21 @@ export const useAddPost = ({ backId }: IAddPost) => {
       const contentMetadata = await (isAdmin
         ? getAdminPostMetadata({ contentId: backId.toString() })
         : getUserPostMetadata({ contentId: backId.toString() }))
-      const result = await createPostTypedData({
+      const response = await createPostViaDispatcher({
         contentURI: contentMetadata?.data,
         profileId: viewerProfileId,
       })
 
-      const typedData = result?.data?.createPostTypedData?.typedData
+      console.log(response)
 
-      const signature = await signTypedData({ typedData })
-
-      const { v, r, s } = await splitSignature({ signature: signature as string })
-
-      const { deadline, ...omitTypedData } = typedData.value
-
-      const tx = await postWithSig({
-        ...omitTypedData,
-        sig: {
-          v,
-          r,
-          s,
-          deadline,
-        },
+      const tx = await pollUntilIndexed({
+        txId: response?.data?.createPostViaDispatcher?.txId,
       })
-
       const newLensId = convertTxToPublicationId({ tx })
+
+      if (newLensId == '0xNaN-0xNaN') {
+        throw new Error('Incorrect new lens id')
+      }
 
       await (isAdmin
         ? publishAdminPost({ contentId: backId.toString() })

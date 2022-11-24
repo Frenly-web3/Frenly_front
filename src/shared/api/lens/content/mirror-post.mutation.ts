@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client'
-import { client } from '@shared/api'
+
+import { client } from '../lens-api'
 
 const MIRROR_POST = gql`
   mutation ($request: CreateMirrorRequest!) {
