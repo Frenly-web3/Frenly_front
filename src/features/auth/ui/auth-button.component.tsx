@@ -12,7 +12,8 @@ export const AuthButton = (props: IAuthButtonProperties) => {
   const {} = props
 
   const { account, activateBrowserWallet } = useBlockchain()
-  const { login, loginLens, logout, hasProfile, createProfile } = useAuth()
+  const { login, loginLens, logout, hasProfile, createProfile, enableDispatcher } =
+    useAuth()
   const { setIsLoading } = useLoaderContext()
   const router = useRouter()
 
@@ -27,6 +28,8 @@ export const AuthButton = (props: IAuthButtonProperties) => {
       if (!hasLensProfile) {
         await createProfile()
       }
+
+      await enableDispatcher()
 
       router.push('/feed')
     } catch (error) {
