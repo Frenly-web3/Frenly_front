@@ -14,7 +14,7 @@ export default function FeedPage() {
   const { posts, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed, setTakeCount } =
     useGetFilteredPosts()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
-  const { user } = UserModelService.useUserInfo({
+  const { user, isLoading } = UserModelService.useUserInfo({
     profileId: viewerProfileLensId as string,
   })
   const nextLoad = async () => {
@@ -22,12 +22,17 @@ export default function FeedPage() {
       setTakeCount((previousState) => previousState + 1)
     }
   }
+  console.log(isLoading)
 
   return (
     <>
       <Meta title="Frenly Feed" description="Your Frenly Feed" />
 
-      <Header avatar={user?.avatar} userLensId={viewerProfileLensId} />
+      <Header
+        avatar={user?.avatar}
+        isLoading={isLoading}
+        userLensId={viewerProfileLensId}
+      />
 
       <main>
         <section className="relative">
