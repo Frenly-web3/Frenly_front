@@ -22,7 +22,7 @@ export const PostCard = (props: IPostCardProperties) => {
   const creatorLensIdViaAddress = useGetWalletProfileId(creatorAddress as string)
 
   const { user: creatorInfo } = UserModelService.useUserInfo({
-    profileId: creatorLensId || creatorLensIdViaAddress,
+    profileId: creatorLensId ?? creatorLensIdViaAddress,
   })
 
   const mirrorLensId = useGetWalletProfileId(mirrorFrom as string)
@@ -34,6 +34,7 @@ export const PostCard = (props: IPostCardProperties) => {
     () => ({
       ...props,
       creatorAvatar: creatorInfo.avatar,
+      creatorLensId: creatorInfo.lensId,
       creatorUsername: creatorInfo.name,
       fromMirrorName: creatorMirrorInfo.name,
     }),

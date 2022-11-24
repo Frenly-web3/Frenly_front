@@ -12,8 +12,6 @@ export function Header(props: IHeaderProperties): JSX.Element {
 
   const router = useRouter()
 
-  console.log(isLoading)
-
   return (
     <header className="container py-3 top-0 bg-white">
       <>

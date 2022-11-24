@@ -12,16 +12,8 @@ export const useWaitTxInfo = () => {
         const {
           data: { hasTxHashBeenIndexed: response },
         } = await getTxInfo({ txId })
-        console.log('pool until indexed: result', response)
 
         if (response.__typename === 'TransactionIndexedResult') {
-          console.log('pool until indexed: indexed', response.indexed)
-          console.log(
-            'pool until metadataStatus: metadataStatus',
-            response.metadataStatus
-          )
-
-          console.log(response.metadataStatus)
           if (response.metadataStatus) {
             if (response.metadataStatus.status === 'SUCCESS') {
               setIsLoop(false)
@@ -35,9 +27,6 @@ export const useWaitTxInfo = () => {
             setIsLoop(false)
             return response.txReceipt
           }
-
-          console.log('pool until indexed: sleep for 1500 milliseconds then try again')
-          // sleep for a second before trying again
           // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
           await new Promise((resolve) => setTimeout(resolve, 1500))
         } else {
