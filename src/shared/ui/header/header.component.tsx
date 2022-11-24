@@ -4,12 +4,15 @@ import { useRouter } from 'next/router'
 export interface IHeaderProperties {
   avatar: string | null
   userLensId: string | null
+  isLoading: boolean
 }
 
 export function Header(props: IHeaderProperties): JSX.Element {
-  const { avatar, userLensId } = props
+  const { avatar, userLensId, isLoading } = props
 
   const router = useRouter()
+
+  console.log(isLoading)
 
   return (
     <header className="container py-3 top-0 bg-white">
@@ -20,7 +23,7 @@ export function Header(props: IHeaderProperties): JSX.Element {
             <h2 className="text-4xl font-bold ml-3">frenly feed</h2>
           </div>
 
-          {avatar ? (
+          {!isLoading ? (
             <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
               <img
                 src={

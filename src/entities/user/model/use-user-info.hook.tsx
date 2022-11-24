@@ -9,7 +9,7 @@ export const useUserInfo = ({
   profileId,
 }: {
   profileId: string
-}): { user: IUser; refetchUserInfo: () => void } => {
+}): { user: IUser; refetchUserInfo: () => void; isLoading: boolean } => {
   const address = useGetWalletAddress({ tokenId: profileId })
 
   const { account } = useBlockchain()
@@ -17,7 +17,11 @@ export const useUserInfo = ({
   const viewerProfileId = useGetWalletProfileId(account as string)
   const [userStatus, setUserStatus] = useState<UserStatusEnum>(UserStatusEnum.Viewer)
 
-  const { data: userInfo, refetch: refetchUserInfo } = userApi.useGetUserInfoQuery({
+  const {
+    data: userInfo,
+    refetch: refetchUserInfo,
+    isLoading,
+  } = userApi.useGetUserInfoQuery({
     address,
   })
   const { data: userInfoLens, refetch: refetchUserLensInfo } = useGetUserLensInfo({
@@ -59,14 +63,19 @@ export const useUserInfo = ({
         totalFollowers: userInfoLens?.profile?.stats?.totalFollowers,
       },
       refetchUserInfo,
+      isLoading,
     }),
     [
       address,
-      isAdmin,
-      profileId,
-      userInfo,
-      userStatus,
+      userInfo?.avatar,
+      userInfo?.description,
+      userInfo?.username,
+      userInfoLens?.followModule,
       userInfoLens?.profile?.stats?.totalFollowers,
+      profileId,
+      isAdmin,
+      userStatus,
+      isLoading,
     ]
   )
 }

@@ -14,7 +14,9 @@ export function useUploadUserInfo({ profileId }: { profileId: string }) {
   useEffect(() => {
     if (!isEditMode && user) {
       setUsername(user?.name !== null ? user?.name : `frenly.${user.address}`)
-      setDescription(user?.description !== null ? user?.description : '')
+      setDescription(
+        user?.description !== null ? user?.description : (user?.address as string)
+      )
     }
   }, [user])
 
