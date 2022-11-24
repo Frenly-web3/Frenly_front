@@ -126,8 +126,6 @@ export const useAddPost = ({ backId }: IAddPost) => {
         profileId: viewerProfileId,
       })
 
-      console.log(response)
-
       const tx = await pollUntilIndexed({
         txId: response?.data?.createPostViaDispatcher?.txId,
       })

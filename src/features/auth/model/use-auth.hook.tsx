@@ -1,7 +1,13 @@
 import { UserModelService } from '@entities/user'
-import { authApi, useCreateProfileLens, useSetDispatcherTypedData } from '@shared/api'
+import {
+  authApi,
+  useCreateProfileLens,
+  useIsHaveDispatcher,
+  useSetDispatcherTypedData,
+} from '@shared/api'
 import { useAppDispatch } from '@shared/lib'
 import { useCallback } from 'react'
+import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useGetWalletProfileId,
@@ -30,6 +36,7 @@ export function useAuth() {
   const signTypedData = useSignTypedData()
   const splitSignature = useSplitSignature()
   const { send: setDispatcherWithSig } = useSetDispatcherWithSig()
+  const { isHaveDispatcher } = useIsHaveDispatcher()
 
   const loginLens = useCallback(async () => {
     try {
@@ -87,26 +94,34 @@ export function useAuth() {
   }, [account])
 
   const enableDispatcher = useCallback(async () => {
+    if (!profileId) {
+      toast.warn('Profile is creating, try again')
+      throw new Error('Profile is creating')
+    }
     try {
-      const typedDataResponse = await setDispatcherTypedData({ profileId })
+      const isDispatcher = await isHaveDispatcher({ profileId })
 
-      const typedData = typedDataResponse?.data?.createSetDispatcherTypedData?.typedData
+      if (!isDispatcher?.data?.profile?.dispatcher?.canUseRelay) {
+        const typedDataResponse = await setDispatcherTypedData({ profileId })
 
-      const signature = await signTypedData({ typedData })
+        const typedData = typedDataResponse?.data?.createSetDispatcherTypedData?.typedData
 
-      const { v, r, s } = await splitSignature({ signature: signature as string })
+        const signature = await signTypedData({ typedData })
 
-      const { deadline, ...omitTypedData } = typedData.value
+        const { v, r, s } = await splitSignature({ signature: signature as string })
 
-      await setDispatcherWithSig({
-        ...omitTypedData,
-        sig: {
-          v,
-          r,
-          s,
-          deadline,
-        },
-      })
+        const { deadline, ...omitTypedData } = typedData.value
+
+        await setDispatcherWithSig({
+          ...omitTypedData,
+          sig: {
+            v,
+            r,
+            s,
+            deadline,
+          },
+        })
+      }
     } catch (error) {
       console.log(error)
     }

@@ -22,7 +22,6 @@ export default function FeedPage() {
       setTakeCount((previousState) => previousState + 1)
     }
   }
-  console.log(isLoading)
 
   return (
     <>
