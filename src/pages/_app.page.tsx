@@ -3,8 +3,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { ApolloProvider } from '@apollo/client'
 import { store } from '@app/store'
+import { DispatcherEnable } from '@features/dispatcher-enable'
 import { client } from '@shared/api'
-import { LoaderContextProvider } from '@shared/lib'
+import { DispatcherLensContextProvider, LoaderContextProvider } from '@shared/lib'
 import { Loader } from '@shared/ui'
 import type { Config } from '@usedapp/core'
 import { ChainId, DAppProvider } from '@usedapp/core'
@@ -34,23 +35,25 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <ApolloProvider client={client}>
       <DAppProvider config={config}>
         <Provider store={store}>
-          <LoaderContextProvider>
-            <ToastContainer
-              position="bottom-left"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
-            <Component {...pageProps} />
-
-            <Loader />
-          </LoaderContextProvider>
+          <DispatcherLensContextProvider>
+            <LoaderContextProvider>
+              <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
+              <Component {...pageProps} />
+              <DispatcherEnable />
+              <Loader />
+            </LoaderContextProvider>
+          </DispatcherLensContextProvider>
         </Provider>
       </DAppProvider>
     </ApolloProvider>

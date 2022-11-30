@@ -8,6 +8,7 @@ import {
 import {
   RoleEnum,
   useConvertResponseToPublicationId,
+  useDispatcherLensContext,
   useLoaderContext,
   useWaitTxInfo,
 } from '@shared/lib'
@@ -34,6 +35,8 @@ export const useAddPost = ({ backId }: IAddPost) => {
 
   // const splitSignature = useSplitSignature()
   // const signTypedData = useSignTypedData()
+
+  const { setIsShow } = useDispatcherLensContext()
 
   const { user } = UserModelService.useUserInfo({ profileId: viewerProfileId })
 
@@ -126,6 +129,11 @@ export const useAddPost = ({ backId }: IAddPost) => {
         profileId: viewerProfileId,
       })
 
+      if (response?.data?.createPostViaDispatcher?.reason === 'REJECTED') {
+        setIsShow(true)
+        throw new Error('Dispatcher not exist')
+      }
+
       const tx = await pollUntilIndexed({
         txId: response?.data?.createPostViaDispatcher?.txId,
       })
@@ -151,9 +159,16 @@ export const useAddPost = ({ backId }: IAddPost) => {
       toast.success('You successfully created post.', { icon: '💫' })
     } catch (error_) {
       console.log(error_)
-      toast.error('Something went wrong. Try again.', {
-        icon: '😢',
-      })
+      // @ts-ignore
+      if (error_.message == 'Dispatcher not exist') {
+        toast.warn('Approve create dispatcher and try again', {
+          icon: '😊',
+        })
+      } else {
+        toast.error('Something went wrong. Try again.', {
+          icon: '😢',
+        })
+      }
     } finally {
       setIsLoading(false)
     }

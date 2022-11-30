@@ -21,9 +21,9 @@ export const useGetUserLensInfo = ({
   return useQuery(GET_USER_INFO, {
     variables: {
       request: {
-        profileId: isFollowingId,
+        profileId,
       },
-      who: profileId,
+      who: isFollowingId,
     },
   })
 }

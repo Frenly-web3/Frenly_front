@@ -2,6 +2,7 @@ import { useLoaderContext } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { toast } from 'react-toastify'
 import { useBlockchain } from 'src/blockchain'
 
 import { useAuth } from '../model'
@@ -12,8 +13,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
   const {} = props
 
   const { account, activateBrowserWallet } = useBlockchain()
-  const { login, loginLens, logout, hasProfile, createProfile, enableDispatcher } =
-    useAuth()
+  const { login, loginLens, logout, hasProfile, createProfile } = useAuth()
   const { setIsLoading } = useLoaderContext()
   const router = useRouter()
 
@@ -21,15 +21,16 @@ export const AuthButton = (props: IAuthButtonProperties) => {
     try {
       setIsLoading(true)
       await login()
+      toast.success('You successfully authorized on Frenly')
       await loginLens()
-
+      toast.success('You successfully authorized on Lens')
       const hasLensProfile = await hasProfile(account as string)
 
       if (!hasLensProfile) {
         await createProfile()
       }
 
-      await enableDispatcher()
+      // await enableDispatcher()
 
       router.push('/feed')
     } catch (error) {

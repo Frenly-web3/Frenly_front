@@ -62,7 +62,10 @@ export const useUserInfo = ({
         status: userStatus,
         totalFollowers: userInfoLens?.profile?.stats?.totalFollowers,
       },
-      refetchUserInfo,
+      refetchUserInfo: () => {
+        refetchUserInfo()
+        refetchUserLensInfo()
+      },
       isLoading,
     }),
     [

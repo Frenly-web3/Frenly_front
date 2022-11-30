@@ -5,6 +5,7 @@ import {
 } from '@shared/api'
 import {
   useConvertResponseToPublicationId,
+  useDispatcherLensContext,
   useLoaderContext,
   useWaitTxInfo,
 } from '@shared/lib'
@@ -29,7 +30,7 @@ export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirror
   // const signTypedData = useSignTypedData()
   // const splitSignature = useSplitSignature()
   // const { send: mirrorWithSig } = useMirrorWithSig()
-
+  const { setIsShow } = useDispatcherLensContext()
   const { mirrorPostViaDispatcher } = useMirrorPostViaDispatcher()
 
   const { data: publicationStats, refetch: refetchPublicationsStats } =
@@ -102,6 +103,11 @@ export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirror
         profileId: viewerProfileLensId,
       })
 
+      if (response?.data?.createMirrorViaDispatcher?.reason === 'REJECTED') {
+        setIsShow(true)
+        throw new Error('Dispatcher not exist')
+      }
+
       const tx = await pollUntilIndexed({
         txId: response?.data?.createMirrorViaDispatcher?.txId,
       })
@@ -120,6 +126,12 @@ export function useMirrorPost({ publicationId, refetchFilteredFeed }: IUseMirror
         icon: '✨',
       })
     } catch (error) {
+      // @ts-ignore
+      if (error.message == 'Dispatcher not exist') {
+        toast.warn('Approve create dispatcher and try again', {
+          icon: '😊',
+        })
+      }
       console.log(error)
     } finally {
       await refetchPublicationsStats()

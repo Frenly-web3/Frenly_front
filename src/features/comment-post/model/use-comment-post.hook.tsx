@@ -4,7 +4,7 @@ import {
   useCreateCommentViaDispatcher,
   useGetPublicationsStats,
 } from '@shared/api'
-import { useLoaderContext } from '@shared/lib'
+import { useDispatcherLensContext, useLoaderContext } from '@shared/lib'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import {
@@ -22,6 +22,7 @@ export function useCommentPost({
   publicationId: string
   setComments?: ({ content }: { content: string }) => void
 }) {
+  const { setIsShow } = useDispatcherLensContext()
   const [commentValue, setCommentValue] = useState('')
   const { account } = useBlockchain()
   // const splitSignature = useSplitSignature()
@@ -52,20 +53,33 @@ export function useCommentPost({
           lensId: publicationId,
         })
 
-        await createCommentViaDispatcher({
+        const resp = await createCommentViaDispatcher({
           profileId: viewerProfileId,
           contentURI: commentMetadata,
           publicationId,
         })
+        console.log(resp?.data?.createCommentViaDispatcher?.reason)
+
+        if (resp?.data?.createCommentViaDispatcher?.reason === 'REJECTED') {
+          setIsShow(true)
+          throw new Error('Dispatcher not exist')
+        }
 
         setComments({ content: comment })
         setAmountComments((previous) => previous + 1)
         setCommentValue('')
         toast.success('Post was successfully commented.', { icon: '💫' })
-      } catch {
-        toast.error('Something went wrong. Try again.', {
-          icon: '😢',
-        })
+      } catch (error) {
+        // @ts-ignore
+        if (error.message == 'Dispatcher not exist') {
+          toast.warn('Approve create dispatcher and try again', {
+            icon: '😊',
+          })
+        } else {
+          toast.error('Something went wrong. Try again.', {
+            icon: '😢',
+          })
+        }
       } finally {
         setIsLoading(false)
       }

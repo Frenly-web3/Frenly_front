@@ -133,6 +133,7 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
     } else if (followUnfollowState == Subscription.UNFOLLOW) {
       await unfollowUser()
     }
+    refetchUserInfo()
   }, [profileId, followUnfollowState])
 
   return useMemo(
@@ -141,6 +142,6 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
       followUnfollowState,
       followerAmount: user.totalFollowers as number,
     }),
-    [followUnfollowState, user, profileId]
+    [followUnfollowState, user.totalFollowers, profileId]
   )
 }
