@@ -97,14 +97,14 @@ export const useCreateOrder = ({
         toast('You successfully created order.', {
           icon: '✨',
         })
-        closeForm()
-        setPrice('')
       } catch (error) {
         toast.error('Something went wrong. Try again.', {
           icon: '😢',
         })
         console.log(error)
       } finally {
+        closeForm()
+        setPrice('')
         await switchNetwork(ChainId.Mumbai)
         setIsLoading(false)
       }

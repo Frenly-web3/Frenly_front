@@ -53,7 +53,7 @@ export const useUserInfo = ({
     () => ({
       user: {
         address,
-        avatar: userInfo?.avatar,
+        avatar: `${process.env.NEXT_PUBLIC_API_URL}avatars/${userInfo?.avatar}`,
         description: userInfo?.description,
         isPaidSubscription: !!userInfoLens?.followModule,
         lensId: profileId,

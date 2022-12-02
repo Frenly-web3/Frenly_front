@@ -51,7 +51,7 @@ export const CreateOrderForm = (props: ICreateOrderForm) => {
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <span className="font-bold text-lg">Smart contract </span>
+              <span className="font-bold text-lg mt-4">Smart contract </span>
               <a
                 className="font-normal text-base text-main"
                 href={`https://etherscan.io/address/${contractAddress}`}
@@ -63,12 +63,15 @@ export const CreateOrderForm = (props: ICreateOrderForm) => {
             </div>
             <div className="flex flex-col items-center">
               <span className="font-bold text-lg mb-3">Sell price</span>
-              <Input
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                type={'text'}
-              />
+              <div className="flex items-center">
+                <Input
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  type={'text'}
+                />
+                <span className="font-bold text-lg">ETH</span>
+              </div>
               <div className="mt-5 w-3/4">
                 <Button onClick={createOrder}>Create order</Button>
               </div>
