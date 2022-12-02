@@ -3,7 +3,8 @@ import {
   useGetUnpublishedPostsForUser,
 } from '@entities/post'
 import { UserModelService } from '@entities/user'
-import { UserStatusEnum } from '@shared/lib'
+import { AddTrackAddress } from '@features/add-track-address'
+import { RoleEnum, UserStatusEnum } from '@shared/lib'
 import { Button, EndOfPage, Meta, ScrollLoader, Switcher } from '@shared/ui'
 import { PostCard } from '@widgets/post'
 import { UserProfileWidget } from '@widgets/user-profile'
@@ -51,6 +52,10 @@ export default function ProfilePage() {
     <>
       <Meta title={user.role} description="Your profile" />
       <UserProfileWidget profileId={id as string} />
+
+      {user.status == UserStatusEnum.Owner && user.role == RoleEnum.Admin && (
+        <AddTrackAddress />
+      )}
 
       {user.status === UserStatusEnum.Owner && (
         <Switcher checked={isShowAddedPost} switcherHandler={switcherHandler}>
