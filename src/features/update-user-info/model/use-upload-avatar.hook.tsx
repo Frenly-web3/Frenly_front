@@ -1,25 +1,28 @@
 import { UserModelService } from '@entities/user'
 import { userApi } from '@shared/api'
-import { useCallback, useEffect, useState } from 'react'
+import { useUnificationFormatImage } from '@shared/lib'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 export const useUploadAvatar = ({ profileId }: { profileId: string }) => {
-  const { user } = UserModelService.useUserInfo({ profileId })
+  const { user, isLoading } = UserModelService.useUserInfo({ profileId })
   const [uploadImage] = userApi.useUploadUserAvatarMutation()
-  const [previewValue, setPreviewValue] = useState(
-    user?.avatar && user?.avatar !== null
-      ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${user?.avatar}`
-      : '/assets/images/temp-avatar.png'
-  )
+  const [previewValue, setPreviewValue] = useState<string | null>(null)
+
+  const avatarUnification = useUnificationFormatImage({ image: user?.avatar as string })
+
   useEffect(() => {
-    if (!user) {
+    if (!avatarUnification && isLoading) {
+      setPreviewValue(null)
       return
     }
-    setPreviewValue(
-      user?.avatar !== null
-        ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${user?.avatar}`
-        : '/assets/images/temp-avatar.png'
-    )
-  }, [user])
+    if (!avatarUnification && !isLoading) {
+      setPreviewValue('/assets/images/temp-avatar.png')
+      return
+    }
+    if (avatarUnification && !isLoading) {
+      setPreviewValue(avatarUnification)
+    }
+  }, [isLoading, avatarUnification])
 
   const changeImageHandle = useCallback(async ({ imageUrl }: { imageUrl: any }) => {
     try {
@@ -33,9 +36,12 @@ export const useUploadAvatar = ({ profileId }: { profileId: string }) => {
       console.log(error)
     }
   }, [])
-  return {
-    changeImageHandle,
-    previewValue,
-    avatar: user?.avatar,
-  }
+  return useMemo(
+    () => ({
+      changeImageHandle,
+      previewValue,
+      avatar: user?.avatar,
+    }),
+    [previewValue, user?.avatar]
+  )
 }

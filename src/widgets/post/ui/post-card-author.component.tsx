@@ -12,15 +12,12 @@ export function PostCardAuthor() {
     fromMirrorName,
     mirrorFromId,
     isMirror,
+    isLoading,
   } = usePostCardContext()
 
   return (
     <Author
-      avatar={
-        creatorAvatar && creatorAvatar !== null
-          ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${creatorAvatar}`
-          : '/assets/images/temp-avatar.png'
-      }
+      avatar={creatorAvatar as string}
       name={
         creatorUsername !== null
           ? creatorUsername
@@ -31,6 +28,7 @@ export function PostCardAuthor() {
       fromMirror={fromMirrorName as string}
       fromMirrorId={mirrorFromId as string}
       isMirror={isMirror}
+      isLoading={isLoading}
     />
   )
 }

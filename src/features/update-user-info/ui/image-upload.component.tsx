@@ -14,10 +14,9 @@ export const ImageUpload = (props: IImageUploadProperties) => {
   const { changeImageHandle, previewValue } = useUploadAvatar({
     profileId,
   })
-
   return (
     <>
-      {profileId ? (
+      {previewValue ? (
         <div
           className={`m-auto mt-3 ${
             checkIsOwner && 'cursor-pointer'

@@ -1,3 +1,4 @@
+import { useUnificationFormatImage } from '@shared/lib'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -11,26 +12,41 @@ interface IAuthorProperties {
   fromMirror?: string
   fromMirrorId?: string
   isMirror: boolean | null
+  isLoading?: boolean
 }
 
 export function Author(props: IAuthorProperties) {
-  const { avatar, name, profileId, fromMirror, fromMirrorId, isMirror } = props
+  const { avatar, name, profileId, fromMirror, fromMirrorId, isMirror, isLoading } = props
 
   const router = useRouter()
   const routeToProfile = ({ idProfile }: { idProfile: string }) => {
     router.push(`/profile/${idProfile}`)
   }
+
+  const avatarUnification = useUnificationFormatImage({ image: avatar })
+  console.log(avatarUnification, avatar)
+
   return (
     <figure className="flex items-center">
-      {avatar && avatar !== '/assets/images/temp-avatar.png' ? (
+      {avatarUnification ? (
         <button
           onClick={() => routeToProfile({ idProfile: profileId })}
           className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden"
         >
-          <img src={avatar} alt={name} className={`w-10 h-10`} />
+          <img src={avatarUnification} alt={name} className={`w-10 h-10`} />
         </button>
       ) : (
-        <div className="mr-4 flex w-10 h-10 items-center bg-gray-darker rounded-full overflow-hidden animate-pulse"></div>
+        <>
+          {isLoading ? (
+            <div className="mr-4 flex w-10 h-10 items-center bg-gray-darker rounded-full overflow-hidden animate-pulse"></div>
+          ) : (
+            <img
+              src={'/assets/images/temp-avatar.png'}
+              alt={name}
+              className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden w-10 h-10"
+            />
+          )}
+        </>
       )}
 
       <figcaption>

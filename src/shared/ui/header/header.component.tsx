@@ -1,3 +1,4 @@
+import { useUnificationFormatImage } from '@shared/lib'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
@@ -10,6 +11,8 @@ export interface IHeaderProperties {
 export function Header(props: IHeaderProperties): JSX.Element {
   const { avatar, userLensId, isLoading } = props
 
+  const avatarUnification = useUnificationFormatImage({ image: avatar as string })
+
   const router = useRouter()
 
   return (
@@ -21,15 +24,12 @@ export function Header(props: IHeaderProperties): JSX.Element {
             <h2 className="text-4xl font-bold ml-3">frenly feed</h2>
           </div>
 
-          {!isLoading ? (
+          {avatarUnification ? (
             <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
               <img
-                src={
-                  avatar && avatar !== null
-                    ? `${process.env.NEXT_PUBLIC_API_URL}avatars/${avatar}`
-                    : '/assets/images/temp-avatar.png'
-                }
+                src={avatarUnification}
                 alt={'avatar'}
+                className={`cursor-pointer w-7 h-7`}
                 onClick={() => {
                   if (userLensId !== null) {
                     router.push(`profile/${userLensId}`)
@@ -37,20 +37,38 @@ export function Header(props: IHeaderProperties): JSX.Element {
                     router.push('/auth')
                   }
                 }}
-                className={`cursor-pointer w-7 h-7`}
               />
             </div>
           ) : (
-            <div
-              onClick={() => {
-                if (userLensId !== null) {
-                  router.push(`profile/${userLensId}`)
-                } else {
-                  router.push('/auth')
-                }
-              }}
-              className="mt-4 w-7 h-7 rounded-full bg-gray animate-pulse"
-            ></div>
+            <>
+              {isLoading ? (
+                <div
+                  onClick={() => {
+                    if (userLensId !== null) {
+                      router.push(`profile/${userLensId}`)
+                    } else {
+                      router.push('/auth')
+                    }
+                  }}
+                  className="mt-4 w-7 h-7 rounded-full bg-gray animate-pulse"
+                ></div>
+              ) : (
+                <>
+                  <img
+                    onClick={() => {
+                      if (userLensId !== null) {
+                        router.push(`profile/${userLensId}`)
+                      } else {
+                        router.push('/auth')
+                      }
+                    }}
+                    src={'/assets/images/temp-avatar.png'}
+                    alt={'avatar'}
+                    className={`cursor-pointer w-7 h-7`}
+                  />
+                </>
+              )}
+            </>
           )}
         </div>
       </>

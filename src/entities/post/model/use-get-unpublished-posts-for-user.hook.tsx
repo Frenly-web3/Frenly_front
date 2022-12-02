@@ -47,17 +47,21 @@ export const useGetUnpublishedPostsForUser = ({
   const getMorePosts = () => {
     setTakeCount((previous) => previous + 1)
   }
-  const setZeroPosts = () => {
-    setTakeCount(0)
-    setMappedPosts([])
-    setHasMore(true)
-  }
 
   const posts = role !== RoleEnum.User ? unpublishedPostsAdmin : unpublishedPosts
   const isLoading = role !== RoleEnum.User ? isLoadingAdmin : isLoadingUser
-  useEffect(() => {
-    setHasMore(true)
 
+  const setZeroPosts = () => {
+    setTakeCount(0)
+    setMappedPosts([])
+    if (posts?.length > 0) {
+      setHasMore(true)
+    }
+  }
+  useEffect(() => {
+    if (posts) {
+      setHasMore(true)
+    }
     const mappedPost = posts?.map((post: any): IPost => {
       const {
         isMirror,
