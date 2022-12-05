@@ -18,6 +18,7 @@ export const useAddTrackAddress = () => {
       // @ts-ignore
       toast.error(error.message)
     } finally {
+      setIsLoading(false)
     }
   }, [address])
 
