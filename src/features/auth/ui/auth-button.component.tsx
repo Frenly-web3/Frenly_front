@@ -20,6 +20,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
   const signUpHandle = async () => {
     try {
       setIsLoading(true)
+      await activateBrowserWallet()
       await login()
       toast.success('You successfully authorized on Frenly')
       await loginLens()

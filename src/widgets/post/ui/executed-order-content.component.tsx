@@ -19,18 +19,21 @@ export const ExecutedOrderContent = (props: IExecutedOrderContentProperties) => 
 
   const { user: userFrom } = UserModelService.useUserInfo({ profileId: fromId })
   const { user: userTo } = UserModelService.useUserInfo({ profileId: toId })
+
+  console.log(userFrom, userTo)
+
   return (
     <>
       {sellerType == SellerTypeEnum.BuyEvent && (
         <>
-          {userFrom.name ? (
+          {userFrom ? (
             <div className="text-base pl-14">
               🎉 Just bought new NFT from{' '}
               <span
                 onClick={() => router.push(`/profile/${fromId}`)}
                 className="font-bold cursor-pointer"
               >
-                {userFrom.name}
+                {userFrom.name ?? `frenly.${userFrom?.address?.slice(0, 8)}`}
               </span>{' '}
               via Frenly
             </div>
@@ -41,7 +44,7 @@ export const ExecutedOrderContent = (props: IExecutedOrderContentProperties) => 
       )}
       {sellerType == SellerTypeEnum.SellEvent && (
         <>
-          {userTo.name ? (
+          {userTo ? (
             <div className="text-base pl-14">
               🎉 Just sold his NFT to{' '}
               {userTo ? (
@@ -49,7 +52,7 @@ export const ExecutedOrderContent = (props: IExecutedOrderContentProperties) => 
                   onClick={() => router.push(`/profile/${toId}`)}
                   className="font-bold cursor-pointer"
                 >
-                  {userTo.name}
+                  {userTo?.name ?? `frenly.${userTo?.address?.slice(0, 8)}`}
                 </span>
               ) : (
                 <div className="m-auto mt-8 w-24 h-4 rounded-full bg-gray animate-pulse"></div>

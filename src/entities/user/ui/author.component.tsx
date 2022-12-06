@@ -24,7 +24,6 @@ export function Author(props: IAuthorProperties) {
   }
 
   const avatarUnification = useUnificationFormatImage({ image: avatar })
-  console.log(avatarUnification, avatar)
 
   return (
     <figure className="flex items-center">
