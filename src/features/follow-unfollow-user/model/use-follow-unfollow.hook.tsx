@@ -6,6 +6,7 @@ import {
 } from '@shared/api'
 import { Subscription, useLoaderContext, UserStatusEnum } from '@shared/lib'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
 import {
   useBlockchain,
   useFollowWithSig,
@@ -27,7 +28,7 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
 
   const { createFollowTypedData } = useCreateFollowTypedData()
 
-  const { send: followWithSig } = useFollowWithSig()
+  const { send: followWithSig, state: followWithSigState } = useFollowWithSig()
 
   const [subscribeUser] = userApi.useSubscribeUserMutation()
 
@@ -36,6 +37,8 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   const { unfollowWithSig } = useUnfollowWithSig()
 
   useEffect(() => {
+    console.log(user?.status)
+
     switch (user?.status) {
       case UserStatusEnum.Owner: {
         setFollowUnfollowState(null)
@@ -70,7 +73,7 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
 
       const { deadline, ...omitTypedData } = typedData.value
 
-      await followWithSig({
+      const resp = await followWithSig({
         follower: account as string,
         ...omitTypedData,
         sig: {
@@ -80,11 +83,16 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
           deadline,
         },
       })
+
+      console.log(followWithSigState, resp)
+
       await subscribeUser({ address: user?.address as string })
       setFollowUnfollowState(Subscription.UNFOLLOW)
     } catch (error_) {
       console.log(error_)
-      // toast.error(String(error_))
+      toast.error('Something went wrong. Try again.', {
+        icon: '😢',
+      })
     } finally {
       refetchUserInfo()
       setIsLoading(false)
@@ -105,7 +113,7 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
 
       const { tokenId, deadline } = typedData.value
 
-      await unfollowWithSig({
+      const resp = await unfollowWithSig({
         contractAddress: typedData.domain.verifyingContract,
         contractArgs: {
           tokenId,
@@ -117,9 +125,16 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
           },
         },
       })
+
+      console.log(resp)
+
       setFollowUnfollowState(Subscription.FOLLOW)
     } catch (error) {
       // toast.error(String(error_))
+      // @ts-ignore
+      toast.error(error.message, {
+        icon: '😢',
+      })
       console.log(error)
     } finally {
       refetchUserInfo()
