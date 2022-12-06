@@ -82,7 +82,9 @@ export const useCreateOrder = ({
           await approvalTx.wait()
         }
         // @ts-ignore
-        const order = nftSwapSdk.buildOrder(makerOrder, takerOrder, account as string)
+        const order = nftSwapSdk.buildOrder(makerOrder, takerOrder, account as string, {
+          expiry: Date.now(),
+        })
 
         const signedOrder = await nftSwapSdk.signOrder(order)
 

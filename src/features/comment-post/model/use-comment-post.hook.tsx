@@ -58,7 +58,6 @@ export function useCommentPost({
           contentURI: commentMetadata,
           publicationId,
         })
-        console.log(resp?.data?.createCommentViaDispatcher?.reason)
 
         if (resp?.data?.createCommentViaDispatcher?.reason === 'REJECTED') {
           setIsShow(true)

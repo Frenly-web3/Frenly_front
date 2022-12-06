@@ -20,8 +20,6 @@ export const ExecutedOrderContent = (props: IExecutedOrderContentProperties) => 
   const { user: userFrom } = UserModelService.useUserInfo({ profileId: fromId })
   const { user: userTo } = UserModelService.useUserInfo({ profileId: toId })
 
-  console.log(userFrom, userTo)
-
   return (
     <>
       {sellerType == SellerTypeEnum.BuyEvent && (
