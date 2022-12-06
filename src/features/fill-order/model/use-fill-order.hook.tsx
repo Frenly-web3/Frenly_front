@@ -73,6 +73,7 @@ export const useFillOrder = ({
         const parsedSignedOrder = JSON.parse(signedOrder)
 
         const fillTx = await nftSwapSdk.fillSignedOrder(parsedSignedOrder)
+
         await nftSwapSdk.awaitTransactionHash(fillTx.hash)
 
         await acceptOrder({ id: postId })
