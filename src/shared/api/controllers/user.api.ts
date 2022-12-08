@@ -21,6 +21,20 @@ export const userApi = createApi({
         return res?.data
       },
     }),
+    IsSubscriber: builder.query<any, { address: string }>({
+      providesTags: ['USER', 'ADMIN'],
+      query: ({ address }) => {
+        return {
+          url: `user/${address}/is-follow`,
+          method: 'GET',
+
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: any) => {
+        return res?.data
+      },
+    }),
     uploadUserInfo: builder.mutation<any, { username: string; description: string }>({
       invalidatesTags: ['USER', 'ADMIN'],
       query: ({ username, description }) => {
@@ -38,6 +52,16 @@ export const userApi = createApi({
         return {
           url: `user/subscribe/${address}`,
           method: 'POST',
+          credentials: 'omit',
+        }
+      },
+    }),
+    unSubscribeUser: builder.mutation<any, { address: string }>({
+      invalidatesTags: ['USER', 'ADMIN'],
+      query: ({ address }) => {
+        return {
+          url: `user/unsubscribe/${address}`,
+          method: 'DELETE',
           credentials: 'omit',
         }
       },

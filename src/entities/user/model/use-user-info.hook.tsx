@@ -75,7 +75,7 @@ export const useUserInfo = ({
         role: isAdmin ? RoleEnum.Admin : RoleEnum.User,
         status: userStatus,
         // totalFollowers: userInfoLens?.profile?.stats?.totalFollowers,
-        totalFollowers: 0,
+        totalFollowers: userInfo?.totalFollowers,
       },
       refetchUserInfo: () => {
         refetchUserInfo()
@@ -89,6 +89,7 @@ export const useUserInfo = ({
       userInfo?.avatar,
       userInfo?.description,
       userInfo?.username,
+      userInfo?.totalFollowers,
       // userInfoLens?.followModule,
       // userInfoLens?.profile?.stats?.totalFollowers,
       profileId,

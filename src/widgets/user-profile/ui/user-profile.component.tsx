@@ -1,3 +1,4 @@
+import { FollowUnfollowButton } from '@features/follow-unfollow-user'
 import { InfoUploadComponent } from '@features/update-user-info'
 import React from 'react'
 
@@ -13,7 +14,7 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
       <div className="flex flex-col justify-center border-b border-border-color">
         <InfoUploadComponent profileId={profileId} />
 
-        {/* <FollowUnfollowButton profileId={profileId} /> */}
+        <FollowUnfollowButton profileId={profileId} />
       </div>
     </div>
   )

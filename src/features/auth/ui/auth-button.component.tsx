@@ -23,13 +23,13 @@ export const AuthButton = (props: IAuthButtonProperties) => {
       await activateBrowserWallet()
       await login()
       toast.success('You successfully authorized on Frenly')
-      await loginLens()
-      toast.success('You successfully authorized on Lens')
-      const hasLensProfile = await hasProfile(account as string)
+      // await loginLens()
+      // toast.success('You successfully authorized on Lens')
+      // const hasLensProfile = await hasProfile(account as string)
 
-      if (!hasLensProfile) {
-        await createProfile()
-      }
+      // if (!hasLensProfile) {
+      //   await createProfile()
+      // }
 
       // await enableDispatcher()
 

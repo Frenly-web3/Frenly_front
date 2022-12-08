@@ -34,7 +34,7 @@ export default function NftsPage() {
               >
                 <PostCard {...post}>
                   <PostCard.Image />
-                  <PostCard.Subscription />
+                  {/* <PostCard.Subscription /> */}
                 </PostCard>
               </div>
             )
