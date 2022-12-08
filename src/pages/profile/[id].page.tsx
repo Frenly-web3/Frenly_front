@@ -3,7 +3,6 @@ import { UserModelService } from '@entities/user'
 import { AddTrackAddress } from '@features/add-track-address'
 import { RoleEnum, UserStatusEnum } from '@shared/lib'
 import { Meta } from '@shared/ui'
-import { PostCard } from '@widgets/post'
 import { UserProfileWidget } from '@widgets/user-profile'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -14,7 +13,7 @@ export default function ProfilePage() {
     push,
   } = useRouter()
 
-  // if we will add published posts and they should always shown
+  // if we will add published posts and they should be always shown
   // const [isShowAddedPost, setShowAddedPost] = useState(true)
 
   // was needed when there was lens and button "show added posts or not"
@@ -32,6 +31,7 @@ export default function ProfilePage() {
   //   skipReq: isShowAddedPost,
   // })
 
+  // it was posts from lens. Now it's posts from backend
   // const {
   //   publishedPosts,
   //   fetchMorePosts,
@@ -109,7 +109,6 @@ export default function ProfilePage() {
           })}
         </InfiniteScroll>
       )} */}
-
       {/* {(isShowAddedPost || user.status !== UserStatusEnum.Owner) && (
         <InfiniteScroll
           dataLength={publishedPosts?.length}
@@ -125,7 +124,7 @@ export default function ProfilePage() {
                 <PostCard.Content
                   key={`content_${post.id}_${post.date}_${post.txHash}`}
                 /> */}
-      <PostCard.Image />
+      {/* <PostCard.Image /> */}
       {/* <PostCard.Reactions
                   key={`reactions_ ${post.id}_${post.date}_${post.txHash}`}
                   refetchFilteredFeed={() => console.log('ss')}
