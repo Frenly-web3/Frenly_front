@@ -22,11 +22,11 @@ export function EndOfPage(props: IEndOfPageProperties) {
           {page === 'drafts' &&
             'Do some more activity on-chain and come back later for posting'}
         </p>
-        {page === 'feed' && (
+        {/* {page === 'feed' && (
           <button className="rounded-full bg-main text-white font-semibold py-1 px-4 mt-4">
             Invite frens
           </button>
-        )}
+        )} */}
         {page === 'drafts' && (
           <button
             className="rounded-full bg-main text-white font-semibold py-1 px-4 mt-4"
