@@ -20,12 +20,12 @@ export const contentApi = createApi({
       },
       transformResponse: (res: any, meta: any) => {
         return res.data
-          .filter((el: any) => {
-            return el.lensId !== null
-          })
-          .filter((el: any) => {
-            return el.lensId !== '0xNaN-0xNaN'
-          })
+        // .filter((el: any) => {
+        //   return el.lensId !== null
+        // })
+        // .filter((el: any) => {
+        //   return el.lensId !== '0xNaN-0xNaN'
+        // })
       },
     }),
     getUnpublishedContent: builder.query<any, any>({
@@ -33,6 +33,19 @@ export const contentApi = createApi({
       query: ({ take, skip }: { take: number; skip: number }) => {
         return {
           url: `content/unpublished/?take=${take}&skip=${skip}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: any) => {
+        return res?.data
+      },
+    }),
+    getPublishedContent: builder.query<any, any>({
+      providesTags: ['CONTENT'],
+      query: ({ take, skip, id }: { take: number; skip: number; id: string }) => {
+        return {
+          url: `content/published/${id}/?take=${take}&skip=${skip}`,
           method: 'GET',
           credentials: 'omit',
         }

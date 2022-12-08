@@ -1,6 +1,5 @@
 import { useGetFilteredPosts } from '@entities/post'
 import { UserModelService } from '@entities/user'
-import { SellerTypeEnum } from '@shared/lib'
 import { EndOfPage, Header, Meta, ScrollLoader } from '@shared/ui'
 import { PostCard } from '@widgets/post'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -8,17 +7,32 @@ import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 
 export default function FeedPage() {
   // const [takeCount, setTakeCount] = useState(0)
+  let userAddressForHeader = null
 
   const { account } = useBlockchain()
 
-  const { posts, lensIsLoading, isSuccess, hasMore, refetchFilteredFeed, setTakeCount } =
-    useGetFilteredPosts()
+  if (account) {
+    userAddressForHeader = account
+  }
+
+  const {
+    posts,
+    //  lensIsLoading,
+    isSuccess,
+    hasMore,
+    refetchFilteredFeed,
+    setTakeCount,
+  } = useGetFilteredPosts()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
   const { user, isLoading } = UserModelService.useUserInfo({
-    profileId: viewerProfileLensId as string,
+    profileId: account as string,
+    // profileId: viewerProfileLensId as string,
   })
+
+  console.log('check user avatar', user)
   const nextLoad = async () => {
-    if (isSuccess && !lensIsLoading) {
+    // if (isSuccess && !lensIsLoading) {
+    if (isSuccess) {
       setTakeCount((previousState) => previousState + 1)
     }
   }
@@ -31,6 +45,8 @@ export default function FeedPage() {
         avatar={user?.avatar}
         isLoading={isLoading}
         userLensId={viewerProfileLensId}
+        // added
+        userAddress={userAddressForHeader}
       />
 
       <main>
@@ -45,17 +61,19 @@ export default function FeedPage() {
             {posts?.map((post, index) => {
               return (
                 // @ts-ignore
-                <PostCard {...post} key={`${post.lensId}_${index}_${post.txHash}`}>
+                // change lensId to id
+                <PostCard {...post} key={`${post.id}_${index}_${post.txHash}`}>
                   <PostCard.Author />
                   <PostCard.Content />
                   <PostCard.Image />
-                  <PostCard.Subscription />
-                  {post.sellerType === SellerTypeEnum.NftTransfer && (
+                  {/* <PostCard.Subscription /> */}
+                  {/* {post?.sellerType === SellerTypeEnum.NftTransfer && (
                     <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
-                  )}
-                  {post.sellerType === SellerTypeEnum.SellOrder && (
+                  )} */}
+                  {/* {post.sellerType === SellerTypeEnum.SellOrder && (
                     <PostCard.Order refetchFilteredFeed={refetchFilteredFeed} />
-                  )}
+                  )} */}
+                  <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
                 </PostCard>
               )
             })}

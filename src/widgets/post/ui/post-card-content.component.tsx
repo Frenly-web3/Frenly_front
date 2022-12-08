@@ -16,9 +16,9 @@ export function PostCardContent() {
     from,
     postType,
     network,
-    mirrorDescription,
+    // mirrorDescription,
     to,
-    isMirror,
+    // isMirror,
     sellerType,
   } = usePostCardContext()
 
@@ -40,11 +40,13 @@ export function PostCardContent() {
           isAdmin={isAdmin}
           itemType={'nft'}
           messageType={postType as PostTypeEnum}
-          mirrorDescription={mirrorDescription as string}
+          // mirrorDescription={mirrorDescription as string}
+          mirrorDescription={'' as string}
           showAuthor={true}
           showDate={true}
           to={to as string}
-          isMirror={isMirror}
+          // isMirror={isMirror}
+          isMirror={false}
         />
       )}
       {(sellerType == SellerTypeEnum.BuyEvent ||

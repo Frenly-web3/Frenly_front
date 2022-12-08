@@ -8,6 +8,8 @@ export const useUploadAvatar = ({ profileId }: { profileId: string }) => {
   const [uploadImage] = userApi.useUploadUserAvatarMutation()
   const [previewValue, setPreviewValue] = useState<string | null>(null)
 
+  console.log('user in useUploadAvatar', user)
+
   const avatarUnification = useUnificationFormatImage({ image: user?.avatar as string })
 
   useEffect(() => {

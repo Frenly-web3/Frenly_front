@@ -8,10 +8,10 @@ export function PostCardAuthor() {
     creatorUsername,
     creatorAddress,
     date,
-    creatorLensId,
-    fromMirrorName,
-    mirrorFromId,
-    isMirror,
+    // creatorLensId,
+    // fromMirrorName,
+    // mirrorFromId,
+    // isMirror,
     isLoading,
   } = usePostCardContext()
 
@@ -23,11 +23,11 @@ export function PostCardAuthor() {
           ? creatorUsername
           : `frenly.${creatorAddress?.slice(0, 9)}`
       }
-      profileId={creatorLensId as string}
+      profileId={creatorAddress as string}
       date={date as string}
-      fromMirror={fromMirrorName as string}
-      fromMirrorId={mirrorFromId as string}
-      isMirror={isMirror}
+      // fromMirror={fromMirrorName as string}
+      // fromMirrorId={mirrorFromId as string}
+      // isMirror={isMirror}
       isLoading={isLoading}
     />
   )

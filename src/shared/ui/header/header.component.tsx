@@ -6,16 +6,19 @@ export interface IHeaderProperties {
   avatar: string | null
   userLensId: string | null
   isLoading: boolean
+  userAddress: string | null
 }
 
 export function Header(props: IHeaderProperties): JSX.Element {
-  const { avatar, userLensId, isLoading } = props
+  const { avatar, userLensId, isLoading, userAddress } = props
 
   const avatarUnification = useUnificationFormatImage({ image: avatar as string })
 
+  // const { previewValue: avatarTry } = useUploadAvatar({ profileId: userAddress })
   const router = useRouter()
 
   return (
+    // changed userLensId to userAddress
     <header className="container py-3 top-0 bg-white">
       <>
         <div className="flex justify-between mb-1 sticky border-b border-border-color pt-2 pb-4">
@@ -31,8 +34,9 @@ export function Header(props: IHeaderProperties): JSX.Element {
                 alt={'avatar'}
                 className={`cursor-pointer w-7 h-7`}
                 onClick={() => {
-                  if (userLensId !== null) {
-                    router.push(`profile/${userLensId}`)
+                  if (userAddress !== null) {
+                    // changed to userAddress
+                    router.push(`profile/${userAddress}`)
                   } else {
                     router.push('/auth')
                   }
@@ -44,8 +48,8 @@ export function Header(props: IHeaderProperties): JSX.Element {
               {isLoading ? (
                 <div
                   onClick={() => {
-                    if (userLensId !== null) {
-                      router.push(`profile/${userLensId}`)
+                    if (userAddress !== null) {
+                      router.push(`profile/${userAddress}`)
                     } else {
                       router.push('/auth')
                     }
@@ -56,8 +60,8 @@ export function Header(props: IHeaderProperties): JSX.Element {
                 <>
                   <img
                     onClick={() => {
-                      if (userLensId !== null) {
-                        router.push(`profile/${userLensId}`)
+                      if (userAddress !== null) {
+                        router.push(`profile/${userAddress}`)
                       } else {
                         router.push('/auth')
                       }

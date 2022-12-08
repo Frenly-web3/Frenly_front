@@ -9,14 +9,20 @@ interface IAuthorProperties {
   name: string
   date: string
   profileId: string
-  fromMirror?: string
-  fromMirrorId?: string
-  isMirror: boolean | null
+  // fromMirror?: string
+  // fromMirrorId?: string
+  // isMirror: boolean | null
   isLoading?: boolean
 }
 
 export function Author(props: IAuthorProperties) {
-  const { avatar, name, profileId, fromMirror, fromMirrorId, isMirror, isLoading } = props
+  const {
+    avatar,
+    name,
+    profileId,
+    // fromMirror, fromMirrorId, isMirror,
+    isLoading,
+  } = props
 
   const router = useRouter()
   const routeToProfile = ({ idProfile }: { idProfile: string }) => {
@@ -59,7 +65,7 @@ export function Author(props: IAuthorProperties) {
         ) : (
           <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>
         )}
-        {isMirror &&
+        {/* {isMirror &&
           isMirror !== null &&
           (fromMirror ? (
             <div className="text-base font-normal">
@@ -73,7 +79,7 @@ export function Author(props: IAuthorProperties) {
             </div>
           ) : (
             <div className="m-auto mt-4 w-52 h-3 rounded-full bg-gray animate-pulse"></div>
-          ))}
+          ))} */}
       </figcaption>
     </figure>
   )

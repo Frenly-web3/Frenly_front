@@ -4,7 +4,7 @@ import React, { useContext } from 'react'
 interface IPostCardContext extends IPost {
   creatorAvatar: string | null
   creatorUsername: string | null
-  fromMirrorName: string | null
+  // fromMirrorName: string | null
   isLoading: boolean
 }
 
