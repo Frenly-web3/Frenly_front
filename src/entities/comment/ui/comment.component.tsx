@@ -16,7 +16,6 @@ export const Comment = ({
   const commentDate = moment(createdAt).fromNow(true)
   const router = useRouter()
   const { data: userInfo } = userApi.useGetUserInfoQuery({ address })
-
   return (
     <figure className="flex items-center mb-2">
       <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
