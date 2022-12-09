@@ -8,6 +8,7 @@
 
 #### Если у вас powershell
 
+
 ```Powershell
 git clone https://github.com/Neca-development/nextjs-rtkquery-template.git <ИМЯ ПАКЕТА> ; cd <ИМЯ ПАКЕТА> ; git remote remove origin ; npm i
 ```
