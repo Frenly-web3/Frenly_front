@@ -1,4 +1,3 @@
-import { useGetPublishedContentForUser } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import { AddTrackAddress } from '@features/add-track-address'
 import { RoleEnum, UserStatusEnum } from '@shared/lib'
@@ -10,7 +9,7 @@ import React from 'react'
 export default function ProfilePage() {
   const {
     query: { id },
-    push,
+    // push,
   } = useRouter()
 
   // if we will add published posts and they should be always shown
@@ -42,21 +41,21 @@ export default function ProfilePage() {
   //   skip: !isShowAddedPost && user.status == UserStatusEnum.Owner,
   // })
 
-  const {
-    posts: publishedPosts,
-    //  lensIsLoading,
-    isSuccess,
-    hasMore,
-    refetchFilteredFeed,
-    setTakeCount,
-  } = useGetPublishedContentForUser(id as string)
+  // const {
+  //   // posts: publishedPosts,
+  //   //  lensIsLoading,
+  //   isSuccess,
+  //   // hasMore,
+  //   // refetchFilteredFeed,
+  //   setTakeCount,
+  // } = useGetPublishedContentForUser(id as string)
 
-  const nextLoad = async () => {
-    // if (isSuccess && !lensIsLoading) {
-    if (isSuccess) {
-      setTakeCount((previousState) => previousState + 1)
-    }
-  }
+  // const nextLoad = async () => {
+  //   // if (isSuccess && !lensIsLoading) {
+  //   if (isSuccess) {
+  //     setTakeCount((previousState) => previousState + 1)
+  //   }
+  // }
 
   // const switcherHandler = () => {
   //   setShowAddedPost(!isShowAddedPost)

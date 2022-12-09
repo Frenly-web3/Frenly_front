@@ -1,6 +1,5 @@
 import type { NetworkEnum } from '@shared/lib'
 import { TransactionLink } from '@shared/ui'
-import { useState } from 'react'
 
 import { usePostCardContext } from '../model'
 
@@ -9,18 +8,18 @@ interface IPostCardReactions {
 }
 
 export function PostCardReactions(props: IPostCardReactions) {
-  const { refetchFilteredFeed } = props
+  // const { refetchFilteredFeed } = props
   const {
     // lensId: publicationId,
     network,
     txHash,
-    image,
-    contractAddress,
-    from,
-    to,
-    postType,
+    // image,
+    // contractAddress,
+    // from,
+    // to,
+    // postType,
   } = usePostCardContext()
-  const [isOpenComments, setIsOpenComments] = useState(false)
+  // const [isOpenComments, setIsOpenComments] = useState(false)
   // const { comments, setCommentsValue } = useGetCommentsByPostId({
   //   publicationId: publicationId as string,
   // })

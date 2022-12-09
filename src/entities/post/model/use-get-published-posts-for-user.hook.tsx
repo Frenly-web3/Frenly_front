@@ -166,9 +166,9 @@ export const useGetPublishedContentForUser = (id: string): IGetFilteredPosts => 
         // const posts: IPost[] = postsData?.map((post: any): IPost => {
         // const { profile, metadata, createdAt, id, mirrorOf, stats } = post
         const {
-          creatorAddress,
-          isMirror,
-          mirrorDescription,
+          // creatorAddress,
+          // isMirror,
+          // mirrorDescription,
           transferType,
           id: idBack,
           image,
@@ -182,7 +182,7 @@ export const useGetPublishedContentForUser = (id: string): IGetFilteredPosts => 
           // collectionName,
           // sellPrice,
           // signedObject,
-          postType,
+          // postType,
         } = post
 
         console.log('post', post)

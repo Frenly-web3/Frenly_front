@@ -2,7 +2,7 @@ import { adminApi, contentApi } from '@shared/api'
 import { NetworkEnum, RoleEnum, SellerTypeEnum } from '@shared/lib'
 import { SIZE_POST_CHUNK } from '@shared/lib/constants'
 import { useEffect, useMemo, useState } from 'react'
-import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
+import { useBlockchain } from 'src/blockchain'
 
 import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
@@ -42,7 +42,7 @@ export const useGetUnpublishedPostsForUser = ({
     )
 
   const { account } = useBlockchain()
-  const viewerProfileId = useGetWalletProfileId(account as string)
+  // const viewerProfileId = useGetWalletProfileId(account as string)
 
   const getMorePosts = () => {
     setTakeCount((previous) => previous + 1)
@@ -64,8 +64,8 @@ export const useGetUnpublishedPostsForUser = ({
     }
     const mappedPost = posts?.map((post: any): IPost => {
       const {
-        isMirror,
-        mirrorDescription,
+        // isMirror,
+        // mirrorDescription,
         transferType,
         id: idBack,
         image,
@@ -75,7 +75,7 @@ export const useGetUnpublishedPostsForUser = ({
         toAddress,
         // lensId,
         contractAddress,
-        lensId,
+        // lensId,
       } = post
       return {
         // creatorLensId: viewerProfileId,

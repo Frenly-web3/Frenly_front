@@ -62,8 +62,8 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
         // const { profile, metadata, createdAt, id, mirrorOf, stats } = post
         const {
           // creatorAddress,
-          isMirror,
-          mirrorDescription,
+          // isMirror,
+          // mirrorDescription,
           transferType,
           id: idBack,
           image,

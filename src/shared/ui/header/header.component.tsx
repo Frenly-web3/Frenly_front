@@ -10,7 +10,12 @@ export interface IHeaderProperties {
 }
 
 export function Header(props: IHeaderProperties): JSX.Element {
-  const { avatar, userLensId, isLoading, userAddress } = props
+  const {
+    avatar,
+    //  userLensId,
+    isLoading,
+    userAddress,
+  } = props
 
   const avatarUnification = useUnificationFormatImage({ image: avatar as string })
 

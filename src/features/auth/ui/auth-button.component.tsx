@@ -13,7 +13,12 @@ export const AuthButton = (props: IAuthButtonProperties) => {
   const {} = props
 
   const { account, activateBrowserWallet } = useBlockchain()
-  const { login, loginLens, logout, hasProfile, createProfile } = useAuth()
+  const {
+    login,
+    // loginLens,
+    logout,
+    //  hasProfile, createProfile
+  } = useAuth()
   const { setIsLoading } = useLoaderContext()
   const router = useRouter()
 
