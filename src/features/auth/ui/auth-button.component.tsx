@@ -32,7 +32,6 @@ export const AuthButton = (props: IAuthButtonProperties) => {
       // }
 
       // await enableDispatcher()
-
       router.push('/feed')
     } catch (error) {
       await logout()
