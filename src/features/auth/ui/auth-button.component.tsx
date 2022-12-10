@@ -27,10 +27,6 @@ export const AuthButton = (props: IAuthButtonProperties) => {
       setIsLoading(true)
       await activateBrowserWallet()
       await login()
-      if (account && !process.env.NEXT_PUBLIC_WHITELIST?.includes(account?.toLowerCase())) {
-        router.push('/user-not-whitelised')
-        return;
-      }
       toast.success('You successfully authorized on Frenly')
       // await loginLens()
       // toast.success('You successfully authorized on Lens')

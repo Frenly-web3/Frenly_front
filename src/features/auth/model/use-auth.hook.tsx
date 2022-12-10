@@ -46,6 +46,11 @@ export function useAuth() {
   }, [account, setLensAuthDispatch, setTokensLensDispatch, signMessage])
 
   const login = useCallback(async () => {
+    if (account && !process.env.NEXT_PUBLIC_WHITELIST?.includes(account?.toLowerCase())) {
+      window.location.pathname = '/user-not-whitelised';
+      return;
+    }
+
     try {
       const nonceData = await getNonce({ address: account as string })
 
