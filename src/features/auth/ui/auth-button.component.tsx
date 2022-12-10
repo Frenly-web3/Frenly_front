@@ -1,8 +1,6 @@
 import { useLoaderContext } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { toast } from 'react-toastify'
 import { useBlockchain } from 'src/blockchain'
 
 import { useAuth } from '../model'
