@@ -63,7 +63,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           result = await baseQuery(arguments_, api, extraOptions)
         } else {
           localStorage.clear()
-          // window.location.pathname = '/login'
+          window.location.pathname = '/auth'
         }
       } finally {
         release()
