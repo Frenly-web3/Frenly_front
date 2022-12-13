@@ -16,7 +16,7 @@ export default function UserNotWhitelistedPage() {
           </h2>
         </div>
         <div className="w-full py-4 mb-16">
-          <a href='https://discord.gg/tBhYAaGz' className="w-full"><Button>Open Form</Button></a>
+          <a href='https://1ltwty44asn.typeform.com/to/DQ8hHy11' className="w-full"><Button>Open Form</Button></a>
           <div className="mt-2"></div>
           <Button onClick={() => router.push(`/auth`)}>Back to Auth</Button>
         </div>
