@@ -23,6 +23,7 @@ module.exports = {
       }
     },
     colors: {
+      // Old
       'main': '#248BF2',
       'white': '#ffffff',
       'gray': '#71747A',
@@ -33,6 +34,8 @@ module.exports = {
       'error-bg': 'rgba(255, 0, 0, 0.1)',
       'light-bg': '#ECF2FF',
       'is-liked': 'rgba(252, 165, 165, 0.8 )',
+
+      // New
     }
   },
   plugins: [require('tw-elements/dist/plugin')],

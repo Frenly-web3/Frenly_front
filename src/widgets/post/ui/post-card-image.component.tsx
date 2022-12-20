@@ -7,7 +7,10 @@ export function PostCardImage() {
 
   return (
     <div className="pl-14">
-      <PostImage image={image} address={contractAddress as string} />
+      <PostImage
+        image={{ type: 'image', url: `${image}` }}
+        address={contractAddress as string}
+      />
     </div>
   )
 }

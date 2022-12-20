@@ -29,7 +29,9 @@ export function Author(props: IAuthorProperties) {
     router.push(`/profile/${idProfile}`)
   }
 
-  const avatarUnification = useUnificationFormatImage({ image: avatar })
+  const avatarUnification = useUnificationFormatImage({
+    image: { url: avatar, type: 'image' },
+  })
 
   return (
     <figure className="flex items-center">
@@ -38,7 +40,11 @@ export function Author(props: IAuthorProperties) {
           onClick={() => routeToProfile({ idProfile: profileId })}
           className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden"
         >
-          <img src={avatarUnification} alt={name} className={`w-10 h-10`} />
+          <img
+            src={avatarUnification.url.toString()}
+            alt={name}
+            className={`w-10 h-10`}
+          />
         </button>
       ) : (
         <>
@@ -60,7 +66,9 @@ export function Author(props: IAuthorProperties) {
             className="text-base font-semibold cursor-pointer"
             onClick={() => routeToProfile({ idProfile: profileId })}
           >
-            {name}
+            {name.slice(0, 2) === '0x'
+              ? `0x ${name.slice(2, 6)} ∙ ∙ ∙ ${name.slice(-4, name.length)}`
+              : name}
           </div>
         ) : (
           <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>

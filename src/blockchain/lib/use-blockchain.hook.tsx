@@ -76,12 +76,12 @@ export function useCheckAndChangeChainId() {
       // @ts-ignore
       const chain = Number.parseInt(window.ethereum.chainId, 16)
       if (!isMainnet) {
-        if (chain !== ChainId.Mumbai) {
+        if (chain !== ChainId.Mainnet) {
           try {
             // @ts-ignore
             await window.ethereum.request({
               method: 'wallet_switchEthereumChain',
-              params: [{ chainId: `0x${ChainId.Mumbai.toString(16)}` }],
+              params: [{ chainId: `0x${ChainId.Mainnet.toString(16)}` }],
             })
           } catch (error: any) {
             if (error.code === 4902) {
@@ -90,9 +90,9 @@ export function useCheckAndChangeChainId() {
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
-                    chainId: `0x${ChainId.Mumbai.toString(16)}`,
-                    chainName: 'Polygon Mumbai',
-                    rpcUrls: ['https://matic-mumbai.chainstacklabs.com'] /* ... */,
+                    chainId: `0x${ChainId.Mainnet.toString(16)}`,
+                    chainName: 'Ethereum Mainnet',
+                    rpcUrls: ['https://rpc.builder0x69.io	'] /* ... */,
                   },
                 ],
               })

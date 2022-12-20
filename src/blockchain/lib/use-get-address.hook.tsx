@@ -10,7 +10,7 @@ export function useGetWalletAddress({ tokenId }: { tokenId: string }) {
         method: 'ownerOf',
         args: [tokenId],
       },
-      { chainId: ChainId.Mumbai }
+      { chainId: ChainId.Mainnet }
     ) ?? {}
 
   if (error) {

@@ -1,11 +1,12 @@
 import { Author } from '@entities/user'
+import { useGetENSByAddress } from '@shared/lib'
 
 import { usePostCardContext } from '../model'
 
 export function PostCardAuthor() {
   const {
     creatorAvatar,
-    creatorUsername,
+    // creatorUsername,
     creatorAddress,
     date,
     // creatorLensId,
@@ -14,15 +15,12 @@ export function PostCardAuthor() {
     // isMirror,
     isLoading,
   } = usePostCardContext()
+  const creatorENSUsername = useGetENSByAddress({ address: creatorAddress })
 
   return (
     <Author
       avatar={creatorAvatar as string}
-      name={
-        creatorUsername !== null
-          ? creatorUsername
-          : `frenly.${creatorAddress?.slice(0, 9)}`
-      }
+      name={creatorENSUsername || creatorAddress}
       profileId={creatorAddress as string}
       date={date as string}
       // fromMirror={fromMirrorName as string}

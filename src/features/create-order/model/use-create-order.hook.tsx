@@ -107,7 +107,8 @@ export const useCreateOrder = ({
       } finally {
         closeForm()
         setPrice('')
-        await switchNetwork(ChainId.Mumbai)
+        // await switchNetwork(ChainId.Mumbai)
+        await switchNetwork(ChainId.Mainnet)
         setIsLoading(false)
       }
     }, [
