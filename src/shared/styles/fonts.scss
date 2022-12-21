@@ -1,48 +1,139 @@
 @font-face {
-  font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Light.otf");
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Regular.otf");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Medium.otf");
+  font-family: "SF Compact Display";
+  src: url("/assets/fonts/SF-Compact-Display-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Semibold.otf");
+  font-family: "SF Compact Display";
+  src: url("/assets/fonts/SF-Compact-Display-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SF-Mono-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SF-Mono-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SF-Mono-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/assets/fonts/SF-Mono-SemiboldItalic.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/assets/fonts/SF-Pro-Display-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/assets/fonts/SF-Pro-Display-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("/assets/fonts/SF-Pro-Display-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url("/assets/fonts/SF-Pro-Rounded-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url("/assets/fonts/SF-Pro-Rounded-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url("/assets/fonts/SF-Pro-Rounded-Reguar.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url("/assets/fonts/SF-Pro-Rounded-Semibold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Bold.otf");
-  font-weight: 700;
+  src: url("/assets/fonts/SF-Pro-Rounded-Light.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Heavy.otf");
-  font-weight: 800;
+  src: url("/assets/fonts/SF-Pro-Rounded-Light.otf") format("opentype");
+  font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url("/assets/fonts/SF-Pro-Display-Black.otf");
-  font-weight: 900;
+  src: url("/assets/fonts/SF-Pro-Rounded-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/assets/fonts/SF-Pro-Rounded-Medium.otf") format("opentype");
+  font-weight: 500;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/assets/fonts/SF-Pro-Rounded-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/assets/fonts/SF-Pro-Rounded-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/assets/fonts/SF-Pro-Rounded-RegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
 }
