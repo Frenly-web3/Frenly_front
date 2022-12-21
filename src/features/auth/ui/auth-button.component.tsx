@@ -54,11 +54,11 @@ export const AuthButton = (props: IAuthButtonProperties) => {
     }
   }
   return (
-    <div className="w-full py-4 mb-16">
+    <div className="w-full">
       {!account ? (
-        <Button onClick={connectWalletHandler}>Connect wallet</Button>
+        <Button onClick={connectWalletHandler}>connect wallet</Button>
       ) : (
-        <Button onClick={signUpHandle}>Sign Up</Button>
+        <Button onClick={signUpHandle}>sign in</Button>
       )}
     </div>
   )

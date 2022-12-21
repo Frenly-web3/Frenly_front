@@ -34,12 +34,12 @@ export const Modal = (props: IModalProperties) => {
                 &#8203;
               </span>
               <div
-                className="inline-block bg-white rounded-lg text-left 
+                className="inline-block bg-frenly-light text-left 
           overflow-hidden shadow-xl transform transition-all h-screen opacity-90 align-middle w-full"
               >
                 <div
                   style={{ transform: 'translate(-50%,-50%)' }}
-                  className="absolute top-1/2 left-1/2 bg-white  pt-5 pb-4 sm:p-6 sm:pb-4 text-center"
+                  className="absolute top-1/2 left-1/2 bg-frenly-light  pt-5 pb-4 sm:p-6 sm:pb-4 text-center"
                 >
                   <div className="flex flex-col justify-center items-center p-8">
                     {children || ''}
