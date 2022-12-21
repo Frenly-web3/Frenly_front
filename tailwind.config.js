@@ -63,8 +63,12 @@ module.exports = {
       'border': 'hsla(0, 0%, 0%, 20%)',
       'border-solid': 'hsla(0, 0%, 20%, 100%)',
 
+      'frenly-light': 'hsla(220, 80%, 90%, 100%)',
+      'frenly-dark': 'hsla(220, 80%, 70%, 100%)',
+      'frenly-tint': 'hsla(220, 80%, 90%, 100%)',
+
       'success-light': 'hsla(150, 90%, 40%, 100%)',
-      'success-dark': 'hsla(150, 90%, 40%, 100%)',
+      'success-dark': 'hsla(150, 90%, 20%, 100%)',
       'success-tint': 'hsla(150, 90%, 40%, 100%)',
       
       'information-light': 'hsla(210, 90%, 55%, 100%)',
