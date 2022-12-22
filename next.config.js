@@ -16,7 +16,7 @@ module.exports = withBundleAnalyzer({
     dirs: ['.'],
   },
   images: {
-    domains: ['flatspacenfts.unistory.app'],
+    domains: ['flatspacenfts.unistory.app', 'gm.frenly.cc'],
   },
   webpack(config) {
     config.module.rules.push({

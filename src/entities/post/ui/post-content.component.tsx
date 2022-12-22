@@ -22,7 +22,6 @@ interface IPostContentProperties {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const PostContent = (props: IPostContentProperties) => {
   const {
-    showAuthor,
     blockchainType,
     messageType,
     from,

@@ -7,9 +7,9 @@ export const Button = (props: IButtonProperties) => {
   return (
     <button
       {...props}
-      className={`w-full rounded-full ${
-        primary ? 'bg-error' : 'bg-black'
-      } text-white text-lg py-3 font-medium z-100 font-rounded`}
+      className={`w-full rounded-xl ${
+        primary ? 'bg-error' : 'bg-main'
+      } text-white text-lg py-3 font-semibold z-100`}
     >
       {children}
     </button>

@@ -20,24 +20,16 @@ export default function AuthPage() {
       <Meta title="frenly" description="log in page" />
 
       <MetamaskError show={isNoMetamask} />
-      <div className="container flex flex-col items-center h-screen bg-frenly-light">
+      <div className="container flex flex-col items-center h-screen pb-8">
         <div className="flex flex-1 flex-col items-center justify-center">
-          <img src="/assets/icons/eyesLogo.svg" alt="eyes" className="w-48 h-48" />
-          <h1 className="text-6xl font-rounded text-heading font-bold mt-4">
-            welcome, fren
-          </h1>
+          <img src="/assets/icons/eyesLogo.svg" alt="eyes" className="w-32 h-32" />
+          <h1 className="text-6xl font-rounded text-heading font-bold mt-16">frenly</h1>
+          <h2 className="text-hidden text-center mt-3 font-text text-lg">
+            Web3 social network <br /> built for you, not advertisers
+          </h2>
         </div>
 
-        <div className="w-full px-4 pt-8 pb-4 bg-white border-black border-2 rounded-[2.5rem] mb-8">
-          <h2 className="font-rounded font-semibold text-4xl text-heading mb-4">
-            ur wallet = ur profile
-          </h2>
-          <p className="text-text font-text font-regular mb-8">
-            on frenly (and on web3 in general) ur wallet is ur profile, so for using
-            frenly you need to connect the ethereum wallet.
-          </p>
-          <AuthButton />
-        </div>
+        <AuthButton />
       </div>
     </>
   )

@@ -49,14 +49,14 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
           />
         ) : ( */}
         <>
-          {ens || profileAddress ? (
+          {profileId ? (
             <h3
               // onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-              className={`py-2 z-100 text-xl pr-4 font-bold m-auto text-center ${
+              className={`py-2 z-100 text-xl pr-4 text-heading font-display font-bold m-auto text-center ${
                 checkIsOwner && 'cursor-pointer'
               }`}
             >
-              {ens || profileAddress}
+              {ens || `0x ${profileId.slice(2, 6)}...${profileId.slice(-4)}`}
             </h3>
           ) : (
             <div className="m-auto w-5/12 h-4 rounded-full bg-gray animate-pulse mr-40"></div>
@@ -94,20 +94,18 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
         <div
           className={`text-base z-100 font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
         >
-          {ens || profileAddress}
+          {profileId}
         </div>
-        {description ? (
+        {/* {description ? (
           <div
             onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
             className={`text-base z-100 ${
               checkIsOwner && 'cursor-pointer'
             } font-normal text-gray mb-5 text-center m-auto mt-2 w-80 break-words`}
           >
-            {description}
+            Description: {description}
           </div>
-        ) : (
-          <div className="m-auto mt-2 w-44 h-4 rounded-full bg-gray animate-pulse"></div>
-        )}
+        ) : null} */}
       </>
       {/* )} */}
       {/* {isEditMode && <ProfileButton onClick={saveHandle}>SAVE</ProfileButton>} */}

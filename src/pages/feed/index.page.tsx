@@ -50,7 +50,7 @@ export default function FeedPage() {
       />
 
       <main>
-        <section className=" container relative bg-overlay-1-solid">
+        <section className="container relative">
           <InfiniteScroll
             dataLength={posts.length}
             next={nextLoad}
