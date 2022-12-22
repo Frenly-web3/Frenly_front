@@ -10,7 +10,8 @@ export function useGetWalletProfileId(address: string) {
         method: 'tokenOfOwnerByIndex',
         args: [address, 0],
       },
-      { chainId: ChainId.Mumbai }
+      // { chainId: ChainId.Mumbai }
+      { chainId: ChainId.Mainnet }
     ) ?? {}
 
   if (error) {

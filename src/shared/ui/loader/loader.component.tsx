@@ -1,5 +1,4 @@
 import { useLoaderContext } from '@shared/lib'
-import Image from 'next/image'
 
 import { Modal } from '../modal'
 
@@ -7,13 +6,12 @@ export const Loader = () => {
   const { isLoading } = useLoaderContext()
   return (
     <Modal show={isLoading}>
-      <Image
-        src="/assets/images/eyes.gif"
+      <img
+        src="/assets/icons/eyesLogo.svg"
         alt="eyes"
-        width={85}
-        height={85}
-        className={'w-20 h-20'}
+        className={'w-48 h-48 animate-bounce'}
       />
+      <div className="font-rounded text-4xl font-bold text-heading">loading...</div>
     </Modal>
   )
 }

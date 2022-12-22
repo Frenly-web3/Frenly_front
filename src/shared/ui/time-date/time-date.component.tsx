@@ -8,7 +8,7 @@ interface IDate {
 export const TimeDate = (props: IDate) => {
   const { date } = props
   return (
-    <div className="text-base font-normal text-gray mb-3">
+    <div className="">
       {`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
     </div>
   )

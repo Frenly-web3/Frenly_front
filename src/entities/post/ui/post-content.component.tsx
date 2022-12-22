@@ -22,7 +22,6 @@ interface IPostContentProperties {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export const PostContent = (props: IPostContentProperties) => {
   const {
-    showAuthor,
     blockchainType,
     messageType,
     from,
@@ -37,8 +36,8 @@ export const PostContent = (props: IPostContentProperties) => {
   const renderMessage = useRenderMessage()
 
   return (
-    <div style={{ marginLeft: showAuthor ? 56 : 0 }}>
-      <h4 className="text-base font-semibold break-words">
+    <div className="p-4">
+      <h4 className="text-text font-medium font-text break-words">
         {(creatorAddress === process.env.NEXT_PUBLIC_ADMIN_ADDRESS || isMirror) && (
           <>
             <a
@@ -110,7 +109,7 @@ export const PostContent = (props: IPostContentProperties) => {
         </a>
       </h4>
       {mirrorDescription && (
-        <div className="text-base font-normal text-gray-darker mt-1">
+        <div className="text-text font-normal text-gray-darker mt-1">
           {mirrorDescription}
         </div>
       )}

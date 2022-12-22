@@ -15,10 +15,11 @@ import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 
 const config: Config = {
-  readOnlyChainId: ChainId.Mumbai | ChainId.Mainnet,
+  // readOnlyChainId: ChainId.Mumbai | ChainId.Mainnet,
+  readOnlyChainId: ChainId.Mainnet,
   readOnlyUrls: {
-    [ChainId.Mumbai]:
-      'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
+    // [ChainId.Mumbai]:
+    //   'https://polygon-mumbai.g.alchemy.com/v2/HCm-qNqCQm-NnbV9nHWxq9OnMHkUNvsg',
     [ChainId.Mainnet]:
       'https://eth-mainnet.g.alchemy.com/v2/JANw7_5C171cj-buFVibsh1jIZAwe4Yq',
   },

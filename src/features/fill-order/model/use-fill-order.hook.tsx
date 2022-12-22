@@ -93,12 +93,13 @@ export const useFillOrder = ({
           })
         }
       } finally {
-        await switchNetwork(ChainId.Mumbai)
+        // await switchNetwork(ChainId.Mumbai)
+        await switchNetwork(ChainId.Mainnet)
         setIsLoading(false)
       }
     }, [
       ChainId.Mainnet,
-      ChainId.Mumbai,
+      // ChainId.Mumbai,
       account,
       postId,
       price,

@@ -17,7 +17,9 @@ export function Header(props: IHeaderProperties): JSX.Element {
     userAddress,
   } = props
 
-  const avatarUnification = useUnificationFormatImage({ image: avatar as string })
+  const avatarUnification = useUnificationFormatImage({
+    image: { url: avatar as string, type: 'image' },
+  })
 
   // const { previewValue: avatarTry } = useUploadAvatar({ profileId: userAddress })
   const router = useRouter()
@@ -35,7 +37,7 @@ export function Header(props: IHeaderProperties): JSX.Element {
           {avatarUnification ? (
             <div className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden self-start">
               <img
-                src={avatarUnification}
+                src={avatarUnification.url.toString()}
                 alt={'avatar'}
                 className={`cursor-pointer w-7 h-7`}
                 onClick={() => {

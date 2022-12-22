@@ -45,7 +45,10 @@ export const CreateOrderForm = (props: ICreateOrderForm) => {
           </div>
           <div className="w-60 h-full flex flex-col justify-around">
             <div className="h-60 flex flex-col items-center">
-              <PostImage image={image} address={contractAddress as string} />
+              <PostImage
+                image={{ type: 'image', url: image }}
+                address={contractAddress as string}
+              />
               <div className="text-sm font-normal mt-3 text-gray-darker pl-1 ">
                 {nameCollection}
               </div>

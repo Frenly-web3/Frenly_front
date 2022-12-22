@@ -1,33 +1,45 @@
-import { useFormatToShortAddress, useUnificationFormatImage } from '@shared/lib'
+import { useUnificationFormatImage } from '@shared/lib'
 import React from 'react'
 
 interface IPostContentProperties {
   address: string
-  image: string | null
+  image: {
+    type: string
+    url: string
+  }
 }
 export const PostImage = (props: IPostContentProperties) => {
-  const { address, image } = props
+  // const { address, image } = props
+  const { image } = props
 
-  const { formatToShortAddress } = useFormatToShortAddress()
+  // const { formatToShortAddress } = useFormatToShortAddress()
 
-  const unificationImage = useUnificationFormatImage({ image: image as string })
+  const unificationImage = useUnificationFormatImage({ image })
 
   return (
     <div className="">
-      <div className="relative rounded-lg overflow-hidden mt-1">
+      <div className="relative overflow-hidden">
         {unificationImage ? (
           <>
-            <img
-              src={unificationImage}
-              alt={unificationImage}
-              className="m-auto rounded-lg "
-            />
+            {unificationImage.type === 'image' ? (
+              <img
+                src={unificationImage.url.toString()}
+                alt={unificationImage.url.toString()}
+                className="m-auto "
+              />
+            ) : (
+              <video src={unificationImage.url.toString()} />
+            )}
           </>
         ) : (
-          <div className="relative">
-            <div className="flex items-start h-96 w-full bg-main animate-pulse rounded-lg"></div>
-            <span className="absolute bottom-4 left-6 text-sm font-normal text-white">
-              {formatToShortAddress({ address })}
+          <div className="flex flex-col gap-2 items-center justify-center h-48 w-full bg-gray">
+            <img
+              src={'/assets/icons/sadEyes.svg'}
+              alt="Sad eyes logo"
+              className="w-24 h-24"
+            />
+            <span className="text-sm font-normal text-white">
+              Currently we don{"'"}t support this type of token :{'('}
             </span>
           </div>
         )}

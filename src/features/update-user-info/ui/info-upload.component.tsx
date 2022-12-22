@@ -1,11 +1,10 @@
 import { useCheckIsOwner, useGetENSByAddress } from '@shared/lib'
-import { BackButtonComponent, ProfileButton } from '@shared/ui'
+import { BackButtonComponent } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useGetWalletAddress } from 'src/blockchain'
 
 import { useUploadUserInfo } from '../model'
-import { ImageUpload } from './image-upload.component'
+// import { ImageUpload } from './image-upload.component'
 
 interface IInfoUploadProperties {
   profileId: string
@@ -14,27 +13,27 @@ interface IInfoUploadProperties {
 export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const { profileId } = props
 
-  const profileAddress = useGetWalletAddress({ tokenId: profileId })
-
-  const ens = useGetENSByAddress({ address: profileAddress })
+  // const profileAddress = useGetWalletAddress({ tokenId: profileId })
 
   const {
-    isEditMode,
-    setIsEditMode,
-    username,
-    description,
-    setUsername,
-    setDescription,
-    saveHandle,
+    // isEditMode,
+    // setIsEditMode,
+    // username,
+    // description,
+    // setUsername,
+    // setDescription,
+    // saveHandle,
     status,
   } = useUploadUserInfo({ profileId })
   const router = useRouter()
   const checkIsOwner = useCheckIsOwner({ status })
+
+  const ens = useGetENSByAddress({ address: profileId })
   return (
     <>
-      <div className="py-2 flex justify-between">
+      <div className="py-2 flex flex-col justify-between">
         <BackButtonComponent onClick={() => router.push('/feed')} />
-        {isEditMode ? (
+        {/* {isEditMode ? (
           <input
             style={{ background: 'transparent' }}
             value={username}
@@ -47,25 +46,34 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none font-normal text-gray`}
             placeholder="Input your name"
           />
-        ) : (
-          <>
-            {username ? (
-              <h3
-                onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-                className={`py-2 z-100 text-xl pr-4 font-bold m-auto text-center ${
-                  checkIsOwner && 'cursor-pointer'
-                }`}
-              >
-                {username}
-              </h3>
-            ) : (
-              <div className="m-auto w-5/12 h-4 rounded-full bg-gray animate-pulse mr-40"></div>
-            )}
-          </>
-        )}
+        ) : ( */}
+        <>
+          {profileId ? (
+            <h3
+              // onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
+              className={`py-2 z-100 text-xl pr-4 text-heading font-display font-bold m-auto text-center ${
+                checkIsOwner && 'cursor-pointer'
+              }`}
+            >
+              {ens || `0x ${profileId.slice(2, 6)}...${profileId.slice(-4)}`}
+            </h3>
+          ) : (
+            <div className="m-auto w-5/12 h-4 rounded-full bg-gray animate-pulse mr-40"></div>
+          )}
+        </>
+        {/* )} */}
       </div>
-      <ImageUpload profileId={profileId} />
-      {isEditMode ? (
+      <div className="m-auto mt-3">
+        <img
+          src={'/assets/images/temp-avatar.png'}
+          className="align-center rounded-full"
+          alt="avatar"
+          width={96}
+          height={96}
+        />
+      </div>
+      {/* <ImageUpload profileId={profileId} /> */}
+      {/* {isEditMode ? (
         <>
           <input
             style={{ background: 'transparent' }}
@@ -80,28 +88,26 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
             placeholder="Input your description"
           />
         </>
-      ) : (
-        <>
+      ) : ( */}
+      <>
+        <div
+          className={`text-base z-100 font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
+        >
+          {profileId}
+        </div>
+        {/* {description ? (
           <div
-            className={`text-base z-100 font-normal text-gray mb-5 text-center m-auto mt-4 w-80 break-words`}
+            onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
+            className={`text-base z-100 ${
+              checkIsOwner && 'cursor-pointer'
+            } font-normal text-gray mb-5 text-center m-auto mt-2 w-80 break-words`}
           >
-            {ens || profileAddress}
+            Description: {description}
           </div>
-          {description ? (
-            <div
-              onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
-              className={`text-base z-100 ${
-                checkIsOwner && 'cursor-pointer'
-              } font-normal text-gray mb-5 text-center m-auto mt-2 w-80 break-words`}
-            >
-              {description}
-            </div>
-          ) : (
-            <div className="m-auto mt-2 w-44 h-4 rounded-full bg-gray animate-pulse"></div>
-          )}
-        </>
-      )}
-      {isEditMode && <ProfileButton onClick={saveHandle}>SAVE</ProfileButton>}
+        ) : null} */}
+      </>
+      {/* )} */}
+      {/* {isEditMode && <ProfileButton onClick={saveHandle}>SAVE</ProfileButton>} */}
     </>
   )
 }
