@@ -2,7 +2,6 @@ import { useCheckIsOwner, useGetENSByAddress } from '@shared/lib'
 import { BackButtonComponent } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useGetWalletAddress } from 'src/blockchain'
 
 import { useUploadUserInfo } from '../model'
 // import { ImageUpload } from './image-upload.component'
@@ -14,13 +13,13 @@ interface IInfoUploadProperties {
 export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const { profileId } = props
 
-  const profileAddress = useGetWalletAddress({ tokenId: profileId })
+  // const profileAddress = useGetWalletAddress({ tokenId: profileId })
 
   const {
     // isEditMode,
-    setIsEditMode,
+    // setIsEditMode,
     // username,
-    description,
+    // description,
     // setUsername,
     // setDescription,
     // saveHandle,
