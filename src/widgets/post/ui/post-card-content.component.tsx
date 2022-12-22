@@ -1,7 +1,6 @@
 import { PostContent } from '@entities/post'
 import type { NetworkEnum, PostTypeEnum } from '@shared/lib'
 import { SellerTypeEnum, useCheckIsAdmin } from '@shared/lib'
-import { TimeDate } from '@shared/ui'
 import { useBlockchain } from 'src/blockchain'
 
 import { usePostCardContext } from '../model'
@@ -27,8 +26,6 @@ export function PostCardContent() {
 
   return (
     <>
-      <div className="pl-14">{date && <TimeDate date={date} />}</div>
-
       {sellerType == SellerTypeEnum.NftTransfer && (
         <PostContent
           image={image as null}
@@ -58,7 +55,7 @@ export function PostCardContent() {
         />
       )}
       {sellerType == SellerTypeEnum.SellOrder && (
-        <div className="text-base pl-14">🖼️ My NFT is on Sale via Frenly</div>
+        <div className="text-text">🖼️ my NFT is on sale via frenly</div>
       )}
     </>
   )

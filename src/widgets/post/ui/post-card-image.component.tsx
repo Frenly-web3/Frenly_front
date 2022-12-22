@@ -6,7 +6,7 @@ export function PostCardImage() {
   const { image, contractAddress } = usePostCardContext()
 
   return (
-    <div className="pl-14">
+    <div className="">
       <PostImage
         image={{ type: 'image', url: `${image}` }}
         address={contractAddress as string}

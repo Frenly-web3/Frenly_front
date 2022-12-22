@@ -1,4 +1,5 @@
 import { useUnificationFormatImage } from '@shared/lib'
+import { TimeDate } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -22,6 +23,7 @@ export function Author(props: IAuthorProperties) {
     profileId,
     // fromMirror, fromMirrorId, isMirror,
     isLoading,
+    date,
   } = props
 
   const router = useRouter()
@@ -34,11 +36,11 @@ export function Author(props: IAuthorProperties) {
   })
 
   return (
-    <figure className="flex items-center">
+    <figure className="flex items-center  gap-2 px-4">
       {avatarUnification ? (
         <button
           onClick={() => routeToProfile({ idProfile: profileId })}
-          className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden"
+          className="flex items-center border rounded-full border-border-color overflow-hidden"
         >
           <img
             src={avatarUnification.url.toString()}
@@ -49,31 +51,32 @@ export function Author(props: IAuthorProperties) {
       ) : (
         <>
           {isLoading ? (
-            <div className="mr-4 flex w-10 h-10 items-center bg-gray-darker rounded-full overflow-hidden animate-pulse"></div>
+            <div className="flex w-10 h-10 items-center bg-gray-darker rounded-full overflow-hidden animate-pulse"></div>
           ) : (
             <img
               src={'/assets/images/temp-avatar.png'}
               alt={name}
-              className="mr-4 flex items-center border rounded-full border-border-color overflow-hidden w-10 h-10"
+              className="flex items-center border rounded-full border-border-color overflow-hidden w-10 h-10"
             />
           )}
         </>
       )}
 
-      <figcaption>
-        {name ? (
-          <div
-            className="text-base font-semibold cursor-pointer"
-            onClick={() => routeToProfile({ idProfile: profileId })}
-          >
-            {name.slice(0, 2) === '0x'
-              ? `0x ${name.slice(2, 6)} ∙ ∙ ∙ ${name.slice(-4, name.length)}`
-              : name}
-          </div>
-        ) : (
-          <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>
-        )}
-        {/* {isMirror &&
+      <div className="flex flex-col">
+        <figcaption>
+          {name ? (
+            <div
+              className="text-heading font-rounded font-medium cursor-pointer mb-[-0.25rem]"
+              onClick={() => routeToProfile({ idProfile: profileId })}
+            >
+              {name.slice(0, 2) === '0x'
+                ? `0x ${name.slice(2, 6)}...${name.slice(-4, name.length)}`
+                : name}
+            </div>
+          ) : (
+            <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>
+          )}
+          {/* {isMirror &&
           isMirror !== null &&
           (fromMirror ? (
             <div className="text-base font-normal">
@@ -88,7 +91,11 @@ export function Author(props: IAuthorProperties) {
           ) : (
             <div className="m-auto mt-4 w-52 h-3 rounded-full bg-gray animate-pulse"></div>
           ))} */}
-      </figcaption>
+        </figcaption>
+        <div className="font-text text-hidden font-regular text-sm">
+          {date && <TimeDate date={date} />}
+        </div>
+      </div>
     </figure>
   )
 }

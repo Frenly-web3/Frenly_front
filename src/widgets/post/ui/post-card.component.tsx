@@ -55,7 +55,7 @@ export const PostCard = (props: IPostCardProperties) => {
 
   return (
     <PostCardContext.Provider value={memoizedContextValue}>
-      <article className="container border-b border-border-color pt-2 pb-4">
+      <article className="bg-background mb-4 py-4 rounded-[2rem] px-0">
         {children}
       </article>
     </PostCardContext.Provider>
