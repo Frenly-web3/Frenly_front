@@ -29,7 +29,7 @@ export default function FeedPage() {
     // profileId: viewerProfileLensId as string,
   })
 
-  console.log('check user avatar', user)
+  // console.log('check user avatar', user)
   const nextLoad = async () => {
     // if (isSuccess && !lensIsLoading) {
     if (isSuccess) {

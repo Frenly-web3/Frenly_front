@@ -60,5 +60,6 @@
     "/src/features/create-auction/ui/create-auction-modal",
     "/src/shared/ui/pagination",
     "/src/shared/api/controllers"
-  ]
+  ],
+  "cSpell.words": ["reduxjs"]
 }

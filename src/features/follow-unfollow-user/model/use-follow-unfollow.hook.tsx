@@ -28,7 +28,7 @@ export const useFollowUnfollowUser = ({ profileId }: { profileId: string }) => {
   const [subscribeUser] = userApi.useSubscribeUserMutation()
   const [unSubscribeUser] = userApi.useUnSubscribeUserMutation()
 
-  console.log('isUserSubscriberOnBackend', data)
+  // console.log('isUserSubscriberOnBackend', data)
 
   // const { createUnfollowTypedData } = useCreateUnfollowTypedData()
 

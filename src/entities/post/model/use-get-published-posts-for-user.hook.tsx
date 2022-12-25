@@ -128,7 +128,7 @@ export const useGetPublishedContentForUser = (id: string): IGetFilteredPosts => 
     id,
   })
 
-  console.log('useGetPublishedContentForUser', postsData)
+  // console.log('useGetPublishedContentForUser', postsData)
 
   const [postsSum, setPostsSum] = useState<IPost[]>([])
   // const { data: lensPosts, loading: lensIsLoading } = useGetLensPublications(
@@ -151,7 +151,7 @@ export const useGetPublishedContentForUser = (id: string): IGetFilteredPosts => 
       return !el.isMirror
     })
 
-  console.log('postsWithoutZeroX in useGetPublishedContentForUser', postsWithoutZeroX)
+  // console.log('postsWithoutZeroX in useGetPublishedContentForUser', postsWithoutZeroX)
   // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(
     () => {
@@ -185,7 +185,7 @@ export const useGetPublishedContentForUser = (id: string): IGetFilteredPosts => 
           // postType,
         } = post
 
-        console.log('post', post)
+        // console.log('post', post)
         // const postLens = lensPosts?.publications?.items?.find((el: any) => {
         //   return lensId == el?.id
         // })

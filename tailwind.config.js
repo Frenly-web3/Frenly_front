@@ -14,14 +14,15 @@ module.exports = {
     extend: {},
     fontFamily: {
       // Old
-      'sans': ['SF Pro Text'],
+      'sans': ['SF Pro Text, sans-serif'],
 
       // New
-      'compact' : ['SF Compact Display'],
-      'mono' : ['SF Mono'],
-      'display' : ['SF Pro Display'],
-      'rounded' : ['SF Pro Rounded'],
-      'text' : ['SF Pro Text'],
+      'compact' : ['SF Compact Display, sans-serif'],
+      'mono' : ['SF Mono, sans-serif'],
+      'display' : ['SF Pro Display, sans-serif'],
+      'rounded' : ['SF Pro Rounded, sans-serif'],
+      'text' : ['SF Pro Text, sans-serif'],
+      'icon' : ['Material Symbols Rounded, sans-serif'],
     },
     container: {
       center: true,
