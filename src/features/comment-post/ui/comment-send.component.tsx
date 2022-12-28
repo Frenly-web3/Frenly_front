@@ -18,7 +18,7 @@ export const CommentSend = (props: ICommentSendProperties) => {
   }
 
   return (
-    <div className={`flex w-full gap-2`}>
+    <div className={`flex w-full gap-2 mb-4`}>
       <input
         placeholder="a nice frenly comment..."
         className={`flex-1 bg-overlay-1-solid px-4 py-2 focus:outline-none rounded-xl`}
