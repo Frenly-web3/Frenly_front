@@ -1,2 +1,2 @@
-export * from './comment-button.component'
+export * from './comment-list.component'
 export * from './comment-send.component'

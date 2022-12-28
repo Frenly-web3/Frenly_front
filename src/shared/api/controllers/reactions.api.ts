@@ -45,5 +45,21 @@ export const reactionsApi = createApi({
         return res.data
       },
     }),
+    createComment: builder.mutation<any, { postId: number; comment: string }>({
+      query: ({ postId, comment }) => {
+        return {
+          url: `content/comment/create`,
+          method: 'Post',
+          credentials: 'omit',
+          body: {
+            postId,
+            comment,
+          },
+        }
+      },
+      transformResponse: (res: any) => {
+        return res.data
+      },
+    }),
   }),
 })

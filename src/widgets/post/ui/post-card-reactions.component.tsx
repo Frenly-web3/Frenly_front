@@ -1,24 +1,23 @@
+import { Comments } from '@features/comment-post'
 import { LikeButton } from '@features/like-post'
 import type { NetworkEnum } from '@shared/lib'
 import { TransactionLink } from '@shared/ui'
 
 import { usePostCardContext } from '../model'
 
-interface IPostCardReactions {
-  refetchFilteredFeed: () => void
-}
+interface IPostCardReactions {}
 
 export function PostCardReactions(props: IPostCardReactions) {
-  // const { refetchFilteredFeed } = props
+  const {} = props
   const { network, txHash, id } = usePostCardContext()
-  // const [isOpenComments, setIsOpenComments] = useState(false)
   return (
     <>
-      <div className={`mt-1 flex items-center justify-between pl-14`}>
+      <div className={`mt-1 flex items-center justify-between`}>
         <TransactionLink network={network as NetworkEnum} txHash={txHash as string} />
       </div>
-      <div>
+      <div className={`flex gap-2 items-end flex-col`}>
         <LikeButton postId={id!} />
+        <Comments postId={id!} />
       </div>
     </>
   )
