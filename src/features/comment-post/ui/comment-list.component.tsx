@@ -50,7 +50,7 @@ export const Comments = (props: IComments) => {
 
   return (
     <>
-      <div className={`w-full flex flex-col items-start`}>
+      <div className={`w-full flex flex-col items-start mt-4`}>
         <CommentSend send={send} postId={postId} />
         {comments.length > 0 ? list : 'There is no comments yet...'}
       </div>
