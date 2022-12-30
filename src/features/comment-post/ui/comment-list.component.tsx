@@ -1,5 +1,7 @@
+import type { IComment } from '@entities/comment'
 import { useGetCommentsByPostId } from '@entities/comment'
 import { reactionsApi } from '@shared/api'
+import { useGetENSByAddress } from '@shared/lib'
 import React from 'react'
 
 import { CommentSend } from './comment-send.component'
@@ -18,15 +20,21 @@ export const Comments = (props: IComments) => {
   React.useEffect(() => {
     getComments()
   }, [data])
-  const list = comments.map((comment) => {
+
+  const Comment = ({ comment }: { comment: IComment }) => {
+    const ens = useGetENSByAddress({ address: comment.creator.walletAddress })
     return (
       <div key={comment.id} className={`mb-4`}>
-        <div className={`font-bold font-rounded`}>
-          {`${comment.creator.walletAddress.slice(
-            0,
-            6
-          )}...${comment.creator.walletAddress.slice(-4)}`}
-        </div>
+        <a
+          href={`/profile/${comment.creator.walletAddress}`}
+          className={`font-bold font-rounded`}
+        >
+          {ens ||
+            `${comment.creator.walletAddress.slice(
+              0,
+              6
+            )}...${comment.creator.walletAddress.slice(-4)}`}
+        </a>
         <div>{comment.description}</div>
         <div className={`text-sm text-hidden`}>
           {`${new Date(comment.updateDate).toLocaleDateString()} at ${new Date(
@@ -37,7 +45,8 @@ export const Comments = (props: IComments) => {
         </div>
       </div>
     )
-  })
+  }
+
   if (!isOpen)
     return (
       <button
@@ -52,7 +61,9 @@ export const Comments = (props: IComments) => {
     <>
       <div className={`w-full flex flex-col items-start`}>
         <CommentSend send={send} postId={postId} />
-        {comments.length > 0 ? list : 'There is no comments yet...'}
+        {comments.length > 0
+          ? comments.map((comment) => <Comment comment={comment} key={comment.id} />)
+          : 'There is no comments yet...'}
       </div>
       <button
         className={`w-full py-2 bg-overlay-1-solid rounded-xl hover:bg-overlay-2-solid transition-colors`}
