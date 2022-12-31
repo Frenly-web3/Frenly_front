@@ -23,7 +23,7 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
     skip: SIZE_POST_CHUNK * takeCount,
   })
 
-  console.log('Data', postsData)
+  // console.log('Data', postsData)
 
   const [postsSum, setPostsSum] = useState<IPost[]>([])
   // const { data: lensPosts, loading: lensIsLoading } = useGetLensPublications(
@@ -46,7 +46,7 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
       return !el.isMirror
     })
 
-  console.log('postsWithoutZeroX', postsWithoutZeroX)
+  // console.log('postsWithoutZeroX', postsWithoutZeroX)
   // eslint-disable-next-line sonarjs/cognitive-complexity
   useEffect(
     () => {
@@ -80,7 +80,7 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
           postType,
         } = post
 
-        console.log('post', post)
+        // console.log('post', post)
         // const postLens = lensPosts?.publications?.items?.find((el: any) => {
         //   return lensId == el?.id
         // })

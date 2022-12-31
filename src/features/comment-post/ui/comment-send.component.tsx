@@ -1,36 +1,32 @@
 import React from 'react'
 
-import { useCommentPost } from '../model'
-
 interface ICommentSendProperties {
-  publicationId: string
-  setComments: ({ content }: { content: string }) => void
+  postId: number
+  send: Function
 }
 
 export const CommentSend = (props: ICommentSendProperties) => {
-  const { publicationId, setComments } = props
-  const { commentPost, comment, setComment } = useCommentPost({
-    publicationId,
-    setComments,
-  })
+  const { postId, send } = props
+  const [newComment, setNewComment] = React.useState('')
+
+  const handlerSend = () => {
+    send({
+      postId,
+      comment: newComment,
+    })
+    setNewComment('')
+  }
 
   return (
-    <div className="w-full pt-4 pb-4 flex py-4 relative pl-14">
-      <div className="flex rounded-2xl bg-light-gray px-4 py-2 w-full mr-2">
-        <input
-          style={{ background: 'transparent' }}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          type="text"
-          className="outline-none w-full"
-          placeholder="Comment"
-        />
-      </div>
-      <button
-        onClick={() => commentPost({ comment })}
-        className="flex items-center justify-center py-1 px-2"
-      >
-        <img src="/assets/icons/send-icon.svg" alt="messages" />
+    <div className={`flex w-full gap-2 mb-4`}>
+      <input
+        placeholder="a nice frenly comment..."
+        className={`flex-1 bg-overlay-1-solid px-4 py-2 focus:outline-none rounded-xl`}
+        type="text"
+        onChange={(e) => setNewComment(e.target.value)}
+      />
+      <button onClick={handlerSend} className={`bg-main px-4 py-2 text-white rounded-xl`}>
+        Send
       </button>
     </div>
   )

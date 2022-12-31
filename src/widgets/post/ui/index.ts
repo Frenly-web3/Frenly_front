@@ -1,4 +1,4 @@
-export * from './comment-list.component'
+// export * from './comment-list.component'
 export * from './executed-order-content.component'
 export * from './post-card.component'
 export * from './post-card-adding.component'

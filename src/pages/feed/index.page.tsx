@@ -20,7 +20,7 @@ export default function FeedPage() {
     //  lensIsLoading,
     isSuccess,
     hasMore,
-    refetchFilteredFeed,
+    // refetchFilteredFeed,
     setTakeCount,
   } = useGetFilteredPosts()
   const viewerProfileLensId = useGetWalletProfileId(account as string)
@@ -29,7 +29,7 @@ export default function FeedPage() {
     // profileId: viewerProfileLensId as string,
   })
 
-  console.log('check user avatar', user)
+  // console.log('check user avatar', user)
   const nextLoad = async () => {
     // if (isSuccess && !lensIsLoading) {
     if (isSuccess) {
@@ -73,7 +73,7 @@ export default function FeedPage() {
                   {/* {post.sellerType === SellerTypeEnum.SellOrder && (
                     <PostCard.Order refetchFilteredFeed={refetchFilteredFeed} />
                   )} */}
-                  <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
+                  <PostCard.Reactions />
                 </PostCard>
               )
             })}
