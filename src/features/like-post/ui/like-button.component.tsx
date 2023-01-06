@@ -11,16 +11,22 @@ export const LikeButton = (props: ILikeButton) => {
   const [isLiking, setIsLiking] = React.useState(false)
   const [countLikes, setCountLikes] = React.useState(0)
 
-  const { data: isLiked } = reactionsApi.useIsPostLikedQuery({ postId })
-  const { data: reactions } = reactionsApi.usePostReactionsQuery({ postId })
+  const { data: isLiked, isLoading: likedLoading } = reactionsApi.useIsPostLikedQuery({
+    postId,
+  })
+  const { data: reactions, isLoading: reactionsLoading } =
+    reactionsApi.usePostReactionsQuery({ postId })
   const [likeUnlike] = reactionsApi.usePostLikeMutation()
 
   React.useEffect(() => {
+    if (reactions) {
+      setCountLikes(reactions.likes)
+    }
     if (isLiked && reactions) {
       setIsLiking(isLiked)
       setCountLikes(reactions.likes)
     }
-  }, [isLiked, reactions])
+  }, [isLiked, reactions, reactionsLoading])
 
   const likePostHandler = () => {
     setIsLiking((previous) => !previous)
