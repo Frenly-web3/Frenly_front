@@ -33,10 +33,10 @@ export const Comments = (props: IComments) => {
   return (
     <>
       <div className={`w-full flex flex-col items-start`}>
-        <CommentSend send={send} postId={postId} />
         {comments.length > 0
           ? comments.map((comment) => <Comment comment={comment} key={comment.id} />)
           : 'There is no comments yet...'}
+        <CommentSend send={send} postId={postId} />
       </div>
       <button
         className={`w-full py-2 bg-overlay-1-solid rounded-xl hover:bg-overlay-2-solid transition-colors`}

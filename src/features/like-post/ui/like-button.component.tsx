@@ -11,26 +11,21 @@ export const LikeButton = (props: ILikeButton) => {
   const [isLiking, setIsLiking] = React.useState(false)
   const [countLikes, setCountLikes] = React.useState(0)
 
-  const [getIsLiked, { data: isLiked }] = reactionsApi.useLazyIsPostLikedQuery()
-  const [getLikes, { data: reactions }] = reactionsApi.useLazyPostReactionsQuery()
+  const { data: isLiked } = reactionsApi.useIsPostLikedQuery({ postId })
+  const { data: reactions } = reactionsApi.usePostReactionsQuery({ postId })
   const [likeUnlike] = reactionsApi.usePostLikeMutation()
 
   React.useEffect(() => {
-    getIsLiked({ postId })
-    getLikes({ postId })
-
     if (isLiked && reactions) {
       setIsLiking(isLiked)
       setCountLikes(reactions.likes)
     }
-  }, [getIsLiked, getLikes, isLiked, postId, reactions])
+  }, [isLiked, reactions])
 
   const likePostHandler = () => {
     setIsLiking((previous) => !previous)
     setCountLikes((previous) => (isLiking ? previous - 1 : previous + 1))
     likeUnlike({ postId })
-    getIsLiked({ postId })
-    getLikes({ postId })
   }
 
   return (
