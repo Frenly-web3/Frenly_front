@@ -10,10 +10,11 @@ export const CommentSend = (props: ICommentSendProperties) => {
   const [newComment, setNewComment] = React.useState('')
 
   const handlerSend = () => {
-    send({
-      postId,
-      comment: newComment,
-    })
+    if (newComment != '')
+      send({
+        postId,
+        comment: newComment,
+      })
     setNewComment('')
   }
 
