@@ -23,6 +23,7 @@ export const CommentSend = (props: ICommentSendProperties) => {
         placeholder="a nice frenly comment..."
         className={`flex-1 bg-overlay-1-solid px-4 py-2 focus:outline-none rounded-xl`}
         type="text"
+        defaultValue={newComment}
         onChange={(e) => setNewComment(e.target.value)}
       />
       <button onClick={handlerSend} className={`bg-main px-4 py-2 text-white rounded-xl`}>

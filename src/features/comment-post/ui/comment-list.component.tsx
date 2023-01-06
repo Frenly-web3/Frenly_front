@@ -1,8 +1,8 @@
-import type { IComment } from '@entities/comment'
 import { useGetCommentsByPostId } from '@entities/comment'
 import { reactionsApi } from '@shared/api'
 import React from 'react'
 
+import { Comment } from './comment.component'
 import { CommentSend } from './comment-send.component'
 
 interface IComments {
@@ -19,30 +19,6 @@ export const Comments = (props: IComments) => {
   React.useEffect(() => {
     getComments()
   }, [data])
-
-  const Comment = ({ comment }: { comment: IComment }) => {
-    // const ens = useGetENSByAddress({ address: comment.creator.walletAddress })
-    return (
-      <div key={comment.id} className={`mb-4`}>
-        <a
-          href={`/profile/${comment.creator.walletAddress}`}
-          className={`font-bold font-rounded`}
-        >
-          {/* {ens || */}
-          `${comment.creator.walletAddress.slice(0, 6)}...$
-          {comment.creator.walletAddress.slice(-4)}`
-        </a>
-        <div>{comment.description}</div>
-        <div className={`text-sm text-hidden`}>
-          {`${new Date(comment.updateDate).toLocaleDateString()} at ${new Date(
-            comment.updateDate
-          )
-            .toLocaleTimeString()
-            .slice(0, 5)}`}
-        </div>
-      </div>
-    )
-  }
 
   if (!isOpen)
     return (
