@@ -11,7 +11,7 @@ export const Comment = (props: IProperties) => {
   const { data: avatar, isLoading: avatarLoading } = useEnsAvatar({
     address: comment.creator.walletAddress as `0x${string}`,
   })
-  const { data: name, isLoading: dataLoading } = useEnsName({
+  const { data: name, isLoading: nameLoading } = useEnsName({
     address: comment.creator.walletAddress as `0x${string}`,
   })
 
@@ -29,7 +29,10 @@ export const Comment = (props: IProperties) => {
         )}
       </a>
       <div className={`flex flex-col gap-[0rem]`}>
-        <a href={`/profile/${comment.creator.walletAddress}`} className={``}>
+        <a
+          href={`/profile/${comment.creator.walletAddress}`}
+          className={`${nameLoading && 'animate-pulse'}`}
+        >
           {name || comment.creator.walletAddress}
         </a>
         <div className={`mb-[.25rem] text-xs text-hidden`}>{`${new Date(
