@@ -11,7 +11,10 @@ export const LikeButton = (props: ILikeButton) => {
   const [isLiking, setIsLiking] = React.useState(false)
   const [countLikes, setCountLikes] = React.useState(0)
 
-  const { data: isLiked, isLoading: likedLoading } = reactionsApi.useIsPostLikedQuery({
+  const {
+    data: isLiked,
+    // isLoading: likedLoading
+  } = reactionsApi.useIsPostLikedQuery({
     postId,
   })
   const { data: reactions, isLoading: reactionsLoading } =
