@@ -18,15 +18,18 @@ interface IAuthorProperties {
 
 export function Author(props: IAuthorProperties) {
   const {
-    avatar,
+    // avatar,
     name,
     profileId,
     // fromMirror, fromMirrorId, isMirror,
-    isLoading,
+    // isLoading,
     date,
   } = props
 
-  const { data: ensAvatar, isLoading: avatarLoading } = useEnsAvatar({
+  const {
+    data: ensAvatar,
+    // isLoading: avatarLoading
+  } = useEnsAvatar({
     address: profileId as `0x${string}`,
   })
 

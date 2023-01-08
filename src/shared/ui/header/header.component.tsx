@@ -11,9 +11,9 @@ export interface IHeaderProperties {
 
 export function Header(props: IHeaderProperties): JSX.Element {
   const {
-    avatar,
+    // avatar,
     //  userLensId,
-    isLoading,
+    // isLoading,
     userAddress,
   } = props
   const { data: ensAvatar, isLoading: avatarLoading } = useEnsAvatar({
