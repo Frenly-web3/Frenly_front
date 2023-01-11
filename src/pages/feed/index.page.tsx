@@ -1,7 +1,6 @@
 import { useGetFilteredPosts } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import { EndOfPage, Header, Meta, ScrollLoader } from '@shared/ui'
-import { CommunityList } from '@widgets/community'
 import { PostCard } from '@widgets/post'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
@@ -51,11 +50,11 @@ export default function FeedPage() {
       />
 
       <main>
-        <section className={`container relative`}>
+        {/* <section className={`container relative`}>
           <div className={`bg-overlay-1-solid p-4 rounded-[2rem]`}>
             <CommunityList />
           </div>
-        </section>
+        </section> */}
         <section className="container relative">
           <InfiniteScroll
             dataLength={posts.length}
