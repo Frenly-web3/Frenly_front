@@ -7,7 +7,11 @@ interface IProperties {
 
 export const CommunitySingle = (props: IProperties) => {
   const { id } = props
-  const { data: community, isError, isLoading } = useCommunityInfo({ id })
+  const {
+    data: community,
+    // isError,
+    // isLoading
+  } = useCommunityInfo({ id })
 
   if (!community) return <></>
 

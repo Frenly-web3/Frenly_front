@@ -3,7 +3,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const CommunityList = () => {
-  const { data, isError, isLoading } = useCommunityList()
+  const {
+    data,
+    // isError,
+    // isLoading
+  } = useCommunityList()
 
   return (
     <>
