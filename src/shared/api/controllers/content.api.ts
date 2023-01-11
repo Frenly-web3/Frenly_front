@@ -28,6 +28,28 @@ export const contentApi = createApi({
         // })
       },
     }),
+    getCommunityFeed: builder.query<
+      any,
+      { communityId: string; take: number; skip: number }
+    >({
+      providesTags: ['CONTENT'],
+      query: ({ communityId, take, skip }) => {
+        return {
+          url: `content/community/${communityId}?take=${take}&skip=${skip}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: any, meta: any) => {
+        return res.data
+        // .filter((el: any) => {
+        //   return el.lensId !== null
+        // })
+        // .filter((el: any) => {
+        //   return el.lensId !== '0xNaN-0xNaN'
+        // })
+      },
+    }),
     getUnpublishedContent: builder.query<any, any>({
       providesTags: ['CONTENT'],
       query: ({ take, skip }: { take: number; skip: number }) => {
