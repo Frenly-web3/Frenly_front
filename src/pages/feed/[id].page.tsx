@@ -1,13 +1,15 @@
-import { useGetFilteredPosts } from '@entities/post'
+import { useGetCommunityPosts } from '@entities/post'
 import { UserModelService } from '@entities/user'
 import { EndOfPage, Header, Meta, ScrollLoader } from '@shared/ui'
-import { CommunityList } from '@widgets/community'
+import { CommunitySingle } from '@widgets/community'
 import { PostCard } from '@widgets/post'
+import { useRouter } from 'next/router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useBlockchain, useGetWalletProfileId } from 'src/blockchain'
 
 export default function FeedPage() {
-  // const [takeCount, setTakeCount] = useState(0)
+  const router = useRouter()
+  const communityId = router.query.id as string
   let userAddressForHeader = null
 
   const { account } = useBlockchain()
@@ -16,21 +18,14 @@ export default function FeedPage() {
     userAddressForHeader = account
   }
 
-  const {
-    posts,
-    //  lensIsLoading,
-    isSuccess,
-    hasMore,
-    // refetchFilteredFeed,
-    setTakeCount,
-  } = useGetFilteredPosts()
+  const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
+    communityId,
+  })
   const viewerProfileLensId = useGetWalletProfileId(account as string)
   const { user, isLoading } = UserModelService.useUserInfo({
     profileId: account as string,
-    // profileId: viewerProfileLensId as string,
   })
 
-  // console.log('check user avatar', user)
   const nextLoad = async () => {
     // if (isSuccess && !lensIsLoading) {
     if (isSuccess) {
@@ -46,14 +41,13 @@ export default function FeedPage() {
         avatar={user?.avatar}
         isLoading={isLoading}
         userLensId={viewerProfileLensId}
-        // added
         userAddress={userAddressForHeader}
       />
 
       <main>
         <section className={`container relative`}>
           <div className={`bg-overlay-1-solid p-4 rounded-[2rem]`}>
-            <CommunityList />
+            <CommunitySingle id={communityId!} />
           </div>
         </section>
         <section className="container relative">
@@ -66,19 +60,10 @@ export default function FeedPage() {
           >
             {posts?.map((post, index) => {
               return (
-                // @ts-ignore
-                // change lensId to id
                 <PostCard {...post} key={`${post.id}_${index}_${post.txHash}`}>
                   <PostCard.Author />
                   <PostCard.Content />
                   <PostCard.Image />
-                  {/* <PostCard.Subscription /> */}
-                  {/* {post?.sellerType === SellerTypeEnum.NftTransfer && (
-                    <PostCard.Reactions refetchFilteredFeed={refetchFilteredFeed} />
-                  )} */}
-                  {/* {post.sellerType === SellerTypeEnum.SellOrder && (
-                    <PostCard.Order refetchFilteredFeed={refetchFilteredFeed} />
-                  )} */}
                   <PostCard.Reactions />
                 </PostCard>
               )
