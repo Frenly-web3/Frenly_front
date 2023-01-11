@@ -1,7 +1,7 @@
-import { useUnificationFormatImage } from '@shared/lib'
 import { TimeDate } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { useEnsAvatar, useEnsName } from 'wagmi'
 
 // import { useUpdate } from '../header/use-update-user.hook'
 
@@ -18,26 +18,53 @@ interface IAuthorProperties {
 
 export function Author(props: IAuthorProperties) {
   const {
-    avatar,
+    // avatar,
     name,
     profileId,
     // fromMirror, fromMirrorId, isMirror,
-    isLoading,
+    // isLoading,
     date,
   } = props
+
+  const {
+    data: ensAvatar,
+    // isLoading: avatarLoading
+  } = useEnsAvatar({
+    address: profileId as `0x${string}`,
+  })
+
+  const { data: ensName, isLoading: nameLoading } = useEnsName({
+    address: profileId as `0x${string}`,
+  })
 
   const router = useRouter()
   const routeToProfile = ({ idProfile }: { idProfile: string }) => {
     router.push(`/profile/${idProfile}`)
   }
 
-  const avatarUnification = useUnificationFormatImage({
-    image: { url: avatar, type: 'image' },
-  })
+  const shortAddress = `0x${profileId.slice(2, 6)}...${profileId.slice(
+    -4,
+    profileId.length
+  )}`
+
+  // const avatarUnification = useUnificationFormatImage({
+  //   image: { url: avatar, type: 'image' },
+  // })
 
   return (
     <figure className="flex items-center  gap-2 px-4">
-      {avatarUnification ? (
+      <button
+        onClick={() => routeToProfile({ idProfile: profileId })}
+        className="flex items-center border rounded-full border-border-color overflow-hidden"
+      >
+        <img
+          src={ensAvatar || '/assets/images/temp-avatar.png'}
+          alt={name}
+          className={`w-10 h-10`}
+        />
+      </button>
+
+      {/* {avatarUnification ? (
         <button
           onClick={() => routeToProfile({ idProfile: profileId })}
           className="flex items-center border rounded-full border-border-color overflow-hidden"
@@ -60,22 +87,31 @@ export function Author(props: IAuthorProperties) {
             />
           )}
         </>
-      )}
+      )} */}
 
       <div className="flex flex-col">
         <figcaption>
-          {name ? (
+          <div
+            className={`text-heading font-rounded font-medium cursor-pointer mb-[-0.25rem] ${
+              nameLoading && 'animate-pulse'
+            }`}
+            onClick={() => routeToProfile({ idProfile: profileId })}
+          >
+            {ensName || shortAddress}
+          </div>
+
+          {/* {name ? (
             <div
               className="text-heading font-rounded font-medium cursor-pointer mb-[-0.25rem]"
               onClick={() => routeToProfile({ idProfile: profileId })}
             >
               {name.slice(0, 2) === '0x'
-                ? `0x ${name.slice(2, 6)}...${name.slice(-4, name.length)}`
+                ? `0x${name.slice(2, 6)}...${name.slice(-4, name.length)}`
                 : name}
             </div>
           ) : (
             <div className="mt-4 w-28 h-3 rounded-full bg-gray animate-pulse"></div>
-          )}
+          )} */}
           {/* {isMirror &&
           isMirror !== null &&
           (fromMirror ? (

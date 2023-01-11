@@ -8,7 +8,7 @@ interface IUseGetCommentsByPostIdProperties {
 
 export const useGetCommentsByPostId = (props: IUseGetCommentsByPostIdProperties) => {
   const { postId } = props
-  const [fetch, { data: reactions, isLoading, isError }] =
+  const [fetch, { data: reactions, isError, isFetching }] =
     reactionsApi.useLazyPostReactionsQuery()
   const { comments }: { comments: IComment[] } = reactions || { comments: [] }
 
@@ -16,5 +16,5 @@ export const useGetCommentsByPostId = (props: IUseGetCommentsByPostIdProperties)
     fetch({ postId })
   }
 
-  return { getComments, comments, isLoading, isError }
+  return { getComments, comments, isFetching, isError }
 }

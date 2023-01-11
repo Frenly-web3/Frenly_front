@@ -10,10 +10,11 @@ export const CommentSend = (props: ICommentSendProperties) => {
   const [newComment, setNewComment] = React.useState('')
 
   const handlerSend = () => {
-    send({
-      postId,
-      comment: newComment,
-    })
+    if (newComment != '')
+      send({
+        postId,
+        comment: newComment,
+      })
     setNewComment('')
   }
 
@@ -23,6 +24,7 @@ export const CommentSend = (props: ICommentSendProperties) => {
         placeholder="a nice frenly comment..."
         className={`flex-1 bg-overlay-1-solid px-4 py-2 focus:outline-none rounded-xl`}
         type="text"
+        value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
       />
       <button onClick={handlerSend} className={`bg-main px-4 py-2 text-white rounded-xl`}>

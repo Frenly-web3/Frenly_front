@@ -13,6 +13,8 @@ import type { AppProps } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
+import { configureChains, createClient, mainnet, WagmiConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
 const config: Config = {
   // readOnlyChainId: ChainId.Mumbai | ChainId.Mainnet,
@@ -31,33 +33,42 @@ const config: Config = {
   noMetamaskDeactivate: true,
 }
 
+const { provider, webSocketProvider } = configureChains([mainnet], [publicProvider()])
+
+const wagmiClient = createClient({
+  provider,
+  webSocketProvider,
+})
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ApolloProvider client={client}>
-      <DAppProvider config={config}>
-        <Provider store={store}>
-          <DispatcherLensContextProvider>
-            <LoaderContextProvider>
-              <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />
-              <Component {...pageProps} />
-              <DispatcherEnable />
-              <Loader />
-            </LoaderContextProvider>
-          </DispatcherLensContextProvider>
-        </Provider>
-      </DAppProvider>
-    </ApolloProvider>
+    <WagmiConfig client={wagmiClient}>
+      <ApolloProvider client={client}>
+        <DAppProvider config={config}>
+          <Provider store={store}>
+            <DispatcherLensContextProvider>
+              <LoaderContextProvider>
+                <ToastContainer
+                  position="bottom-left"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
+                <Component {...pageProps} />
+                <DispatcherEnable />
+                <Loader />
+              </LoaderContextProvider>
+            </DispatcherLensContextProvider>
+          </Provider>
+        </DAppProvider>
+      </ApolloProvider>
+    </WagmiConfig>
   )
 }
 

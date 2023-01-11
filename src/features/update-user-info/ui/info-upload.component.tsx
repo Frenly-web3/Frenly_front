@@ -1,9 +1,8 @@
-import { useCheckIsOwner, useGetENSByAddress } from '@shared/lib'
 import { BackButtonComponent } from '@shared/ui'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { useEnsAvatar, useEnsName } from 'wagmi'
 
-import { useUploadUserInfo } from '../model'
 // import { ImageUpload } from './image-upload.component'
 
 interface IInfoUploadProperties {
@@ -13,22 +12,33 @@ interface IInfoUploadProperties {
 export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const { profileId } = props
 
+  const { data: ensAvatar, isLoading: avatarLoading } = useEnsAvatar({
+    address: profileId as `0x${string}`,
+  })
+
+  const { data: ensName, isLoading: nameLoading } = useEnsName({
+    address: profileId as `0x${string}`,
+  })
+
   // const profileAddress = useGetWalletAddress({ tokenId: profileId })
 
-  const {
-    // isEditMode,
-    // setIsEditMode,
-    // username,
-    // description,
-    // setUsername,
-    // setDescription,
-    // saveHandle,
-    status,
-  } = useUploadUserInfo({ profileId })
+  // const {
+  //   // isEditMode,
+  //   // setIsEditMode,
+  //   // username,
+  //   // description,
+  //   // setUsername,
+  //   // setDescription,
+  //   // saveHandle,
+  //   status,
+  // } = useUploadUserInfo({ profileId })
   const router = useRouter()
-  const checkIsOwner = useCheckIsOwner({ status })
+  // const checkIsOwner = useCheckIsOwner({ status })
 
-  const ens = useGetENSByAddress({ address: profileId })
+  const shortAddress = `0x${profileId?.slice(2, 6)}...${profileId?.slice(
+    -4,
+    profileId.length
+  )}`
   return (
     <>
       <div className="py-2 flex flex-col justify-between">
@@ -52,10 +62,10 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
             <h3
               // onDoubleClick={() => checkIsOwner && setIsEditMode(true)}
               className={`py-2 z-100 text-xl pr-4 text-heading font-display font-bold m-auto text-center ${
-                checkIsOwner && 'cursor-pointer'
+                nameLoading && 'animate-pulse'
               }`}
             >
-              {ens || `0x ${profileId.slice(2, 6)}...${profileId.slice(-4)}`}
+              {ensName || shortAddress}
             </h3>
           ) : (
             <div className="m-auto w-5/12 h-4 rounded-full bg-gray animate-pulse mr-40"></div>
@@ -65,8 +75,8 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
       </div>
       <div className="m-auto mt-3">
         <img
-          src={'/assets/images/temp-avatar.png'}
-          className="align-center rounded-full"
+          src={ensAvatar || '/assets/images/temp-avatar.png'}
+          className={`align-center rounded-full ${avatarLoading && 'animate-pulse'}`}
           alt="avatar"
           width={96}
           height={96}
