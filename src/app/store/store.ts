@@ -7,6 +7,7 @@ import {
   adminApi,
   alchemyApi,
   authApi,
+  communityApi,
   contentApi,
   reactionsApi,
   userApi,
@@ -21,6 +22,7 @@ export const store = configureStore({
     [adminApi.reducerPath]: adminApi.reducer,
     [alchemyApi.reducerPath]: alchemyApi.reducer,
     [reactionsApi.reducerPath]: reactionsApi.reducer,
+    [communityApi.reducerPath]: communityApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -29,7 +31,8 @@ export const store = configureStore({
       userApi.middleware,
       adminApi.middleware,
       alchemyApi.middleware,
-      reactionsApi.middleware
+      reactionsApi.middleware,
+      communityApi.middleware
     ),
 })
 

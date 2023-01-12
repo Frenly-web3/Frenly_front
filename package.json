@@ -1,5 +1,5 @@
 {
-  "name": "@unistory/next-rtkquery-template",
+  "name": "frenly",
   "version": "1.0.1",
   "files": [
     "*"
@@ -42,12 +42,14 @@
     "clsx": "^1.2.1",
     "dayjs": "^1.11.5",
     "ethers": "^5.7.0",
+    "fast-average-color": "^9.3.0",
     "graphql": "^16.6.0",
     "humanize-duration": "^3.27.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
     "next": "^12.2.2",
     "next-seo": "^5.4.0",
+    "nuka-carousel": "^5.4.1",
     "object-to-formdata": "^4.4.2",
     "omit-deep": "^0.3.0",
     "rc-pagination": "^3.1.17",
@@ -66,6 +68,7 @@
     "swiper": "^8.3.2",
     "tw-elements": "^1.0.0-alpha12",
     "usehooks-ts": "2.6.0",
+    "wagmi": "^0.10.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -114,5 +117,5 @@
     "typechain": "^8.1.0",
     "typescript": "^4.7.4"
   },
-  "author": "Unistory"
+  "author": "frenly"
 }
