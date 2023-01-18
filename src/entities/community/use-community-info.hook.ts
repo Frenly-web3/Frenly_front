@@ -7,9 +7,15 @@ interface IProperties {
 export const useCommunityInfo = (props: IProperties) => {
   const { id } = props
 
-  const { data, isLoading, isError } = communityApi.useGetCommunityQuery({ id })
+  const [fetch, { data, isLoading, isError }] =
+    communityApi.useLazyGetCommunityInfoQuery()
+
+  const getCommunity = () => {
+    fetch({ id })
+  }
 
   return {
+    getCommunity,
     data,
     isLoading,
     isError,

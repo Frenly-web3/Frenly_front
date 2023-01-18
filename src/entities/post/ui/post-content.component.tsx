@@ -6,7 +6,6 @@ interface IPostContentProperties {
   showDate: boolean
   showAuthor: boolean
   date: string
-  isAdmin: boolean
   blockchainType: NetworkEnum
   messageType: PostTypeEnum
   from: string
@@ -19,7 +18,6 @@ interface IPostContentProperties {
   isMirror: boolean | null
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const PostContent = (props: IPostContentProperties) => {
   const {
     blockchainType,

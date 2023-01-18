@@ -6,7 +6,7 @@ import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
 
 interface IProperties {
-  communityId: string
+  communityId: number
 }
 
 export const useGetCommunityPosts = (props: IProperties) => {
@@ -39,7 +39,7 @@ export const useGetCommunityPosts = (props: IProperties) => {
     if (!postsData) {
       return
     }
-    const posts: IPost[] = postsWithoutZeroX?.map((post: any): IPost => {
+    const posts: IPost[] = postsWithoutZeroX!.map((post: any): IPost => {
       const {
         transferType,
         id: idBack,
