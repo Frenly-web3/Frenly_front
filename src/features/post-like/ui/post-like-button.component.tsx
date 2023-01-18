@@ -6,7 +6,12 @@ interface IProperties {
 
 export const PostLikeButton = (props: IProperties) => {
   const { postId } = props
-  const { isError, isLiked, likeUnlike, count } = usePostLike({ postId })
+  const {
+    // isError,
+    isLiked,
+    likeUnlike,
+    count,
+  } = usePostLike({ postId })
 
   return (
     <>

@@ -18,6 +18,7 @@ interface IPostContentProperties {
   isMirror: boolean | null
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const PostContent = (props: IPostContentProperties) => {
   const {
     blockchainType,

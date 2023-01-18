@@ -16,21 +16,23 @@ export const PostCommentList = (props: IProperties) => {
   const { comments, addComment } = usePostComment({ postId })
 
   return (
-    isOpen && (
-      <>
-        <div className="flex flex-col gap-4">
-          {comments.map((comment, index) => {
-            return <Comment key={`${comment.id}_${index}`} comment={comment} />
-          })}
-          <PostCommentAdd addComment={addComment} />
-        </div>
-        <button
-          className="w-full p-2 bg-overlay-1-solid mt-4 rounded-[.5rem]"
-          onClick={() => setIsOpen(false)}
-        >
-          Hide comments
-        </button>
-      </>
-    )
+    <>
+      {isOpen && (
+        <>
+          <div className="flex flex-col gap-4">
+            {comments.map((comment, index) => {
+              return <Comment key={`${comment.id}_${index}`} comment={comment} />
+            })}
+            <PostCommentAdd addComment={addComment} />
+          </div>
+          <button
+            className="w-full p-2 bg-overlay-1-solid mt-4 rounded-[.5rem]"
+            onClick={() => setIsOpen(false)}
+          >
+            Hide comments
+          </button>
+        </>
+      )}
+    </>
   )
 }

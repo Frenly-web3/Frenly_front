@@ -1,4 +1,5 @@
 import type { IAddress } from '@shared/lib'
+// eslint-disable-next-line import/no-cycle
 import { TimeDate } from '@shared/ui'
 import Link from 'next/link'
 import React from 'react'

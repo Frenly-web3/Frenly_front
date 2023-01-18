@@ -14,11 +14,10 @@ export const Name = (props: IProperties) => {
   const { data, isLoading } = useUserName({ address })
 
   return (
-    <>
-      <div className={`flex ${className} ${isLoading && ``}`}>
-        <div>{data.slice(-4) != '.eth' && '0x'}</div>
-        {data}
-      </div>
-    </>
+    // eslint-disable-next-line sonarjs/no-nested-template-literals
+    <div className={`flex ${className} ${isLoading && ``}`}>
+      <div>{data.slice(-4) != '.eth' && '0x'}</div>
+      {data}
+    </div>
   )
 }
