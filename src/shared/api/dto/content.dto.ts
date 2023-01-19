@@ -30,5 +30,5 @@ export interface IFeedRequest {
 export interface ICommunityFeedRequest {
   take: number
   skip: number
-  communityId: number
+  communityId: number | string
 }

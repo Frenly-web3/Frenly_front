@@ -6,7 +6,7 @@ import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
 
 interface IProperties {
-  communityId: number
+  communityId: number | string
 }
 
 export const useGetCommunityPosts = (props: IProperties) => {
