@@ -16,7 +16,7 @@ export const Author = (props: IAuthorProperties) => {
   const { address, date } = props
 
   return (
-    <figure className="flex items-center  gap-2 px-4">
+    <figure className="flex items-center  gap-2">
       <Link
         href={`/profile/${address}`}
         className="flex items-center border rounded-full border-border-color overflow-hidden"

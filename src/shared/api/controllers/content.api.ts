@@ -24,7 +24,7 @@ export const contentApi = createApi({
     }),
     getCommunityFeed: builder.query<IPostDto[], ICommunityFeedRequest>({
       providesTags: ['CONTENT'],
-      query: ({ communityId, take, skip }) => {
+      query: ({ take, skip, communityId }) => {
         return {
           url: `content/community/${communityId}?take=${take}&skip=${skip}`,
           method: 'GET',

@@ -5,10 +5,11 @@ import { useEnsName } from 'wagmi'
 
 interface IProperties {
   address: IAddress
+  with0x?: boolean
 }
 
 export const useUserName = (props: IProperties) => {
-  const { address } = props
+  const { address, with0x } = props
 
   const { data: ensData, isLoading: ensLoading } = useEnsName({ address })
 
@@ -17,7 +18,7 @@ export const useUserName = (props: IProperties) => {
   })
 
   const isLoading = ensLoading ? true : !!backendLoading
-  const data = ensData || shortAddress({ address: backendData?.walletAddress! })
+  const data = ensData || shortAddress({ address: backendData?.walletAddress!, with0x })
 
   return { data, isLoading }
 }

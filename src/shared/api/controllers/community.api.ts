@@ -24,7 +24,7 @@ export const communityApi = createApi({
     }),
     getCommunityInfo: builder.query<ICommunityDto, any>({
       providesTags: ['COMMUNITY'],
-      query: ({ id }: { id: number }) => {
+      query: ({ id }: { id: string }) => {
         return {
           url: `community/${id}`,
           method: 'GET',

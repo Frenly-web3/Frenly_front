@@ -1,17 +1,13 @@
 import { useGetCommunityPosts } from '@entities/post'
 import { EndOfPage, Layout, ScrollLoader } from '@shared/ui'
+import { CommunitySingle } from '@widgets/community'
 import { PostCard } from '@widgets/post'
-import type { GetServerSideProps } from 'next'
+import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
-export interface IProperties {
-  communityId: string
-}
-
-export default function FeedPage(props: IProperties) {
-  const { communityId } = props
+export default function FeedPage() {
   const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
-    communityId,
+    communityId: '1',
   })
 
   const nextLoad = async () => {
@@ -21,6 +17,17 @@ export default function FeedPage(props: IProperties) {
   }
   return (
     <Layout title="feed" avatar={true}>
+      <section className="container relative">
+        <div className="p-4 bg-overlay-1-solid rounded-[1rem]">
+          <CommunitySingle id="1" />
+          <Link
+            href={'/feed'}
+            className="flex max-w-fit px-4 py-2 bg-main mt-2 ml-20 text-white rounded-[1rem]"
+          >
+            Back
+          </Link>
+        </div>
+      </section>
       <section className="container relative">
         <InfiniteScroll
           dataLength={posts.length}
@@ -43,10 +50,4 @@ export default function FeedPage(props: IProperties) {
       </section>
     </Layout>
   )
-}
-export const getServerSideProps: GetServerSideProps<IProperties> = async (context) => {
-  const {
-    query: { id },
-  } = context
-  return { props: { communityId: id as string } }
 }

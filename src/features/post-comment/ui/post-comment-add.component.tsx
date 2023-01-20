@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface IProperies {
-  addComment: (desciption: string) => void
+  addComment: (description: string) => void
 }
 
 export const PostCommentAdd = (props: IProperies) => {
@@ -11,6 +11,7 @@ export const PostCommentAdd = (props: IProperies) => {
 
   const handler = () => {
     addComment(comment)
+    setComment('')
   }
 
   return (

@@ -19,7 +19,7 @@ export const PostCommentList = (props: IProperties) => {
     <>
       {isOpen && (
         <>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 mt-4">
             {comments.map((comment, index) => {
               return <Comment key={`${comment.id}_${index}`} comment={comment} />
             })}

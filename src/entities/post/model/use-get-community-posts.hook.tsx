@@ -1,22 +1,31 @@
 import { contentApi } from '@shared/api'
 import { NetworkEnum, PostTypeEnum, SIZE_POST_CHUNK, TokenTypeEnum } from '@shared/lib'
+import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
 
-interface IProperties {
-  communityId: number | string
+interface IGetFilteredPosts {
+  posts: IPost[]
+  isSuccess: boolean
+  hasMore: boolean
+  refetchFilteredFeed: () => void
+  setTakeCount: Dispatch<SetStateAction<number>>
 }
 
-export const useGetCommunityPosts = (props: IProperties) => {
+interface IProperties {
+  communityId: string
+}
+
+export const useGetCommunityPosts = (props: IProperties): IGetFilteredPosts => {
   const { communityId } = props
   const [takeCount, setTakeCount] = useState(0)
 
   const { data: postsData, isSuccess } = contentApi.useGetCommunityFeedQuery({
-    communityId,
     take: SIZE_POST_CHUNK,
     skip: SIZE_POST_CHUNK * takeCount,
+    communityId,
   })
 
   const [postsSum, setPostsSum] = useState<IPost[]>([])
@@ -34,11 +43,11 @@ export const useGetCommunityPosts = (props: IProperties) => {
     .filter((el: any) => {
       return !el.isMirror
     })
-
   useEffect(() => {
     if (!postsData) {
       return
     }
+
     const posts: IPost[] = postsWithoutZeroX!.map((post: any): IPost => {
       const {
         transferType,
@@ -83,7 +92,7 @@ export const useGetCommunityPosts = (props: IProperties) => {
         ...posts.filter((post) => Object.keys(post).length > 0),
       ])
     }
-  }, [postsData, postsWithoutZeroX])
+  }, [postsData])
 
   return useMemo(
     () => ({
