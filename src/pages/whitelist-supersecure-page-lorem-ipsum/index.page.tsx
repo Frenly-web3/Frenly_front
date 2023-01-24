@@ -5,7 +5,7 @@ const secret = '12ibu3r'
 export default function WL() {
   const whitelist = process.env.NEXT_PUBLIC_WHITELIST
   const [pass, setPass] = React.useState('')
-  if (pass === secret)
+  if (pass != secret)
     return (
       <>
         <button
@@ -14,7 +14,13 @@ export default function WL() {
         >
           reset
         </button>
-        <p>{whitelist || 'no whitelist'}</p>
+        <p>
+          {whitelist
+            ? whitelist.split(',').map((addr) => {
+                return <p key={addr}>{addr}</p>
+              })
+            : 'no whitelist'}
+        </p>
       </>
     )
 
