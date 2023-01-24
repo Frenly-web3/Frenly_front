@@ -61,10 +61,10 @@ export const PostContent = (props: IPostContentProperties) => {
               href={
                 blockchainType === 'ETHEREUM'
                   ? `https://etherscan.io/address/${
-                      messageType == PostTypeEnum.Received ? formatedTo : formatedfrom
+                      messageType == PostTypeEnum.Received ? to : from
                     }`
                   : `https://polygonscan.com/address/${
-                      messageType == PostTypeEnum.Received ? formatedTo : formatedfrom
+                      messageType == PostTypeEnum.Received ? to : from
                     }`
               }
               className="text-main"
@@ -105,13 +105,13 @@ export const PostContent = (props: IPostContentProperties) => {
             blockchainType === 'ETHEREUM'
               ? `https://etherscan.io/address/${
                   from == '0x0000000000000000000000000000000000000000'
-                    ? formatedContractAddress
-                    : formatedfrom
+                    ? contractAddress
+                    : from
                 }`
               : `https://polygonscan.com/address/${
                   from == '0x0000000000000000000000000000000000000000'
-                    ? formatedContractAddress
-                    : formatedfrom
+                    ? contractAddress
+                    : from
                 }`
           }
           className="text-main"
