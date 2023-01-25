@@ -1,15 +1,14 @@
 import type { Dispatch, SetStateAction } from 'react'
 
-import { usePostComment } from '../model'
+import { usePostReactionContext } from '../model'
 
 interface IProperties {
-  postId: number
   setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
 export const PostCommentButton = (props: IProperties) => {
-  const { postId, setIsOpen } = props
-  const { comments } = usePostComment({ postId })
+  const { setIsOpen } = props
+  const { comments } = usePostReactionContext()!.comments
 
   return (
     <>

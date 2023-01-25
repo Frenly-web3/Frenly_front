@@ -1,17 +1,11 @@
-import { usePostLike } from '../model'
+// eslint-disable-next-line boundaries/element-types
+import { usePostReactionContext } from '@features/post-comment'
 
-interface IProperties {
-  postId: number
-}
+interface IProperties {}
 
 export const PostLikeButton = (props: IProperties) => {
-  const { postId } = props
-  const {
-    // isError,
-    isLiked,
-    likeUnlike,
-    count,
-  } = usePostLike({ postId })
+  const {} = props
+  const { isLiked, likeUnlike, count } = usePostReactionContext()!.likes
 
   return (
     <>

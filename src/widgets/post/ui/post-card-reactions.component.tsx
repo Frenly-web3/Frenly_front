@@ -1,5 +1,11 @@
-import { PostCommentButton, PostCommentList } from '@features/post-comment'
-import { PostLikeButton } from '@features/post-like'
+// eslint-disable-next-line import/no-cycle
+import {
+  PostCommentButton,
+  PostCommentList,
+  PostReactionContext,
+  usePostComment,
+} from '@features/post-comment'
+import { PostLikeButton, usePostLike } from '@features/post-like'
 import type { NetworkEnum } from '@shared/lib'
 import { TransactionLink } from '@shared/ui'
 import React from 'react'
@@ -12,16 +18,24 @@ export function PostCardReactions(props: IPostCardReactions) {
   const {} = props
   const { network, txHash, id } = usePostCardContext()
   const [isOpen, setIsOpen] = React.useState(false)
+  const { comments, addComment, isError: commentsError } = usePostComment({ postId: id! })
+  const { isError: likesError, isLiked, likeUnlike, count } = usePostLike({ postId: id! })
+
+  const value = {
+    comments: { comments, addComment, isError: commentsError },
+    likes: { isError: likesError, isLiked, likeUnlike, count },
+  }
+
   return (
-    <>
+    <PostReactionContext.Provider value={value}>
       <div className={`mt-1 flex items-center justify-between`}>
         <TransactionLink network={network as NetworkEnum} txHash={txHash as string} />
       </div>
       <div className={`flex gap-2 justify-end`}>
-        <PostCommentButton postId={id!} setIsOpen={setIsOpen} />
-        <PostLikeButton postId={id!} />
+        <PostCommentButton setIsOpen={setIsOpen} />
+        <PostLikeButton />
       </div>
-      <PostCommentList postId={id!} setIsOpen={setIsOpen} isOpen={isOpen} />
-    </>
+      <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
+    </PostReactionContext.Provider>
   )
 }

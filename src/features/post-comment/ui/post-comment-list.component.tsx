@@ -2,21 +2,21 @@ import { Comment } from '@entities/comment'
 import type { Dispatch, SetStateAction } from 'react'
 import React from 'react'
 
-import { usePostComment } from '../model'
+import { usePostReactionContext } from '../model'
 import { PostCommentAdd } from './post-comment-add.component'
 
 interface IProperties {
-  postId: number
   setIsOpen: Dispatch<SetStateAction<boolean>>
   isOpen: boolean
 }
 
 export const PostCommentList = (props: IProperties) => {
-  const { postId, setIsOpen, isOpen } = props
-  const { comments, addComment } = usePostComment({ postId })
+  const { setIsOpen, isOpen } = props
+  const { comments, addComment, isError } = usePostReactionContext()!.comments
 
   return (
     <>
+      {(isError.mutation || isError.reactions) && 'something went wrong'}
       {isOpen && (
         <>
           <div className="flex flex-col gap-4 mt-4">
