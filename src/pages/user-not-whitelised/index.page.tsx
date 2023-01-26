@@ -18,7 +18,11 @@ export default function UserNotWhitelistedPage() {
         </div>
 
         <div className="w-full py-4 mb-16">
-          <a href="https://1ltwty44asn.typeform.com/to/DQ8hHy11" className="w-full">
+          <a
+            href="https://1ltwty44asn.typeform.com/to/DQ8hHy11"
+            type="_blank"
+            className="w-full"
+          >
             <Button>Open Form</Button>
           </a>
           <div className="mt-2"></div>

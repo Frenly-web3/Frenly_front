@@ -1,12 +1,13 @@
 import { PostContent } from '@entities/post'
 import type { NetworkEnum, PostTypeEnum } from '@shared/lib'
 import { SellerTypeEnum, useCheckIsAdmin } from '@shared/lib'
+import { memo } from 'react'
 import { useBlockchain } from 'src/blockchain'
 
 import { usePostCardContext } from '../model'
 import { ExecutedOrderContent } from './executed-order-content.component'
 
-export function PostCardContent() {
+export const PostCardContent = memo(() => {
   const {
     image,
     contractAddress,
@@ -59,4 +60,4 @@ export function PostCardContent() {
       )}
     </>
   )
-}
+})

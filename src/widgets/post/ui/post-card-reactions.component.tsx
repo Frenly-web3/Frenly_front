@@ -2,12 +2,13 @@ import { Comments } from '@features/comment-post'
 import { LikeButton } from '@features/like-post'
 import type { NetworkEnum } from '@shared/lib'
 import { TransactionLink } from '@shared/ui'
+import { memo } from 'react'
 
 import { usePostCardContext } from '../model'
 
 interface IPostCardReactions {}
 
-export function PostCardReactions(props: IPostCardReactions) {
+export const PostCardReactions = memo((props: IPostCardReactions) => {
   const {} = props
   const { network, txHash, id } = usePostCardContext()
   return (
@@ -21,4 +22,4 @@ export function PostCardReactions(props: IPostCardReactions) {
       </div>
     </>
   )
-}
+})

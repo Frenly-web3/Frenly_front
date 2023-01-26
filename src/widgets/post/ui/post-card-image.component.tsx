@@ -1,8 +1,9 @@
 import { PostImage } from '@entities/post'
+import { memo } from 'react'
 
 import { usePostCardContext } from '../model'
 
-export function PostCardImage() {
+export const PostCardImage = memo(() => {
   const { image, contractAddress } = usePostCardContext()
 
   return (
@@ -13,4 +14,4 @@ export function PostCardImage() {
       />
     </div>
   )
-}
+})
