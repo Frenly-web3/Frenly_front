@@ -1,29 +1,29 @@
+import type { IAddress } from '@shared/lib'
 import { ProfileButton } from '@shared/ui'
 import React from 'react'
+import { useAccount } from 'wagmi'
 
 import { useFollowUnfollowUser } from '../model'
 
 interface IFollowUnfollowButtonProperties {
-  profileId: string
+  address: IAddress
 }
 
 export const FollowUnfollowButton = (props: IFollowUnfollowButtonProperties) => {
-  const { profileId } = props
+  const { address } = props
   const { followUnfollowHandler, followUnfollowState, followerAmount } =
-    useFollowUnfollowUser({
-      profileId,
-    })
+    useFollowUnfollowUser({ address })
+
+  const { address: connectedAddress } = useAccount()
   return (
     <>
       <div className="text-base font-normal text-gray mb-5 text-center m-auto mt-4">
-        {followerAmount !== undefined ? `Followers: ${followerAmount}` : `Followers: 0`}
+        {`Followers: ${followerAmount || 0}`}
       </div>
-      {followUnfollowState !== null ? (
+      {connectedAddress != address && (
         <ProfileButton onClick={followUnfollowHandler}>
           {followUnfollowState}
         </ProfileButton>
-      ) : (
-        <></>
       )}
     </>
   )

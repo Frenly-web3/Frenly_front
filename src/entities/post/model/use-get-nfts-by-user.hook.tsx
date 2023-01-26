@@ -1,11 +1,11 @@
 import { alchemyApi } from '@shared/api'
-import { NetworkEnum } from '@shared/lib'
+import { IAddress, NetworkEnum } from '@shared/lib'
 
 import type { IPost } from './post.entity'
 
 interface IGetNftsByUser {
   profileId: string
-  profileAddress: string
+  profileAddress: IAddress
 }
 
 export const useGetNftsByUser = ({
@@ -23,16 +23,10 @@ export const useGetNftsByUser = ({
       return {
         contractAddress: contract?.address,
         creatorAddress: profileAddress,
-        // creatorLensId: profileId,
         date: timeLastUpdated,
         from: null,
         id: null,
         image: media[0]?.raw,
-        // isMirror: null,
-        // lensId: null,
-        // mirrorDescription: null,
-        // mirrorFrom: null,
-        // mirrorFromId: null,
         network: NetworkEnum.Ethereum,
         postType: null,
         to: null,

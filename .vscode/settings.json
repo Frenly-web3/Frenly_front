@@ -54,12 +54,18 @@
     "/src/shared/ui/typography",
     "/src/shared/ui",
     "/src/shared/ui/main",
-    "/src/blockchain",
-    "/src/blockchain/abi",
     "/src/features/auth/model",
     "/src/features/create-auction/ui/create-auction-modal",
     "/src/shared/ui/pagination",
     "/src/shared/api/controllers"
   ],
-  "cSpell.words": ["reduxjs"]
+  "cSpell.words": [
+    "frenly",
+    "Reauth",
+    "reduxjs",
+    "reposts",
+    "toastify",
+    "Unfollow",
+    "wagmi"
+  ]
 }

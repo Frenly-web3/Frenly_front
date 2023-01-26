@@ -1,13 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
+import type { IBaseResponse } from '@shared/lib'
 
 import { baseQueryWithReauth } from '../base-query'
+import type { ICommunityDto } from '../dto'
 
 export const communityApi = createApi({
   reducerPath: 'communityApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['COMMUNITY'],
   endpoints: (builder) => ({
-    getCommunityList: builder.query<ICommunity[], any>({
+    getCommunityList: builder.query<ICommunityDto[], any>({
       providesTags: ['COMMUNITY'],
       query: () => {
         return {
@@ -16,44 +18,22 @@ export const communityApi = createApi({
           credentials: 'omit',
         }
       },
-      transformResponse: (res: IGetCommunityList) => {
+      transformResponse: (res: IBaseResponse<ICommunityDto[]>) => {
         return res.data
       },
     }),
-    getCommunity: builder.query<ICommunity, any>({
+    getCommunityInfo: builder.query<ICommunityDto, any>({
       providesTags: ['COMMUNITY'],
-      query: ({ id }: { id: number }) => {
+      query: ({ id }: { id: string }) => {
         return {
           url: `community/${id}`,
           method: 'GET',
           credentials: 'omit',
         }
       },
-      transformResponse: (res: IGetCommunity) => {
+      transformResponse: (res: IBaseResponse<ICommunityDto>) => {
         return res.data
       },
     }),
   }),
 })
-
-interface IGetCommunityList {
-  status: number
-  data: ICommunity[]
-  error: any
-}
-
-interface IGetCommunity {
-  status: number
-  data: ICommunity
-  error: any
-}
-
-interface ICommunity {
-  id: number
-  creator: number
-  name: string
-  contractAddress: `0x${string}`
-  membersAmount: number
-  description: string
-  image: string
-}

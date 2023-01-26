@@ -1,42 +1,26 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
+import type { IAddress, IBaseResponse } from '@shared/lib'
 
 import { baseQueryWithReauth } from '../base-query'
+import type { INonceDto, IValidateDto, IValidateDtoRequest } from '../dto/auth.dto'
 
-// Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['USER', 'ADMIN'],
   endpoints: (builder) => ({
-    getUserNonce: builder.query<any, { address: string }>({
-      query: ({ address }) => {
+    getUserNonce: builder.query<INonceDto, { address: IAddress }>({
+      query: ({ address }: { address: IAddress }) => {
         return {
           url: `auth/${address}/nonce`,
           method: 'GET',
           credentials: 'omit',
         }
       },
+      transformResponse: (res: IBaseResponse<INonceDto>) => res.data,
     }),
-    hasLanceProfile: builder.query<any, { address: string }>({
-      query: ({ address }) => {
-        return {
-          url: `auth/${address}/lens-profile`,
-          method: 'GET',
-          credentials: 'omit',
-        }
-      },
-      transformResponse: (res: any) => {
-        return res?.data
-      },
-    }),
-    validateUserSignature: builder.mutation<
-      { refreshToken: string; accessToken: string },
-      {
-        address: string
-        signature: string
-      }
-    >({
-      query: ({ address, signature }) => {
+    validateUserSignature: builder.mutation<IValidateDto, IValidateDtoRequest>({
+      query: ({ address, signature }: IValidateDtoRequest) => {
         return {
           url: `auth/${address}/signature`,
           method: 'POST',
@@ -46,9 +30,10 @@ export const authApi = createApi({
           credentials: 'omit',
         }
       },
+      transformResponse: (res: IBaseResponse<IValidateDto>) => res.data,
     }),
-    refreshTokens: builder.query<any, any>({
-      query: (args) => {
+    refreshTokens: builder.query<any, null>({
+      query: () => {
         return {
           url: 'auth/refresh-token',
           method: 'POST',

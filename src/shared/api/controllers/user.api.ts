@@ -1,13 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
+import type { IAddress, IBaseResponse } from '@shared/lib'
 
 import { baseQueryWithReauth } from '../base-query'
+import type { IUserDto } from '../dto/user.dto'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['USER', 'ADMIN'],
   endpoints: (builder) => ({
-    getUserInfo: builder.query<any, { address: string }>({
+    getUserInfo: builder.query<IUserDto, { address: IAddress }>({
       providesTags: ['USER', 'ADMIN'],
       query: ({ address }) => {
         return {
@@ -17,11 +19,11 @@ export const userApi = createApi({
           credentials: 'omit',
         }
       },
-      transformResponse: (res: any) => {
+      transformResponse: (res: IBaseResponse<IUserDto>) => {
         return res?.data
       },
     }),
-    IsSubscriber: builder.query<any, { address: string }>({
+    IsSubscriber: builder.query<boolean, { address: IAddress }>({
       providesTags: ['USER', 'ADMIN'],
       query: ({ address }) => {
         return {
@@ -46,7 +48,7 @@ export const userApi = createApi({
         }
       },
     }),
-    subscribeUser: builder.mutation<any, { address: string }>({
+    subscribeUser: builder.mutation<any, { address: IAddress }>({
       invalidatesTags: ['USER', 'ADMIN'],
       query: ({ address }) => {
         return {
@@ -56,7 +58,7 @@ export const userApi = createApi({
         }
       },
     }),
-    unSubscribeUser: builder.mutation<any, { address: string }>({
+    unSubscribeUser: builder.mutation<any, { address: IAddress }>({
       invalidatesTags: ['USER', 'ADMIN'],
       query: ({ address }) => {
         return {

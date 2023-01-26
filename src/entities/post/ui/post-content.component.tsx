@@ -1,3 +1,5 @@
+// eslint-disable-next-line boundaries/element-types
+import { useUserName } from '@entities/user'
 import type { NetworkEnum } from '@shared/lib'
 import { PostTypeEnum, useRenderMessage } from '@shared/lib'
 import React from 'react'
@@ -6,7 +8,6 @@ interface IPostContentProperties {
   showDate: boolean
   showAuthor: boolean
   date: string
-  isAdmin: boolean
   blockchainType: NetworkEnum
   messageType: PostTypeEnum
   from: string
@@ -35,8 +36,23 @@ export const PostContent = (props: IPostContentProperties) => {
 
   const renderMessage = useRenderMessage()
 
+  const { data: formatedContractAddress } = useUserName({
+    address: contractAddress as `0x${string}`,
+    with0x: true,
+  })
+
+  const { data: formatedfrom } = useUserName({
+    address: from as `0x${string}`,
+    with0x: true,
+  })
+
+  const { data: formatedTo } = useUserName({
+    address: to as `0x${string}`,
+    with0x: true,
+  })
+
   return (
-    <div className="p-4">
+    <div className="py-4">
       <h4 className="text-text font-medium font-text break-words">
         {(creatorAddress === process.env.NEXT_PUBLIC_ADMIN_ADDRESS || isMirror) && (
           <>
@@ -55,10 +71,10 @@ export const PostContent = (props: IPostContentProperties) => {
               rel="noreferrer"
             >
               {from == '0x0000000000000000000000000000000000000000'
-                ? `🎉 ${to}`
+                ? `🎉 ${formatedTo}`
                 : messageType == PostTypeEnum.Received
-                ? `📤 ${to}`
-                : `📤 ${from}`}
+                ? `📤 ${formatedTo}`
+                : `📤 ${formatedfrom}`}
             </a>
             <>
               {' '}
@@ -102,10 +118,10 @@ export const PostContent = (props: IPostContentProperties) => {
           rel="noreferrer"
         >
           {from == '0x0000000000000000000000000000000000000000'
-            ? contractAddress
+            ? formatedContractAddress
             : messageType == PostTypeEnum.Received
-            ? from
-            : to}
+            ? formatedfrom
+            : formatedTo}
         </a>
       </h4>
       {mirrorDescription && (

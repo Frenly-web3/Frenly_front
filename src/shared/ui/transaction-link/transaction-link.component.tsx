@@ -1,4 +1,5 @@
 import { NetworkEnum } from '@shared/lib'
+import type { FC } from 'react'
 import React from 'react'
 
 interface ITransactionLinkProperties {
@@ -6,8 +7,13 @@ interface ITransactionLinkProperties {
   network: NetworkEnum
 }
 
-export const TransactionLink = (props: ITransactionLinkProperties) => {
+export const TransactionLink: FC<ITransactionLinkProperties> = (
+  props: ITransactionLinkProperties
+) => {
   const { txHash, network } = props
+
+  console.log(txHash)
+
   return (
     <div className="flex flex-col">
       <div className="text-sm font-normal text-gray-darker mt-1">FrenlyPost</div>
