@@ -1,6 +1,6 @@
 {
   "name": "frenly",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "files": [
     "*"
   ],
@@ -47,7 +47,7 @@
     "humanize-duration": "^3.27.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
-    "next": "^12.2.2",
+    "next": "^13.1.1",
     "next-seo": "^5.4.0",
     "nuka-carousel": "^5.4.1",
     "object-to-formdata": "^4.4.2",
@@ -59,7 +59,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-redux": "^8.0.2",
+    "react-redux": "^8.0.5",
     "react-stately": "^3.18.0",
     "react-table": "^7.8.0",
     "react-timer-hook": "^3.0.5",
@@ -117,5 +117,5 @@
     "typechain": "^8.1.0",
     "typescript": "^4.7.4"
   },
-  "author": "frenly"
+  "author": "frenly.cc"
 }

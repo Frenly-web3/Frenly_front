@@ -9,4 +9,3 @@ node_modules
 public
 .vscode
 .husky
-src/blockchain/typechain

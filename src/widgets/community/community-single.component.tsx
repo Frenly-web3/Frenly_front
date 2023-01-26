@@ -13,7 +13,7 @@ export const CommunitySingle = (props: IProperties) => {
     // isLoading
   } = useCommunityInfo({ id })
 
-  if (!community) return <></>
+  if (!community) return <>No</>
 
   return (
     <>

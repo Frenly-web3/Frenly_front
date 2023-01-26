@@ -1,7 +1,4 @@
-import { useLoaderContext } from '@shared/lib'
 import { Button } from '@shared/ui'
-import { useRouter } from 'next/router'
-import { useBlockchain } from 'src/blockchain'
 
 import { useAuth } from '../model'
 
@@ -10,56 +7,11 @@ interface IAuthButtonProperties {}
 export const AuthButton = (props: IAuthButtonProperties) => {
   const {} = props
 
-  const { account, activateBrowserWallet } = useBlockchain()
-  const {
-    login,
-    // loginLens,
-    logout,
-    //  hasProfile, createProfile
-  } = useAuth()
-  const { setIsLoading } = useLoaderContext()
-  const router = useRouter()
+  const { login } = useAuth()
 
-  const signUpHandle = async () => {
-    try {
-      setIsLoading(true)
-      await activateBrowserWallet()
-      await login()
-      // toast.success('You successfully authorized on Frenly')
-      // await loginLens()
-      // toast.success('You successfully authorized on Lens')
-      // const hasLensProfile = await hasProfile(account as string)
-
-      // if (!hasLensProfile) {
-      //   await createProfile()
-      // }
-
-      // await enableDispatcher()
-
-      router.push('/feed')
-    } catch (error) {
-      await logout()
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const connectWalletHandler = async () => {
-    try {
-      setIsLoading(true)
-      await activateBrowserWallet()
-    } finally {
-      setIsLoading(false)
-    }
-  }
   return (
     <div className="w-full">
-      {!account ? (
-        <Button onClick={connectWalletHandler}>connect wallet</Button>
-      ) : (
-        <Button onClick={signUpHandle}>sign in</Button>
-      )}
+      <Button onClick={login}>connect wallet</Button>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import type { IPost } from '@entities/post'
-import { UserModelService } from '@entities/user'
 import React from 'react'
 
 import { PostCardContext } from '../model'
@@ -13,48 +12,17 @@ interface IPostCardProperties extends IPost {
 }
 
 export const PostCard = (props: IPostCardProperties) => {
-  const {
-    //  creatorLensId, mirrorFrom,
-    children,
-    creatorAddress,
-  } = props
+  const { children } = props
 
-  // const creatorLensIdViaAddress = useGetWalletProfileId(creatorAddress as string)
-
-  // const { user: creatorInfo, isLoading } = UserModelService.useUserInfo({
-  //   profileId: creatorLensId ?? creatorLensIdViaAddress,
-  // })
-
-  const { user: creatorInfo, isLoading } = UserModelService.useUserInfo({
-    profileId: creatorAddress,
-  })
-
-  // const mirrorLensId = useGetWalletProfileId(mirrorFrom as string)
-
-  // const { user: creatorMirrorInfo } = UserModelService.useUserInfo({
-  //   profileId: mirrorLensId as string,
-  // })
-  const memoizedContextValue = React.useMemo(
+  const value = React.useMemo(
     () => ({
       ...props,
-      creatorAvatar: creatorInfo.avatar,
-      creatorLensId: creatorInfo.lensId,
-      creatorUsername: creatorInfo.name,
-      // fromMirrorName: creatorMirrorInfo.name,
-      isLoading,
     }),
-    [
-      creatorInfo.avatar,
-      creatorInfo.lensId,
-      creatorInfo.name,
-      // creatorMirrorInfo.name,
-      isLoading,
-      props,
-    ]
+    [props]
   )
 
   return (
-    <PostCardContext.Provider value={memoizedContextValue}>
+    <PostCardContext.Provider value={value}>
       <article className="bg-background mb-4 py-4 rounded-[2rem] px-0">
         {children}
       </article>
@@ -63,15 +31,6 @@ export const PostCard = (props: IPostCardProperties) => {
 }
 
 PostCard.Author = PostCardAuthor
-
 PostCard.Content = PostCardContent
-
 PostCard.Reactions = PostCardReactions
-
-// PostCard.Adding = PostCardAdding
-
-// PostCard.Subscription = PostCardSubscription
-
 PostCard.Image = PostCardImage
-
-// PostCard.Order = PostCardOrder

@@ -1,9 +1,15 @@
 import { communityApi } from '@shared/api'
 
 export const useCommunityList = () => {
-  const { data, isLoading, isError } = communityApi.useGetCommunityListQuery({})
+  const [fetch, { data, isLoading, isError }] =
+    communityApi.useLazyGetCommunityListQuery()
+
+  const getCommunityList = () => {
+    fetch({})
+  }
 
   return {
+    getCommunityList,
     data,
     isLoading,
     isError,
