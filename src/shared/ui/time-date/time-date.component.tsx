@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { formatFancyDate } from '@shared/lib'
 import React from 'react'
 
 interface IDate {
@@ -7,9 +7,6 @@ interface IDate {
 
 export const TimeDate = (props: IDate) => {
   const { date } = props
-  return (
-    <div className="">
-      {`${moment(date).format('MMM, DD')} at ${moment(date).format('LT')}`}
-    </div>
-  )
+
+  return <div className="">{formatFancyDate(new Date(date))}</div>
 }

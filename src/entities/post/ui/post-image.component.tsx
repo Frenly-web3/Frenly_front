@@ -25,7 +25,7 @@ export const PostImage = (props: IPostContentProperties) => {
               <img
                 src={unificationImage.url.toString()}
                 alt={unificationImage.url.toString()}
-                className="m-auto "
+                className="m-auto rounded-[1rem]"
               />
             ) : (
               <video src={unificationImage.url.toString()} />
@@ -36,7 +36,7 @@ export const PostImage = (props: IPostContentProperties) => {
             <img
               src={'/assets/icons/sadEyes.svg'}
               alt="Sad eyes logo"
-              className="w-24 h-24"
+              className="w-24 h-24 rounded-[1rem]"
             />
             <span className="text-sm font-normal text-white">
               Currently we don{"'"}t support this type of token :{'('}

@@ -13,7 +13,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
   mode: 'cors',
 
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers) => {
     const aToken = localStorage.getItem('access-token')
     // If we have a token set in state, let's assume that we should be passing it.
     if (aToken !== undefined) {
@@ -62,8 +62,8 @@ export const baseQueryWithReauth: BaseQueryFn<
           // retry the initial query
           result = await baseQuery(arguments_, api, extraOptions)
         } else {
-          localStorage.clear()
-          window.location.pathname = '/auth'
+          localStorage.removeItem('access-token')
+          localStorage.removeItem('refresh-token')
         }
       } finally {
         release()
