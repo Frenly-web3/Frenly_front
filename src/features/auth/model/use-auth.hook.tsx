@@ -1,71 +1,95 @@
-import { revertInitialState, setAuth, setTokens } from '@entities/user'
-import { authApi } from '@shared/api'
-import { isWhitelisted, useAppDispatch } from '@shared/lib'
-import React from 'react'
-import { useAccount, useConnect, useSignMessage } from 'wagmi'
+import { UserModelService } from '@entities/user'
+import { authApi, useCreateProfileLens } from '@shared/api'
+import { useAppDispatch } from '@shared/lib'
+import { useCallback } from 'react'
+import { useBlockchain, useSignMessage } from 'src/blockchain'
+
+import { getChallenge, loginLensMutation } from '../api'
 
 export function useAuth() {
-  const { address } = useAccount()
+  const { account } = useBlockchain()
   const [loginMutation] = authApi.useValidateUserSignatureMutation()
   const [getNonce] = authApi.useLazyGetUserNonceQuery()
-  const setAuthDispatch = useAppDispatch(setAuth)
-  const setTokensDispatch = useAppDispatch(setTokens)
-  const deleteTokensDispatch = useAppDispatch(revertInitialState)
-  const { signMessageAsync } = useSignMessage()
-  const { connectAsync, connectors } = useConnect()
+  const [hasLensProfile] = authApi.useLazyHasLanceProfileQuery()
+  const setLensAuthDispatch = useAppDispatch(UserModelService.actions.setLensAuth)
+  const setAuthDispatch = useAppDispatch(UserModelService.actions.setAuth)
+  const setTokensDispatch = useAppDispatch(UserModelService.actions.setTokens)
+  const setTokensLensDispatch = useAppDispatch(UserModelService.actions.setTokensLens)
+  const deleteTokensDispatch = useAppDispatch(UserModelService.actions.revertInitialState)
+  const { createProfileLens } = useCreateProfileLens()
+  const signMessage = useSignMessage()
 
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isError, setIsError] = React.useState<false | string>(false)
+  const loginLens = useCallback(async () => {
+    try {
+      const challengeData = await getChallenge(account as string)
 
-  const login = React.useCallback(async () => {
-    setIsLoading(true)
-    if (address && !isWhitelisted(address)) {
-      return
+      const { challenge } = challengeData.data
+
+      if (challenge) {
+        const signature = await signMessage(challenge.text)
+        const dataTokens = await loginLensMutation({
+          address: account as string,
+          signature: signature as string,
+        })
+
+        const { accessToken, refreshToken } = dataTokens.data.authenticate
+
+        setLensAuthDispatch({ isLensAuth: true })
+        setTokensLensDispatch({
+          accessTokenLens: accessToken,
+          refreshTokenLens: refreshToken,
+        })
+      }
+    } catch (error) {
+      throw new Error(String(error))
+    }
+  }, [account, setLensAuthDispatch, setTokensLensDispatch, signMessage])
+
+  const login = useCallback(async () => {
+    if (account && !process.env.NEXT_PUBLIC_WHITELIST?.includes(account?.toLowerCase())) {
+      window.location.pathname = '/user-not-whitelised';
+      return;
     }
 
     try {
-      const account =
-        // eslint-disable-next-line unicorn/no-await-expression-member
-        address || (await connectAsync({ connector: connectors[0] })).account
+      const nonceData = await getNonce({ address: account as string })
 
-      const { data: nonce } = await getNonce({ address: account })
+      const { nonce } = nonceData.data.data
 
       if (nonce) {
-        const signature = await signMessageAsync({ message: `Nonce: ${nonce.nonce}` })
+        const signature = await signMessage(`Nonce: ${nonce}`)
 
-        const loginResponse = await loginMutation({
-          address: address!,
-          signature,
+        const dataTokens = await loginMutation({
+          address: account as string,
+          signature: signature as string,
         })
 
-        if ('data' in loginResponse) {
-          const { data: tokens } = loginResponse
+        // @ts-ignore
+        const { accessToken, refreshToken } = dataTokens.data.data
 
-          setAuthDispatch({ isAuth: true })
-          setTokensDispatch({
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
-          })
-          setIsLoading(false)
-        }
+        setAuthDispatch({ isAuth: true })
+        setTokensDispatch({ accessToken, refreshToken })
       }
-    } catch (error: any) {
-      setIsError(error.message)
+    } catch (error) {
+      throw new Error(String(error))
     }
-  }, [
-    address,
-    connectAsync,
-    connectors,
-    getNonce,
-    loginMutation,
-    setAuthDispatch,
-    setTokensDispatch,
-    signMessageAsync,
-  ])
+  }, [account, getNonce, loginMutation, setAuthDispatch, setTokensDispatch, signMessage])
 
-  const logout = React.useCallback(() => {
+  const createProfile = useCallback(async () => {
+    await createProfileLens({ account: account as string })
+  }, [account])
+
+  const logout = useCallback(async () => {
     deleteTokensDispatch()
   }, [deleteTokensDispatch])
 
-  return { login, logout, isLoading, isError }
+  const hasProfile = useCallback(
+    async (address: string) => {
+      const response = await hasLensProfile({ address })
+      return response.data.data
+    },
+    [hasLensProfile]
+  )
+
+  return { login, loginLens, logout, hasProfile, createProfile }
 }

@@ -1,7 +1,5 @@
-import type { IAddress } from '@shared/lib'
-
 export interface IComment {
-  id?: number
+  id: number
   description: string
   creationDate: Date
   updateDate: Date
@@ -9,10 +7,14 @@ export interface IComment {
 }
 
 export interface ICreator {
-  id?: number
-  username?: string
-  description?: string
-  walletAddress: IAddress
-  creationDate?: Date
-  updateDate?: Date
+  id: number
+  nonce: null
+  avatar: null
+  username: null
+  description: null
+  walletAddress: string
+  hasLensProfile: boolean
+  role: number
+  creationDate: Date
+  updateDate: Date
 }

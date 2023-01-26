@@ -1,17 +1,20 @@
 import { reactionsApi } from '@shared/api'
 
+import type { IComment } from './comment.entity'
+
 interface IUseGetCommentsByPostIdProperties {
   postId: number
 }
 
 export const useGetCommentsByPostId = (props: IUseGetCommentsByPostIdProperties) => {
   const { postId } = props
-
-  const [fetch, { data, isError, isFetching }] = reactionsApi.useLazyPostReactionsQuery()
+  const [fetch, { data: reactions, isError, isFetching }] =
+    reactionsApi.useLazyPostReactionsQuery()
+  const { comments }: { comments: IComment[] } = reactions || { comments: [] }
 
   const getComments = () => {
     fetch({ postId })
   }
 
-  return { getComments, data: data?.comments, isFetching, isError }
+  return { getComments, comments, isFetching, isError }
 }
