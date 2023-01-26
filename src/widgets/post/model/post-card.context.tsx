@@ -1,7 +1,12 @@
 import type { IPost } from '@entities/post'
 import React, { useContext } from 'react'
 
-interface IPostCardContext extends IPost {}
+interface IPostCardContext extends IPost {
+  creatorAvatar: string | null
+  creatorUsername: string | null
+  // fromMirrorName: string | null
+  isLoading: boolean
+}
 
 export const PostCardContext = React.createContext<IPostCardContext | undefined>(
   undefined

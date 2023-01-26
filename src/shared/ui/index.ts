@@ -6,8 +6,6 @@ export * from './end-of-page'
 export * from './header'
 export * from './icon-button'
 export * from './input'
-// eslint-disable-next-line import/no-cycle
-export * from './layout'
 export * from './loader'
 export * from './meta'
 export * from './metamask-error'

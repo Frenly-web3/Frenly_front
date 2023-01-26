@@ -1,3 +1,2 @@
-export * from './model'
-// eslint-disable-next-line import/no-cycle
+export * as UserModelService from './model'
 export * from './ui'

@@ -1,4 +1,6 @@
-import { userReducer } from '@entities/user'
+/* eslint-disable boundaries/element-types */
+/* eslint-disable boundaries/entry-point */
+import { UserModelService } from '@entities/user'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import {
@@ -10,12 +12,10 @@ import {
   reactionsApi,
   userApi,
 } from '@shared/api'
-import type { TypedUseSelectorHook } from 'react-redux'
-import { useDispatch, useSelector } from 'react-redux'
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    user: UserModelService.userSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [contentApi.reducerPath]: contentApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
@@ -37,9 +37,3 @@ export const store = configureStore({
 })
 
 setupListeners(store.dispatch)
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
-
-export const useAppDispatch: () => AppDispatch = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
