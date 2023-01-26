@@ -1,9 +1,8 @@
-// eslint-disable-next-line boundaries/element-types, import/no-cycle
 import { Avatar } from '@entities/user'
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 
-import { Meta } from '../meta'
+import { Meta } from '../../shared/ui/meta'
 
 interface IProperties {
   title: string

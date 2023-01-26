@@ -1,6 +1,7 @@
 import { useGetFilteredPosts } from '@entities/post'
-import { EndOfPage, Layout, ScrollLoader } from '@shared/ui'
+import { EndOfPage, ScrollLoader } from '@shared/ui'
 import { CommunitySingle } from '@widgets/community'
+import { Layout } from '@widgets/layout'
 import { PostCard } from '@widgets/post'
 import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
