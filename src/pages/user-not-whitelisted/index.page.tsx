@@ -20,7 +20,7 @@ export default function UserNotWhitelistedPage() {
             <Button>Open Form</Button>
           </Link>
           <div className="mt-2"></div>
-          <Link href={'/auth'}>
+          <Link href={'/'}>
             <Button>Back to Auth</Button>
           </Link>
         </div>

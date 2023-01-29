@@ -21,10 +21,10 @@ export const CommunitySingle = (props: IProperties) => {
         <div
           className={`rounded-full max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
         >
-          <Image
-            src={`https://gm.frenly.cc/rest/community-content/images/${community.image}`}
+          <img
+            src={`https://stage.frenly.cc/api/community-content/images/${community.image}`}
             alt={`${community.name} logo`}
-            layout={'fill'}
+            // layout={'fill'}
           />
         </div>
         <div className={`flex flex-col gap-0`}>

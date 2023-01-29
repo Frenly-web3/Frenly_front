@@ -32,7 +32,7 @@ export const PostImage = (props: IPostContentProperties) => {
             )}
           </>
         ) : (
-          <div className="flex flex-col p-2 gap-2 items-center rounded-[1rem] justify-center aspect-square w-full bg-gray">
+          <div className="flex flex-col p-10 gap-2 items-center rounded-[1rem] justify-center aspect-square w-full bg-gray">
             <img
               src={'/assets/icons/sadEyes.svg'}
               alt="Sad eyes logo"

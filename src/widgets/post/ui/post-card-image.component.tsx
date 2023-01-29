@@ -11,18 +11,17 @@ export function PostCardImage() {
     <div className="">
       {actions.length > 1 ? (
         <Carousel
-          mx="auto"
           withControls
           withIndicators
           classNames={{
             control: 'bg-white',
-            indicator: 'bg-white rounded-full w-2 h-2 z-50',
+            indicator: 'bg-white rounded-full w-2 h-2 border-2 border-black',
           }}
           styles={{
             control: {
               '&[data-inactive]': {
                 opacity: 0,
-                cursor: 'default',
+                cursor: 'pointer',
               },
             },
           }}

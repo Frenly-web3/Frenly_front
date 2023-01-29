@@ -9,9 +9,9 @@ export default function FeedPage() {
     <Layout title="feed" avatar={true}>
       <section className="container relative">
         <div className="p-4 bg-overlay-1-solid rounded-[1rem]">
-          <CommunitySingle id="1" />
+          <CommunitySingle id="2" />
           <Link
-            href={'/feed/1'}
+            href={'/feed/orange'}
             className="flex max-w-fit px-4 py-2 bg-main mt-2 ml-20 text-white rounded-[1rem]"
           >
             Explore

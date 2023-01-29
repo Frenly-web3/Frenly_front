@@ -1,6 +1,7 @@
 // eslint-disable-next-line boundaries/element-types, import/no-cycle
 import { Avatar } from '@entities/user'
 import Link from 'next/link'
+import { memo } from 'react'
 import { useAccount } from 'wagmi'
 
 import { Meta } from '../meta'
@@ -11,7 +12,7 @@ interface IProperties {
   children: React.ReactNode
 }
 
-export const Layout = (props: IProperties) => {
+export const Layout = memo((props: IProperties) => {
   const { children } = props
   const { title, avatar = false } = props
   const { address } = useAccount()
@@ -30,4 +31,4 @@ export const Layout = (props: IProperties) => {
       {children}
     </>
   )
-}
+})
