@@ -36,9 +36,9 @@ export default function FeedPage() {
           loader={<ScrollLoader />}
           endMessage={<EndOfPage page="feed" />}
         >
-          {posts?.map((post, index) => {
+          {posts?.map((post) => {
             return (
-              <PostCard {...post} key={`${post.id}_${index}_${post.txHash}`}>
+              <PostCard {...post} key={post.id}>
                 <PostCard.Author />
                 <PostCard.Content />
                 <PostCard.Image />

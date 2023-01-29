@@ -1,5 +1,5 @@
 import type { IPost } from '@entities/post'
-import React from 'react'
+import React, { memo } from 'react'
 
 import { PostCardContext } from '../model'
 import { PostCardAuthor } from './post-card-author.component'
@@ -30,7 +30,7 @@ export const PostCard = (props: IPostCardProperties) => {
   )
 }
 
-PostCard.Author = PostCardAuthor
-PostCard.Content = PostCardContent
-PostCard.Reactions = PostCardReactions
-PostCard.Image = PostCardImage
+PostCard.Author = memo(PostCardAuthor)
+PostCard.Content = memo(PostCardContent)
+PostCard.Reactions = memo(PostCardReactions)
+PostCard.Image = memo(PostCardImage)

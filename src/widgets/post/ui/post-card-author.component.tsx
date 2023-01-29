@@ -1,9 +1,14 @@
 import { Author } from '@entities/user'
+import Link from 'next/link'
 
 import { usePostCardContext } from '../model'
 
 export function PostCardAuthor() {
-  const { creatorAddress, date } = usePostCardContext()
+  const { creationDate, ownerAddress } = usePostCardContext()
 
-  return <Author address={creatorAddress} date={date!} />
+  return (
+    <Link href={`/profile/${ownerAddress}`}>
+      <Author address={ownerAddress} date={creationDate} />
+    </Link>
+  )
 }

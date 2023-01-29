@@ -50,6 +50,8 @@ export function useAuth() {
         }
       }
     } catch (error: any) {
+      console.log(error)
+
       setIsError(error.message)
     }
   }, [

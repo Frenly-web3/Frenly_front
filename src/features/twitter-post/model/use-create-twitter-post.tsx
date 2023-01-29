@@ -1,9 +1,9 @@
-import { NetworkEnum, PostTypeEnum, useRenderMessage } from '@shared/lib'
+import { NetworkEnum, TransferTypeEnum, useRenderMessage } from '@shared/lib'
 import { useCallback } from 'react'
 
 interface ICreateTwitterPost {
   from: string
-  postType: PostTypeEnum
+  postType: TransferTypeEnum
   contractAddress: string
   to: string
   network: NetworkEnum
@@ -25,23 +25,23 @@ export const useCreateTwitterPost = ({
       process.env.NEXT_PUBLIC_API_URL
     }token-images/${image}&text=${`I use 👀 Frenly ${renderMessage({
       from: from as string,
-      postType: postType as PostTypeEnum,
+      postType: postType as TransferTypeEnum,
     })} ${
       from == '0x0000000000000000000000000000000000000000'
         ? contractAddress
-        : postType == PostTypeEnum.Received
+        : postType == TransferTypeEnum.RECEIVE
         ? to
         : from
     } ${
       from !== '0x0000000000000000000000000000000000000000'
-        ? postType == PostTypeEnum.Received
+        ? postType == TransferTypeEnum.RECEIVE
           ? 'from'
           : 'to'
         : 'from Smart contract'
     } ${
       from == '0x0000000000000000000000000000000000000000'
         ? contractAddress
-        : postType == PostTypeEnum.Received
+        : postType == TransferTypeEnum.RECEIVE
         ? from
         : to
     }

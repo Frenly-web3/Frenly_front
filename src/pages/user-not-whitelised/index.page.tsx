@@ -1,9 +1,7 @@
 import { Button, Meta } from '@shared/ui'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function UserNotWhitelistedPage() {
-  const router = useRouter()
-
   return (
     <>
       <Meta title="Frenly" description="Not whitelisted" />
@@ -18,11 +16,13 @@ export default function UserNotWhitelistedPage() {
         </div>
 
         <div className="w-full py-4 mb-16">
-          <a href="https://1ltwty44asn.typeform.com/to/DQ8hHy11" className="w-full">
+          <Link href="https://1ltwty44asn.typeform.com/to/DQ8hHy11" className="w-full">
             <Button>Open Form</Button>
-          </a>
+          </Link>
           <div className="mt-2"></div>
-          <Button onClick={() => router.push(`/auth`)}>Back to Auth</Button>
+          <Link href={'/auth'}>
+            <Button>Back to Auth</Button>
+          </Link>
         </div>
       </div>
     </>

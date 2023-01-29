@@ -19,6 +19,7 @@ export const contentApi = createApi({
         }
       },
       transformResponse: (res: IBaseResponse<IPostDto[]>) => {
+
         return res.data
       },
     }),
