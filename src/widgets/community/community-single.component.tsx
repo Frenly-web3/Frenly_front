@@ -1,5 +1,4 @@
 import { useCommunityInfo } from '@entities/community'
-import Image from 'next/image'
 
 interface IProperties {
   id: string
