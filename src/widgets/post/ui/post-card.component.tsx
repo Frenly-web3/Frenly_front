@@ -23,9 +23,7 @@ export const PostCard = (props: IPostCardProperties) => {
 
   return (
     <PostCardContext.Provider value={value}>
-      <article className="bg-background mb-4 py-4 rounded-[2rem] px-0">
-        {children}
-      </article>
+      <article className="bg-white mb-4 py-4 rounded-[2rem] px-0">{children}</article>
     </PostCardContext.Provider>
   )
 }

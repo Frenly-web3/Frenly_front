@@ -15,10 +15,10 @@ export const CommunitySingle = (props: IProperties) => {
   if (!community) return <>No</>
 
   return (
-    <>
+    <div>
       <div key={community.id} className={`flex gap-4`}>
         <div
-          className={`rounded-full max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
+          className={`rounded-full  max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
         >
           <img
             src={`https://stage.frenly.cc/api/community-content/images/${community.image}`}
@@ -36,6 +36,6 @@ export const CommunitySingle = (props: IProperties) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

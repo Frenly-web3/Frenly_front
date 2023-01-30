@@ -48,7 +48,7 @@ module.exports = {
       'white': 'hsla(0, 0%, 100%, 100%)',
       'black': 'hsla(0, 0%, 0%, 100%)',
 
-      'background': 'hsla(0, 0%, 100%, 100%)',
+      'background': '#F2F2F2',
 
       'heading': 'hsla(0, 0%, 0%, 100%)',
       'text': 'hsla(0, 0%, 0%, 80%)',

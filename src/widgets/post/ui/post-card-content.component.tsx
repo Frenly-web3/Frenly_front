@@ -6,7 +6,7 @@ import { usePostCardContext } from '../model'
 export function PostCardContent() {
   const { actions, ownerAddress, creationDate, transferType } = usePostCardContext()
   return (
-    <>
+    <div className="px-4">
       <PostContent
         blockchainType={actions[0]?.blockchainType as NetworkEnum}
         contractAddress={actions[0]?.contractAddress as IAddress}
@@ -21,6 +21,6 @@ export function PostCardContent() {
         to={actions[0]?.toAddress as IAddress}
         isMirror={false}
       />
-    </>
+    </div>
   )
 }

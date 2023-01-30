@@ -7,8 +7,10 @@ export function PostCardAuthor() {
   const { creationDate, ownerAddress } = usePostCardContext()
 
   return (
-    <Link href={`/profile/${ownerAddress}`}>
-      <Author address={ownerAddress} date={creationDate} />
-    </Link>
+    <div className="px-4">
+      <Link href={`/profile/${ownerAddress}`}>
+        <Author address={ownerAddress} date={creationDate} />
+      </Link>
+    </div>
   )
 }

@@ -18,7 +18,7 @@ export default function FeedPage() {
   return (
     <Layout title="feed" avatar={true}>
       <section className="container relative">
-        <div className="p-4 bg-overlay-1-solid rounded-[1rem]">
+        <div className="p-4 bg-white rounded-[1rem] mb-4">
           <CommunitySingle id="2" />
           <Link
             href={'/feed'}

@@ -27,18 +27,20 @@ export function PostCardReactions(props: IPostCardReactions) {
   }
 
   return (
-    <PostReactionContext.Provider value={value}>
-      <div className={`mt-1 flex items-center justify-between`}>
-        <TransactionLink
-          network={actions[0]?.blockchainType as NetworkEnum}
-          txHash={transactionHash as string}
-        />
-      </div>
-      <div className={`flex gap-2 justify-end`}>
-        <PostCommentButton setIsOpen={setIsOpen} />
-        <PostLikeButton />
-      </div>
-      <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
-    </PostReactionContext.Provider>
+    <div className="px-4">
+      <PostReactionContext.Provider value={value}>
+        <div className={`mt-1 flex items-center justify-between`}>
+          <TransactionLink
+            network={actions[0]?.blockchainType as NetworkEnum}
+            txHash={transactionHash as string}
+          />
+        </div>
+        <div className={`flex gap-2 justify-end`}>
+          <PostCommentButton setIsOpen={setIsOpen} />
+          <PostLikeButton />
+        </div>
+        <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
+      </PostReactionContext.Provider>
+    </div>
   )
 }

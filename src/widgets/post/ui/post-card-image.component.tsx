@@ -1,24 +1,29 @@
 import { PostImage } from '@entities/post'
 import { Carousel } from '@mantine/carousel'
 import type { IAddress } from '@shared/lib'
+import { useState } from 'react'
 
 import { usePostCardContext } from '../model'
 
 export function PostCardImage() {
   const { actions } = usePostCardContext()
 
+  const [chosedImage, setChosedImage] = useState(0)
+
   return (
     <div className="">
       {actions.length > 1 ? (
         <Carousel
+          onSlideChange={(index) => setChosedImage(index)}
           withControls
-          withIndicators
+          dragFree={false}
+          draggable={false}
           classNames={{
             control: 'bg-white',
-            indicator: 'bg-white rounded-full w-2 h-2 border-2 border-black',
           }}
           styles={{
             control: {
+              backgroundColor: 'rgba(0,0,0,0)',
               '&[data-inactive]': {
                 opacity: 0,
                 cursor: 'pointer',
@@ -34,6 +39,8 @@ export function PostCardImage() {
                     type: 'image',
                     url: `${process.env.NEXT_PUBLIC_API_URL}token-images/${action.image}`,
                   }}
+                  chosedImage={chosedImage}
+                  imagesCount={actions.length}
                   address={action.contractAddress as IAddress}
                 />
               </Carousel.Slide>

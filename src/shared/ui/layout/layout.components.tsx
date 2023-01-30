@@ -18,7 +18,7 @@ export const Layout = memo((props: IProperties) => {
   const { address } = useAccount()
 
   return (
-    <>
+    <div className="bg-background min-h-screen">
       <Meta title="frenly feed" description="your frenly feed" />
       <div className={`container flex justify-between p-4 sticky-top bg-background`}>
         <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
@@ -29,6 +29,6 @@ export const Layout = memo((props: IProperties) => {
         )}
       </div>
       {children}
-    </>
+    </div>
   )
 })

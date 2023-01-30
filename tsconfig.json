@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-    "target": "ES2021",
+    "target": "ES2022",
     "outDir": "build",
     "sourceMap": true,
     "esModuleInterop": true,
