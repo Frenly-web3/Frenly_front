@@ -1,19 +1,19 @@
-import { PostTypeEnum } from '@shared/lib'
+import { TransferTypeEnum } from '@shared/lib'
 
 export const convertTransferTypeToEnum = (transferType: string) => {
   switch (transferType) {
     case 'RECEIVE': {
-      return PostTypeEnum.Received
+      return TransferTypeEnum.RECEIVE
     }
     case 'SEND': {
-      return PostTypeEnum.Send
+      return TransferTypeEnum.SEND
     }
     case 'MINT': {
-      return PostTypeEnum.Minted
+      return TransferTypeEnum.MINT
     }
     default: {
       console.error('Incorrect post type')
-      return PostTypeEnum.Received
+      return TransferTypeEnum.RECEIVE
     }
   }
 }

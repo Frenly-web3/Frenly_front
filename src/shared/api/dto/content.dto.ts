@@ -1,25 +1,27 @@
-import type { IAddress } from '@shared/lib'
+import type { IAddress, NetworkEnum, TokenTypeEnum, TransferTypeEnum } from '@shared/lib'
 
 export interface IPostDto {
-  creationDate: Date
-  postType: any
   id: number
+  ownerAddress: IAddress
+  postType: TokenTypeEnum
+  transactionHash: string
+  transferType: TransferTypeEnum
+  creationDate: string
+  originalPost: number
   isMirror: boolean
-  mirrorDescription: string | null
+  mirrorDescription: string
   actions: IAction[]
 }
 
-interface IAction {
-  blockchainType: any
-  transferType: any
+export interface IAction {
   fromAddress: IAddress
   toAddress: IAddress
-  contractAddress: IAddress
-  tokenId: number
-  tokensAmount: number
+  tokenId: number | string
+  blockchainType: NetworkEnum
+  contractAddress: string
   tokenUri: string
-  transactionHash: IAddress
   image: string
+  tokensAmount: number
 }
 
 export interface IFeedRequest {

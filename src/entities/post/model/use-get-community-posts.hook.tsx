@@ -1,9 +1,9 @@
+import type { IPostDto } from '@shared/api'
 import { contentApi } from '@shared/api'
-import { NetworkEnum, PostTypeEnum, SIZE_POST_CHUNK, TokenTypeEnum } from '@shared/lib'
+import { SIZE_POST_CHUNK } from '@shared/lib'
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { convertTransferTypeToEnum } from '../lib'
 import type { IPost } from './post.entity'
 
 interface IGetFilteredPosts {
@@ -48,41 +48,10 @@ export const useGetCommunityPosts = (props: IProperties): IGetFilteredPosts => {
       return
     }
 
-    const posts: IPost[] = postsWithoutZeroX!.map((post: any): IPost => {
-      const {
-        transferType,
-        id: idBack,
-        image,
-        transactionHash,
-        creationDate,
-        fromAddress,
-        toAddress,
-        contractAddress,
-        postType,
-      } = post
-
-      return {
-        date: creationDate,
-        from: fromAddress,
-        network: NetworkEnum.Ethereum,
-        postType: convertTransferTypeToEnum(transferType),
-        to: toAddress,
-        txHash: transactionHash,
-        id: idBack,
-        image: `${process.env.NEXT_PUBLIC_API_URL}token-images/${image}`,
-        contractAddress,
-        creatorAddress:
-          convertTransferTypeToEnum(transferType) === PostTypeEnum.Send
-            ? fromAddress
-            : toAddress,
-        nameCollection: '',
-        sellerType: postType,
-        tokenId: '',
-        tokenType: TokenTypeEnum.ERC721,
-        price: null,
-        signedObject: null,
-      }
+    const posts: IPost[] = postsWithoutZeroX!.map((post: IPostDto): IPost => {
+      return post as IPost
     })
+
     if (posts?.length === 0) {
       setHasMore(false)
     }

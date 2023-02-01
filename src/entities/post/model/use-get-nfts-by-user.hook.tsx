@@ -1,5 +1,5 @@
 import { alchemyApi } from '@shared/api'
-import { IAddress, NetworkEnum } from '@shared/lib'
+import type { IAddress } from '@shared/lib'
 
 import type { IPost } from './post.entity'
 
@@ -17,26 +17,26 @@ export const useGetNftsByUser = ({
   })
 
   return {
-    nftPosts: nftData?.ownedNfts?.map((post: any): IPost => {
-      const { contract, timeLastUpdated, media, contractMetadata, id, postType } = post
+    nftPosts: nftData?.ownedNfts?.map((post: any): any => {
+      // const { contract, timeLastUpdated, media, contractMetadata, id, postType } = post
 
       return {
-        contractAddress: contract?.address,
-        creatorAddress: profileAddress,
-        date: timeLastUpdated,
-        from: null,
-        id: null,
-        image: media[0]?.raw,
-        network: NetworkEnum.Ethereum,
-        postType: null,
-        to: null,
-        txHash: null,
-        nameCollection: contractMetadata?.name,
-        sellerType: postType,
-        tokenId: id?.tokenId,
-        tokenType: contractMetadata?.tokenType,
-        price: null,
-        signedObject: null,
+        // contractAddress: contract?.address,
+        // creatorAddress: profileAddress,
+        // date: timeLastUpdated,
+        // from: null,
+        // id: null,
+        // image: media[0]?.raw,
+        // network: NetworkEnum.Ethereum,
+        // postType: null,
+        // to: null,
+        // txHash: null,
+        // nameCollection: contractMetadata?.name,
+        // sellerType: postType,
+        // tokenId: id?.tokenId,
+        // tokenType: contractMetadata?.tokenType,
+        // price: null,
+        // signedObject: null,
       }
     }),
   }

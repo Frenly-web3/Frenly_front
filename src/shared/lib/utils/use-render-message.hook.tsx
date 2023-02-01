@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { PostTypeEnum } from '../enums'
+import { TransferTypeEnum } from '../enums'
 
 export const useRenderMessage = () => {
   return useCallback(
@@ -10,23 +10,23 @@ export const useRenderMessage = () => {
       itemType = 'nft',
     }: {
       from: string
-      postType: PostTypeEnum
+      postType: TransferTypeEnum
       itemType?: 'nft' | 'token'
     }) => {
       let message
       const messageTypeClone =
         from == '0x0000000000000000000000000000000000000000'
-          ? PostTypeEnum.Minted
+          ? TransferTypeEnum.MINT
           : postType
 
       switch (messageTypeClone) {
-        case PostTypeEnum.Minted:
+        case TransferTypeEnum.MINT:
           message = '🎉 Minted a new '
           break
-        case PostTypeEnum.Received:
+        case TransferTypeEnum.RECEIVE:
           message = '📤 Received '
           break
-        case PostTypeEnum.Send:
+        case TransferTypeEnum.SEND:
           message = '📤 Sent '
           break
         default:
@@ -35,7 +35,7 @@ export const useRenderMessage = () => {
 
       switch (itemType) {
         case 'nft':
-          message += `${postType !== PostTypeEnum.Minted ? 'an' : ''} NFT`
+          message += `NFT`
 
           break
         case 'token':

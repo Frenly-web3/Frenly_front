@@ -1,13 +1,14 @@
 import { useGetCommunityPosts } from '@entities/post'
-import { EndOfPage, Layout, ScrollLoader } from '@shared/ui'
+import { EndOfPage, ScrollLoader } from '@shared/ui'
 import { CommunitySingle } from '@widgets/community'
+import { Layout } from '@widgets/layout'
 import { PostCard } from '@widgets/post'
 import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 export default function FeedPage() {
   const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
-    communityId: '1',
+    communityId: '2',
   })
 
   const nextLoad = async () => {
@@ -16,10 +17,10 @@ export default function FeedPage() {
     }
   }
   return (
-    <Layout title="feed" avatar={true}>
+    <Layout title="feed">
       <section className="container relative">
-        <div className="p-4 bg-overlay-1-solid rounded-[1rem]">
-          <CommunitySingle id="1" />
+        <div className="p-4 bg-white rounded-[1rem] mb-4">
+          <CommunitySingle id="2" />
           <Link
             href={'/feed'}
             className="flex max-w-fit px-4 py-2 bg-main mt-2 ml-20 text-white rounded-[1rem]"
@@ -36,9 +37,9 @@ export default function FeedPage() {
           loader={<ScrollLoader />}
           endMessage={<EndOfPage page="feed" />}
         >
-          {posts?.map((post, index) => {
+          {posts?.map((post) => {
             return (
-              <PostCard {...post} key={`${post.id}_${index}_${post.txHash}`}>
+              <PostCard {...post} key={post.id}>
                 <PostCard.Author />
                 <PostCard.Content />
                 <PostCard.Image />

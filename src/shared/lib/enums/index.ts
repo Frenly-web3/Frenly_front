@@ -1,5 +1,5 @@
 export * from './network.enum'
-export * from './post-type.enum'
+export * from './transfer-type.enum'
 export * from './role.enum'
 export * from './seller-type.enum'
 export * from './subscription.enum'
