@@ -1,5 +1,5 @@
-import { Layout } from '@shared/ui'
 import { CommunitySingle } from '@widgets/community'
+import { Layout } from '@widgets/layout'
 import Link from 'next/link'
 
 import { InfinitePosts } from './infinite-posts.component'

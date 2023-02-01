@@ -1,4 +1,4 @@
-import type { InputProps, TextInputProps } from '@mantine/core'
+import type { TextInputProps } from '@mantine/core'
 import { clsx, Input as MantineInput } from '@mantine/core'
 import React from 'react'
 

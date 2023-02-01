@@ -1,22 +1,19 @@
-// eslint-disable-next-line boundaries/element-types, import/no-cycle
 import { SmallUserCard } from '@entities/user'
 import { useIsomorphicEffect } from '@mantine/hooks'
 import type { IAddress } from '@shared/lib'
+import { Meta } from '@shared/ui'
+import { RoutesBar } from '@shared/ui/routes-bar'
 import { memo, useState } from 'react'
 import { useAccount } from 'wagmi'
 
-import { Meta } from '../meta'
-import RoutesBar from '../routes-bar/routes-bar.component'
-
 interface IProperties {
   title: string
-  avatar?: boolean
   children: React.ReactNode
 }
 
 export const Layout = memo((props: IProperties) => {
   const { children } = props
-  const { title, avatar = false } = props
+  const { title } = props
   const { address } = useAccount()
   const [addressHydration, setAddressHydration] = useState<IAddress>()
 

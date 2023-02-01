@@ -1,6 +1,7 @@
 import { useGetCommunityPosts } from '@entities/post'
-import { EndOfPage, Layout, ScrollLoader } from '@shared/ui'
+import { EndOfPage, ScrollLoader } from '@shared/ui'
 import { CommunitySingle } from '@widgets/community'
+import { Layout } from '@widgets/layout'
 import { PostCard } from '@widgets/post'
 import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -16,7 +17,7 @@ export default function FeedPage() {
     }
   }
   return (
-    <Layout title="feed" avatar={true}>
+    <Layout title="feed">
       <section className="container relative">
         <div className="p-4 bg-white rounded-[1rem] mb-4">
           <CommunitySingle id="2" />

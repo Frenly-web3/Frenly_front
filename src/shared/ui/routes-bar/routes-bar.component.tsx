@@ -9,7 +9,7 @@ export interface IRoutesBarProperties {
   children: React.ReactNode
 }
 
-export default function RoutesBar(props: IRoutesBarProperties) {
+export function RoutesBar(props: IRoutesBarProperties) {
   const { children } = props
   return (
     <div className="flex flex-col items-center">

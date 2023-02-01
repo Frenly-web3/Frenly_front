@@ -15,7 +15,7 @@ export const UserCard = (props: IUserCardProperties) => {
     address,
   })
 
-  const { data: ensName, isLoading: nameLoading } = useEnsName({
+  const { data: ensName } = useEnsName({
     address,
   })
 

@@ -1,6 +1,7 @@
 import { useUserName } from '@entities/user'
 import type { IAddress } from '@shared/lib'
-import { Layout, Meta } from '@shared/ui'
+import { Meta } from '@shared/ui'
+import { Layout } from '@widgets/layout'
 import { UserProfileWidget } from '@widgets/user-profile'
 import { isAddress } from 'ethers/lib/utils'
 import { useRouter } from 'next/router'

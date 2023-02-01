@@ -1,5 +1,5 @@
 import { SearchBlock } from '@features/search-user'
-import { Layout } from '@shared/ui'
+import { Layout } from '@widgets/layout'
 import * as React from 'react'
 
 export default function SearchPage() {
