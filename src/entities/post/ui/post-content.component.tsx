@@ -51,7 +51,7 @@ export const PostContent = (props: IPostContentProperties) => {
     with0x: true,
   })
 
-  console.log("asdjiasosjfojasrirofrjoa",from, formatedfrom)
+  console.log('asdjiasosjfojasrirofrjoa', from, formatedfrom)
   return (
     <div className="py-4">
       <h4 className="text-text font-medium font-text break-words">
@@ -72,7 +72,7 @@ export const PostContent = (props: IPostContentProperties) => {
               rel="noreferrer"
             >
               {from == '0x0000000000000000000000000000000000000000'
-                ? `🎉 ${formatedTo}`
+                ? `🎉 ${formatedContractAddress}`
                 : messageType == TransferTypeEnum.RECEIVE
                 ? `📤 ${formatedTo}`
                 : `📤 ${formatedfrom}`}
@@ -103,19 +103,13 @@ export const PostContent = (props: IPostContentProperties) => {
         <Link
           className="text-main"
           rel="noreferrer"
-          href={
-            blockchainType === 'ETHEREUM'
-              ? `/profile/${
-                  from == '0x0000000000000000000000000000000000000000'
-                    ? contractAddress
-                    : to
-                }`
-              : `/profile/${
-                  from == '0x0000000000000000000000000000000000000000'
-                    ? contractAddress
-                    : from
-                }`
-          }
+          href={`/profile/${
+            from == '0x0000000000000000000000000000000000000000'
+              ? contractAddress
+              : messageType == TransferTypeEnum.RECEIVE
+              ? from
+              : to
+          }`}
         >
           {from == '0x0000000000000000000000000000000000000000'
             ? formatedContractAddress

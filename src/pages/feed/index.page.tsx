@@ -6,7 +6,7 @@ import { InfinitePosts } from './infinite-posts.component'
 
 export default function FeedPage() {
   return (
-    <Layout title="feed" avatar={true}>
+    <Layout title="feed">
       <section className="container relative">
         <div className="p-4 bg-white rounded-[1rem] mb-4">
           <CommunitySingle id="2" />

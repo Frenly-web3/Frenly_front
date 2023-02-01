@@ -1,16 +1,22 @@
+import type { InputProps, TextInputProps } from '@mantine/core'
+import { clsx, Input as MantineInput } from '@mantine/core'
 import React from 'react'
 
-interface IInputProperties extends React.ComponentProps<'input'> {}
+interface IInputProperties extends TextInputProps {
+  children?: React.ReactNode
+  placeholder?: string
+}
 
 export const Input = (props: IInputProperties) => {
-  const {} = props
+  const { children, ...restProperties } = props
   return (
-    <div className={`flex rounded-2xl bg-light-gray px-4 py-2 w-full mr-2`}>
-      <input
-        style={{ background: 'transparent' }}
-        className="outline-none w-full"
-        {...props}
-      />
-    </div>
+    <MantineInput
+      {...restProperties}
+      classNames={{ ...restProperties.classNames }}
+      className={clsx('w-full p-3', restProperties.className)}
+      placeholder={restProperties.placeholder}
+    >
+      {children}
+    </MantineInput>
   )
 }

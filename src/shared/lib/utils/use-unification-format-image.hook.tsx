@@ -12,16 +12,40 @@ export const useUnificationFormatImage = ({
     if (image.url == '') {
       return
     }
+    if (image.url.slice(-3) == 'png') {
+      return {
+        type: 'image',
+        url: image.url.replace('.png', ''),
+      }
+    }
+    if (image.url.slice(-4) == 'jpeg') {
+      return {
+        type: 'image',
+        url: image.url.replace('.jpeg', ''),
+      }
+    }
+    if (image.url.slice(-3) == 'gif') {
+      return {
+        type: 'image',
+        url: image.url.replace('.gif', ''),
+      }
+    }
+    if (image.url.slice(-3) == 'xml') {
+      return {
+        type: 'image',
+        url: image.url.replace('.svg+xml', ''),
+      }
+    }
     if (image.url.slice(-3) == 'mp4') {
       return {
         type: 'video',
-        url: image.url,
+        url: image.url.replace('.mp4', ''),
       }
     }
     if (image.url.slice(-4) == 'webm') {
       return {
         type: 'video',
-        url: image.url,
+        url: image.url.replace('.webm', ''),
       }
     }
 

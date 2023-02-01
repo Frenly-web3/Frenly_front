@@ -17,7 +17,6 @@ export function PostCardImage() {
           onSlideChange={(index) => setChosedImage(index)}
           withControls
           dragFree={false}
-          draggable={false}
           classNames={{
             control: 'bg-white',
           }}
@@ -37,7 +36,7 @@ export function PostCardImage() {
                 <PostImage
                   image={{
                     type: 'image',
-                    url: `${process.env.NEXT_PUBLIC_API_URL}token-images/${action.image}`,
+                    url: `${action.image}`,
                   }}
                   chosedImage={chosedImage}
                   imagesCount={actions.length}
@@ -51,7 +50,7 @@ export function PostCardImage() {
         <PostImage
           image={{
             type: 'image',
-            url: `${process.env.NEXT_PUBLIC_API_URL}token-images/${actions[0]?.image}`,
+            url: `${actions[0]?.image}`,
           }}
           address={actions[0]?.contractAddress as IAddress}
         />

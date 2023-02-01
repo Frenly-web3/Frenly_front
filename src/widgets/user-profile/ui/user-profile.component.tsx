@@ -11,11 +11,13 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props
 
   return (
-    <div className="container py-3 top-0 bg-white">
-      <div className="flex flex-col justify-center border-b border-border-color">
+    <div className="container py-3 top-0 bg-background">
+      <div className="flex flex-col justify-center items-center">
         <InfoUploadComponent address={address} />
 
-        <FollowUnfollowButton address={address} />
+        <div className="mt-8">
+          <FollowUnfollowButton address={address} />
+        </div>
       </div>
     </div>
   )
