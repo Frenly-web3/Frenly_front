@@ -2,9 +2,9 @@ import { useGetCommunityPosts } from '@entities/post'
 import { EndOfPage, ScrollLoader } from '@shared/ui'
 import { CommunitySingle } from '@widgets/community'
 import { Layout } from '@widgets/layout'
-import { PostCard } from '@widgets/post'
-import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
+
+import { PostList } from './post-list.component'
 
 export default function FeedPage() {
   const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
@@ -17,18 +17,7 @@ export default function FeedPage() {
     }
   }
   return (
-    <Layout title="feed">
-      <section className="container relative">
-        <div className="p-4 bg-white rounded-[1rem] mb-4">
-          <CommunitySingle id="2" />
-          <Link
-            href={'/feed'}
-            className="flex max-w-fit px-4 py-2 bg-main mt-2 ml-20 text-white rounded-[1rem]"
-          >
-            Back
-          </Link>
-        </div>
-      </section>
+    <Layout title="feed - Orange DAO" rightSidebar={<CommunitySingle id="2" />}>
       <section className="container relative">
         <InfiniteScroll
           dataLength={posts.length}
@@ -37,16 +26,7 @@ export default function FeedPage() {
           loader={<ScrollLoader />}
           endMessage={<EndOfPage page="feed" />}
         >
-          {posts?.map((post) => {
-            return (
-              <PostCard {...post} key={post.id}>
-                <PostCard.Author />
-                <PostCard.Content />
-                <PostCard.Image />
-                <PostCard.Reactions />
-              </PostCard>
-            )
-          })}
+          <PostList posts={posts} />
         </InfiniteScroll>
       </section>
     </Layout>

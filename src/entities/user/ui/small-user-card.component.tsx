@@ -27,7 +27,9 @@ export function SmallUserCard(props: ISmallUserCardProperties) {
         width={16}
         height={16}
       />
-      <div className={`text-base font-normal text-black/40 font-rounded text-center`}>
+      <div
+        className={`text-base max-md:hidden font-normal text-black/40 font-rounded text-center`}
+      >
         {ensName || shortAddress({ address, with0x: true })}
       </div>
     </Link>

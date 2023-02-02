@@ -6,10 +6,10 @@ export const ProfileButton = (props: IProfileButtonProperties) => {
   const { children } = props
   return (
     <button
-      className="rounded-full bg-main py-2 text-white text-sm font-semibold w-23 pl-4 pr-4 m-auto mb-8"
+      className="rounded-full flex items-center bg-main py-2 text-white text-sm font-semibold font-rounded w-23 pl-4 pr-4 m-auto mb-8"
       {...props}
     >
-      {children}
+      <span className="text-white/60 mr-2">+</span> <>{children}</>
     </button>
   )
 }

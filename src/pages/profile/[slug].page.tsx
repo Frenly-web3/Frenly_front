@@ -17,11 +17,11 @@ export default function ProfilePage() {
   if (!isAddress(address)) return <>Error</>
 
   return (
-    <div className="bg-background min-h-screen">
-      <Layout title="profile">
-        <Meta title={`${name} on frenly`} description={`${name}'s profile on frenly`} />
+    <Layout title="profile">
+      <Meta title={`${name} on frenly`} description={`${name}'s profile on frenly`} />
+      <div className="px-2">
         <UserProfileWidget address={address} />
-      </Layout>
-    </div>
+      </div>
+    </Layout>
   )
 }
