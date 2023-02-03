@@ -8,7 +8,7 @@ import { PostList } from './post-list.component'
 
 export default function FeedPage() {
   const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
-    communityId: '2',
+    communityId: '1',
   })
 
   const nextLoad = async () => {
