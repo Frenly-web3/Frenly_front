@@ -16,7 +16,7 @@ interface IPostCardReactions {}
 
 export function PostCardReactions(props: IPostCardReactions) {
   const {} = props
-  const { network, txHash, id } = usePostCardContext()
+  const { actions, id, transactionHash } = usePostCardContext()
   const [isOpen, setIsOpen] = React.useState(false)
   const { comments, addComment, isError: commentsError } = usePostComment({ postId: id! })
   const { isError: likesError, isLiked, likeUnlike, count } = usePostLike({ postId: id! })
@@ -27,15 +27,21 @@ export function PostCardReactions(props: IPostCardReactions) {
   }
 
   return (
-    <PostReactionContext.Provider value={value}>
-      <div className={`mt-1 flex items-center justify-between`}>
-        <TransactionLink network={network as NetworkEnum} txHash={txHash as string} />
-      </div>
-      <div className={`flex gap-2 justify-end`}>
-        <PostCommentButton setIsOpen={setIsOpen} />
-        <PostLikeButton />
-      </div>
-      <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
-    </PostReactionContext.Provider>
+    <div className="px-4">
+      <PostReactionContext.Provider value={value}>
+        <div className={`mt-4 flex items-center justify-between`}>
+          <TransactionLink
+            network={actions[0]?.blockchainType as NetworkEnum}
+            txHash={transactionHash as string}
+          />
+          <div className={`flex gap-2 justify-end`}>
+            <PostCommentButton setIsOpen={setIsOpen} />
+            <PostLikeButton />
+          </div>
+        </div>
+
+        <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
+      </PostReactionContext.Provider>
+    </div>
   )
 }

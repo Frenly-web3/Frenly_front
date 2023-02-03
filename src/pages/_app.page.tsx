@@ -11,14 +11,28 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import { configureChains, createClient, mainnet, WagmiConfig } from 'wagmi'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { publicProvider } from 'wagmi/providers/public'
 
-const { provider, webSocketProvider } = configureChains([mainnet], [publicProvider()])
+const { provider, webSocketProvider, chains } = configureChains(
+  [mainnet],
+  [publicProvider()]
+)
 
 const wagmiClient = createClient({
   provider,
   webSocketProvider,
   autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: false,
+      },
+    }),
+  ],
 })
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

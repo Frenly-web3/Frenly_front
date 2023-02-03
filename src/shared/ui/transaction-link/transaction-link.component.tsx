@@ -1,4 +1,4 @@
-import { NetworkEnum } from '@shared/lib'
+import type { NetworkEnum } from '@shared/lib'
 import type { FC } from 'react'
 import React from 'react'
 
@@ -12,22 +12,26 @@ export const TransactionLink: FC<ITransactionLinkProperties> = (
 ) => {
   const { txHash, network } = props
 
-  console.log(txHash)
+  console.log(network)
 
   return (
     <div className="flex flex-col">
-      <div className="text-sm font-normal text-gray-darker mt-1">FrenlyPost</div>
       <a
         target="_blank"
         href={
-          network == NetworkEnum.Ethereum
-            ? `https://etherscan.io/tx/${txHash}`
-            : `https://mumbai.polygonscan.com/tx/${txHash}`
+          // network == NetworkEnum.Ethereum
+          //   ?
+          `https://etherscan.io/tx/${txHash}`
+          // : `https://mumbai.polygonscan.com/tx/${txHash}`
         }
         className="text-sm text-main"
         rel="noreferrer"
       >
-        {network === 'ETHEREUM' ? 'Etherscan' : 'Polygonscan'}
+        {
+          // network === 'ETHEREUM' ?
+          'Etherscan'
+          //  : 'Polygonscan'
+        }
       </a>
     </div>
   )

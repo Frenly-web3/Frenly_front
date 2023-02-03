@@ -28,7 +28,7 @@ module.exports = withBundleAnalyzer({
   },
   env: {
     
-    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_API_URL,
     
   },
   poweredByHeader: false,

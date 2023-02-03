@@ -1,4 +1,4 @@
-import type { NetworkEnum, PostTypeEnum } from '@shared/lib'
+import type { NetworkEnum, TransferTypeEnum } from '@shared/lib'
 import { IconButton } from '@shared/ui'
 import React from 'react'
 
@@ -8,7 +8,7 @@ interface ITwitterButton {
   image: string | null
   from: string | null
   contractAddress: string | null
-  postType: PostTypeEnum | null
+  postType: TransferTypeEnum | null
   to: string | null
   network: NetworkEnum | null
   txHash: string | null
@@ -21,7 +21,7 @@ export const TwitterButton = (props: ITwitterButton) => {
     contractAddress: contractAddress as string,
     from: from as string,
     network: network as NetworkEnum,
-    postType: postType as PostTypeEnum,
+    postType: postType as TransferTypeEnum,
     to: to as string,
     txHash: txHash as string,
     image: image as string,

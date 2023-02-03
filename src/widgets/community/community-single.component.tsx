@@ -1,5 +1,6 @@
 import { useCommunityInfo } from '@entities/community'
-import Image from 'next/image'
+import { Paper } from '@mantine/core'
+import Link from 'next/link'
 
 interface IProperties {
   id: string
@@ -16,27 +17,35 @@ export const CommunitySingle = (props: IProperties) => {
   if (!community) return <>No</>
 
   return (
-    <>
-      <div key={community.id} className={`flex gap-4`}>
+    <Paper className="rounded-[2rem] w-60 p-8 flex flex-col max-md:hidden mt-16 h-fit items-start sticky top-4">
+      <div className="flex justify-between items-center w-full">
         <div
-          className={`rounded-full max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
+          className={`rounded-full  max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
         >
-          <Image
-            src={`https://gm.frenly.cc/rest/community-content/images/${community.image}`}
+          <img
+            src={`https://stage.frenly.cc/api/community-content/images/${community.image}`}
             alt={`${community.name} logo`}
-            layout={'fill'}
+            // layout={'fill'}
           />
         </div>
-        <div className={`flex flex-col gap-0`}>
-          <div className={`font-rounded text-heading font-semibold text-lg`}>
-            {community.name}
-          </div>
-          <div className={``}>{community.description}</div>
-          <div className={`font-compact text-hidden text-sm font-extralight`}>
-            Members: {community.membersAmount}
-          </div>
+        <Link href={'/feed/orange'}>
+          <img
+            src={`/assets/icons/redirect.svg`}
+            alt={`${community.name} logo`}
+            // layout={'fill'}
+          />
+        </Link>
+      </div>
+
+      <div className={`flex flex-col gap-0`}>
+        <div className={`font-rounded text-heading font-semibold text-lg`}>
+          {community.name}
+        </div>
+        <div className={`text-base`}>{community.description}</div>
+        <div className={`font-compact text-hidden text-sm font-extralight`}>
+          Members: {community.membersAmount}
         </div>
       </div>
-    </>
+    </Paper>
   )
 }

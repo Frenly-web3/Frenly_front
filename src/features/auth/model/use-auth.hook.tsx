@@ -1,6 +1,7 @@
 import { revertInitialState, setAuth, setTokens } from '@entities/user'
 import { authApi } from '@shared/api'
 import { isWhitelisted, useAppDispatch } from '@shared/lib'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { useAccount, useConnect, useSignMessage } from 'wagmi'
 
@@ -13,6 +14,7 @@ export function useAuth() {
   const deleteTokensDispatch = useAppDispatch(revertInitialState)
   const { signMessageAsync } = useSignMessage()
   const { connectAsync, connectors } = useConnect()
+  const router = useRouter()
 
   const [isLoading, setIsLoading] = React.useState(false)
   const [isError, setIsError] = React.useState<false | string>(false)
@@ -20,6 +22,7 @@ export function useAuth() {
   const login = React.useCallback(async () => {
     setIsLoading(true)
     if (address && !isWhitelisted(address)) {
+      router.push('/user-not-whitelisted')
       return
     }
 
@@ -50,6 +53,8 @@ export function useAuth() {
         }
       }
     } catch (error: any) {
+      console.log(error)
+
       setIsError(error.message)
     }
   }, [
