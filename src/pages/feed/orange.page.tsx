@@ -17,7 +17,7 @@ export default function FeedPage() {
     }
   }
   return (
-    <Layout title="feed - Orange DAO" rightSidebar={<CommunitySingle id="2" />}>
+    <Layout title="feed - Orange DAO" rightSidebar={<CommunitySingle id="1" />}>
       <section className="container relative">
         <InfiniteScroll
           dataLength={posts.length}
