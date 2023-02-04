@@ -1,5 +1,5 @@
-import { useUserName } from '@entities/user'
 import type { IAddress } from '@shared/lib'
+import { useUserName } from '@shared/lib'
 import { Meta } from '@shared/ui'
 import { Layout } from '@widgets/layout'
 import { UserProfileWidget } from '@widgets/user-profile'

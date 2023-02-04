@@ -1,7 +1,6 @@
 import type { IAddress } from '@shared/lib'
+import { useUserName } from '@shared/lib'
 import React from 'react'
-
-import { useUserName } from '../model'
 
 interface IProperties {
   address: IAddress

@@ -1,9 +1,7 @@
-// eslint-disable-next-line boundaries/element-types
-import { useUserName } from '@entities/user'
-import type { IAddress, NetworkEnum } from '@shared/lib'
-import { TransferTypeEnum, useRenderMessage } from '@shared/lib'
-import Link from 'next/link'
+import type { IAddress, NetworkEnum, TransferTypeEnum } from '@shared/lib'
 import React from 'react'
+
+import { useRenderMessage } from '../lib'
 
 interface IPostContentProperties {
   showDate: boolean
@@ -20,104 +18,19 @@ interface IPostContentProperties {
   isMirror: boolean | null
 }
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export const PostContent = (props: IPostContentProperties) => {
-  const {
-    blockchainType,
-    messageType,
+  const { messageType, from, to, contractAddress, mirrorDescription } = props
+
+  const renderMessage = useRenderMessage({
+    contractAddress: contractAddress as IAddress,
     from,
+    postType: messageType,
     to,
-    creatorAddress,
-    contractAddress,
-    mirrorDescription,
-    itemType = 'nft',
-    isMirror,
-  } = props
-
-  const renderMessage = useRenderMessage()
-
-  const { data: formatedContractAddress } = useUserName({
-    address: contractAddress as `0x${string}`,
-    with0x: true,
   })
 
-  const { data: formatedfrom } = useUserName({
-    address: from,
-    with0x: true,
-  })
-
-  const { data: formatedTo } = useUserName({
-    address: to,
-    with0x: true,
-  })
-
-  console.log('asdjiasosjfojasrirofrjoa', from, formatedfrom)
   return (
     <div className="py-4">
-      <h4 className="text-text font-medium font-text break-words">
-        {(creatorAddress === process.env.NEXT_PUBLIC_ADMIN_ADDRESS || isMirror) && (
-          <>
-            <a
-              target="_blank"
-              href={
-                blockchainType === 'ETHEREUM'
-                  ? `https://etherscan.io/address/${
-                      messageType == TransferTypeEnum.RECEIVE ? to : from
-                    }`
-                  : `https://polygonscan.com/address/${
-                      messageType == TransferTypeEnum.RECEIVE ? to : from
-                    }`
-              }
-              className="text-main"
-              rel="noreferrer"
-            >
-              {from == '0x0000000000000000000000000000000000000000'
-                ? `🎉 ${formatedContractAddress}`
-                : messageType == TransferTypeEnum.RECEIVE
-                ? `📤 ${formatedTo}`
-                : `📤 ${formatedfrom}`}
-            </a>
-            <>
-              {' '}
-              {from == '0x0000000000000000000000000000000000000000'
-                ? `minted a new`
-                : messageType == TransferTypeEnum.RECEIVE
-                ? `received`
-                : `sent`}{' '}
-              NFT
-            </>
-          </>
-        )}
-        {creatorAddress !== process.env.NEXT_PUBLIC_ADMIN_ADDRESS &&
-          !isMirror &&
-          renderMessage({ from: from as string, itemType, postType: messageType })}{' '}
-        {from !== '0x0000000000000000000000000000000000000000' ? (
-          messageType == TransferTypeEnum.RECEIVE ? (
-            <>from&nbsp;</>
-          ) : (
-            <>to&nbsp;</>
-          )
-        ) : (
-          <>from Smart contract&nbsp;</>
-        )}
-        <Link
-          className="text-main"
-          rel="noreferrer"
-          href={`/profile/${
-            from == '0x0000000000000000000000000000000000000000'
-              ? contractAddress
-              : messageType == TransferTypeEnum.RECEIVE
-              ? from
-              : to
-          }`}
-        >
-          {from == '0x0000000000000000000000000000000000000000'
-            ? formatedContractAddress
-            : messageType == TransferTypeEnum.RECEIVE
-            ? formatedfrom
-            : formatedTo}
-        </Link>
-      </h4>
+      <h4 className="text-text font-medium font-text break-words">{renderMessage}</h4>
       {mirrorDescription && (
         <div className="text-text font-normal text-gray-darker mt-1">
           {mirrorDescription}
