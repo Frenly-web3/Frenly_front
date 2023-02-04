@@ -48,7 +48,7 @@ export const useRenderMessage = ({
       case TransferTypeEnum.RECEIVE:
         return (
           <>
-            📤 Received NFT from{' '}
+            📥 Received NFT from{' '}
             <Link className="text-main" rel="noreferrer" href={`/profile/${from}`}>
               {formatedfrom}
             </Link>
