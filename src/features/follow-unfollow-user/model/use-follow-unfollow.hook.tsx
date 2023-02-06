@@ -18,9 +18,12 @@ export const useFollowUnfollowUser = (props: IProperties) => {
   const { data: isSubscribed, isLoading } = userApi.useIsSubscriberQuery({ address })
 
   React.useEffect(() => {
-    if (isSubscribed) setFollowUnfollowState(Subscription.UNFOLLOW)
-    setFollowUnfollowState(Subscription.FOLLOW)
-  }, [])
+    if (isSubscribed) {
+      setFollowUnfollowState(Subscription.UNFOLLOW)
+    } else {
+      setFollowUnfollowState(Subscription.FOLLOW)
+    }
+  }, [isSubscribed])
 
   const [subscribeUser] = userApi.useSubscribeUserMutation()
   const [unSubscribeUser] = userApi.useUnSubscribeUserMutation()
@@ -66,5 +69,6 @@ export const useFollowUnfollowUser = (props: IProperties) => {
     followUnfollowHandler,
     followUnfollowState,
     followerAmount: user.totalFollowers,
+    subscriberAmount: user.totalSubscribers,
   }
 }
