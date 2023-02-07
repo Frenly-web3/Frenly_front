@@ -6,6 +6,8 @@ import { InfinitePosts } from './infinite-posts.component'
 
 export default function FeedPage() {
   useChangeAddress()
+
+
   return (
     <Layout
       title="feed"

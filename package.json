@@ -54,7 +54,7 @@
     "fast-average-color": "^9.3.0",
     "graphql": "^16.6.0",
     "humanize-duration": "^3.27.3",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "next": "^13.1.1",
     "next-seo": "^5.4.0",
