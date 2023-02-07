@@ -4,16 +4,16 @@ import { useMemo } from 'react'
 import { useEnsAddress } from 'wagmi'
 
 export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
-  const { data: ensAddress } = useEnsAddress({
+  const { data: ensAddress, isFetching } = useEnsAddress({
     name: value,
   })
   return useMemo(() => {
-    if (isAddress(value)) {
-      return value
+    if (isAddress(value.toLowerCase())) {
+      return { address: value, isLoading: false }
     }
-    if (isEnsName(value)) {
-      return ensAddress
+    if (isEnsName(value.toLowerCase())) {
+      return { address: ensAddress, isLoading: isFetching }
     }
-    return null
-  }, [ensAddress, value])
+    return { address: null, isLoading: false }
+  }, [ensAddress, isFetching, value])
 }
