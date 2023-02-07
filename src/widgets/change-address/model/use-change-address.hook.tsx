@@ -1,4 +1,3 @@
-import { AuthHelper } from '@entities/user'
 import { useAuth } from '@features/auth'
 import { isWhitelisted } from '@shared/lib'
 import { useRouter } from 'next/router'
@@ -14,7 +13,6 @@ export const useChangeAddress = () => {
 
   const { login } = useAuth()
   useEffect(() => {
-    
     if (address && !isWhitelisted(address)) {
       router.push('/user-not-whitelisted')
       return

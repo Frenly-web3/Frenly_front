@@ -1,4 +1,4 @@
-import { useAuthContext, userSelector } from '@entities/user'
+import { userSelector } from '@entities/user'
 import { AuthButton } from '@features/auth'
 import { isWhitelisted } from '@shared/lib'
 import { useRouter } from 'next/router'
@@ -9,9 +9,6 @@ const Index = () => {
   const { address } = useAccount()
   const router = useRouter()
   const user = useSelector(userSelector)
-
-  const { isAuth } = useAuthContext()
-
   if (address && isWhitelisted(address) && user.isAuth) router.push('/feed')
   return (
     <div className="container flex flex-col items-center h-screen pb-8">

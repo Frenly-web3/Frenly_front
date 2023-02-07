@@ -1,6 +1,6 @@
 import { useLocalStorage } from '@mantine/hooks'
 import { useAppDispatch } from '@shared/lib'
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 
 import { AuthHelper } from './lib'
@@ -15,7 +15,6 @@ export const AuthContext = createContext<IAuthContext>({
 })
 
 export const AuthContextProvider = ({ children }: any) => {
-  const [isAuth, setIsAuth] = useState<boolean | undefined>()
   const [token] = useLocalStorage({ key: 'access-token' })
   const setAuthDispatch = useAppDispatch(setAuth)
   const { address } = useAccount()
