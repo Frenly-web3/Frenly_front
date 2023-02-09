@@ -22,7 +22,7 @@ export const Layout = memo((props: IProperties) => {
     setAddressHydration(address as IAddress)
   })
   return (
-    <div className="bg-background min-h-screen md:flex justify-center px-2">
+    <div className="bg-background   min-h-screen md:flex justify-center px-2">
       <Meta title="frenly feed" description="your frenly feed" />
 
       <RoutesBar>

@@ -5,7 +5,7 @@ import { Modal } from '../modal'
 export const Loader = () => {
   const { isLoading } = useLoaderContext()
   return (
-    <Modal show={isLoading}>
+    <Modal opened={isLoading} onClose={() => {}}>
       <img
         src="/assets/icons/eyesLogo.svg"
         alt="eyes"

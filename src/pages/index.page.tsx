@@ -9,7 +9,6 @@ const Index = () => {
   const { address } = useAccount()
   const router = useRouter()
   const user = useSelector(userSelector)
-
   if (address && isWhitelisted(address) && user.isAuth) router.push('/feed')
   return (
     <div className="container flex flex-col items-center h-screen pb-8">

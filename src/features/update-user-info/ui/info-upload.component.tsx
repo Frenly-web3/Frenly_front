@@ -8,7 +8,6 @@ interface IInfoUploadProperties {
 
 export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const { address } = props
-
   return (
     <>
       <UserCard address={address} />

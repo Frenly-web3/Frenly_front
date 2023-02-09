@@ -18,6 +18,7 @@ export const PostImage = (props: IPostContentProperties) => {
 
   const unificationImage = useUnificationFormatImage({ image })
 
+  console.log(imagesCount)
   return (
     <div className="">
       <div className="relative overflow-hidden">
@@ -46,7 +47,7 @@ export const PostImage = (props: IPostContentProperties) => {
           </div>
         )}
         {imagesCount && (
-          <div className="absolute md:hidden right-3 top-3 z-20 rounded-full bg-[#00000040] px-3 py-2 text-sm font-medium text-white">
+          <div className="absolute right-3 top-3 z-50 rounded-full bg-black/40 px-3 py-2 text-sm font-medium text-white">
             {(chosedImage as number) + 1} / {imagesCount}
           </div>
         )}

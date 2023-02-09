@@ -1,6 +1,7 @@
 import type { IAddress } from '@shared/lib'
 import { useUserName } from '@shared/lib'
 import { Meta } from '@shared/ui'
+import { useChangeAddress } from '@widgets/change-address'
 import { Layout } from '@widgets/layout'
 import { UserProfileWidget } from '@widgets/user-profile'
 import { isAddress } from 'ethers/lib/utils'
@@ -14,12 +15,14 @@ export default function ProfilePage() {
   const address = slug as IAddress
   const { data: name } = useUserName({ address })
 
+  useChangeAddress()
+
   if (!isAddress(address)) return <>Error</>
 
   return (
     <Layout title="profile">
       <Meta title={`${name} on frenly`} description={`${name}'s profile on frenly`} />
-      <div className="px-2">
+      <div className="">
         <UserProfileWidget address={address} />
       </div>
     </Layout>

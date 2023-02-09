@@ -42,29 +42,40 @@ export const baseQueryWithReauth: BaseQueryFn<
 
       try {
         // @ts-ignore
-        const refreshResult: { data: { accessToken: string; refreshToken: string } } =
-          await baseQuery(
-            {
-              url: 'auth/refresh-token',
-              method: 'POST',
-              body: {
-                refreshToken: localStorage.getItem('refresh-token'),
-              },
+        const refreshResult: {
+          data: { data: { accessToken: string; refreshToken: string } }
+        } = await baseQuery(
+          {
+            url: 'auth/refresh-token',
+            method: 'POST',
+            body: {
+              accessToken: localStorage.getItem('access-token'),
+              refreshToken: localStorage.getItem('refresh-token'),
             },
-            api,
-            extraOptions
-          )
+          },
+          api,
+          extraOptions
+        )
 
         if (refreshResult.data) {
-          localStorage.setItem('access-token', refreshResult.data.accessToken)
-          localStorage.setItem('refresh-token', refreshResult.data.refreshToken)
+          console.log(
+            '🚀 ~ file: base-query.ts:60 ~ refreshResult.data',
+            refreshResult.data.data
+          )
+
+          localStorage.setItem('access-token', refreshResult.data.data.accessToken)
+          localStorage.setItem('refresh-token', refreshResult.data.data.refreshToken)
 
           // retry the initial query
           result = await baseQuery(arguments_, api, extraOptions)
         } else {
           localStorage.removeItem('access-token')
           localStorage.removeItem('refresh-token')
+          window.location.replace('/')
         }
+      } catch (error) {
+        console.log('ERROR:', error)
+        // window.location.replace('/')
       } finally {
         release()
       }
