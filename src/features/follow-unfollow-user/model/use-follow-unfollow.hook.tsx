@@ -1,7 +1,7 @@
 import { useUserInfo } from '@entities/user'
 import { userApi } from '@shared/api'
 import type { IAddress } from '@shared/lib'
-import { Subscription, useLoaderContext } from '@shared/lib'
+import { Subscription } from '@shared/lib'
 import React from 'react'
 
 interface IProperties {
@@ -11,7 +11,7 @@ interface IProperties {
 export const useFollowUnfollowUser = (props: IProperties) => {
   const { address } = props
   const { user, refetchUserInfo } = useUserInfo({ address })
-  const { setIsLoading } = useLoaderContext()
+  // const { setIsLoading } = useLoaderContext()
   const [followUnfollowState, setFollowUnfollowState] =
     React.useState<Subscription | null>(null)
 
