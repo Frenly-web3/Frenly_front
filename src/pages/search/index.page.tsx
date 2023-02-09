@@ -7,7 +7,7 @@ export default function SearchPage() {
   useChangeAddress()
   return (
     <Layout title="search">
-      <section className="container">
+      <section className="md:container max-md:h-full">
         <SearchBlock />
       </section>
     </Layout>

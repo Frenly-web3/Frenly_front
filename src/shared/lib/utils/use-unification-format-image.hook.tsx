@@ -30,6 +30,12 @@ export const useUnificationFormatImage = ({
         url: image.url.replace('.gif', ''),
       }
     }
+    if (image.url.slice(-5) == '.webp') {
+      return {
+        type: 'image',
+        url: image.url.replace('.webp', ''),
+      }
+    }
     if (image.url.slice(-3) == 'xml') {
       return {
         type: 'image',

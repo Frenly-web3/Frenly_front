@@ -22,7 +22,7 @@ export default function ProfilePage() {
   return (
     <Layout title="profile">
       <Meta title={`${name} on frenly`} description={`${name}'s profile on frenly`} />
-      <div className="px-2">
+      <div className="">
         <UserProfileWidget address={address} />
       </div>
     </Layout>
