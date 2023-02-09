@@ -13,7 +13,7 @@ interface IDescriptionProperties {
 export const DescriptionModal = (props: IDescriptionProperties) => {
   const { show, description, setDescription, descriptionHandler, closeModal } = props
   return (
-    <Modal show={show}>
+    <Modal opened={show} onClose={closeModal}>
       <div className="w-full pt-4 pb-4 flex">
         <div className="flex rounded-2xl bg-gray-darker px-4 py-2 w-full mr-2">
           <input

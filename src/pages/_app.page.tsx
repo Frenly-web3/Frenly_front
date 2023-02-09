@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { ApolloProvider } from '@apollo/client'
 import { store } from '@app/store'
+import { AuthContextProvider } from '@entities/user'
 import { client } from '@shared/api'
 import { LoaderContextProvider } from '@shared/lib'
 import { Loader } from '@shared/ui'
@@ -40,22 +41,24 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     <WagmiConfig client={wagmiClient}>
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <LoaderContextProvider>
-            <ToastContainer
-              position="bottom-left"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
-            <Component {...pageProps} />
-            <Loader />
-          </LoaderContextProvider>
+          <AuthContextProvider>
+            <LoaderContextProvider>
+              <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
+              <Component {...pageProps} />
+              <Loader />
+            </LoaderContextProvider>
+          </AuthContextProvider>
         </Provider>
       </ApolloProvider>
     </WagmiConfig>

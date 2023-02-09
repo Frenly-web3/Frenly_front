@@ -35,10 +35,10 @@ export const UserCard = (props: IUserCardProperties) => {
 
       <img
         src={ensAvatar || '/assets/images/temp-avatar.png'}
-        className={`align-center rounded-full mb-4 ${avatarLoading && 'animate-pulse'}`}
+        className={`align-center w-[128px] h-[128px] rounded-full mb-4 ${avatarLoading && 'animate-pulse'}`}
         alt="avatar"
-        width={128}
-        height={128}
+        // width={128}
+        // height={128}
       />
 
       {ensName && (

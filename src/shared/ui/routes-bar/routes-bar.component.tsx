@@ -12,11 +12,11 @@ export interface IRoutesBarProperties {
 export function RoutesBar(props: IRoutesBarProperties) {
   const { children } = props
   return (
-    <div className="flex flex-col h-fit items-center max-md:border max-md:border-t-2 max-md:border-white/20 max-md:left-0 z-50 sticky md:top-4 max-md:top-[92%]">
+    <div className="flex flex-col h-fit items-center max-md:border max-md:border-t-2 max-md:border-white/20 max-md:left-0 z-50 md:sticky fixed md:top-4 max-md:w-screen max-md:top-[92%]">
       <div className="max-w-32 h-9 mb-6 max-md:hidden">
         <Image alt={'logo'} src={'/assets/icons/logo.svg'} />
       </div>
-      <Paper className="md:rounded-[2rem] justify-between md:w-60 max-md:w-screen flex md:flex-col">
+      <Paper className="md:rounded-[2rem] justify-between md:w-60 max-md:w-full flex md:flex-col">
         {ROUTES.map((route, index) => {
           return (
             <Link

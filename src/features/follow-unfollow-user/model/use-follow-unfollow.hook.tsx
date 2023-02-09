@@ -1,7 +1,7 @@
 import { useUserInfo } from '@entities/user'
 import { userApi } from '@shared/api'
 import type { IAddress } from '@shared/lib'
-import { Subscription, useLoaderContext } from '@shared/lib'
+import { Subscription } from '@shared/lib'
 import React from 'react'
 
 interface IProperties {
@@ -11,23 +11,26 @@ interface IProperties {
 export const useFollowUnfollowUser = (props: IProperties) => {
   const { address } = props
   const { user, refetchUserInfo } = useUserInfo({ address })
-  const { setIsLoading } = useLoaderContext()
+  // const { setIsLoading } = useLoaderContext()
   const [followUnfollowState, setFollowUnfollowState] =
     React.useState<Subscription | null>(null)
 
   const { data: isSubscribed, isLoading } = userApi.useIsSubscriberQuery({ address })
 
   React.useEffect(() => {
-    if (isSubscribed) setFollowUnfollowState(Subscription.UNFOLLOW)
-    setFollowUnfollowState(Subscription.FOLLOW)
-  }, [])
+    if (isSubscribed) {
+      setFollowUnfollowState(Subscription.UNFOLLOW)
+    } else {
+      setFollowUnfollowState(Subscription.FOLLOW)
+    }
+  }, [isSubscribed])
 
   const [subscribeUser] = userApi.useSubscribeUserMutation()
   const [unSubscribeUser] = userApi.useUnSubscribeUserMutation()
 
   const followUser = async () => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
 
       await subscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.UNFOLLOW)
@@ -35,20 +38,20 @@ export const useFollowUnfollowUser = (props: IProperties) => {
       console.log(error_)
     } finally {
       refetchUserInfo()
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
   const unfollowUser = async () => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
       await unSubscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.FOLLOW)
     } catch (error) {
       console.log(error)
     } finally {
       refetchUserInfo()
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
@@ -66,5 +69,6 @@ export const useFollowUnfollowUser = (props: IProperties) => {
     followUnfollowHandler,
     followUnfollowState,
     followerAmount: user.totalFollowers,
+    subscriberAmount: user.totalSubscribers,
   }
 }
