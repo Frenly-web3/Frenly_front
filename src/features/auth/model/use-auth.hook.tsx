@@ -1,5 +1,6 @@
 import { revertInitialState, setAuth, setTokens } from '@entities/user'
 import { authApi } from '@shared/api'
+import type { IAddress } from '@shared/lib'
 import { isWhitelisted, useAppDispatch } from '@shared/lib'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -37,7 +38,7 @@ export function useAuth() {
         const signature = await signMessageAsync({ message: `Nonce: ${nonce.nonce}` })
 
         const loginResponse = await loginMutation({
-          address: address!,
+          address: account as IAddress,
           signature,
         })
 
@@ -53,8 +54,6 @@ export function useAuth() {
         }
       }
     } catch (error: any) {
-      console.log(error)
-
       setIsError(error.message)
     }
   }, [
@@ -63,6 +62,7 @@ export function useAuth() {
     connectors,
     getNonce,
     loginMutation,
+    router,
     setAuthDispatch,
     setTokensDispatch,
     signMessageAsync,

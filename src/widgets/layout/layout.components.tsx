@@ -9,11 +9,12 @@ import { useAccount } from 'wagmi'
 interface IProperties {
   title: string
   children: React.ReactNode
+  rightSidebar?: React.ReactNode
 }
 
 export const Layout = memo((props: IProperties) => {
-  const { children } = props
-  const { title } = props
+  const { children, rightSidebar, title } = props
+
   const { address } = useAccount()
   const [addressHydration, setAddressHydration] = useState<IAddress>()
 
@@ -21,25 +22,22 @@ export const Layout = memo((props: IProperties) => {
     setAddressHydration(address as IAddress)
   })
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen md:flex justify-center px-2">
       <Meta title="frenly feed" description="your frenly feed" />
 
-      <div className={`container flex justify-between p-4 bg-background`}>
-        <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
-        {/* {avatar && (
-          <Link href={`/profile/${address}`}>
-            <Avatar className={`w-10 h-10`} address={address!} />
-          </Link>
-        )} */}
+      <RoutesBar>
+        {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
+      </RoutesBar>
+      <div className="flex flex-col">
+        <div className={`flex justify-between p-4 bg-background`}>
+          <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
+        </div>
+        {children}
       </div>
-
-      <div className="fixed left-56 top-4">
-        <RoutesBar>
-          {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
-        </RoutesBar>
-      </div>
-
-      {children}
+      {/* <RoutesBar>
+        {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
+      </RoutesBar> */}
+      {rightSidebar}
     </div>
   )
 })

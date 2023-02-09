@@ -16,7 +16,7 @@ export function SearchBlock(props: ISearchBlockProperties) {
   const address = useGetAddressFrom({ value })
 
   return (
-    <Paper className="mt-1 rounded-[2rem] aspect-square w-full">
+    <Paper className="mt-1 rounded-[2rem] aspect-square md:min-w-[30.5rem]">
       <SearchInput onChange={setValue} value={value} />
       {address && (
         <Link href={`profile/${address}`}>

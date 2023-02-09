@@ -6,7 +6,6 @@ import { useAccount } from 'wagmi'
 
 import { useFollowUnfollowUser } from '../model'
 
-
 interface IFollowUnfollowButtonProperties {
   address: IAddress
 }
@@ -18,16 +17,16 @@ export const FollowUnfollowButton = (props: IFollowUnfollowButtonProperties) => 
 
   const { address: connectedAddress } = useAccount()
   return (
-    <>
-      <div className="flex justify-between w-40">
+    <div className="flex flex-col items-center">
+      <div className="flex justify-between w-40 mb-4">
         <UserStatistic label="followers" count={followerAmount ?? 0} />
-        <UserStatistic label="follows" count={2} />
+        <UserStatistic label="following" count={2} />
       </div>
       {connectedAddress != address && (
         <ProfileButton onClick={followUnfollowHandler}>
-          {followUnfollowState}
+          {followUnfollowState?.toLowerCase()}
         </ProfileButton>
       )}
-    </>
+    </div>
   )
 }
