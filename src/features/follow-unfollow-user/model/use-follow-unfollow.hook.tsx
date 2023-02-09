@@ -30,7 +30,7 @@ export const useFollowUnfollowUser = (props: IProperties) => {
 
   const followUser = async () => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
 
       await subscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.UNFOLLOW)
@@ -38,20 +38,20 @@ export const useFollowUnfollowUser = (props: IProperties) => {
       console.log(error_)
     } finally {
       refetchUserInfo()
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
   const unfollowUser = async () => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
       await unSubscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.FOLLOW)
     } catch (error) {
       console.log(error)
     } finally {
       refetchUserInfo()
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
