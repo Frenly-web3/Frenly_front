@@ -1,6 +1,5 @@
 // eslint-disable-next-line boundaries/element-types
 import { Avatar, Name } from '@entities/user'
-import { formatFancyDate } from '@shared/lib'
 import Link from 'next/link'
 
 import type { IComment } from '../model'
@@ -10,24 +9,22 @@ interface IProperies {
 }
 export const Comment = (props: IProperies) => {
   const { comment } = props
-  const profileLink = `/profile/${comment.creator.walletAddress}`
-
+  const profileLink = `/profile/${comment.creator}`
+  console.log(comment);
+  
   return (
     <div className="flex gap-2">
       <Link href={profileLink}>
-        <Avatar className={'w-8 h-8'} address={comment.creator.walletAddress} />
+        <Avatar className={'w-6 aspect-square'} address={comment.creator} />
       </Link>
       <div>
         <Link href={profileLink}>
           <Name
-            className={'mt-[-.25rem] font-rounded font-medium'}
-            address={comment.creator.walletAddress}
+            className={'font-rounded font-medium'}
+            address={comment.creator}
           />
         </Link>
-        <div className="font-text text-sm text-hidden mt-[-.25rem]">
-          {formatFancyDate(new Date(comment.creationDate))}
-        </div>
-        <div>{comment.description}</div>
+        <div className='font-rounded text-black/80'>{comment.description}</div>
       </div>
     </div>
   )

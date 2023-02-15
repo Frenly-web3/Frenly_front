@@ -1,30 +1,56 @@
-import { useUnificationFormatImage } from '@shared/lib'
-import React from 'react'
+import { IAction } from "@entities/action";
+import {
+  IAddress,
+  TransferTypeEnum,
+  useUnificationFormatImage,
+} from "@shared/lib";
+import { Badge } from "@shared/ui";
+import React from "react";
+import { useRenderMessage } from "../lib";
+import { PostBadge } from "./post-badge.component";
 
-interface IPostContentProperties {
-  address: string
-  image: {
-    type: string
-    url: string
-  }
-  chosedImage?: number
-  imagesCount?: number
+interface IPostContentProperties extends IAction {
+  chosedImage?: number;
+  imagesCount?: number;
+  transferType: TransferTypeEnum;
+  userCard?: React.ReactNode
+  
 }
 export const PostImage = (props: IPostContentProperties) => {
-  // const { address, image } = props
-  const { image, chosedImage, imagesCount } = props
+  const {
+    image,
+    chosedImage,
+    imagesCount,
+    community,
+    tokenId,
+    fromAddress,
+    toAddress,
+    amountInCrypto,
+    amountInUsd,
+    saleCryptoSymbol,
+    transferType,
+    userCard
+  } = props;
 
-  // const { formatToShortAddress } = useFormatToShortAddress()
+  const unificationImage = useUnificationFormatImage({ image });
 
-  const unificationImage = useUnificationFormatImage({ image })
+  const renderMessage = useRenderMessage({
+    contractAddress: community.contractAddress as IAddress,
+    from: fromAddress as IAddress,
+    postType: transferType,
+    to: toAddress as IAddress,
+    countActions: imagesCount as number,
+    amountInCrypto: amountInCrypto as string,
+    saleCryptoSymbol: saleCryptoSymbol,
+    amountInUsd: amountInUsd as string,
+  });
 
-  console.log(imagesCount)
   return (
     <div className="">
       <div className="relative overflow-hidden">
         {unificationImage ? (
           <>
-            {unificationImage.type === 'image' ? (
+            {unificationImage.type === "image" ? (
               <img
                 src={unificationImage.url.toString()}
                 alt={unificationImage.url.toString()}
@@ -37,24 +63,26 @@ export const PostImage = (props: IPostContentProperties) => {
         ) : (
           <div className="flex flex-col p-10 gap-2 items-center justify-center aspect-square w-full bg-gray">
             <img
-              src={'/assets/icons/sadEyes.svg'}
+              src={"/assets/icons/sadEyes.svg"}
               alt="Sad eyes logo"
               className="w-24 h-full "
             />
             <span className="text-sm font-normal text-white">
-              Currently we don{"'"}t support this type of token :{'('}
+              Currently we don{"'"}t support this type of token :{"("}
             </span>
           </div>
         )}
         {imagesCount && (
-          <div className="absolute right-3 top-3 z-50 rounded-full bg-black/40 px-3 py-2 text-sm font-medium text-white">
+          <Badge className="absolute right-3 top-3 z-50">
             {(chosedImage as number) + 1} / {imagesCount}
-          </div>
+          </Badge>
         )}
-        {/* <div className="absolute left-3 bottom-3 z-20 rounded-full bg-[#00000040] px-3 py-2 text-sm font-medium text-white">
-          {'Frenly post'}
-        </div> */}
+        <PostBadge
+          community={community}
+          tokenId={tokenId}
+          title={<div className="flex items-center">{userCard}</div>}
+        />
       </div>
     </div>
-  )
-}
+  );
+};

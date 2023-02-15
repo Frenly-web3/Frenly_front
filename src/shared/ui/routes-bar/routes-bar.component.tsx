@@ -1,4 +1,4 @@
-import { Image } from '@mantine/core'
+import { clsx, Image } from '@mantine/core'
 import { ROUTES } from '@shared/lib'
 import Link from 'next/link'
 import * as React from 'react'
@@ -7,10 +7,12 @@ import { Paper } from '../paper'
 
 export interface IRoutesBarProperties {
   children: React.ReactNode
+  chosedMenu: number
 }
 
 export function RoutesBar(props: IRoutesBarProperties) {
-  const { children } = props
+  const { children, chosedMenu } = props
+
   return (
     <div className="flex flex-col h-fit items-center max-md:border max-md:border-t-2 max-md:border-white/20 max-md:left-0 z-50 md:sticky fixed md:top-4 max-md:w-screen max-md:top-[92%]">
       <div className="max-w-32 h-9 mb-6 max-md:hidden">
@@ -20,7 +22,13 @@ export function RoutesBar(props: IRoutesBarProperties) {
         {ROUTES.map((route, index) => {
           return (
             <Link
-              className="flex font-rounded text-base items-center p-2 text-black/40 font-normal mr-2"
+              className={clsx(
+                'flex font-rounded rounded-full text-base items-center p-2 font-semibold mr-2 hover:bg-black/5',
+                {
+                  'text-black': chosedMenu == index,
+                  'text-black/40': chosedMenu !== index,
+                }
+              )}
               key={index}
               href={route.path}
             >

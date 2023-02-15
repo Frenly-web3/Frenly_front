@@ -1,14 +1,24 @@
-import { PostImage } from '@entities/post'
-import { Carousel } from '@mantine/carousel'
-import type { IAddress } from '@shared/lib'
-import { useState } from 'react'
+import { IAction } from "@entities/action";
+import { PostImage } from "@entities/post";
+import { Author, SmallUserCard } from "@entities/user";
+import { Carousel } from "@mantine/carousel";
+import { IAddress, useLoaderContext } from "@shared/lib";
+import { useEffect, useState } from "react";
 
-import { usePostCardContext } from '../model'
+import { usePostCardContext } from "../model";
 
 export function PostCardImage() {
-  const { actions } = usePostCardContext()
+  const { actions, transferType } = usePostCardContext();
 
-  const [chosedImage, setChosedImage] = useState(0)
+  const [chosedImage, setChosedImage] = useState(0);
+
+  const { setIsLoading } = useLoaderContext();
+
+  useEffect(() => {
+    setIsLoading(!actions);
+  }, [actions]);
+
+  if (!actions) return null;
 
   return (
     <div className="">
@@ -18,14 +28,14 @@ export function PostCardImage() {
           withControls
           dragFree={false}
           classNames={{
-            control: 'bg-white',
+            control: "bg-white",
           }}
           styles={{
             control: {
-              backgroundColor: 'rgba(0,0,0,0)',
-              '&[data-inactive]': {
+              backgroundColor: "rgba(0,0,0,0)",
+              "&[data-inactive]": {
                 opacity: 0,
-                cursor: 'pointer',
+                cursor: "pointer",
               },
             },
           }}
@@ -34,27 +44,23 @@ export function PostCardImage() {
             return (
               <Carousel.Slide key={index}>
                 <PostImage
-                  image={{
-                    type: 'image',
-                    url: `${action.image}`,
-                  }}
+                  {...action}
                   chosedImage={chosedImage}
                   imagesCount={actions.length}
-                  address={action.contractAddress as IAddress}
+                  transferType={transferType}
+                  userCard={<SmallUserCard address={action.fromAddress} />}
                 />
               </Carousel.Slide>
-            )
+            );
           })}
         </Carousel>
       ) : (
         <PostImage
-          image={{
-            type: 'image',
-            url: `${actions[0]?.image}`,
-          }}
-          address={actions[0]?.contractAddress as IAddress}
+          {...(actions[0] as IAction)}
+          transferType={transferType}
+          userCard={<SmallUserCard address={actions[0]?.fromAddress as IAddress} />}
         />
       )}
     </div>
-  )
+  );
 }

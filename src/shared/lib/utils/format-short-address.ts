@@ -10,5 +10,5 @@ export const shortAddress = (props: IProperties) => {
 
   if (!address) return ''
 
-  return `${with0x ? '0x' : ''}${address.slice(2, 6)}...${address.slice(-4)}`
+  return `${with0x ? '0x' : ''}${address?.slice(2, 6)}...${address.slice(-4)}`
 }

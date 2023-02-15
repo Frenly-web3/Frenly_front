@@ -3,4 +3,6 @@ export enum TransferTypeEnum {
   'RECEIVE' = 'RECEIVE',
   'BURN' = 'BURN',
   'MINT' = 'MINT',
+  'SOLD' = 'SOLD',
+  'BOUGHT' = 'BOUGHT',
 }

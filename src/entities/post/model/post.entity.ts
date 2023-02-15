@@ -1,4 +1,4 @@
-import type { IAction } from '@shared/api'
+import { IAction } from '@entities/action'
 import type { IAddress, TokenTypeEnum, TransferTypeEnum } from '@shared/lib'
 
 export interface IPost {

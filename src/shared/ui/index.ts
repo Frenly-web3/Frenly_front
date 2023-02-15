@@ -1,4 +1,6 @@
+export * from './adaptive-modal';
 export * from './back-button';
+export * from './badge';
 export * from './button';
 export * from './description-modal';
 export * from './dialog';
