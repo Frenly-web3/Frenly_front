@@ -1,6 +1,6 @@
 import { IAction } from "@entities/action";
 import { PostImage } from "@entities/post";
-import { Author, SmallUserCard } from "@entities/user";
+import { SmallUserCard } from "@entities/user";
 import { Carousel } from "@mantine/carousel";
 import { IAddress, useLoaderContext } from "@shared/lib";
 import { useEffect, useState } from "react";

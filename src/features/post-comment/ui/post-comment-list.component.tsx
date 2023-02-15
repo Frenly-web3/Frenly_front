@@ -3,7 +3,6 @@ import type { Dispatch, SetStateAction } from "react";
 import React from "react";
 
 import { usePostReactionContext } from "../model";
-import { PostCommentAdd } from "./post-comment-add.component";
 
 interface IProperties {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -13,7 +12,7 @@ interface IProperties {
 
 export const PostCommentList = (props: IProperties) => {
   const {setIsOpen, withShowMore = false} = props;
-  const { comments, commentsShort, isError, commentsRemaining } =
+  const { comments, commentsShort, isError } =
     usePostReactionContext()!.comments
 
   return (

@@ -1,5 +1,4 @@
 /* eslint-disable sonarjs/cognitive-complexity */
-import { from } from '@apollo/client'
 import type { IAddress } from '@shared/lib'
 import { TransferTypeEnum, useUserName } from '@shared/lib'
 import Link from 'next/link'

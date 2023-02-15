@@ -1,8 +1,8 @@
 import { DrawerStylesNames, ModalStylesNames } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import * as React from "react";
-import { Drawer, IDrawerProperties } from "../drawer";
-import { IModalProperties, Modal } from "../modal";
+import { Drawer } from "../drawer";
+import { Modal } from "../modal";
 
 export interface IAdaptiveModalProps {
   opened: boolean;

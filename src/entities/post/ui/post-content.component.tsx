@@ -1,5 +1,4 @@
-import { actions } from '@entities/user'
-import type { IAddress, NetworkEnum, TransferTypeEnum } from '@shared/lib'
+import type { IAddress } from '@shared/lib'
 import React from 'react'
 
 import { useRenderMessage } from '../lib'

@@ -1,6 +1,6 @@
 import { UserStatistic } from "@entities/user";
 import type { IAddress, Subscription } from "@shared/lib";
-import { AdaptiveModal, ProfileButton } from "@shared/ui";
+import { ProfileButton } from "@shared/ui";
 import React, { useState } from "react";
 import { useAccount } from "wagmi";
 

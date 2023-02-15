@@ -17,8 +17,8 @@ interface IComment {
   description: string
   creator: IAddress
 }
-interface ICreator {
-  id: number
-  description: string
-  walletAddress: IAddress
-}
+// interface ICreator {
+//   id: number
+//   description: string
+//   walletAddress: IAddress
+// }

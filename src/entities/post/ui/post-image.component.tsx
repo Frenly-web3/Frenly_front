@@ -1,12 +1,12 @@
 import { IAction } from "@entities/action";
 import {
-  IAddress,
+  // IAddress,
   TransferTypeEnum,
   useUnificationFormatImage,
 } from "@shared/lib";
 import { Badge } from "@shared/ui";
 import React from "react";
-import { useRenderMessage } from "../lib";
+// import { useRenderMessage } from "../lib";
 import { PostBadge } from "./post-badge.component";
 
 interface IPostContentProperties extends IAction {
@@ -23,27 +23,27 @@ export const PostImage = (props: IPostContentProperties) => {
     imagesCount,
     community,
     tokenId,
-    fromAddress,
-    toAddress,
-    amountInCrypto,
-    amountInUsd,
-    saleCryptoSymbol,
-    transferType,
+    // fromAddress,
+    // toAddress,
+    // amountInCrypto,
+    // amountInUsd,
+    // saleCryptoSymbol,
+    // transferType,
     userCard
   } = props;
 
   const unificationImage = useUnificationFormatImage({ image });
 
-  const renderMessage = useRenderMessage({
-    contractAddress: community.contractAddress as IAddress,
-    from: fromAddress as IAddress,
-    postType: transferType,
-    to: toAddress as IAddress,
-    countActions: imagesCount as number,
-    amountInCrypto: amountInCrypto as string,
-    saleCryptoSymbol: saleCryptoSymbol,
-    amountInUsd: amountInUsd as string,
-  });
+  // const renderMessage = useRenderMessage({
+  //   contractAddress: community.contractAddress as IAddress,
+  //   from: fromAddress as IAddress,
+  //   postType: transferType,
+  //   to: toAddress as IAddress,
+  //   countActions: imagesCount as number,
+  //   amountInCrypto: amountInCrypto as string,
+  //   saleCryptoSymbol: saleCryptoSymbol,
+  //   amountInUsd: amountInUsd as string,
+  // });
 
   return (
     <div className="">

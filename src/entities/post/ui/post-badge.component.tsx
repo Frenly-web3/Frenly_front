@@ -1,6 +1,5 @@
 import { IAction } from "@entities/action";
-import { useMediaQuery } from "@mantine/hooks";
-import { AdaptiveModal, Badge, Drawer, Modal } from "@shared/ui";
+import { AdaptiveModal, Badge } from "@shared/ui";
 import * as React from "react";
 import { useTransformBadgeData } from "../lib";
 
