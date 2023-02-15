@@ -11,7 +11,7 @@ const Index = () => {
   const user = useSelector(userSelector)
   if (address && isWhitelisted(address) && user.isAuth) router.push('/feed')
   return (
-    <div className="container flex flex-col items-center h-screen pb-8">
+    <div className="container flex flex-col items-center h-screen pb-16">
       <div className="flex flex-1 flex-col items-center justify-center">
         <img src="/assets/icons/eyesLogo.svg" alt="eyes" className="w-32 h-32" />
         <h1 className="text-6xl font-rounded text-heading font-bold mt-16">frenly</h1>
