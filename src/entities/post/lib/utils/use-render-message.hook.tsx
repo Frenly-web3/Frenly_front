@@ -94,7 +94,7 @@ export const useRenderMessage = ({
             🛒 just sold {countActions > 1 ? countActions : ''} NFT
             {countActions > 1 ? 'S' : ''} on OpenSea for{' '}
             <span className="font-semibold">
-              {amountInCrypto} {saleCryptoSymbol} (${amountInUsd})
+              {Number(amountInCrypto).toFixed(4)} {saleCryptoSymbol} (${Number(amountInUsd).toFixed(2)})
             </span>
           </div>
         )
@@ -104,7 +104,7 @@ export const useRenderMessage = ({
             🛒 just bought {countActions > 1 ? countActions : ''} NFT
             {countActions > 1 ? 'S' : ''} on OpenSea for{' '}
             <span className="font-semibold">
-              {amountInCrypto} {saleCryptoSymbol} (${amountInUsd})
+              {Number(amountInCrypto).toFixed(4)} {saleCryptoSymbol} (${(Number(amountInUsd).toFixed(2))})
             </span>
           </div>
         )

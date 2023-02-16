@@ -1,7 +1,13 @@
-import { IAction } from "@entities/action";
+import {
+  ActionCard,
+  ActionList,
+  IAction,
+  SmallActionList,
+} from "@entities/action";
 import { PostImage } from "@entities/post";
 import { SmallUserCard } from "@entities/user";
 import { Carousel } from "@mantine/carousel";
+import { useMediaQuery } from "@mantine/hooks";
 import { IAddress, useLoaderContext } from "@shared/lib";
 import { useEffect, useState } from "react";
 
@@ -10,9 +16,9 @@ import { usePostCardContext } from "../model";
 export function PostCardImage() {
   const { actions, transferType } = usePostCardContext();
 
-  const [chosedImage, setChosedImage] = useState(0);
-
   const { setIsLoading } = useLoaderContext();
+
+  const [showedMore, setShowedMore] = useState(false);
 
   useEffect(() => {
     setIsLoading(!actions);
@@ -23,42 +29,35 @@ export function PostCardImage() {
   return (
     <div className="">
       {actions.length > 1 ? (
-        <Carousel
-          onSlideChange={(index) => setChosedImage(index)}
-          withControls
-          dragFree={false}
-          classNames={{
-            control: "bg-white",
-          }}
-          styles={{
-            control: {
-              backgroundColor: "rgba(0,0,0,0)",
-              "&[data-inactive]": {
-                opacity: 0,
-                cursor: "pointer",
-              },
-            },
-          }}
-        >
-          {actions.map((action, index) => {
-            return (
-              <Carousel.Slide key={index}>
-                <PostImage
-                  {...action}
-                  chosedImage={chosedImage}
-                  imagesCount={actions.length}
-                  transferType={transferType}
-                  userCard={<SmallUserCard address={action.fromAddress} />}
-                />
-              </Carousel.Slide>
-            );
-          })}
-        </Carousel>
+        <div className="mb-4">
+          <div className="flex justify-between px-4 pb-4">
+            <span className="">{actions.length} NFTs</span>
+            <button
+              onClick={() => setShowedMore((prev) => !prev)}
+              className="text-black/60 font-rounded font-normal flex items-center"
+            >
+              show {showedMore ? "less" : "all"}{" "}
+              <span className="font-icon ml-1 text-lg">
+                {showedMore ? "chevron_left" : "chevron_right"}
+              </span>
+            </button>
+          </div>
+
+          {showedMore ? (
+            <div className="px-4">
+              <SmallActionList actions={actions} />
+            </div>
+          ) : (
+            <ActionList actions={actions} />
+          )}
+        </div>
       ) : (
         <PostImage
           {...(actions[0] as IAction)}
           transferType={transferType}
-          userCard={<SmallUserCard address={actions[0]?.fromAddress as IAddress} />}
+          userCard={
+            <SmallUserCard address={actions[0]?.fromAddress as IAddress} />
+          }
         />
       )}
     </div>

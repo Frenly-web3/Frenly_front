@@ -30,7 +30,7 @@ const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-        qrcode: false,
+        qrcode: true,
       },
     }),
   ],

@@ -48,10 +48,10 @@ export function PostCardReactions(props: IPostCardReactions) {
   return (
     <div className="px-4">
       <PostReactionContext.Provider value={value}>
-        <div className={`flex items-center justify-end`}>
-          <div className={`flex gap-2 justify-end`}>
-            <PostCommentButton setIsOpen={setIsOpen} />
+        <div className={`flex items-center justify-start`}>
+          <div className={`flex gap-2 justify-start`}>
             <PostLikeButton />
+            <PostCommentButton setIsOpen={setIsOpen} />
           </div>
         </div>
 
@@ -59,29 +59,28 @@ export function PostCardReactions(props: IPostCardReactions) {
         <PostCommentAdd addComment={addComment} />
         <AdaptiveModal
           classNamesDrawer={{
-            body: "px-2 m-0 py-0",
+            body: "px-4 pb-4 m-0 py-0",
             header: "p-2 m-0 border-b-black/5 border-b-2",
             title: "w-full m-0",
             closeButton: "absolute right-2 top-2",
-            drawer: 'h-full rounded-t-3xl'
+            drawer: "h-full rounded-t-3xl",
           }}
           classNamesModal={{
-            body: "px-2 pb-2 rounded-b-3xl",
+            body: "px-4 pb-4 rounded-b-3xl",
             header: "p-2 m-0 border-b-black/5 border-b-2",
             title: "w-full m-0",
             close: "absolute right-2 top-2",
           }}
-          title={
-            <SmallUserCard address={ownerAddress as IAddress} />
-          }
+          title={<SmallUserCard address={ownerAddress as IAddress} />}
           opened={isOpen}
           onClose={() => setIsOpen(false)}
         >
           <div className="overflow-y-scroll md:h-56 max-md:h-[38rem] mb-1">
             <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
           </div>
-
-          <PostCommentAdd addComment={addComment} />
+          <div className="mt-4">
+            <PostCommentAdd addComment={addComment} />
+          </div>
         </AdaptiveModal>
       </PostReactionContext.Provider>
     </div>
