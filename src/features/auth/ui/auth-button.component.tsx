@@ -1,5 +1,4 @@
 import { Connector } from "@shared/lib";
-import { Button } from "@shared/ui";
 import Link from "next/link";
 
 import { useAuth } from "../model";

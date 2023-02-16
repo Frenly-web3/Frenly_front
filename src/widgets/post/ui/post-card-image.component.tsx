@@ -1,13 +1,6 @@
-import {
-  ActionCard,
-  ActionList,
-  IAction,
-  SmallActionList,
-} from "@entities/action";
+import { ActionList, IAction, SmallActionList } from "@entities/action";
 import { PostImage } from "@entities/post";
 import { SmallUserCard } from "@entities/user";
-import { Carousel } from "@mantine/carousel";
-import { useMediaQuery } from "@mantine/hooks";
 import { IAddress, useLoaderContext } from "@shared/lib";
 import { useEffect, useState } from "react";
 

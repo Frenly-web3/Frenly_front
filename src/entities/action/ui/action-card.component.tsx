@@ -1,4 +1,3 @@
-import { useUnificationFormatImage } from "@shared/lib";
 import { UnificationImage } from "@shared/ui";
 import * as React from "react";
 import { IAction } from "../model";
