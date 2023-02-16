@@ -18,7 +18,7 @@ export function ActionCard(props: IActionCardProps) {
       </span>
       {amountInCrypto && (
         <span className="font-rounded font-semibold my-1">
-          {Number(amountInCrypto).toFixed(2)} {saleCryptoSymbol}
+          {Number(amountInCrypto).toFixed(3)} {saleCryptoSymbol}
         </span>
       )}
       <span className="font-rounded font-normal text-sm text-black/60 ">
