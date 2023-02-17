@@ -1,31 +1,29 @@
-import type { IAddress, NetworkEnum, TransferTypeEnum } from '@shared/lib'
+import type { IAddress } from '@shared/lib'
 import React from 'react'
 
 import { useRenderMessage } from '../lib'
+import { IPost } from '../model'
 
-interface IPostContentProperties {
-  showDate: boolean
-  showAuthor: boolean
-  date: string
-  blockchainType: NetworkEnum
-  messageType: TransferTypeEnum
-  from: IAddress
-  to: IAddress
-  creatorAddress: string
-  contractAddress: string
-  mirrorDescription?: string
-  itemType: 'nft' | 'token'
-  isMirror: boolean | null
+interface IPostContentProperties extends IPost  {
+  
 }
 
 export const PostContent = (props: IPostContentProperties) => {
-  const { messageType, from, to, contractAddress, mirrorDescription } = props
+  const {
+    actions, mirrorDescription, transferType
+  } = props
+
+  
 
   const renderMessage = useRenderMessage({
-    contractAddress: contractAddress as IAddress,
-    from,
-    postType: messageType,
-    to,
+    contractAddress: actions[0]?.community.contractAddress as IAddress,
+    from: actions[0]?.fromAddress as IAddress,
+    postType: transferType,
+    to:actions[0]?.toAddress as IAddress,
+    countActions: actions.length,
+    amountInCrypto: actions[0]?.amountInCrypto as string,
+    saleCryptoSymbol: actions[0]?.saleCryptoSymbol,
+    amountInUsd: actions[0]?.amountInUsd as string,
   })
 
   return (

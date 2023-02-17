@@ -8,7 +8,7 @@ import { Avatar } from './avatar.component'
 import { Name } from './name.component'
 
 interface IAuthorProperties {
-  date: string
+  date?: string
   address: IAddress
 }
 

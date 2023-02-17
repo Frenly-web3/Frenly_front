@@ -10,19 +10,25 @@ export interface IPostDto {
   originalPost: number
   isMirror: boolean
   mirrorDescription: string
-  actions: IAction[]
+  actions: IActionDto[]
 }
 
-export interface IAction {
+export interface IActionDto {
   fromAddress: IAddress
   toAddress: IAddress
   tokenId: number | string
   blockchainType: NetworkEnum
-  contractAddress: string
+  community: string
   tokenUri: string
   image: string
   tokensAmount: number
+  tokenName: string
+  amountInCrypto?: number
+  amountInUsd?: number
+  saleCryptoContractAddress?: string
+  saleCryptoSymbol?: string
 }
+
 
 export interface IFeedRequest {
   take: number

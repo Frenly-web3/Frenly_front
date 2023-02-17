@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import type { IBaseResponse } from '@shared/lib'
 
 import { baseQueryWithReauth } from '../base-query'
-import type { IReactionsDto } from '../dto/reactions.dto'
+import type { ICommentsDto, IReactionsDto } from '../dto/reactions.dto'
 
 export const reactionsApi = createApi({
   reducerPath: 'reactionsApi',
@@ -33,6 +33,19 @@ export const reactionsApi = createApi({
       },
       transformResponse: (res: IBaseResponse<IReactionsDto>) => {
         return res.data
+      },
+    }),
+    getCommentsById: builder.query<ICommentsDto, { postId: number, take?: number, skip?: number }>({
+      providesTags: ['REACTIONS'],
+      query: ({ postId, take=2, skip=0 }) => {
+        return {
+          url: `content/${postId}/comments?${take ? `take=${take}` : ''}${skip ? `&skip=${skip}` : ''}`,
+          method: 'GET',
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: IBaseResponse<ICommentsDto>) => {
+        return res?.data
       },
     }),
     postLikeUnlike: builder.mutation<any, { postId: number }>({

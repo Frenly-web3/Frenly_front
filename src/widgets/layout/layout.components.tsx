@@ -1,9 +1,11 @@
 import { SmallUserCard } from '@entities/user'
 import { useIsomorphicEffect } from '@mantine/hooks'
 import type { IAddress } from '@shared/lib'
+import { ROUTES } from '@shared/lib'
 import { Meta } from '@shared/ui'
 import { RoutesBar } from '@shared/ui/routes-bar'
-import { memo, useState } from 'react'
+import { useRouter } from 'next/router'
+import { memo, useMemo, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 interface IProperties {
@@ -18,15 +20,30 @@ export const Layout = memo((props: IProperties) => {
   const { address } = useAccount()
   const [addressHydration, setAddressHydration] = useState<IAddress>()
 
+  const router = useRouter()
+
   useIsomorphicEffect(() => {
     setAddressHydration(address as IAddress)
   })
+
+  const currentIndexMenu = useMemo(() => {
+    return ROUTES.findIndex((route) => {
+      return route.path === router.asPath
+    })
+  }, [router.asPath])
+
   return (
     <div className="bg-background   min-h-screen md:flex justify-center px-2">
       <Meta title="frenly feed" description="your frenly feed" />
 
-      <RoutesBar>
-        {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
+      <RoutesBar chosedMenu={currentIndexMenu}>
+        {addressHydration && (
+          <SmallUserCard
+            chosenInMenu={currentIndexMenu === -1}
+            address={addressHydration as IAddress}
+            isMenu
+          />
+        )}
       </RoutesBar>
       <div className="flex flex-col">
         <div className={`flex justify-between p-4 bg-background`}>

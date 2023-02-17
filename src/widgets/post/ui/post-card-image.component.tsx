@@ -1,60 +1,58 @@
-import { PostImage } from '@entities/post'
-import { Carousel } from '@mantine/carousel'
-import type { IAddress } from '@shared/lib'
-import { useState } from 'react'
+import { ActionList, IAction, SmallActionList } from "@entities/action";
+import { PostImage } from "@entities/post";
+import { SmallUserCard } from "@entities/user";
+import { IAddress, useLoaderContext } from "@shared/lib";
+import { useEffect, useState } from "react";
 
-import { usePostCardContext } from '../model'
+import { usePostCardContext } from "../model";
 
 export function PostCardImage() {
-  const { actions } = usePostCardContext()
+  const { actions, transferType } = usePostCardContext();
 
-  const [chosedImage, setChosedImage] = useState(0)
+  const { setIsLoading } = useLoaderContext();
+
+  const [showedMore, setShowedMore] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(!actions);
+  }, [actions]);
+
+  if (!actions) return null;
 
   return (
     <div className="">
       {actions.length > 1 ? (
-        <Carousel
-          onSlideChange={(index) => setChosedImage(index)}
-          withControls
-          dragFree={false}
-          classNames={{
-            control: 'bg-white',
-          }}
-          styles={{
-            control: {
-              backgroundColor: 'rgba(0,0,0,0)',
-              '&[data-inactive]': {
-                opacity: 0,
-                cursor: 'pointer',
-              },
-            },
-          }}
-        >
-          {actions.map((action, index) => {
-            return (
-              <Carousel.Slide key={index}>
-                <PostImage
-                  image={{
-                    type: 'image',
-                    url: `${action.image}`,
-                  }}
-                  chosedImage={chosedImage}
-                  imagesCount={actions.length}
-                  address={action.contractAddress as IAddress}
-                />
-              </Carousel.Slide>
-            )
-          })}
-        </Carousel>
+        <div className="mb-4">
+          <div className="flex justify-between px-4 pb-4">
+            <span className="">{actions.length} NFTs</span>
+            <button
+              onClick={() => setShowedMore((prev) => !prev)}
+              className="text-black/60 font-rounded font-normal flex items-center"
+            >
+              show {showedMore ? "less" : "all"}{" "}
+              <span className="font-icon ml-1 text-lg">
+                {showedMore ? "chevron_left" : "chevron_right"}
+              </span>
+            </button>
+          </div>
+
+          {showedMore ? (
+            <div className="px-4">
+              <SmallActionList actions={actions} />
+            </div>
+          ) : (
+            <ActionList actions={actions} />
+          )}
+        </div>
       ) : (
         <PostImage
-          image={{
-            type: 'image',
-            url: `${actions[0]?.image}`,
-          }}
-          address={actions[0]?.contractAddress as IAddress}
+          {...(actions[0] as IAction)}
+          transferType={transferType}
+          userCard={
+            <SmallUserCard address={actions[0]?.fromAddress as IAddress} />
+          }
         />
       )}
     </div>
-  )
+  );
 }

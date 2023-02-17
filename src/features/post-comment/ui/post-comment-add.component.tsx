@@ -25,6 +25,7 @@ export const PostCommentAdd = (props: IProperies) => {
         <input
           className="flex-1 bg-overlay-1-solid py-2 px-4 leading-4 rounded-[1rem]"
           type="text"
+          placeholder='nice comment...'
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
