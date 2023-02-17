@@ -20,7 +20,7 @@ export const PostCommentList = (props: IProperties) => {
       {(isError.mutation || isError.reactions) && "something went wrong"}
 
       <>
-        <div className="flex flex-col gap-4 mt-4">
+        <div className="flex flex-col gap-4 my-4">
           {!withShowMore && comments.map((comment, index) => {
             return <Comment key={index} comment={comment} />;
           })}

@@ -1,5 +1,5 @@
 import { IAction } from "@entities/action";
-import { AdaptiveModal, Badge } from "@shared/ui";
+import { Badge } from "@shared/ui";
 import * as React from "react";
 import { useTransformBadgeData } from "../lib";
 
@@ -9,9 +9,9 @@ export interface IPostBadgeProps
 }
 
 export function PostBadge(props: IPostBadgeProps) {
-  const { community, tokenId, title } = props;
+  const { community, tokenId, } = props;
 
-  const [openedModal, setOpenModal] = React.useState(false);
+  const [, setOpenModal] = React.useState(false);
 
  
 
@@ -32,11 +32,11 @@ export function PostBadge(props: IPostBadgeProps) {
       </button>
 
     
-        <AdaptiveModal
+        {/* <AdaptiveModal
           opened={openedModal}
           onClose={() => setOpenModal(false)}
           title={title}
-        >s</AdaptiveModal>
+        >s</AdaptiveModal> */}
       
     </div>
   );

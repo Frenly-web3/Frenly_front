@@ -25,7 +25,6 @@ export function ActionList(props: IActionListProps) {
         viewport: "pl-4",
       }}
       slideSize={!matches ? "45%" : "70%"}
-      loop={!matches}
       align={"start"}
     >
       {actions.map((action, index) => {

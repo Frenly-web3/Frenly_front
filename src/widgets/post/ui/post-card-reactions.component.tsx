@@ -48,7 +48,7 @@ export function PostCardReactions(props: IPostCardReactions) {
   return (
     <div className="px-4">
       <PostReactionContext.Provider value={value}>
-        <div className={`flex items-center justify-start`}>
+        <div className={`flex items-center justify-end`}>
           <div className={`flex gap-2 justify-start`}>
             <PostLikeButton />
             <PostCommentButton setIsOpen={setIsOpen} />

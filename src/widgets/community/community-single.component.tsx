@@ -29,7 +29,7 @@ export const CommunitySingle = (props: IProperties) => {
           src={
             community
               ? `https://stage.frenly.cc/api/community-content/images/${community.image}`
-              : "/assets/images/community-feed.png"
+              : "/assets/icons/feed-frenly.svg"
           }
           alt={`${community?.name} logo`}
           // layout={'fill'}
