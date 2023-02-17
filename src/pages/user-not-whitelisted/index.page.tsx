@@ -1,5 +1,5 @@
-import { Button, Meta } from '@shared/ui'
-import Link from 'next/link'
+import { Button, Meta } from "@shared/ui";
+import Link from "next/link";
 
 export default function UserNotWhitelistedPage() {
   return (
@@ -10,21 +10,24 @@ export default function UserNotWhitelistedPage() {
           <img src="/assets/images/eyes.gif" alt="eyes" className="w-20 h-20" />
           <h1 className="text-4xl font-bold mt-16">Frenly</h1>
           <h2 className="text-base text-center mt-3 text-gray">
-            Woops, your address in not whitelisted for alpha test. Gain access to the
-            closed alpha filling the form below.
+            Woops, your address in not whitelisted for alpha test. Gain access
+            to the closed alpha filling the form below.
           </h2>
         </div>
 
         <div className="w-full py-4 mb-16">
-          <Link href="https://1ltwty44asn.typeform.com/to/DQ8hHy11" className="w-full">
+          <Link
+            href="https://docs.google.com/forms/d/e/1FAIpQLSeU1dRLy4S6DuTEx6NVTsgdvRxRlHRdXkVlmdCmDGQYdE3ReQ/viewform"
+            className="w-full"
+          >
             <Button>Open Form</Button>
           </Link>
           <div className="mt-2"></div>
-          <Link href={'/'}>
+          <Link href={"/"}>
             <Button>Back to Auth</Button>
           </Link>
         </div>
       </div>
     </>
-  )
+  );
 }
