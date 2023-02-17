@@ -49,7 +49,7 @@ export const useGetCommunityPosts = (props: IProperties): IGetFilteredPosts => {
     }
 
     const posts: IPost[] = postsWithoutZeroX!.map((post: IPostDto): IPost => {
-      return post as IPost
+      return post as unknown as IPost
     })
 
     if (posts?.length === 0) {

@@ -9,3 +9,5 @@ export interface IUserDto {
   totalFollowers: number
   totalSubscribers: number
 }
+
+export type IUserSubscriptionsDto = IAddress[] 

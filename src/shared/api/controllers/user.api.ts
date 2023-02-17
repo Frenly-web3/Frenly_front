@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import type { IAddress, IBaseResponse } from '@shared/lib'
 
 import { baseQueryWithReauth } from '../base-query'
-import type { IUserDto } from '../dto/user.dto'
+import type { IUserDto, IUserSubscriptionsDto } from '../dto/user.dto'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -34,6 +34,36 @@ export const userApi = createApi({
         }
       },
       transformResponse: (res: any) => {
+        return res?.data
+      },
+    }),
+    getUserSubscriptions: builder.query<IUserSubscriptionsDto, { address: IAddress }>({
+      providesTags: ['USER', 'ADMIN'],
+      query: ({ address }) => {
+        return {
+          url: `user/${address}/subscriptions`,
+          method: 'GET',
+
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
+        console.log(res);
+        
+        return res?.data
+      },
+    }),
+    getUserFollowers: builder.query<IUserSubscriptionsDto, { address: IAddress }>({
+      providesTags: ['USER', 'ADMIN'],
+      query: ({ address }) => {
+        return {
+          url: `user/${address}/followers`,
+          method: 'GET',
+
+          credentials: 'omit',
+        }
+      },
+      transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
         return res?.data
       },
     }),

@@ -1,28 +1,29 @@
-import { useAuth } from '@features/auth'
-import { isWhitelisted } from '@shared/lib'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
+import { useAuth } from "@features/auth";
+import { isWhitelisted } from "@shared/lib";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Connector, useAccount } from "wagmi";
 
 export const useChangeAddress = () => {
-  const { address } = useAccount()
+  const { address, connector } = useAccount();
 
-  const [previousAddress, setPreviousAddress] = useState(address)
+  const [previousAddress, setPreviousAddress] = useState(address);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { login } = useAuth()
+  const { login } = useAuth();
   useEffect(() => {
     if (address && !isWhitelisted(address)) {
-      router.push('/user-not-whitelisted')
-      return
+      router.push("/user-not-whitelisted");
+      return;
     }
 
     if (previousAddress !== address) {
-      setPreviousAddress(address)
-      ;(async () => {
-        await login()
-      })()
+      setPreviousAddress(address);
+      (async () => {
+        //@ts-ignore
+        await login(connector as Connector<any, any, any>);
+      })();
     }
-  }, [address])
-}
+  }, [address]);
+};

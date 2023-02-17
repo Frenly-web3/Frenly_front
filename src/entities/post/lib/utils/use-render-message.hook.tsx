@@ -1,19 +1,30 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import type { IAddress } from '@shared/lib'
 import { TransferTypeEnum, useUserName } from '@shared/lib'
 import Link from 'next/link'
 import { useMemo } from 'react'
+
+export interface IuseRenderMessageContent {
+  from: IAddress
+  to: IAddress
+  postType: TransferTypeEnum
+  contractAddress: IAddress
+  countActions: number
+  amountInCrypto: string
+  saleCryptoSymbol?: string
+  amountInUsd: string
+}
 
 export const useRenderMessage = ({
   from,
   to,
   postType,
   contractAddress,
-}: {
-  from: IAddress
-  to: IAddress
-  postType: TransferTypeEnum
-  contractAddress: IAddress
-}) => {
+  countActions,
+  amountInCrypto,
+  saleCryptoSymbol,
+  amountInUsd,
+}: IuseRenderMessageContent) => {
   const { data: formatedContractAddress } = useUserName({
     address: contractAddress as IAddress,
     with0x: true,
@@ -33,8 +44,8 @@ export const useRenderMessage = ({
     switch (postType) {
       case TransferTypeEnum.MINT:
         return (
-          <>
-            🎉 Minted a new NFT from smart contract{' '}
+          <div className="font-normal">
+            🎉 Minted a new NFT{countActions > 1 ? 'S' : ''} from smart contract{' '}
             <a
               target="_blank"
               className="text-main"
@@ -43,30 +54,30 @@ export const useRenderMessage = ({
             >
               {formatedContractAddress}
             </a>
-          </>
+          </div>
         )
       case TransferTypeEnum.RECEIVE:
         return (
-          <>
-            📥 Received NFT from{' '}
+          <div className="font-normal">
+            📥 Received NFT{countActions > 1 ? 'S' : ''} from{' '}
             <Link className="text-main" rel="noreferrer" href={`/profile/${from}`}>
               {formatedfrom}
             </Link>
-          </>
+          </div>
         )
       case TransferTypeEnum.SEND:
         return (
-          <>
-            📤 Sent NFT to{' '}
+          <div className="font-normal">
+            📤 Sent NFT{countActions > 1 ? 'S' : ''} to{' '}
             <Link className="text-main" rel="noreferrer" href={`/profile/${to}`}>
               {formatedTo}
             </Link>
-          </>
+          </div>
         )
       case TransferTypeEnum.BURN:
         return (
-          <>
-            🔥Burned NFT on the smart contract{' '}
+          <div className="font-normal">
+            🔥Burned NFT{countActions > 1 ? 'S' : ''} on the smart contract{' '}
             <a
               target="_blank"
               className="text-main"
@@ -75,7 +86,27 @@ export const useRenderMessage = ({
             >
               {formatedContractAddress}
             </a>
-          </>
+          </div>
+        )
+      case TransferTypeEnum.SOLD:
+        return (
+          <div className="font-normal">
+            🛒 just sold {countActions > 1 ? countActions : ''} NFT
+            {countActions > 1 ? 'S' : ''} on OpenSea for{' '}
+            <span className="font-semibold">
+              {Number(amountInCrypto).toFixed(4)} {saleCryptoSymbol} (${Number(amountInUsd).toFixed(2)})
+            </span>
+          </div>
+        )
+      case TransferTypeEnum.BOUGHT:
+        return (
+          <div className="font-normal">
+            🛒 just bought {countActions > 1 ? countActions : ''} NFT
+            {countActions > 1 ? 'S' : ''} on OpenSea for{' '}
+            <span className="font-semibold">
+              {Number(amountInCrypto).toFixed(4)} {saleCryptoSymbol} (${(Number(amountInUsd).toFixed(2))})
+            </span>
+          </div>
         )
       default:
         return <></>

@@ -11,8 +11,6 @@ export function PostCardAuthor() {
       <Link href={`/profile/${ownerAddress}`}>
         <Author address={ownerAddress} date={creationDate} />
       </Link>
-
-      <img src="/assets/icons/more.svg" alt="more" className={'w-6 aspect-square'} />
     </div>
   )
 }

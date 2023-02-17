@@ -4,7 +4,9 @@ import React, { useContext } from 'react'
 interface IPostReactionContext {
   comments: {
     addComment: (description: string) => void
+    commentsShort: IComment[]
     comments: IComment[]
+    commentsRemaining?: number
     isError: {
       reactions: boolean
       mutation: boolean

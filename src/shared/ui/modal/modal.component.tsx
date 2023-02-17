@@ -2,12 +2,12 @@ import type { ModalProps } from '@mantine/core'
 import { Modal as MantineModal } from '@mantine/core'
 import React from 'react'
 
-interface IModalProperties extends ModalProps {
+export interface IModalProperties extends ModalProps {
   withoutHeader?: boolean
 }
 
 export const Modal = (props: IModalProperties) => {
-  const { withoutHeader = false } = props
+  const { withoutHeader = false, classNames } = props
 
   return (
     <MantineModal
@@ -15,9 +15,10 @@ export const Modal = (props: IModalProperties) => {
       centered
       classNames={{
         modal: 'rounded-3xl p-0',
-        header: `border-b border-black/20 p-4 ${withoutHeader && 'hidden'}`,
+        header: `border-b  border-black/20 p-4 ${withoutHeader && 'hidden'}`,
         close: 'text-black w-8 aspect-square',
         body: 'p-4',
+        ...classNames
       }}
     />
   )
