@@ -32,7 +32,7 @@ export function FollowersModal(props: IFollowersModalProps) {
           setCurrentTab(e);
         }}
         classNames={{
-          tabsList: "w-full px-4  py-2 flex justify-between",
+          tabsList: "w-full px-4 py-2 flex justify-between",
           tab: "w-1/2 border-none rounded-full font-rounded font-semibold hover",
         }}
       >

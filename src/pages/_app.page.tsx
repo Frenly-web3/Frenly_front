@@ -1,25 +1,32 @@
-import '@shared/styles/global.scss'
-import 'react-toastify/dist/ReactToastify.css'
+import "@shared/styles/global.scss";
+import "react-toastify/dist/ReactToastify.css";
 
-import { ApolloProvider } from '@apollo/client'
-import { store } from '@app/store'
-import { AuthContextProvider } from '@entities/user'
-import { client } from '@shared/api'
-import { LoaderContextProvider } from '@shared/lib'
-import { Loader } from '@shared/ui'
-import type { AppProps } from 'next/app'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { ToastContainer } from 'react-toastify'
-import { configureChains, createClient, mainnet, WagmiConfig } from 'wagmi'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { publicProvider } from 'wagmi/providers/public'
+import { ApolloProvider } from "@apollo/client";
+import { store } from "@app/store";
+import { AuthContextProvider } from "@entities/user";
+import { client } from "@shared/api";
+import { LoaderContextProvider } from "@shared/lib";
+import { Loader } from "@shared/ui";
+import type { AppProps } from "next/app";
+import React from "react";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import {
+  configureChains,
+  createClient,
+  createStorage,
+  mainnet,
+  useClient,
+  WagmiConfig,
+} from "wagmi";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { publicProvider } from "wagmi/providers/public";
 
 const { provider, webSocketProvider, chains } = configureChains(
   [mainnet],
   [publicProvider()]
-)
+);
 
 const wagmiClient = createClient({
   provider,
@@ -34,7 +41,7 @@ const wagmiClient = createClient({
       },
     }),
   ],
-})
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -62,7 +69,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         </Provider>
       </ApolloProvider>
     </WagmiConfig>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;

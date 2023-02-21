@@ -19,8 +19,7 @@ export const Avatar = (props: IProperties) => {
   if (!mount) return <div className={`${className}`} />
 
   return (
-    // eslint-disable-next-line sonarjs/no-nested-template-literals
-    <div className={`${className} ${isLoading && ``}`}>
+    <div className={`${className} ${isLoading && `animate-pulse`}`}>
       {data && <img className="rounded-full" src={data} alt="avatar" />}
     </div>
   )

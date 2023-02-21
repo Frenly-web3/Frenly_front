@@ -1,74 +1,85 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import type { IBaseResponse } from '@shared/lib'
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
+import type { IBaseResponse } from "@shared/lib";
 
-import { baseQueryWithReauth } from '../base-query'
-import type { ICommentsDto, IReactionsDto } from '../dto/reactions.dto'
+import { baseQueryWithReauth } from "../base-query";
+import type { ICommentsDto, IReactionsDto } from "../dto/reactions.dto";
 
 export const reactionsApi = createApi({
-  reducerPath: 'reactionsApi',
+  reducerPath: "reactionsApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['REACTIONS', 'LIKES'],
+  tagTypes: ["REACTIONS", "LIKES"],
   endpoints: (builder) => ({
     isPostLiked: builder.query<boolean, { postId: number }>({
-      providesTags: ['LIKES'],
+      providesTags: ["LIKES"],
       query: ({ postId }: { postId: number }) => {
         return {
           url: `content/${postId}/is-liked`,
-          method: 'GET',
-          credentials: 'omit',
-        }
+          method: "GET",
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<boolean>) => {
-        return res.data
+        return res.data;
       },
     }),
     postReactions: builder.query<IReactionsDto, { postId: number }>({
-      providesTags: ['REACTIONS'],
+      providesTags: ["REACTIONS"],
       query: ({ postId }) => {
         return {
           url: `content/${postId}/reactions`,
-          method: 'GET',
-          credentials: 'omit',
-        }
+          method: "GET",
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<IReactionsDto>) => {
-        return res.data
+        return res.data;
       },
     }),
-    getCommentsById: builder.query<ICommentsDto, { postId: number, take?: number, skip?: number }>({
-      providesTags: ['REACTIONS'],
-      query: ({ postId, take=2, skip=0 }) => {
+    getCommentsById: builder.query<
+      ICommentsDto,
+      { postId: number; take?: number; skip?: number }
+    >({
+      providesTags: (result, error, arg) =>
+        result
+          ? [{ type: "REACTIONS" as const, id: arg.postId }, "REACTIONS"]
+          : ["REACTIONS"],
+      query: ({ postId, take = 2, skip = 0 }) => {
         return {
-          url: `content/${postId}/comments?${take ? `take=${take}` : ''}${skip ? `&skip=${skip}` : ''}`,
-          method: 'GET',
-          credentials: 'omit',
-        }
+          url: `content/${postId}/comments?${take ? `take=${take}` : ""}${
+            skip ? `&skip=${skip}` : "&skip=0"
+          }`,
+          method: "GET",
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<ICommentsDto>) => {
-        return res?.data
+        return res?.data;
       },
     }),
     postLikeUnlike: builder.mutation<any, { postId: number }>({
       query: ({ postId }) => {
         return {
           url: `content/${postId}/like`,
-          method: 'Post',
-          credentials: 'omit',
-        }
+          method: "Post",
+          credentials: "omit",
+        };
       },
     }),
     createComment: builder.mutation<any, { postId: number; comment: string }>({
+      invalidatesTags: (result, error, arg) => [
+        { type: "REACTIONS", id: arg.postId },
+      ],
       query: ({ postId, comment }) => {
         return {
           url: `content/comment/create`,
-          method: 'Post',
-          credentials: 'omit',
+          method: "Post",
+          credentials: "omit",
           body: {
             postId,
             comment,
           },
-        }
+        };
       },
     }),
   }),
-})
+});

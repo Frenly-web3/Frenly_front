@@ -20,7 +20,7 @@ export function PostCardImage() {
   if (!actions) return null;
 
   return (
-    <div className="">
+    <div className="mb-4">
       {actions.length > 1 ? (
         <div className="mb-4">
           <div className="flex justify-between px-4 pb-4">

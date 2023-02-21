@@ -11,7 +11,7 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props
 
   return (
-    <div className="container md:w-[24.5rem] md:ml-6 p-4 top-0 bg-white rounded-[2rem]">
+    <div className="container md:w-[24.5rem] md:ml-6 p-4 top-0 bg-white rounded-[2rem] md:min-w-[30.5rem]">
       <div className="flex flex-col justify-center items-center">
         <InfoUploadComponent address={address} />
 

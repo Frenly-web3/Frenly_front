@@ -22,16 +22,13 @@ export const PostImage = (props: IPostContentProperties) => {
     <div className="">
       <div className="relative overflow-hidden">
         <UnificationImage image={image} />
-        {imagesCount && (
-          <Badge className="absolute right-3 top-3 z-50">
-            {(chosedImage as number) + 1} / {imagesCount}
-          </Badge>
-        )}
-        <PostBadge
-          community={community}
-          tokenId={tokenId}
-          title={<div className="flex items-center">{userCard}</div>}
-        />
+        <div className="absolute left-3 bottom-3 ">
+          <PostBadge
+            community={community}
+            tokenId={tokenId}
+            title={<div className="flex items-center">{userCard}</div>}
+          />
+        </div>
       </div>
     </div>
   );
