@@ -48,8 +48,7 @@ export const userApi = createApi({
         }
       },
       transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
-        console.log(res);
-        
+
         return res?.data
       },
     }),

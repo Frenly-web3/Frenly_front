@@ -6,7 +6,6 @@ export interface IActionCardProps extends IAction {}
 
 export function ActionCard(props: IActionCardProps) {
   const { amountInCrypto, saleCryptoSymbol, image, community, tokenId } = props;
-  console.log(amountInCrypto);
   return (
     <div className="flex flex-col">
       <div className="w-full aspect-square rounded-2xl overflow-hidden mb-2">

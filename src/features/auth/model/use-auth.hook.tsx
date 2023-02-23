@@ -23,8 +23,6 @@ export function useAuth() {
 
   const login = React.useCallback(
     async (connector: Connector) => {
-      console.log(connectors[connector]);
-
       setIsLoading(true);
       if (address && !isWhitelisted(address)) {
         router.push("/user-not-whitelisted");

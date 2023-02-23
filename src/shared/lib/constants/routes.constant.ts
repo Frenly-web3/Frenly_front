@@ -10,6 +10,11 @@ export const ROUTES = [
     icon: '/assets/icons/orange.svg',
   },
   {
+    path: '/feed/posers/',
+    name: 'posers',
+    icon: '/assets/icons/posers.svg',
+  },
+  {
     path: '/search/',
     name: 'search',
     icon: '/assets/icons/search.svg',
