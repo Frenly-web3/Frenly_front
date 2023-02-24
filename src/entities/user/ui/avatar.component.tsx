@@ -5,7 +5,7 @@ import { useUserAvatar } from '../model/use-user-avatar.hook'
 
 interface IProperties {
   address: IAddress
-  className: any
+  className?: string
 }
 
 export const Avatar = (props: IProperties) => {

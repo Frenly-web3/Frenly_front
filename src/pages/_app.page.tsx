@@ -17,6 +17,7 @@ import {
   createStorage,
   mainnet,
   useClient,
+  useProvider,
   WagmiConfig,
 } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
@@ -44,6 +45,8 @@ const wagmiClient = createClient({
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const provider = useProvider();
+
   return (
     <WagmiConfig client={wagmiClient}>
       <ApolloProvider client={client}>

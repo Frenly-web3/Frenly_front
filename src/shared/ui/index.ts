@@ -18,6 +18,7 @@ export * from "./post-carousel";
 export * from "./profile-button";
 export * from "./routes-bar";
 export * from "./scroll-loader";
+export * from "./social-badge";
 export * from "./switcher";
 export * from "./time-date";
 export * from "./transaction-link";

@@ -1,24 +1,46 @@
-import { FollowUnfollowButton } from '@features/follow-unfollow-user'
-import { InfoUploadComponent } from '@features/update-user-info'
-import type { IAddress } from '@shared/lib'
-import React from 'react'
+import { useEnsInfo } from "@entities/user";
+import {
+  FollowerStatistic,
+  FollowUnfollowButton,
+  useFollowUnfollowUser,
+} from "@features/follow-unfollow-user";
+import { InfoUploadComponent } from "@features/update-user-info";
+import type { IAddress, Subscription } from "@shared/lib";
+import { ProfileButton, SocialIcon } from "@shared/ui";
+import React from "react";
+import { useAccount } from "wagmi";
+import { SocialBadgeList } from "./social-badge-list.component";
 
 interface IUserProfileWidgetProperties {
-  address: IAddress
+  address: IAddress;
 }
 
 export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
-  const { address } = props
+  const { address } = props;
+  const { name, description, social } = useEnsInfo({ address });
 
   return (
-    <div className="container md:w-[24.5rem] md:ml-6 p-4 top-0 bg-white rounded-[2rem] md:min-w-[30.5rem]">
-      <div className="flex flex-col justify-center items-center">
-        <InfoUploadComponent address={address} />
-
-        <div className="mt-8">
-          <FollowUnfollowButton address={address} />
+    <div className=" md:ml-6 p-4 top-0 bg-white rounded-[2rem] lg:w-[37rem] relative">
+      <div className="flex items-start justify-between">
+        <div className="max-md:w-full">
+          <InfoUploadComponent
+            address={address}
+            name={name}
+            description={description}
+          >
+            <FollowerStatistic address={address} />
+          </InfoUploadComponent>
+          <p className="font-medium font-rounded md:ml-32 mb-4 text-black/80">
+            {description}
+          </p>
         </div>
+        <FollowUnfollowButton className="max-md:hidden" address={address} />
       </div>
+      <div className="md:ml-32 max-md:mb-4">
+        <SocialBadgeList socials={social} />
+      </div>
+
+      <FollowUnfollowButton className="md:hidden w-full" address={address} />
     </div>
-  )
-}
+  );
+};
