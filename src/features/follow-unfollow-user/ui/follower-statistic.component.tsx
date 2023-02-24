@@ -2,7 +2,6 @@ import { UserStatistic } from "@entities/user";
 import { IAddress } from "@shared/lib";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import { useAccount } from "wagmi";
 import { SubscriptionStateEnum, useFollowUnfollowUser } from "../model";
 
 export interface IFollowerStatisticProps {

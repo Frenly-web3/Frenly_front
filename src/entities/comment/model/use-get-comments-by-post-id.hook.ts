@@ -1,7 +1,5 @@
-import { IComment } from "./comment.entity";
-import { ICommentsDto, reactionsApi } from "@shared/api";
+import { reactionsApi } from "@shared/api";
 import { useState } from "react";
-import { isError } from "util";
 
 interface IUseGetCommentsByPostIdProperties {
   postId: number;

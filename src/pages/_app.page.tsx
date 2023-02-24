@@ -11,15 +11,7 @@ import type { AppProps } from "next/app";
 import React from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import {
-  configureChains,
-  createClient,
-  createStorage,
-  mainnet,
-  useClient,
-  useProvider,
-  WagmiConfig,
-} from "wagmi";
+import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
@@ -45,8 +37,6 @@ const wagmiClient = createClient({
 });
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const provider = useProvider();
-
   return (
     <WagmiConfig client={wagmiClient}>
       <ApolloProvider client={client}>

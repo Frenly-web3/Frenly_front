@@ -2,13 +2,10 @@ import { useEnsInfo } from "@entities/user";
 import {
   FollowerStatistic,
   FollowUnfollowButton,
-  useFollowUnfollowUser,
 } from "@features/follow-unfollow-user";
 import { InfoUploadComponent } from "@features/update-user-info";
-import type { IAddress, Subscription } from "@shared/lib";
-import { ProfileButton, SocialIcon } from "@shared/ui";
+import type { IAddress } from "@shared/lib";
 import React from "react";
-import { useAccount } from "wagmi";
 import { SocialBadgeList } from "./social-badge-list.component";
 
 interface IUserProfileWidgetProperties {

@@ -3,7 +3,7 @@ import {
   // IAddress,
   TransferTypeEnum,
 } from "@shared/lib";
-import { Badge, UnificationImage } from "@shared/ui";
+import { UnificationImage } from "@shared/ui";
 import React from "react";
 // import { useRenderMessage } from "../lib";
 import { PostBadge } from "./post-badge.component";
@@ -15,8 +15,7 @@ interface IPostContentProperties extends IAction {
   userCard?: React.ReactNode;
 }
 export const PostImage = (props: IPostContentProperties) => {
-  const { image, chosedImage, imagesCount, community, tokenId, userCard } =
-    props;
+  const { image, community, tokenId, userCard } = props;
 
   return (
     <div className="">

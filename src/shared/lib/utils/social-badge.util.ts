@@ -1,4 +1,3 @@
-import { IconsTypes } from "@shared/ui";
 import { SocialType } from "./../types/social.type";
 import { useMemo } from "react";
 

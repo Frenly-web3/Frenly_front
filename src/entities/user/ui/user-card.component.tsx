@@ -1,9 +1,6 @@
-import { Tooltip } from "@mantine/core";
 import type { IAddress } from "@shared/lib";
-import { shortAddress } from "@shared/lib";
-import React, { useState } from "react";
-import { useEnsAvatar, useEnsName, useEnsResolver } from "wagmi";
-import { useEnsInfo } from "../model";
+import React from "react";
+import { useEnsName } from "wagmi";
 import { Avatar } from "./avatar.component";
 
 interface IUserCardProperties {
@@ -20,12 +17,6 @@ export const UserCard = (props: IUserCardProperties) => {
   const { data: ensName } = useEnsName({
     address,
   });
-
-  const info = useEnsInfo({ address });
-  
-  console.log("🚀 ~ file: user-card.component.tsx:25 ~ UserCard ~ info:", info);
-
-  const [opened, setOpened] = useState(false);
 
   return (
     <div className="flex flex-col justify-center items-center">
