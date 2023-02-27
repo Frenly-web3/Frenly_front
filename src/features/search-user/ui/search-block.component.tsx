@@ -1,7 +1,6 @@
 import { Author } from "@entities/user";
 import type { IAddress } from "@shared/lib";
 import { Paper } from "@shared/ui";
-import { UserProfileWidget } from "@widgets/user-profile";
 import Link from "next/link";
 import * as React from "react";
 

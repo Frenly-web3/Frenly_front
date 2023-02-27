@@ -7,7 +7,6 @@ import { UserProfileWidget } from "@widgets/user-profile";
 import { isAddress } from "ethers/lib/utils";
 import { useRouter } from "next/router";
 import React from "react";
-import { ProfilePostList } from "./profile-post-list.component";
 import { ProfileTabs } from "./profile-tabs.component";
 
 export default function ProfilePage() {
@@ -32,8 +31,6 @@ export default function ProfilePage() {
         <ProfileTabs address={address} />
       </div>
       {/* <ProfilePostList address={address} /> */}
-
-      
     </Layout>
   );
 }

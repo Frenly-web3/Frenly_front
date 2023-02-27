@@ -1,13 +1,13 @@
 import { useCommunityInfo } from "@entities/community";
 import { useUserInfo } from "@entities/user";
-import { FollowersModal, SubscriptionStateEnum } from "@features/follow-unfollow-user";
+import {
+  FollowersModal,
+  SubscriptionStateEnum,
+} from "@features/follow-unfollow-user";
 import { Paper } from "@mantine/core";
 import type { IAddress } from "@shared/lib";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useAccount } from "wagmi";
-
-
 
 interface IProperties {
   id?: string;
@@ -56,10 +56,10 @@ export const CommunitySingle = (props: IProperties) => {
             `${community.membersAmount} frens`
           ) : (
             <button onClick={() => setOpened(true)}>
-              {user.totalSubscribers}{' frens'}
+              {user.totalSubscribers}
+              {" frens"}
             </button>
           )}
-           
         </div>
       </div>
       <FollowersModal
