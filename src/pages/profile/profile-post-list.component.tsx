@@ -12,7 +12,7 @@ export interface IProfilePostProps {
 export function ProfilePostList(props: IProfilePostProps) {
   const { address } = props;
 
-  const { hasMore, loadMore, posts, refresh } = useGetPosts({ address });
+  const { hasMore, loadMore, posts } = useGetPosts({ address });
   return (
     <div className="p-0 md:max-w-[37rem] w-full">
       <InfiniteScroll

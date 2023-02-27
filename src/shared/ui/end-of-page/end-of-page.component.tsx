@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 
 interface IEndOfPageProperties {
@@ -8,7 +7,6 @@ interface IEndOfPageProperties {
 
 export function EndOfPage(props: IEndOfPageProperties) {
   const { page } = props;
-  const router = useRouter();
 
   return (
     <section className="container py-4">
