@@ -88,7 +88,7 @@ export function FollowersModal(props: IFollowersModalProps) {
             header: "p-0 m-0",
             title: "w-full m-0",
             close: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-scroll h-36",
+            body: "px-4 py-2 overflow-scroll h-64",
           }}
         >
           <Tabs.Panel value={SubscriptionStateEnum.followers}>

@@ -2,6 +2,7 @@ import { ActionList, IAction, SmallActionList } from "@entities/action";
 import { PostImage } from "@entities/post";
 import { SmallUserCard } from "@entities/user";
 import { IAddress, useLoaderContext } from "@shared/lib";
+import { ShowMore } from "@shared/ui";
 import { useEffect, useState } from "react";
 
 import { usePostCardContext } from "../model";
@@ -25,15 +26,10 @@ export function PostCardImage() {
         <div className="mb-4">
           <div className="flex justify-between px-4 pb-4">
             <span className="">{actions.length} NFTs</span>
-            <button
+            <ShowMore
               onClick={() => setShowedMore((prev) => !prev)}
-              className="text-black/60 font-rounded font-normal flex items-center"
-            >
-              show {showedMore ? "less" : "all"}{" "}
-              <span className="font-icon ml-1 text-lg">
-                {showedMore ? "chevron_left" : "chevron_right"}
-              </span>
-            </button>
+              showMore={showedMore}
+            />
           </div>
 
           {showedMore ? (

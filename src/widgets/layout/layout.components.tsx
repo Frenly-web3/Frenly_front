@@ -33,7 +33,7 @@ export const Layout = memo((props: IProperties) => {
   }, [router.asPath]);
 
   return (
-    <div className="bg-background   min-h-screen md:flex justify-center px-2">
+    <div className="bg-background   min-h-screen md:flex justify-center">
       <Meta title="frenly feed" description="your frenly feed" />
 
       <RoutesBar chosedMenu={currentIndexMenu}>
@@ -46,7 +46,7 @@ export const Layout = memo((props: IProperties) => {
         )}
       </RoutesBar>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col md:pl-2">
         <div className={`flex justify-between p-4 pb-8 bg-background`}>
           <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
         </div>
