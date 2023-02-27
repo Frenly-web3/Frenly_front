@@ -11,7 +11,11 @@ export const useGetPosts = ({ address }: IuseGetPosts) => {
   const [hasMore, setHasMore] = useState(true);
   const [skip, setSkip] = useState(0);
 
-  const { data: postsData, refetch } = contentApi.useGetWalletAddressFeedQuery({
+  const {
+    data: postsData,
+    refetch,
+    isError,
+  } = contentApi.useGetWalletAddressFeedQuery({
     take: SIZE_POST_CHUNK,
     skip: SIZE_POST_CHUNK * skip,
     address,
@@ -21,7 +25,8 @@ export const useGetPosts = ({ address }: IuseGetPosts) => {
     if (
       postsData &&
       (postsData.totalPosts == 0 ||
-        postsData?.totalPosts - postsData?.posts?.length <= 0)
+        postsData?.totalPosts - postsData?.posts?.length <= 0 ||
+        postsData.posts?.length == 0)
     ) {
       setHasMore(false);
     } else {
@@ -35,15 +40,16 @@ export const useGetPosts = ({ address }: IuseGetPosts) => {
     // setHasMore(true);
   }, [address]);
 
-  // useEffect(() => {
-  //   if (skip === 0) {
-  //     refetch();
-  //   }
-  // }, [skip]);
+  useEffect(() => {
+    if (isError) {
+      setHasMore(false);
+      // refetch();
+    }
+  }, [isError]);
 
   return useMemo(
     () => ({
-      posts: postsData?.posts as unknown as IPost[],
+      posts: !isError ? (postsData?.posts as unknown as IPost[]) : [],
       loadMore: () => {
         setSkip((prev) => prev + 1);
       },
@@ -52,6 +58,6 @@ export const useGetPosts = ({ address }: IuseGetPosts) => {
       // },
       hasMore,
     }),
-    [postsData, hasMore, address]
+    [postsData, hasMore, address, isError]
   );
 };

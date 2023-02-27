@@ -6,7 +6,6 @@ import type {
   ICommunityFeedRequest,
   IFeedRequest,
   IWalletAddressFeedDto,
-  IPostDto,
   IWalletAddressFeedRequest,
 } from "../dto/content.dto";
 
