@@ -14,7 +14,8 @@ const mockSuggestedFriends = [
 ];
 
 export function SuggestedFriends(props: ISuggestedFriendsProps) {
-  const { data: suggestionAddresses } = userApi.useGetUserSuggestionsQuery();
+  const { data: suggestionAddresses, isError } =
+    userApi.useGetUserSuggestionsQuery();
 
   return (
     <div className="">
@@ -23,16 +24,17 @@ export function SuggestedFriends(props: ISuggestedFriendsProps) {
         <h5 className="font-rounded text-black/60 mb-4">
           wallets you interacted with
         </h5>
-        <div className="flex flex-col gap-y-2 h-20 overflow-y-scroll">
+        <div className="flex flex-col gap-y-2 h-24 overflow-y-scroll">
           {suggestionAddresses &&
+            !isError &&
             suggestionAddresses?.length > 0 &&
             suggestionAddresses?.map((address) => {
               return (
                 <Author classNames={{ avatar: "w-6" }} address={address} />
               );
             })}
-          {suggestionAddresses &&
-            suggestionAddresses?.length == 0 &&
+          {((suggestionAddresses && suggestionAddresses?.length == 0) ||
+            isError) &&
             mockSuggestedFriends.map((address) => {
               return (
                 <Author
