@@ -24,7 +24,7 @@ export function SuggestedFriends(props: ISuggestedFriendsProps) {
         <h5 className="font-rounded text-black/60 mb-4">
           wallets you interacted with
         </h5>
-        <div className="flex flex-col gap-y-2 h-24 overflow-y-scroll">
+        <div className="flex flex-col gap-y-2 h-20 overflow-y-auto">
           {suggestionAddresses &&
             !isError &&
             suggestionAddresses?.length > 0 &&

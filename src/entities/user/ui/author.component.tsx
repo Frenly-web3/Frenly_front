@@ -28,34 +28,34 @@ export const Author = (props: IAuthorProperties) => {
         classNames?.root ? classNames.root : "items-center"
       )}
     >
-      <Link
-        href={`/profile/${address}`}
-        className="flex items-center border rounded-full border-border-color overflow-hidden"
-      >
-        <Avatar
-          className={clsx(
-            `aspect-square`,
-            classNames?.avatar ? classNames.avatar : "w-10"
-          )}
-          address={address}
-        />
-      </Link>
-      <div className="flex flex-col">
-        <figcaption>
-          <Name
+      <Link href={`/profile/${address}`} className="flex gap-2">
+        <div className="border rounded-full border-border-color overflow-hidden">
+          <Avatar
             className={clsx(
-              `font-rounded  cursor-pointer`,
-              classNames?.name ? classNames.name : "mb-[-0.25rem] font-medium"
+              `aspect-square`,
+              classNames?.avatar ? classNames.avatar : "w-10 aspect-square"
             )}
             address={address}
           />
-        </figcaption>
-        {date && (
-          <div className="font-text text-hidden font-regular text-sm">
-            <TimeDate date={date} />
-          </div>
-        )}
-      </div>
+        </div>
+
+        <div className="flex flex-col">
+          <figcaption>
+            <Name
+              className={clsx(
+                `font-rounded  cursor-pointer`,
+                classNames?.name ? classNames.name : "mb-[-0.25rem] font-medium"
+              )}
+              address={address}
+            />
+          </figcaption>
+          {date && (
+            <div className="font-text text-hidden font-regular text-sm">
+              <TimeDate date={date} />
+            </div>
+          )}
+        </div>
+      </Link>
     </figure>
   );
 };

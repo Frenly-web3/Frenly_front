@@ -1,4 +1,4 @@
-import { SmallUserCard } from "@entities/user";
+import { Author, SmallUserCard } from "@entities/user";
 import { clsx, Tabs, TabsValue } from "@mantine/core";
 import { userApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
@@ -51,7 +51,7 @@ export function FollowersModal(props: IFollowersModalProps) {
           title={
             <div className="flex flex-col">
               <div className="px-4">
-                <SmallUserCard address={address} />
+                <Author classNames={{avatar: 'w-6 aspect-square', root: 'mt-2'}} address={address} />
               </div>
               <Tabs.List>
                 <Tabs.Tab
@@ -88,7 +88,7 @@ export function FollowersModal(props: IFollowersModalProps) {
             header: "p-0 m-0",
             title: "w-full m-0",
             close: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-scroll h-64",
+            body: "px-4 py-2 overflow-y-auto h-64",
           }}
         >
           <Tabs.Panel value={SubscriptionStateEnum.followers}>

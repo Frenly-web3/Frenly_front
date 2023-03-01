@@ -16,13 +16,17 @@ export function ActionList(props: IActionListProps) {
   return (
     <Carousel
       // onSlideChange={(index) => setChosedImage(index)}
-      dragFree={true}
-      slideGap={!matches? 16 : 48}
+      dragFree
+      containScroll={"trimSnaps"}
+      slideGap={!matches ? 16 : 48}
       draggable
+      withKeyboardEvents
       classNames={{
         controls: "hidden",
         // control: "bg-white",
-        viewport: "pl-4",
+        slide: "snap-center",
+        viewport: "px-4 snap-x",
+        container: "snap-x",
       }}
       slideSize={!matches ? "45%" : "70%"}
       align={"start"}
