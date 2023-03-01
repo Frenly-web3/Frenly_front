@@ -1,17 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
-
-    return config
-  },
+const runtimeCaching = require( 'next-pwa/cache.js');
+const prod = process.env.NODE_ENV === 'production'
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  runtimeCaching,
 })
+// const withBundleAnalyzer = require('@next/bundle-analyzer')({
+//   enabled: process.env.ANALYZE === 'true',
+//   webpack(config) {
+//     config.module.rules.push({
+//       test: /\.svg$/,
+//       use: ['@svgr/webpack'],
+//     })
 
-module.exports = withBundleAnalyzer({
+//     return config
+//   },
+// })
+
+module.exports = withPWA({
   eslint: {
     dirs: ['.'],
   },
@@ -25,9 +31,11 @@ module.exports = withBundleAnalyzer({
     })
 
     return config
-  },
+  },  
+  // disable: !prod,
+  // skipWaiting: true,
+  // register: true,
   env: {
-    
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_API_URL,
     
   },
