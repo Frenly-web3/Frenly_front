@@ -1,6 +1,6 @@
 {
-  "theme_color": "#f69435",
-  "background_color": "#f69435",
+  "theme_color": "#EFF5FF",
+  "background_color": "#EFF5FF",
   "display": "standalone",
   "scope": "/",
   "start_url": "/?source=pwa",
