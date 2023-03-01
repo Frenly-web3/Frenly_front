@@ -33,11 +33,7 @@ export const CommunitySingle = (props: IProperties) => {
         className={`rounded-xl mb-2 max-w-[4rem] min-w-[4rem] max-h-[4rem] min-h-[4rem] relative overflow-hidden`}
       >
         <img
-          src={
-            community
-              ? `https://stage.frenly.cc/api/community-content/images/${community.image}`
-              : "/assets/icons/feed-frenly.svg"
-          }
+          src={community ? community.image : "/assets/icons/feed-frenly.svg"}
           alt={`${community?.name} logo`}
         />
       </div>
