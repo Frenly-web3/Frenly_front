@@ -1,4 +1,4 @@
-import { Author, SmallUserCard } from "@entities/user";
+import { Author } from "@entities/user";
 import { clsx, Tabs, TabsValue } from "@mantine/core";
 import { userApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
