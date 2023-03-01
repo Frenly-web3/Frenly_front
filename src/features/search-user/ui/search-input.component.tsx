@@ -13,13 +13,13 @@ export const SearchInput = React.memo((props: ISearchInputProperties) => {
     <Input
       placeholder="0x... or .eth"
       rightSection={
-        <button onClick={() => console.log('CLICK')} className="w-3 aspect-square mr-6">
+        <button className="w-3 aspect-square">
           <img className="" alt="search" src="/assets/icons/search.svg" />
         </button>
       }
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      classNames={{ input: 'bg-black/5 text-black/60 rounded-2xl border-0' }}
+      classNames={{ input: 'bg-black/5 text-black/60 rounded-2xl border-0', wrapper: 'p-0' }}
     />
   )
 })

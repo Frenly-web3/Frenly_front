@@ -46,7 +46,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
         </button>
       </div>
       <Link
-        className="bg-black/10 text-black mt-4 rounded-3xl text-center font-rounded font-medium text-2xl py-3"
+        className="bg-black/10 text-black mt-4 rounded-full text-center font-rounded font-medium text-2xl py-2"
         href={"/user-not-whitelisted"}
       >
         join waitlist

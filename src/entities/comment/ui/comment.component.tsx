@@ -10,8 +10,7 @@ interface IProperies {
 export const Comment = (props: IProperies) => {
   const { comment } = props
   const profileLink = `/profile/${comment.creator}`
-  console.log(comment);
-  
+    
   return (
     <div className="flex gap-2">
       <Link href={profileLink}>

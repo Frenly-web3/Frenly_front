@@ -16,7 +16,7 @@ export const useUserAvatar = (props: IProperties) => {
   })
 
   const backendAvatar = backendData?.avatar
-    ? `https://gm.frenly.cc/rest/avatars/${backendData?.avatar}`
+    ? `https://stage.frenly.cc/rest/avatars/${backendData?.avatar}`
     : null
 
   const isLoading = ensLoading ? true : !!backendLoading

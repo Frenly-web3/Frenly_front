@@ -1,21 +1,23 @@
-import { SmallUserCard } from "@entities/user";
+import { Author } from "@entities/user";
 import { clsx, Tabs, TabsValue } from "@mantine/core";
 import { userApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
 import { AdaptiveModal } from "@shared/ui";
 import * as React from "react";
+import { SubscriptionStateEnum } from "../model";
 import { FollowUserCard } from "./follow-user-card.component";
 
 export interface IFollowersModalProps {
   address: IAddress;
   opened: boolean;
   onClose: () => void;
+  initialTab: SubscriptionStateEnum;
 }
 
 export function FollowersModal(props: IFollowersModalProps) {
-  const { address, onClose, opened } = props;
+  const { address, onClose, opened, initialTab } = props;
 
-  const [currentTab, setCurrentTab] = React.useState<TabsValue>("followers");
+  const [currentTab, setCurrentTab] = React.useState<TabsValue>(initialTab);
 
   const { data: followers } = userApi.useGetUserFollowersQuery({
     address: address as IAddress,
@@ -24,36 +26,51 @@ export function FollowersModal(props: IFollowersModalProps) {
     address: address as IAddress,
   });
 
+  React.useEffect(() => {
+    onClose();
+  }, [address]);
+
+  React.useEffect(() => {
+    setCurrentTab(initialTab);
+  }, [opened, initialTab]);
+
   return (
     <>
       <Tabs
-        defaultValue="followers"
+        defaultValue={initialTab}
+        value={currentTab}
         onTabChange={(e) => {
           setCurrentTab(e);
         }}
         classNames={{
-          tabsList: "w-full px-4  py-2 flex justify-between",
-          tab: "w-1/2 border-none rounded-full font-rounded font-semibold hover",
+          tabsList: "w-full px-4 py-2 flex justify-between",
+          tab: "w-1/2 border-none rounded-full font-rounded font-semibold hover:",
         }}
       >
         <AdaptiveModal
           title={
             <div className="flex flex-col">
               <div className="px-4">
-                <SmallUserCard address={address} />
+                <Author classNames={{avatar: 'w-6 aspect-square', root: 'mt-2'}} address={address} />
               </div>
               <Tabs.List>
                 <Tabs.Tab
-                  value="followers"
-                  className={clsx({ "bg-black/5": currentTab === "followers" })}
+                  value={SubscriptionStateEnum.followers}
+                  className={clsx({
+                    "bg-black/5":
+                      currentTab === SubscriptionStateEnum.followers,
+                  })}
                 >
-                  followers
+                  {SubscriptionStateEnum.followers}
                 </Tabs.Tab>
                 <Tabs.Tab
-                  value="following"
-                  className={clsx({ "bg-black/5": currentTab === "following" })}
+                  value={SubscriptionStateEnum.following}
+                  className={clsx({
+                    "bg-black/5":
+                      currentTab === SubscriptionStateEnum.following,
+                  })}
                 >
-                  following
+                  {SubscriptionStateEnum.following}
                 </Tabs.Tab>
               </Tabs.List>
             </div>
@@ -71,16 +88,16 @@ export function FollowersModal(props: IFollowersModalProps) {
             header: "p-0 m-0",
             title: "w-full m-0",
             close: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-scroll h-36",
+            body: "px-4 py-2 overflow-y-auto h-64",
           }}
         >
-          <Tabs.Panel value="followers">
+          <Tabs.Panel value={SubscriptionStateEnum.followers}>
             {followers?.map((follower, index) => {
               return <FollowUserCard address={follower} key={index} />;
             })}
           </Tabs.Panel>
 
-          <Tabs.Panel value="following">
+          <Tabs.Panel value={SubscriptionStateEnum.following}>
             {subscriptions?.map((follower, index) => {
               return <FollowUserCard address={follower} key={index} />;
             })}

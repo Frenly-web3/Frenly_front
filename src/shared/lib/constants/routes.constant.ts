@@ -2,16 +2,21 @@ export const ROUTES = [
   {
     path: '/feed/',
     name: 'feed',
-    icon: '/assets/icons/feed.svg',
+    icon: 'home',
   },
   {
     path: '/feed/orange/',
     name: 'orange DAO',
-    icon: '/assets/icons/orange.svg',
+    icon: 'NUTRITION',
+  },
+  {
+    path: '/feed/posers/',
+    name: 'posers',
+    icon: 'account_box',
   },
   {
     path: '/search/',
     name: 'search',
-    icon: '/assets/icons/search.svg',
+    icon: 'search',
   },
 ]
