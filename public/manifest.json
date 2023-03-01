@@ -1,9 +1,9 @@
 {
   "theme_color": "#f69435",
   "background_color": "#f69435",
-  "display": "browser",
+  "display": "standalone",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "name": "frenly",
   "short_name": "frenly",
   "icons": [

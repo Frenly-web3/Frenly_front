@@ -1,9 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const runtimeCaching = require( 'next-pwa/cache.js');
-const prod = process.env.NODE_ENV === 'production'
+// const prod = process.env.NODE_ENV === 'production'
 const withPWA = require('next-pwa')({
   dest: 'public',
   runtimeCaching,
+   skipWaiting: true,
+  register: true,
 })
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
