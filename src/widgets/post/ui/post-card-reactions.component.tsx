@@ -8,6 +8,7 @@ import {
   usePostComment,
 } from "@features/post-comment";
 import { PostLikeButton, usePostLike } from "@features/post-like";
+import { clsx } from "@mantine/core";
 import { IAddress } from "@shared/lib";
 import { AdaptiveModal } from "@shared/ui";
 import React from "react";
@@ -54,8 +55,10 @@ export function PostCardReactions(props: IPostCardReactions) {
             <PostCommentButton setIsOpen={setIsOpen} />
           </div>
         </div>
+        <div className={clsx("mt-8", { "mb-4": comments.length > 0 })}>
+          <PostCommentList withShowMore setIsOpen={setIsOpen} isOpen={isOpen} />
+        </div>
 
-        <PostCommentList withShowMore setIsOpen={setIsOpen} isOpen={isOpen} />
         <PostCommentAdd addComment={addComment} />
         <AdaptiveModal
           classNamesDrawer={{

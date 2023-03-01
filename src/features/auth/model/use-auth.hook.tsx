@@ -4,10 +4,11 @@ import type { Connector, IAddress } from "@shared/lib";
 import { isWhitelisted, useAppDispatch } from "@shared/lib";
 import { useRouter } from "next/router";
 import React from "react";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 
 export function useAuth() {
   const { address } = useAccount();
+  const { disconnectAsync } = useDisconnect();
   const [loginMutation] = authApi.useValidateUserSignatureMutation();
   const [getNonce] = authApi.useLazyGetUserNonceQuery();
   const setAuthDispatch = useAppDispatch(setAuth);
@@ -22,8 +23,6 @@ export function useAuth() {
 
   const login = React.useCallback(
     async (connector: Connector) => {
-      console.log(connectors[connector]);
-
       setIsLoading(true);
       if (address && !isWhitelisted(address)) {
         router.push("/user-not-whitelisted");
@@ -31,9 +30,12 @@ export function useAuth() {
       }
 
       try {
+        await disconnectAsync();
         const account =
           // eslint-disable-next-line unicorn/no-await-expression-member
-          address || (await connectAsync({ connector: connectors[connector] })).account;
+          address ||
+          (await connectAsync({ connector: connectors[connector], chainId: 1 }))
+            .account;
 
         const { data: nonce } = await getNonce({ address: account });
 

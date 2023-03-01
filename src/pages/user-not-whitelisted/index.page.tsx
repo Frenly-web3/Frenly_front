@@ -17,7 +17,7 @@ export default function UserNotWhitelistedPage() {
 
         <div className="w-full py-4 mb-16">
           <Link
-            href="https://docs.google.com/forms/d/e/1FAIpQLSeU1dRLy4S6DuTEx6NVTsgdvRxRlHRdXkVlmdCmDGQYdE3ReQ/viewform"
+            href="https://form.waitlistpanda.com/go/4C0JLtlQcH3sBqb0wCbx"
             className="w-full"
           >
             <Button>Open Form</Button>

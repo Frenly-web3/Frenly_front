@@ -1,116 +1,138 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import type { IAddress, IBaseResponse } from '@shared/lib'
+import { createApi } from "@reduxjs/toolkit/dist/query/react";
+import type { IAddress, IBaseResponse } from "@shared/lib";
 
-import { baseQueryWithReauth } from '../base-query'
-import type { IUserDto, IUserSubscriptionsDto } from '../dto/user.dto'
+import { baseQueryWithReauth } from "../base-query";
+import type { IUserDto, IUserSubscriptionsDto } from "../dto/user.dto";
 
 export const userApi = createApi({
-  reducerPath: 'userApi',
+  reducerPath: "userApi",
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['USER', 'ADMIN'],
+  tagTypes: ["USER", "ADMIN"],
   endpoints: (builder) => ({
     getUserInfo: builder.query<IUserDto, { address: IAddress }>({
-      providesTags: ['USER', 'ADMIN'],
+      providesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/${address}`,
-          method: 'GET',
+          method: "GET",
 
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<IUserDto>) => {
-        return res?.data
+        return res?.data;
       },
     }),
     IsSubscriber: builder.query<boolean, { address: IAddress }>({
-      providesTags: ['USER', 'ADMIN'],
+      providesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/${address}/is-follow`,
-          method: 'GET',
+          method: "GET",
 
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
       transformResponse: (res: any) => {
-        return res?.data
+        return res?.data;
       },
     }),
-    getUserSubscriptions: builder.query<IUserSubscriptionsDto, { address: IAddress }>({
-      providesTags: ['USER', 'ADMIN'],
+    getUserSubscriptions: builder.query<
+      IUserSubscriptionsDto,
+      { address: IAddress }
+    >({
+      providesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/${address}/subscriptions`,
-          method: 'GET',
+          method: "GET",
 
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
-        console.log(res);
-        
-        return res?.data
+        return res?.data;
       },
     }),
-    getUserFollowers: builder.query<IUserSubscriptionsDto, { address: IAddress }>({
-      providesTags: ['USER', 'ADMIN'],
+
+    getUserFollowers: builder.query<
+      IUserSubscriptionsDto,
+      { address: IAddress }
+    >({
+      providesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/${address}/followers`,
-          method: 'GET',
+          method: "GET",
 
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
       transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
-        return res?.data
+        return res?.data;
       },
     }),
-    uploadUserInfo: builder.mutation<any, { username: string; description: string }>({
-      invalidatesTags: ['USER', 'ADMIN'],
+    getUserSuggestions: builder.query<IUserSubscriptionsDto, void>({
+      providesTags: ["USER", "ADMIN"],
+      query: () => {
+        return {
+          url: `user/suggestions`,
+          method: "GET",
+
+          credentials: "omit",
+        };
+      },
+      transformResponse: (res: IBaseResponse<IUserSubscriptionsDto>) => {
+        return res?.data;
+      },
+    }),
+    uploadUserInfo: builder.mutation<
+      any,
+      { username: string; description: string }
+    >({
+      invalidatesTags: ["USER", "ADMIN"],
       query: ({ username, description }) => {
         return {
           url: `user`,
-          method: 'PUT',
+          method: "PUT",
           body: { username, description },
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
     }),
     subscribeUser: builder.mutation<any, { address: IAddress }>({
-      invalidatesTags: ['USER', 'ADMIN'],
+      invalidatesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/subscribe/${address}`,
-          method: 'POST',
-          credentials: 'omit',
-        }
+          method: "POST",
+          credentials: "omit",
+        };
       },
     }),
     unSubscribeUser: builder.mutation<any, { address: IAddress }>({
-      invalidatesTags: ['USER', 'ADMIN'],
+      invalidatesTags: ["USER", "ADMIN"],
       query: ({ address }) => {
         return {
           url: `user/unsubscribe/${address}`,
-          method: 'DELETE',
-          credentials: 'omit',
-        }
+          method: "DELETE",
+          credentials: "omit",
+        };
       },
     }),
     uploadUserAvatar: builder.mutation<any, { avatar: File }>({
-      invalidatesTags: ['USER', 'ADMIN'],
+      invalidatesTags: ["USER", "ADMIN"],
       query: ({ avatar }) => {
-        const formData = new FormData()
-        formData.append('avatar', avatar, avatar.name)
+        const formData = new FormData();
+        formData.append("avatar", avatar, avatar.name);
 
         return {
           url: `user/avatar`,
-          method: 'PUT',
+          method: "PUT",
           body: formData,
-          credentials: 'omit',
-        }
+          credentials: "omit",
+        };
       },
     }),
   }),
-})
+});

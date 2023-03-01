@@ -35,7 +35,6 @@ export const useFollowUnfollowUser = (props: IProperties) => {
       await subscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.UNFOLLOW)
     } catch (error_) {
-      console.log(error_)
     } finally {
       refetchUserInfo()
       // setIsLoading(false)
@@ -48,7 +47,6 @@ export const useFollowUnfollowUser = (props: IProperties) => {
       await unSubscribeUser({ address: user?.walletAddress })
       setFollowUnfollowState(Subscription.FOLLOW)
     } catch (error) {
-      console.log(error)
     } finally {
       refetchUserInfo()
       // setIsLoading(false)

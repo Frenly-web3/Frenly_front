@@ -12,8 +12,8 @@ const Index = () => {
   const user = useSelector(userSelector);
   if (address && isWhitelisted(address) && user.isAuth) router.push("/feed");
   return (
-    <div className="bg-background">
-      <div className="container flex flex-col items-center h-screen py-20 max-md:py-6">
+    <div className="bg-background h-full">
+      <div className="container flex flex-col items-center justify-center h-full max-md:py-6">
         <div className="flex flex-col items-center justify-center mb-10">
           <img
             src="/assets/icons/eyesLogo.svg"

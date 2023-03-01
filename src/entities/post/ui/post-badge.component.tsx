@@ -22,22 +22,14 @@ export function PostBadge(props: IPostBadgeProps) {
       <button onClick={() => setOpenModal(true)}>
         <Badge
           withIcon
-          className="absolute left-3 bottom-9 z-20 cursor-pointer"
+          className="z-20 cursor-pointer"
         >
           <span>
             {badgeData.communityContractName}
             <span className="text-white/60">#{badgeData.tokenId}</span>
           </span>
         </Badge>
-      </button>
-
-    
-        {/* <AdaptiveModal
-          opened={openedModal}
-          onClose={() => setOpenModal(false)}
-          title={title}
-        >s</AdaptiveModal> */}
-      
+      </button>      
     </div>
   );
 }

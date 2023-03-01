@@ -13,7 +13,6 @@ export const useTransformBadgeData = ({
     let transformedTokenId: string;
     let transformedCommunityContractName: string = communityContractName ? communityContractName + ' ' : 'Untitled ';
 
-    console.log(typeof tokenId);
     if (typeof tokenId == "string") {
       if (tokenId.length > 10) {
         transformedTokenId = `${tokenId.slice(0, 4)}...${tokenId.slice(-4)}`;

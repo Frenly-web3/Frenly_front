@@ -1,62 +1,62 @@
-import type { IPostDto } from '@shared/api'
-import { contentApi } from '@shared/api'
-import { SIZE_POST_CHUNK } from '@shared/lib'
-import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import type { IPostDto } from "@shared/api";
+import { contentApi } from "@shared/api";
+import { SIZE_POST_CHUNK } from "@shared/lib";
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import type { IPost } from './post.entity'
+import type { IPost } from "./post.entity";
 
 interface IGetFilteredPosts {
-  posts: IPost[]
-  isSuccess: boolean
-  hasMore: boolean
-  refetchFilteredFeed: () => void
-  setTakeCount: Dispatch<SetStateAction<number>>
+  posts: IPost[];
+  isSuccess: boolean;
+  hasMore: boolean;
+  refetchFilteredFeed: () => void;
+  setTakeCount: Dispatch<SetStateAction<number>>;
 }
 
 export const useGetFilteredPosts = (): IGetFilteredPosts => {
-  const [takeCount, setTakeCount] = useState(0)
+  const [takeCount, setTakeCount] = useState(0);
 
-  const {} = contentApi.useLazyGetFilteredFeedQuery()
+  const {} = contentApi.useLazyGetFilteredFeedQuery();
 
   const { data: postsData, isSuccess } = contentApi.useGetFilteredFeedQuery({
     take: SIZE_POST_CHUNK,
     skip: SIZE_POST_CHUNK * takeCount,
-  })
+  });
 
-  const [postsSum, setPostsSum] = useState<IPost[]>([])
-  const [hasMore, setHasMore] = useState(true)
+  const [postsSum, setPostsSum] = useState<IPost[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
   const reloadPosts = () => {
-    setPostsSum([])
-    setTakeCount(0)
-  }
+    setPostsSum([]);
+    setTakeCount(0);
+  };
 
-  const postsWithoutZeroX = postsData
+  const postsWithoutZeroX = postsData?.posts
     ?.filter((el: any) => {
-      return el.postType === 0
+      return el.postType === 0;
     })
     .filter((el: any) => {
-      return !el.isMirror
-    })
+      return !el.isMirror;
+    });
   useEffect(() => {
     if (!postsData) {
-      return
+      return;
     }
 
     const posts: IPost[] = postsWithoutZeroX!.map((post: IPostDto): IPost => {
-      return post as unknown as IPost
-    })
+      return post as unknown as IPost;
+    });
     if (posts?.length === 0) {
-      setHasMore(false)
+      setHasMore(false);
     }
     if (posts) {
       setPostsSum((previous) => [
         ...previous,
         ...posts.filter((post) => Object.keys(post).length > 0),
-      ])
+      ]);
     }
-  }, [postsData])
+  }, [postsData]);
 
   return useMemo(
     () => ({
@@ -67,5 +67,5 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
       setTakeCount,
     }),
     [hasMore, isSuccess, postsSum]
-  )
-}
+  );
+};

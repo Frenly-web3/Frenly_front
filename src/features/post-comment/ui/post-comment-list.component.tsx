@@ -12,7 +12,7 @@ interface IProperties {
 
 export const PostCommentList = (props: IProperties) => {
   const {setIsOpen, withShowMore = false} = props;
-  const { comments, commentsShort, isError } =
+  const { comments, commentsShort, isError, commentsRemaining } =
     usePostReactionContext()!.comments
 
   return (
@@ -20,7 +20,7 @@ export const PostCommentList = (props: IProperties) => {
       {(isError.mutation || isError.reactions) && "something went wrong"}
 
       <>
-        <div className="flex flex-col gap-4 my-4">
+        <div className="flex flex-col gap-4">
           {!withShowMore && comments.map((comment, index) => {
             return <Comment key={index} comment={comment} />;
           })}
@@ -29,7 +29,7 @@ export const PostCommentList = (props: IProperties) => {
           })}
           {withShowMore && comments.length > 2  && (
             <button onClick={()=>setIsOpen(true)} className="text-main text-left my-1">
-              1 more comment...
+              {commentsRemaining} more comment...
             </button>
           )}
         </div>

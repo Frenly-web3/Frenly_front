@@ -10,10 +10,7 @@ interface ITransactionLinkProperties {
 export const TransactionLink: FC<ITransactionLinkProperties> = (
   props: ITransactionLinkProperties
 ) => {
-  const { txHash, network } = props
-
-  console.log(network)
-
+  const { txHash } = props
   return (
     <div className="flex flex-col">
       <a

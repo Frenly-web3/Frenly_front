@@ -6,8 +6,8 @@ import { useAccount } from "wagmi";
 
 interface IProperties {
   postId: number;
-  take?: number
-  skip?: number
+  take?: number;
+  skip?: number;
 }
 
 export const usePostComment = (props: IProperties) => {
@@ -15,7 +15,7 @@ export const usePostComment = (props: IProperties) => {
   const { address } = useAccount();
 
   const { data: commentsData, isError: reactionsError } =
-    reactionsApi.useGetCommentsByIdQuery({ postId, take, skip});
+    reactionsApi.useGetCommentsByIdQuery({ postId, take, skip });
   const [commentMutation, { isError: mutationError }] =
     reactionsApi.useCreateCommentMutation();
   const [comments, setComments] = React.useState<IComment[]>([]);
@@ -33,12 +33,15 @@ export const usePostComment = (props: IProperties) => {
       ];
     });
     commentMutation({ comment: description, postId });
-  };  
+  };
 
   return {
     addComment,
     comments,
-    commentsRemaining: commentsData?.commentsRemaining,
+    commentsRemaining:
+      comments.length < 5
+        ? comments?.length - 2
+        : (commentsData?.commentsRemaining as number) + 3,
     isError: {
       reactions: reactionsError,
       mutation: mutationError,

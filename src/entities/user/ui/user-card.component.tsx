@@ -1,45 +1,26 @@
-import { Tooltip } from '@mantine/core'
-import type { IAddress } from '@shared/lib'
-import { shortAddress } from '@shared/lib'
-import React, { useState } from 'react'
-import { useEnsAvatar, useEnsName } from 'wagmi'
+import type { IAddress } from "@shared/lib";
+import React from "react";
+import { useEnsName } from "wagmi";
+import { Avatar } from "./avatar.component";
 
 interface IUserCardProperties {
-  address: IAddress
+  address: IAddress;
 }
 
 export const UserCard = (props: IUserCardProperties) => {
-  const { address } = props
+  const { address } = props;
 
-  const { data: ensAvatar, isLoading: avatarLoading } = useEnsAvatar({
-    address,
-  })
+  // const { data: ensAvatar, isLoading: avatarLoading } = useEnsAvatar({
+  //   address,
+  // });
 
   const { data: ensName } = useEnsName({
     address,
-  })
-
-  const [opened, setOpened] = useState(false)
-
-  const copyHandler = () => {
-    navigator.clipboard.writeText(address)
-    setOpened(true)
-    setTimeout(() => setOpened(false), 2000)
-  }
+  });
 
   return (
     <div className="flex flex-col justify-center items-center">
-      {/* <div className="py-2 flex flex-col justify-between ">
-        <BackButtonComponent onClick={() => router.push('/feed')} />
-      </div> */}
-
-      <img
-        src={ensAvatar || '/assets/images/temp-avatar.png'}
-        className={`align-center w-[128px] h-[128px] rounded-full mb-4 ${avatarLoading && 'animate-pulse'}`}
-        alt="avatar"
-        // width={128}
-        // height={128}
-      />
+      <Avatar address={address} className="w-24 aspect-square" />
 
       {ensName && (
         <div
@@ -48,14 +29,6 @@ export const UserCard = (props: IUserCardProperties) => {
           {ensName}
         </div>
       )}
-      <Tooltip label="copied" opened={opened}>
-        <button
-          onClick={copyHandler}
-          className="bg-[#00000010] rounded-full py-1 px-2 text-[#00000080] text-base text-center font-medium max-w-[8rem]"
-        >
-          {shortAddress({ address, with0x: true })}
-        </button>
-      </Tooltip>
     </div>
-  )
-}
+  );
+};

@@ -1,27 +1,27 @@
-import { useGetCommunityPosts } from '@entities/post'
-import { EndOfPage, ScrollLoader } from '@shared/ui'
-import { useChangeAddress } from '@widgets/change-address'
-import { CommunitySingle } from '@widgets/community'
-import { Layout } from '@widgets/layout'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import { useGetCommunityPosts } from "@entities/post";
+import { EndOfPage, ScrollLoader } from "@shared/ui";
+import { useChangeAddress } from "@widgets/change-address";
+import { Layout } from "@widgets/layout";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import { PostList } from './post-list.component'
+import { PostList } from "./post-list.component";
+import { RightSection } from "./right-section.component";
 
 export default function FeedPage() {
   const { posts, isSuccess, hasMore, setTakeCount } = useGetCommunityPosts({
     communityId: process.env.NEXT_PUBLIC_ORANGE_DAO_ID as string,
-  })
-  useChangeAddress()
+  });
+  useChangeAddress();
   const nextLoad = async () => {
     if (isSuccess) {
-      setTakeCount((previousState) => previousState + 1)
+      setTakeCount((previousState) => previousState + 1);
     }
-  }
+  };
   return (
     <Layout
       title="feed - Orange DAO"
       rightSidebar={
-        <CommunitySingle id={process.env.NEXT_PUBLIC_ORANGE_DAO_ID as string} />
+        <RightSection id={process.env.NEXT_PUBLIC_ORANGE_DAO_ID as string} />
       }
     >
       <section className="container relative">
@@ -36,5 +36,5 @@ export default function FeedPage() {
         </InfiniteScroll>
       </section>
     </Layout>
-  )
+  );
 }
