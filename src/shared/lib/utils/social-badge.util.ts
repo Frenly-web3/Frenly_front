@@ -3,8 +3,11 @@ import { useMemo } from "react";
 
 export const useSocialBadgeInfo = ({ social }: { social: SocialType }) => {
   return useMemo(() => {
+
+
     return {
       icon: social.replace(".", ""),
+      link: ''
     };
   }, [social]);
 };

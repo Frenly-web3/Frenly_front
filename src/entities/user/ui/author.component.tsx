@@ -31,6 +31,7 @@ export const Author = (props: IAuthorProperties) => {
       <Link href={`/profile/${address}`} className="flex gap-2">
         <div className="border rounded-full border-border-color overflow-hidden">
           <Avatar
+            width={10}
             className={clsx(
               `aspect-square`,
               classNames?.avatar ? classNames.avatar : "w-10 aspect-square"

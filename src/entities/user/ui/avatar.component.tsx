@@ -1,26 +1,39 @@
-import type { IAddress } from '@shared/lib'
-import React from 'react'
+import { clsx } from "@mantine/core";
+import type { IAddress } from "@shared/lib";
+import Image from "next/image";
+import React from "react";
 
-import { useUserAvatar } from '../model/use-user-avatar.hook'
+import { useUserAvatar } from "../model/use-user-avatar.hook";
 
 interface IProperties {
-  address: IAddress
-  className?: string
+  address: IAddress;
+  className?: string;
+  width: number;
 }
 
 export const Avatar = (props: IProperties) => {
-  const { address, className } = props
+  const { address, className, width } = props;
 
-  const [mount, setMount] = React.useState(false)
-  React.useEffect(() => setMount(true), [])
+  const [mount, setMount] = React.useState(false);
+  React.useEffect(() => setMount(true), []);
 
-  const { data, isLoading } = useUserAvatar({ address })
+  const { data, isLoading } = useUserAvatar({ address });
 
-  if (!mount) return <div className={`${className}`} />
+  if (!mount) return <div className={`${className}`} />;
 
   return (
-    <div className={`${className} ${isLoading && `animate-pulse`}`}>
-      {data && <img className="rounded-full" src={data} alt="avatar" />}
+    <div
+      className={`${className} ${
+        isLoading && `animate-pulse`
+      } rounded-full aspect-square`}
+    >
+      {data && (
+        <img
+          className={clsx("rounded-full cover", className)}
+          src={data}
+          alt="avatar"
+        />
+      )}
     </div>
-  )
-}
+  );
+};
