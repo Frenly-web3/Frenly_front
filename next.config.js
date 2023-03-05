@@ -24,14 +24,20 @@ module.exports = withPWA({
     dirs: ["."],
   },
   images: {
-    domains: [
-      "flatspacenfts.unistory.app",
-      "gm.frenly.cc",
-      "nft-cdn.alchemy.com",
-      "i.seadn.io",
-      "ipfs.io",
-      "rainbow.mypinata.cloud",
-      "gateway.ipfs.io",
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "ipfs",
+        hostname: "**",
+      },
     ],
   },
   webpack(config) {

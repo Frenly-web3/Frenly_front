@@ -26,7 +26,7 @@ export default function ProfilePage() {
         title={`${name} on frenly`}
         description={`${name}'s profile on frenly`}
       />
-      <div className="lg:mr-64 mb-4">
+      <div className="lg:mr-64 mb-4 lg:w-[37rem]">
         <UserProfileWidget address={address} />
         <ProfileTabs address={address} />
       </div>

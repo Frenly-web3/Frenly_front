@@ -1,5 +1,5 @@
-import { useGetCommunityPosts } from "@entities/post";
-import { EndOfPage, ScrollLoader } from "@shared/ui";
+import { PostSkeletonList, useGetCommunityPosts } from "@entities/post";
+import { EndOfPage } from "@shared/ui";
 import { useChangeAddress } from "@widgets/change-address";
 import { Layout } from "@widgets/layout";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -29,7 +29,7 @@ export default function FeedPage() {
           dataLength={posts.length}
           next={nextLoad}
           hasMore={hasMore}
-          loader={<ScrollLoader />}
+          loader={<PostSkeletonList />}
           endMessage={<EndOfPage page="feed" />}
         >
           <PostList posts={posts} />
