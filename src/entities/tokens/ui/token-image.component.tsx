@@ -1,4 +1,3 @@
-import { UnificationImage } from "@shared/ui";
 import Image from "next/image";
 import * as React from "react";
 

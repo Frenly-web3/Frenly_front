@@ -1,6 +1,5 @@
 import { clsx } from "@mantine/core";
 import type { IAddress } from "@shared/lib";
-import Image from "next/image";
 import React from "react";
 
 import { useUserAvatar } from "../model/use-user-avatar.hook";
@@ -8,7 +7,7 @@ import { useUserAvatar } from "../model/use-user-avatar.hook";
 interface IProperties {
   address: IAddress;
   className?: string;
-  width: number;
+  width?: number;
 }
 
 export const Avatar = (props: IProperties) => {
@@ -25,7 +24,7 @@ export const Avatar = (props: IProperties) => {
     <div
       className={`${className} ${
         isLoading && `animate-pulse`
-      } rounded-full aspect-square`}
+      } rounded-full aspect-square w-[${width}]`}
     >
       {data && (
         <img

@@ -1,5 +1,5 @@
 // import { Image } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+// import { useMediaQuery } from "@mantine/hooks";
 import { useUnificationFormatImage } from "@shared/lib";
 import Image from "next/image";
 import * as React from "react";
@@ -10,7 +10,7 @@ export interface IUnificationImageProps {
 
 export function UnificationImage(props: IUnificationImageProps) {
   const { image } = props;
-  const matches = useMediaQuery("(min-width: 768px)");
+  // const matches = useMediaQuery("(min-width: 768px)");
   const unificationImage = useUnificationFormatImage({ image });
 
   console.log(unificationImage);
