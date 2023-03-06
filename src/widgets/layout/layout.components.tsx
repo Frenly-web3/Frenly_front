@@ -47,7 +47,7 @@ export const Layout = memo((props: IProperties) => {
         )}
       </RoutesBar>
 
-      <div className="flex flex-col md:pl-2">
+      <div className="flex flex-col">
         <div className={`flex justify-between p-4 pb-8 bg-background`}>
           <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
         </div>

@@ -10,7 +10,15 @@ export const alchemyApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
     getNftsForUser: builder.query({
-      query: ({ address, skip }: { address: IAddress; skip: string }) => {
+      query: ({
+        address,
+        skip,
+        randomKey,
+      }: {
+        address: IAddress;
+        skip: string;
+        randomKey: string;
+      }) => {
         return {
           url: `?owner=${address}&pageSize=9${
             skip && `&pageKey=${skip}`
@@ -20,12 +28,16 @@ export const alchemyApi = createApi({
           credentials: "omit",
         };
       },
-      serializeQueryArgs: ({ endpointName, queryArgs: { address } }) => {
-        return { endpointName, address };
+      serializeQueryArgs: ({ endpointName, queryArgs: { address, randomKey } }) => {
+        return { endpointName, address, randomKey };
       },
       merge: (currentCache, newItems) => {
-        currentCache?.ownedNfts.push(...newItems?.ownedNfts);
-        currentCache.pageKey = newItems?.pageKey;
+        console.log(newItems);
+        // if (currentCache?.blockHash === newItems?.blockHash) {
+          currentCache?.ownedNfts.push(...newItems?.ownedNfts);
+          currentCache.pageKey = newItems?.pageKey;
+        // }
+       
         return currentCache;
       },
       // Refetch when the page arg changes

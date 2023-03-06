@@ -13,9 +13,7 @@ export function SocialBadgeList(props: ISocialBadgeListProps) {
     <div className="flex flex-wrap gap-x-2 gap-y-3">
       {socials.map((social) => {
         return (
-          <SocialBadge social={social[0] as SocialType}>
-            {social[1]}
-          </SocialBadge>
+          <SocialBadge social={social[0] as SocialType} label={social[1] as string} />
         );
       })}
     </div>

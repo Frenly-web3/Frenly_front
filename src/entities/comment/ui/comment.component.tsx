@@ -14,7 +14,11 @@ export const Comment = (props: IProperies) => {
   return (
     <div className="flex gap-2">
       <Link href={profileLink}>
-        <Avatar width={24} className={"w-6 aspect-square"} address={comment.creator} />
+        <Avatar
+          width={24}
+          className={"w-6 aspect-square"}
+          address={comment.creator}
+        />
       </Link>
       <div>
         <Link href={profileLink}>
@@ -23,9 +27,7 @@ export const Comment = (props: IProperies) => {
             address={comment.creator}
           />
         </Link>
-        <div className="font-rounded text-black/80 font-normal">
-          {comment.description}
-        </div>
+        <div className="text-black/80 font-normal">{comment.description}</div>
       </div>
     </div>
   );

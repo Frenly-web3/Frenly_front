@@ -1,4 +1,3 @@
-import Image from "next/image";
 import * as React from "react";
 
 export interface ITokenImageProps {
@@ -18,20 +17,15 @@ export function TokenImage(props: ITokenImageProps) {
             load && "bg-black/20 animate-pulse relative"
           }`}
         >
-          <Image
+          <img
             width={139}
             height={139}
             src={image}
             onError={() => setErrorImage(true)}
-            sizes="33vw"
-            quality={25}
             alt=""
             onLoadStart={() => setLoad(true)}
-            onLoadingComplete={() => setLoad(false)}
             loading="lazy"
             className="w-full aspect-square"
-            placeholder="blur"
-            blurDataURL="/assets/icons/sadEyes.svg"
           />
         </div>
       ) : (

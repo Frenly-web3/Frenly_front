@@ -8,7 +8,7 @@ export default function FeedPage() {
   useChangeAddress();
   return (
     <Layout title="feed" rightSidebar={<RightSection />}>
-      <section className="md:container relative">
+      <section className="lg:max-w-[37rem] min-w-[18.5rem] md:px-4 relative">
         <InfinitePosts />
       </section>
     </Layout>

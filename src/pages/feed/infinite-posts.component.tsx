@@ -17,7 +17,7 @@ export function InfinitePosts(props: IInfinitePostsProperties) {
     }
   };
   return (
-    <div>
+    <div className="w-full">
       {/* <PostSkeleton /> */}
       <InfiniteScroll
         dataLength={posts?.length ?? 0}
