@@ -1,26 +1,25 @@
-import { userApi } from '@shared/api'
-import type { IAddress } from '@shared/lib'
-import { useEnsAvatar } from 'wagmi'
+import type { IAddress } from "@shared/lib";
+import { useEnsAvatar } from "wagmi";
 
 interface IProperties {
-  address: IAddress
+  address: IAddress;
 }
 export const useUserAvatar = (props: IProperties) => {
-  const { address } = props
+  const { address } = props;
 
-  const placeholder = '/assets/images/default-avatar.png'
+  const placeholder = "/assets/images/default-avatar.png";
 
-  const { data: ensData, isLoading: ensLoading } = useEnsAvatar({ address })
-  const { data: backendData, isLoading: backendLoading } = userApi.useGetUserInfoQuery({
-    address,
-  })
+  const { data: ensData, isLoading: ensLoading } = useEnsAvatar({ address });
+  // const { data: backendData, isLoading: backendLoading } = userApi.useGetUserInfoQuery({
+  //   address,
+  // })
 
-  const backendAvatar = backendData?.avatar
-    ? `https://stage.frenly.cc/rest/avatars/${backendData?.avatar}`
-    : null
+  // const backendAvatar = backendData?.avatar
+  //   ? `https://stage.frenly.cc/rest/avatars/${backendData?.avatar}`
+  //   : null
 
-  const isLoading = ensLoading ? true : !!backendLoading
-  const data = ensData || backendAvatar || placeholder
+  const isLoading = ensLoading;
+  const data = ensData || placeholder;
 
-  return { data, isLoading }
-}
+  return { data, isLoading };
+};

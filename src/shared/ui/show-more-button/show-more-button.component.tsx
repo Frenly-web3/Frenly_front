@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface IShowMoreProps {
+export interface IShowMoreProps extends React.ButtonHTMLAttributes<"button"> {
   showMore: boolean;
   onClick: () => void;
 }

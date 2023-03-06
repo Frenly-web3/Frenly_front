@@ -1,4 +1,5 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import Script from "next/script";
 
 const AppConfig = {
   site_name: "",
@@ -14,6 +15,17 @@ class MyDocument extends Document {
       <Html lang={AppConfig.locale}>
         <Head>
           <link rel="manifest" href="/manifest.json" />
+
+          <Script
+            strategy="afterInteractive"
+            src="https://www.googletagmanager.com/gtag/js?id=G-WT2RN11BQT"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-WT2RN11BQT');`}
+          </Script>
         </Head>
         <body>
           <Main />

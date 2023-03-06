@@ -19,7 +19,7 @@ export const SearchInput = React.memo((props: ISearchInputProperties) => {
       }
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      classNames={{ input: 'bg-black/5 text-black/60 rounded-2xl border-0', wrapper: 'p-0' }}
+      classNames={{ input: 'bg-black/5 text-black/60 rounded-2xl border-0', wrapper: 'p-0', rightSection: 'mr-4' }}
     />
   )
 })

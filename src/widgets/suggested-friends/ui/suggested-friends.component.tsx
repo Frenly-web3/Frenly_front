@@ -20,11 +20,9 @@ export function SuggestedFriends(props: ISuggestedFriendsProps) {
   return (
     <div className="">
       <Paper className="rounded-[2rem]">
-        <h3 className="font-rounded font-semibold text-xl">you may know</h3>
-        <h5 className="font-rounded text-black/60 mb-4">
-          wallets you interacted with
-        </h5>
-        <div className="flex flex-col gap-y-2 h-20 overflow-y-auto">
+        <h3 className="font-rounded font-semibold text-xl mb-4">you may know</h3>
+        
+        <div className="flex flex-col gap-y-2 h-28 overflow-y-auto">
           {suggestionAddresses &&
             !isError &&
             suggestionAddresses?.length > 0 &&

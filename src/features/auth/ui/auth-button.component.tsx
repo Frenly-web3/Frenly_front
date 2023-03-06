@@ -26,7 +26,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
         >
           <img
             className="w-10 aspect-square items-start"
-            src="/assets/images/metamask.png"
+            src="/assets/icons/metamask.svg"
           />
           <span className="text-white font-rounded font-bold m-auto">
             metamask

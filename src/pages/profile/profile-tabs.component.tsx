@@ -1,8 +1,8 @@
-// import { clsx, Tabs, TabsValue } from "@mantine/core";
+import { clsx, Tabs, TabsValue } from "@mantine/core";
 import { IAddress } from "@shared/lib";
 import * as React from "react";
 import { ProfilePostList } from "./profile-post-list.component";
-// import { ProfileTokens } from "./profile-tokens.component";
+import { ProfileTokens } from "./profile-tokens.component";
 
 export interface IProfileTabsProps {
   address: IAddress;
@@ -11,11 +11,11 @@ export interface IProfileTabsProps {
 export function ProfileTabs(props: IProfileTabsProps) {
   const { address } = props;
 
-  // const [activeTab, setActiveTab] = React.useState<TabsValue>("activity");
+  const [activeTab, setActiveTab] = React.useState<TabsValue>("activity");
 
   return (
-    <div className="md:ml-4 py-4">
-      {/* <Tabs
+    <div className="">
+      <Tabs
         className="border-b-none m-auto"
         unstyled
         classNames={{
@@ -48,13 +48,13 @@ export function ProfileTabs(props: IProfileTabsProps) {
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="activity"> */}
+        <Tabs.Panel value="activity">
           <ProfilePostList address={address} />
-        {/* </Tabs.Panel>
-        <Tabs.Panel value="tokens">
-          <ProfileTokens />
         </Tabs.Panel>
-      </Tabs> */}
+        <Tabs.Panel value="tokens">
+          <ProfileTokens address={address}/>
+        </Tabs.Panel>
+      </Tabs>
     </div>
   );
 }
