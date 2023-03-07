@@ -1,7 +1,7 @@
 // import { Image } from "@mantine/core";
 // import { useMediaQuery } from "@mantine/hooks";
 import { useUnificationFormatImage } from "@shared/lib";
-import Image from "next/image";
+
 import * as React from "react";
 
 export interface IUnificationImageProps {
@@ -31,7 +31,7 @@ export function UnificationImage(props: IUnificationImageProps) {
         </div>
       ) : (
         <div className="flex flex-col p-10 pb-20 gap-2 items-center justify-center aspect-square w-full bg-gray">
-          <Image
+          <img
             width={96}
             height={96}
             src={"/assets/icons/sadEyes.svg"}
