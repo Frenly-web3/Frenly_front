@@ -1,5 +1,6 @@
 import { SmallUserCard } from "@entities/user";
 import { useIsomorphicEffect } from "@mantine/hooks";
+import { notificationsApi } from "@shared/api";
 import type { IAddress } from "@shared/lib";
 import { ROUTES } from "@shared/lib";
 import { Meta } from "@shared/ui";
@@ -21,6 +22,9 @@ export const Layout = memo((props: IProperties) => {
   const { address } = useAccount();
   const [addressHydration, setAddressHydration] = useState<IAddress>();
 
+  const { data: unreadNotifications } =
+    notificationsApi.useGetUnreadCountQuery();
+
   const router = useRouter();
 
   useIsomorphicEffect(() => {
@@ -37,7 +41,10 @@ export const Layout = memo((props: IProperties) => {
     <div className="bg-background min-h-screen md:flex justify-center">
       <Meta title="frenly feed" description="your frenly feed" />
 
-      <RoutesBar chosedMenu={currentIndexMenu}>
+      <RoutesBar
+        chosedMenu={currentIndexMenu}
+        unreadBadge={unreadNotifications}
+      >
         {addressHydration && (
           <SmallUserCard
             chosenInMenu={currentIndexMenu === -1}
@@ -48,7 +55,7 @@ export const Layout = memo((props: IProperties) => {
       </RoutesBar>
 
       <div className="flex flex-col">
-        <div className={`flex justify-between p-4 pb-8 bg-background`}>
+        <div className={`flex justify-between p-4 pb-3 bg-background`}>
           <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
         </div>
         <ScrollToTop />

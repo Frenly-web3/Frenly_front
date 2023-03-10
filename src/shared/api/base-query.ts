@@ -1,29 +1,32 @@
 /* eslint-disable boundaries/entry-point */
 /* eslint-disable boundaries/element-types */
 // import { logout } from '@features/auth/model'
-import type { FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
-import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query'
+import type {
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/dist/query";
+import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import type {
   BaseQueryApi,
   BaseQueryFn,
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-import { Mutex } from 'async-mutex'
+} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+import { Mutex } from "async-mutex";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  mode: 'cors',
+  mode: "cors",
 
   prepareHeaders: (headers) => {
-    const aToken = localStorage.getItem('access-token')
+    const aToken = localStorage.getItem("access-token");
     // If we have a token set in state, let's assume that we should be passing it.
     if (aToken !== undefined) {
-      headers.set('authorization', `Bearer ${aToken}`)
+      headers.set("authorization", `Bearer ${aToken}`);
     }
 
-    return headers
+    return headers;
   },
-})
-const mutex = new Mutex()
+});
+const mutex = new Mutex();
 
 export const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -34,56 +37,56 @@ export const baseQueryWithReauth: BaseQueryFn<
   api: BaseQueryApi,
   extraOptions: {}
 ) => {
-  await mutex.waitForUnlock()
-  let result = await baseQuery(arguments_, api, extraOptions)
+  await mutex.waitForUnlock();
+  let result = await baseQuery(arguments_, api, extraOptions);
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
-      const release = await mutex.acquire()
+      const release = await mutex.acquire();
 
       try {
         // @ts-ignore
         const refreshResult: {
-          data: { data: { accessToken: string; refreshToken: string } }
+          data: { data: { accessToken: string; refreshToken: string } };
         } = await baseQuery(
           {
-            url: 'auth/refresh-token',
-            method: 'POST',
+            url: "auth/refresh-token",
+            method: "POST",
             body: {
-              accessToken: localStorage.getItem('access-token'),
-              refreshToken: localStorage.getItem('refresh-token'),
+              accessToken: localStorage.getItem("access-token"),
+              refreshToken: localStorage.getItem("refresh-token"),
             },
           },
           api,
           extraOptions
-        )
+        );
 
         if (refreshResult.data) {
-          console.log(
-            '🚀 ~ file: base-query.ts:60 ~ refreshResult.data',
-            refreshResult.data.data
-          )
-
-          localStorage.setItem('access-token', refreshResult.data.data.accessToken)
-          localStorage.setItem('refresh-token', refreshResult.data.data.refreshToken)
+          localStorage.setItem(
+            "access-token",
+            refreshResult.data.data.accessToken
+          );
+          localStorage.setItem(
+            "refresh-token",
+            refreshResult.data.data.refreshToken
+          );
 
           // retry the initial query
-          result = await baseQuery(arguments_, api, extraOptions)
+          result = await baseQuery(arguments_, api, extraOptions);
         } else {
-          localStorage.removeItem('access-token')
-          localStorage.removeItem('refresh-token')
-          window.location.replace('/')
+          localStorage.removeItem("access-token");
+          localStorage.removeItem("refresh-token");
+          window.location.replace("/");
         }
       } catch (error) {
-        console.log('ERROR:', error)
         // window.location.replace('/')
       } finally {
-        release()
+        release();
       }
     } else {
-      await mutex.waitForUnlock()
-      result = await baseQuery(arguments_, api, extraOptions)
+      await mutex.waitForUnlock();
+      result = await baseQuery(arguments_, api, extraOptions);
     }
   }
 
-  return result
-}
+  return result;
+};

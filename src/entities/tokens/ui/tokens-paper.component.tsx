@@ -24,7 +24,6 @@ export function TokensPaper(props: ITokensPaperProps) {
 
   const [showedMore, setShowedMore] = React.useState(false);
   const matches = useMediaQuery("(max-width: 768px)");
-  console.log(tokens);
 
   return (
     <Paper className={clsx("rounded-[2rem]", className)}>

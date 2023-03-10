@@ -1,17 +1,18 @@
-import { userReducer } from '@entities/user'
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/dist/query'
+import { userReducer } from "@entities/user";
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import {
   adminApi,
   alchemyApi,
   authApi,
   communityApi,
   contentApi,
+  notificationsApi,
   reactionsApi,
   userApi,
-} from '@shared/api'
-import type { TypedUseSelectorHook } from 'react-redux'
-import { useDispatch, useSelector } from 'react-redux'
+} from "@shared/api";
+import type { TypedUseSelectorHook } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     [alchemyApi.reducerPath]: alchemyApi.reducer,
     [reactionsApi.reducerPath]: reactionsApi.reducer,
     [communityApi.reducerPath]: communityApi.reducer,
+    [notificationsApi.reducerPath]: notificationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -32,14 +34,15 @@ export const store = configureStore({
       adminApi.middleware,
       alchemyApi.middleware,
       reactionsApi.middleware,
-      communityApi.middleware
+      communityApi.middleware,
+      notificationsApi.middleware
     ),
-})
+});
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-export const useAppDispatch: () => AppDispatch = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

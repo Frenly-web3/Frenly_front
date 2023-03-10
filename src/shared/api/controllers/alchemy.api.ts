@@ -28,16 +28,16 @@ export const alchemyApi = createApi({
           credentials: "omit",
         };
       },
-      serializeQueryArgs: ({ endpointName, queryArgs: { address, randomKey } }) => {
+      serializeQueryArgs: ({
+        endpointName,
+        queryArgs: { address, randomKey },
+      }) => {
         return { endpointName, address, randomKey };
       },
       merge: (currentCache, newItems) => {
-        console.log(newItems);
-        // if (currentCache?.blockHash === newItems?.blockHash) {
-          currentCache?.ownedNfts.push(...newItems?.ownedNfts);
-          currentCache.pageKey = newItems?.pageKey;
-        // }
-       
+        currentCache?.ownedNfts.push(...newItems?.ownedNfts);
+        currentCache.pageKey = newItems?.pageKey;
+
         return currentCache;
       },
       // Refetch when the page arg changes

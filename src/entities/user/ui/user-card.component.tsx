@@ -1,7 +1,7 @@
 import type { IAddress } from "@shared/lib";
+import { Avatar } from "@shared/ui";
 import React from "react";
 import { useEnsName } from "wagmi";
-import { Avatar } from "./avatar.component";
 
 interface IUserCardProperties {
   address: IAddress;

@@ -1,5 +1,6 @@
 // eslint-disable-next-line boundaries/element-types
-import { Avatar, Name } from "@entities/user";
+
+import { Avatar, Name } from "@shared/ui";
 import Link from "next/link";
 
 import type { IComment } from "../model";

@@ -1,4 +1,5 @@
 export * from "./adaptive-modal";
+export * from "./avatar";
 export * from "./back-button";
 export * from "./badge";
 export * from "./button";
@@ -13,6 +14,7 @@ export * from "./loader";
 export * from "./meta";
 export * from "./metamask-error";
 export * from "./modal";
+export * from "./name";
 export * from "./paper";
 export * from "./post-carousel";
 export * from "./profile-button";

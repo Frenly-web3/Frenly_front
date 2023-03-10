@@ -1,22 +1,22 @@
 // import { Image } from "@mantine/core";
 // import { useMediaQuery } from "@mantine/hooks";
+import { clsx } from "@mantine/core";
 import { useUnificationFormatImage } from "@shared/lib";
 
 import * as React from "react";
 
 export interface IUnificationImageProps {
   image: string;
+  className?: string;
 }
 
 export function UnificationImage(props: IUnificationImageProps) {
-  const { image } = props;
+  const { image, className } = props;
   // const matches = useMediaQuery("(min-width: 768px)");
   const unificationImage = useUnificationFormatImage({ image });
 
-  console.log(unificationImage);
-
   return (
-    <div>
+    <div className={clsx(className)}>
       {unificationImage ? (
         <div className="relative">
           {unificationImage.type === "image" ? (

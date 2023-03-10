@@ -6,6 +6,7 @@ const withPWA = require("next-pwa")({
   runtimeCaching,
   skipWaiting: true,
   register: true,
+  customWorkerDir: 'app/worker'
 });
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
@@ -61,5 +62,5 @@ module.exports = withPWA({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
-  pageExtensions: ["page.tsx", "page.ts", "page.js", "page.jsx"],
+  pageExtensions: ["page.tsx", "page.ts", "page.js", "page.jsx", "api.tsx", "api.ts"],
 });

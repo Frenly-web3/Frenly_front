@@ -1,1 +1,2 @@
-export * from './profile-button.component'
+export * from "./model";
+export * from "./profile-button.component";
