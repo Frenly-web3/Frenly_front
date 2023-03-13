@@ -47,7 +47,7 @@ export function NotificationPost(props: INotificationPostProps) {
         </div>
         <IndicatorNotification
           {...notificationPostInfo}
-          className="absolute w-3 h-3 p-2 -top-0 -right-2 z-50"
+          className="absolute w-3 aspect-square px-2 -top-0 -right-2 z-50"
         />
       </div>
     </div>

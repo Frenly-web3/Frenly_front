@@ -3,10 +3,10 @@ const runtimeCaching = require("next-pwa/cache.js");
 // const prod = process.env.NODE_ENV === 'production'
 const withPWA = require("next-pwa")({
   dest: "public",
-  runtimeCaching,
+  // runtimeCaching,
   skipWaiting: true,
   register: true,
-  customWorkerDir: 'app/worker'
+  // customWorkerDir: 'app/worker'
 });
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',

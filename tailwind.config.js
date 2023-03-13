@@ -25,6 +25,7 @@ module.exports = {
       icon: ["Material Symbols Rounded, sans-serif"],
     },
     fontSize: {
+      xmicro: '8px',
       micro: "11px",
 
       sm: "0.8rem",

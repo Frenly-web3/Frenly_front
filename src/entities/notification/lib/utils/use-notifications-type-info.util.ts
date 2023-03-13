@@ -27,7 +27,7 @@ export const useNotificationTypeInfo = ({
       case NotificationTypeEnum.FOLLOW: {
         return {
           icon: "add",
-          content: "just followed you",
+          content: "followed you",
           color: "bg-[#135EDD]",
         };
       }

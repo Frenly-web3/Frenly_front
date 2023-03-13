@@ -19,6 +19,7 @@ export default function ProfilePage() {
   useChangeAddress();
 
   if (!isAddress(address)) return <>Error</>;
+  console.log(name);
 
   return (
     <Layout title="profile">

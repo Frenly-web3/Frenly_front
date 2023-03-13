@@ -25,7 +25,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
           onClick={() => login(Connector.metamask)}
         >
           <img
-            className="w-10 aspect-square items-start"
+            className="w-10 aspect-square items-start rounded-full"
             src="/assets/icons/metamask.svg"
           />
           <span className="text-white font-rounded font-bold m-auto">
@@ -37,7 +37,7 @@ export const AuthButton = (props: IAuthButtonProperties) => {
           onClick={() => login(Connector.walletconnect)}
         >
           <img
-            className="w-10 aspect-square items-start"
+            className="w-10 aspect-square items-start rounded-full"
             src="/assets/icons/walletconnect.svg"
           />
           <span className="text-white font-rounded font-bold m-auto">

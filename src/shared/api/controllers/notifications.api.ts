@@ -25,16 +25,23 @@ export const notificationsApi = createApi({
           credentials: "omit",
         };
       },
-      serializeQueryArgs: ({ endpointName }) => {
+      serializeQueryArgs: ({ endpointName, queryArgs: { skip } }) => {
         return { endpointName };
       },
-      merge: (currentCache, newItems, { arg }) => {
+      merge: (currentCache, newItems, { arg: { skip } }) => {
+        if (skip === 0) {
+          return newItems;
+        }
+
         currentCache.notifications.push(...newItems.notifications);
         currentCache.hasMore = newItems.hasMore;
         return currentCache;
       },
 
       forceRefetch({ currentArg, previousArg }) {
+        if (currentArg?.skip === 0) {
+          return false;
+        }
         return currentArg !== previousArg;
       },
 

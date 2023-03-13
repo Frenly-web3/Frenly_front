@@ -24,7 +24,7 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
         <IndicatorNotification
           color={color}
           icon={icon}
-          className="absolute w-3 h-3 p-2 -bottom-1 -right-1"
+          className="absolute w-3 aspect-square px-2 -bottom-1 -right-1"
         />
       </div>
       <div className="flex flex-col gap-y-1">

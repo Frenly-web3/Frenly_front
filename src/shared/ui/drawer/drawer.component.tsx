@@ -13,7 +13,7 @@ export const Drawer = (props: IDrawerProperties) => {
       lockScroll
       position="bottom"
       {...mantineProperties}
-      className={clsx('w-full', props.className)}
+      className={clsx('w-full z-[10000]', props.className)}
       classNames={{
         closeButton: 'text-black bg-white/0',
         header: clsx('p-4 pt-2 border-b border-black/20', {
