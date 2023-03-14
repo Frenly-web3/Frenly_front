@@ -59,7 +59,7 @@ export function AuthSteps(props: IAuthStepsProps) {
             content={userName}
             imageRight={userAvatar}
             classNames={{
-              root: "bg-black/5 cursor-default",
+              root: "!bg-black/5 !cursor-default",
               content: "!text-black",
             }}
           />
