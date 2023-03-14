@@ -65,6 +65,7 @@ export const notificationsApi = createApi({
         return res.data;
       },
     }),
+
     readNotifications: builder.mutation<void, void>({
       query: () => {
         return {

@@ -6,7 +6,7 @@ const withPWA = require("next-pwa")({
   // runtimeCaching,
   skipWaiting: true,
   register: true,
-  // customWorkerDir: 'app/worker'
+  customWorkerDir: 'app/worker'
 });
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',

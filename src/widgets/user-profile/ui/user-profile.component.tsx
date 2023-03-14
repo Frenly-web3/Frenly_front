@@ -15,9 +15,7 @@ interface IUserProfileWidgetProperties {
 export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
   const { name, description, social } = useEnsInfo({ address });
-  console.log(address)
-  console.log(name, description, social);
-
+ 
   return (
     <div className="md:ml-4 p-4 top-0 bg-white rounded-[2rem] relative">
       <div className="flex items-start justify-between">

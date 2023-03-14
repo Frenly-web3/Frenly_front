@@ -18,7 +18,7 @@ const Index = () => {
   return (
     <div className="bg-background h-full">
       <div className="container flex flex-col items-center justify-center h-full max-md:py-6">
-        <div className="flex flex-col items-center justify-center mb-10">
+        <div className="flex flex-col items-center justify-center mb-5">
           <img
             src="/assets/icons/eyesLogo.svg"
             alt="eyes"
