@@ -1,8 +1,6 @@
 import { clsx } from "@mantine/core";
-import type { IAddress } from "@shared/lib";
+import { IAddress, useUserAvatar } from "@shared/lib";
 import React from "react";
-
-import { useUserAvatar } from "../model/use-user-avatar.hook";
 
 interface IProperties {
   address: IAddress;

@@ -16,7 +16,7 @@ export function SearchBlock(props: ISearchBlockProperties) {
   const { address, isLoading } = useGetAddressFrom({ value });
 
   return (
-    <Paper className="mt-1 rounded-[2rem] aspect-square md:min-w-[30.5rem]">
+    <Paper className="rounded-[2rem] aspect-square md:min-w-[35rem]">
       <SearchInput onChange={setValue} value={value} />
       {isLoading ? (
         <div className="h-full flex flex-col justify-center items-center">

@@ -21,65 +21,65 @@ export function useAuth() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState<false | string>(false);
 
-  const login = React.useCallback(
-    async (connector: Connector) => {
-      setIsLoading(true);
-      if (address && !isWhitelisted(address)) {
-        router.push("/user-not-whitelisted");
-        return;
-      }
+  const connect = React.useCallback(async (connector: Connector) => {
+    setIsLoading(true);
+    if (address && !isWhitelisted(address)) {
+      router.push("/user-not-whitelisted");
+      return;
+    }
 
-      try {
-        await disconnectAsync();
-        const account =
-          // eslint-disable-next-line unicorn/no-await-expression-member
-          address ||
-          (await connectAsync({ connector: connectors[connector], chainId: 1 }))
-            .account;
+    try {
+      await disconnectAsync();
+      await connectAsync({ connector: connectors[connector], chainId: 1 });
+    } catch (error: any) {
+      setIsError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-        const { data: nonce } = await getNonce({ address: account });
+  const verify = React.useCallback(async () => {
+    setIsLoading(true);
 
-        if (nonce) {
-          const signature = await signMessageAsync({
-            message: `Nonce: ${nonce.nonce}`,
+    try {
+      const { data: nonce } = await getNonce({ address: address as IAddress });
+
+      if (nonce) {
+        const signature = await signMessageAsync({
+          message: `Nonce: ${nonce.nonce}`,
+        });
+
+        const loginResponse = await loginMutation({
+          address: address as IAddress,
+          signature,
+        });
+
+        if ("data" in loginResponse) {
+          const { data: tokens } = loginResponse;
+
+          setAuthDispatch({ isAuth: true });
+          setTokensDispatch({
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
           });
-
-          const loginResponse = await loginMutation({
-            address: account as IAddress,
-            signature,
-          });
-
-          if ("data" in loginResponse) {
-            const { data: tokens } = loginResponse;
-
-            setAuthDispatch({ isAuth: true });
-            setTokensDispatch({
-              accessToken: tokens.accessToken,
-              refreshToken: tokens.refreshToken,
-            });
-            setIsLoading(false);
-          }
+          setIsLoading(false);
         }
-      } catch (error: any) {
-        setIsError(error.message);
       }
-    },
-    [
-      address,
-      connectAsync,
-      connectors,
-      getNonce,
-      loginMutation,
-      router,
-      setAuthDispatch,
-      setTokensDispatch,
-      signMessageAsync,
-    ]
-  );
+    } catch (error: any) {
+      setIsError(error.message);
+    }
+  }, [
+    address,
+    getNonce,
+    loginMutation,
+    setAuthDispatch,
+    setTokensDispatch,
+    signMessageAsync,
+  ]);
 
   const logout = React.useCallback(() => {
     deleteTokensDispatch();
   }, [deleteTokensDispatch]);
 
-  return { login, logout, isLoading, isError };
+  return { connect, logout, isLoading, isError, verify };
 }

@@ -8,6 +8,7 @@ export interface IProfileTokensProps {
 
 export function ProfileTokens(props: IProfileTokensProps) {
   const { address } = props;
+  console.log(address)
   return (
     <div className="max-md:mb-20">
       <TokensPaper

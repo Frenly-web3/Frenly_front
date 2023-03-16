@@ -1,12 +1,9 @@
-import { clsx } from "@mantine/core";
+import {  clsx } from "@mantine/core";
 import type { IAddress } from "@shared/lib";
 // eslint-disable-next-line import/no-cycle
-import { TimeDate } from "@shared/ui";
+import { Avatar, Name, TimeDate } from "@shared/ui";
 import Link from "next/link";
 import React from "react";
-
-import { Avatar } from "./avatar.component";
-import { Name } from "./name.component";
 
 interface IAuthorProperties {
   date?: string;

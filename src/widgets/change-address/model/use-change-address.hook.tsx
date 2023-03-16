@@ -13,7 +13,7 @@ export const useChangeAddress = () => {
 
   const router = useRouter();
 
-  const { login } = useAuth();
+  const { connect: authConnect, verify } = useAuth();
   useEffect(() => {
     if (!address) {
       connect({
@@ -33,7 +33,8 @@ export const useChangeAddress = () => {
       setPreviousAddress(address);
       (async () => {
         //@ts-ignore
-        await login(connector as Connector<any, any, any>);
+        await authConnect(connector as Connector<any, any, any>);
+        await verify();
       })();
     }
   }, [address]);

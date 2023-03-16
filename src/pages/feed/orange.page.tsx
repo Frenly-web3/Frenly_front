@@ -24,7 +24,7 @@ export default function FeedPage() {
         <RightSection id={process.env.NEXT_PUBLIC_ORANGE_DAO_ID as string} />
       }
     >
-      <section className="md:container relative">
+      <section className="lg:max-w-[37rem] min-w-[18.75rem] md:px-4 relative">
         <InfiniteScroll
           dataLength={posts.length}
           next={nextLoad}

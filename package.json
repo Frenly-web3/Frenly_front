@@ -45,6 +45,7 @@
     "@traderxyz/nft-swap-sdk": "^0.30.0",
     "@typechain/ethers-v5": "^10.1.0",
     "@types/typescript": "^2.0.0",
+    "@types/web-push": "^3.3.2",
     "@usedapp/core": "^1.1.5",
     "async-mutex": "^0.3.2",
     "classnames": "^2.3.1",
@@ -57,6 +58,7 @@
     "humanize-duration": "^3.27.3",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
+    "net": "^1.0.2",
     "next": "^13.1.1",
     "next-pwa": "^5.6.0",
     "next-seo": "^5.4.0",
@@ -77,9 +79,11 @@
     "react-toastify": "^9.0.8",
     "sass": "^1.54.0",
     "swiper": "^8.3.2",
+    "tls": "^0.0.1",
     "tw-elements": "^1.0.0-alpha12",
     "usehooks-ts": "2.6.0",
     "wagmi": "^0.10.4",
+    "web-push": "^3.5.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

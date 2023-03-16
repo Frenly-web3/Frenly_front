@@ -1,5 +1,6 @@
-import { Avatar, Name } from "@entities/user";
+
 import { IAddress, useUserName } from "@shared/lib";
+import { Avatar, Name } from "@shared/ui";
 import React from "react";
 
 interface IInfoUploadProperties {

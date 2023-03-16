@@ -35,7 +35,7 @@ export function SmallUserCard(props: ISmallUserCardProperties) {
         } rounded-full ${avatarLoading && "animate-pulse"}`,
         {
           'max-md:w-5 md:w-4': !isMenu,
-          'w-4': isMenu
+          'w-4 mr-3': isMenu
         }
         )}
         alt="avatar"
