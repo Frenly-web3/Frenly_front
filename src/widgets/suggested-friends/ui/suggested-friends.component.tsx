@@ -20,13 +20,17 @@ export function SuggestedFriends(props: ISuggestedFriendsProps) {
   return (
     <div className="">
       <Paper className="rounded-[2rem]">
-        <h3 className="font-rounded font-semibold text-xl mb-4">you may know</h3>
-        
-        <div className="flex flex-col gap-y-2 h-28 overflow-y-auto">
+        <h3 className="font-rounded font-semibold text-xl mb-4">
+          you may know
+        </h3>
+
+        <div className="flex flex-col gap-y-2 h-fit overflow-y-auto">
           {suggestionAddresses &&
             !isError &&
             suggestionAddresses?.length > 0 &&
-            suggestionAddresses?.map((address) => {
+            suggestionAddresses
+            ?.slice(0, 4)
+            ?.map((address) => {
               return (
                 <Author classNames={{ avatar: "w-6" }} address={address} />
               );
