@@ -62,14 +62,14 @@ export function PostCardReactions(props: IPostCardReactions) {
         <PostCommentAdd addComment={addComment} />
         <AdaptiveModal
           classNamesDrawer={{
-            body: "px-4 pb-4 m-0 py-0",
+            body: "px-4 pb-4 m-0 py-4",
             header: "p-2 m-0 border-b-black/5 border-b-2",
             title: "w-full m-0",
             closeButton: "absolute right-2 top-2",
             drawer: "h-full rounded-t-3xl",
           }}
           classNamesModal={{
-            body: "px-4 pb-4 rounded-b-3xl",
+            body: "px-4 pb-4 rounded-b-3xl pt-4",
             header: "p-2 m-0 border-b-black/5 border-b-2",
             title: "w-full m-0",
             close: "absolute right-2 top-2",

@@ -1,7 +1,7 @@
-import { useGetPosts } from "@entities/post";
+import { PostSkeletonList, useGetPosts } from "@entities/post";
 import { PostList } from "@pages/feed/post-list.component";
 import { IAddress } from "@shared/lib";
-import { ScrollLoader, EndOfPage } from "@shared/ui";
+import { EndOfPage } from "@shared/ui";
 import * as React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -14,12 +14,12 @@ export function ProfilePostList(props: IProfilePostProps) {
 
   const { hasMore, loadMore, posts } = useGetPosts({ address });
   return (
-    <div className="p-0 md:max-w-[37rem] w-full">
+    <div className="p-0 lg:max-w-[37rem] w-full">
       <InfiniteScroll
         dataLength={posts?.length ?? 0}
         next={loadMore}
         hasMore={hasMore}
-        loader={<ScrollLoader />}
+        loader={<PostSkeletonList />}
         endMessage={<EndOfPage page="drafts" />}
       >
         <PostList posts={posts} />

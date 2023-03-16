@@ -8,4 +8,5 @@ export * from "./social-badge.util";
 export * from "./use-check-is-owner.hook";
 export * from "./use-convert-resp-to-publication-id.hook";
 export * from "./use-unification-format-image.hook";
+export * from "./use-user-avatar.hook";
 export * from "./use-user-name.hook";

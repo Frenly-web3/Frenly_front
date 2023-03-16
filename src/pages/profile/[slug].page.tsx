@@ -18,7 +18,7 @@ export default function ProfilePage() {
 
   useChangeAddress();
 
-  if (!isAddress(address)) return <>Error</>;
+  if (!isAddress(address)) return <></>;
 
   return (
     <Layout title="profile">
@@ -26,7 +26,7 @@ export default function ProfilePage() {
         title={`${name} on frenly`}
         description={`${name}'s profile on frenly`}
       />
-      <div className="lg:mr-64 mb-4">
+      <div className="lg:mr-[17.25rem] md:mr-[0] mb-4 md:max-w-[37rem]">
         <UserProfileWidget address={address} />
         <ProfileTabs address={address} />
       </div>

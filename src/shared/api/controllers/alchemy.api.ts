@@ -1,22 +1,49 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { IAddress } from "@shared/lib";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_NODE_ETH_API_KEY}/getNFTs`,
-})
+});
 
 export const alchemyApi = createApi({
-  reducerPath: 'alchemyApi',
+  reducerPath: "alchemyApi",
   baseQuery,
   endpoints: (builder) => ({
     getNftsForUser: builder.query({
-      query: ({ address }: { address: string }) => {
+      query: ({
+        address,
+        skip,
+        randomKey,
+      }: {
+        address: IAddress;
+        skip: string;
+        randomKey: string;
+      }) => {
         return {
-          url: `?owner=${address}`,
-          method: 'GET',
-          redirect: 'follow',
-          credentials: 'omit',
-        }
+          url: `?owner=${address}&pageSize=9${
+            skip && `&pageKey=${skip}`
+          }&excludeFilters[0]=SPAM`,
+          method: "GET",
+          redirect: "follow",
+          credentials: "omit",
+        };
+      },
+      serializeQueryArgs: ({
+        endpointName,
+        queryArgs: { address, randomKey },
+      }) => {
+        return { endpointName, address, randomKey };
+      },
+      merge: (currentCache, newItems) => {
+        currentCache?.ownedNfts.push(...newItems?.ownedNfts);
+        currentCache.pageKey = newItems?.pageKey;
+
+        return currentCache;
+      },
+      // Refetch when the page arg changes
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
       },
     }),
   }),
-})
+});

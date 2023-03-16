@@ -1,14 +1,13 @@
-import type { IPost } from '@entities/post'
-import { PostCard } from '@widgets/post'
-import * as React from 'react'
+import type { IPost } from "@entities/post";
+import { PostCard } from "@widgets/post";
+import * as React from "react";
 
 export interface IPostListProperties {
-  posts: IPost[]
+  posts: IPost[];
 }
 
 export function PostList(props: IPostListProperties) {
-  const { posts } = props
-
+  const { posts } = props;
   return (
     <div>
       {posts?.map((post) => {
@@ -19,8 +18,8 @@ export function PostList(props: IPostListProperties) {
             <PostCard.Image />
             <PostCard.Reactions />
           </PostCard>
-        )
+        );
       })}
     </div>
-  )
+  );
 }

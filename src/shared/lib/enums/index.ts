@@ -1,5 +1,6 @@
 export * from "./connector.enum";
 export * from "./network.enum";
+export * from "./notification-type.enum";
 export * from "./role.enum";
 export * from "./seller-type.enum";
 export * from "./subscription.enum";
