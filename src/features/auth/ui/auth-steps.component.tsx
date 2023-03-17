@@ -43,18 +43,18 @@ export function AuthSteps(props: IAuthStepsProps) {
             imageRight="/assets/icons/walletconnect.svg"
             onClick={() => connect(Connector.walletconnect)}
           />
-          <Link
+          {/* <Link
             className="bg-black/10 text-black mt-6 rounded-full text-center font-rounded font-medium text-2xl py-2"
             href={"/user-not-whitelisted"}
           >
             join waitlist
-          </Link>
+          </Link> */}
         </div>
       ) : (
         <div className="flex flex-col">
-          <h4 className="text-2xl font-semibold font-rounded text-center mb-4">
+          {/* <h4 className="text-base font-semibold font-rounded text-center mb-4">
             connected wallet
-          </h4>
+          </h4> */}
           <WalletButton
             content={userName}
             imageRight={userAvatar}

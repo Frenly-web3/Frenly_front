@@ -22,6 +22,7 @@ export * from "./routes-bar";
 export * from "./scroll-loader";
 export * from "./show-more-button";
 export * from "./social-badge";
+export * from "./social-link-badge";
 export * from "./switcher";
 export * from "./time-date";
 export * from "./transaction-link";

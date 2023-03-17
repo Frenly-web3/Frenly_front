@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
@@ -12,6 +12,10 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    screens: {
+      'tall': { 'raw': '(max-height: 700px)' },
+      ...defaultTheme.screens
+    },
     fontFamily: {
       // Old
       sans: ["SF Pro Text, sans-serif"],
