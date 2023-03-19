@@ -1,4 +1,4 @@
-import { Carousel } from "@mantine/carousel";
+import { Carousel, Embla } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import * as React from "react";
 import { IAction } from "../model";
@@ -10,8 +10,12 @@ export interface IActionListProps {
 
 export function ActionList(props: IActionListProps) {
   const { actions } = props;
-
+  const [embla, setEmbla] = React.useState<Embla | null>(null);
   const matches = useMediaQuery("(max-width: 768px)");
+
+  React.useEffect(() => {
+    embla?.reInit();
+  }, [actions]);
 
   return (
     <Carousel
@@ -20,15 +24,13 @@ export function ActionList(props: IActionListProps) {
       containScroll={"trimSnaps"}
       slideGap={!matches ? 16 : 48}
       draggable
+      getEmblaApi={setEmbla}
       withKeyboardEvents
       classNames={{
         controls: "hidden",
-        // control: "bg-white",
-        slide: "snap-center",
-        viewport: "px-4 snap-x",
-        container: "snap-x",
+        viewport: "px-4 w-full",
       }}
-      slideSize={!matches ? "45%" : "70%"}
+      slideSize={!matches ? "45%" : "75%"}
       align={"start"}
     >
       {actions.map((action, index) => {

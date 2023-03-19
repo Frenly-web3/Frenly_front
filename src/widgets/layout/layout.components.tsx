@@ -38,7 +38,7 @@ export const Layout = memo((props: IProperties) => {
   }, [router.asPath]);
 
   return (
-    <div className="bg-background min-h-screen md:flex justify-center">
+    <div className="bg-background min-h-screen md:flex justify-center max-xl:px-4 max-md:px-0">
       <Meta title="frenly feed" description="your frenly feed" />
 
       <RoutesBar
@@ -54,8 +54,8 @@ export const Layout = memo((props: IProperties) => {
         )}
       </RoutesBar>
 
-      <div className="flex flex-col">
-        <div className={`flex justify-between p-4 pb-3 bg-background`}>
+      <div className="flex flex-col max-lg:w-full lg:w-[37rem] md:ml-4 lg:mr-4">
+        <div className={`flex justify-between mb-6 mt-1 max-md:pl-4 max-md:my-3 bg-background`}>
           <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
         </div>
         <ScrollToTop />
@@ -64,7 +64,7 @@ export const Layout = memo((props: IProperties) => {
       {/* <RoutesBar>
         {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
       </RoutesBar> */}
-      <div className="">{rightSidebar}</div>
+      <div className="">{rightSidebar ?? <div className="lg:w-60"></div>}</div>
     </div>
   );
 });

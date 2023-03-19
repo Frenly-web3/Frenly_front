@@ -12,7 +12,7 @@ export default function FeedPage() {
 
   return (
     <Layout title="feed" rightSidebar={<RightSection />}>
-      <section className="lg:max-w-[37rem] min-w-[18.5rem] md:px-4 relative">
+      <section className="lg:max-w-[37rem] min-w-[18.5rem] relative">
         <InfinitePosts />
       </section>
     </Layout>
