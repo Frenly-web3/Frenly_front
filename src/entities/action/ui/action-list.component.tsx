@@ -22,7 +22,7 @@ export function ActionList(props: IActionListProps) {
       // onSlideChange={(index) => setChosedImage(index)}
       dragFree
       containScroll={"trimSnaps"}
-      slideGap={!matches ? 16 : 48}
+      slideGap={16}
       draggable
       getEmblaApi={setEmbla}
       withKeyboardEvents
@@ -30,12 +30,12 @@ export function ActionList(props: IActionListProps) {
         controls: "hidden",
         viewport: "px-4 w-full",
       }}
-      slideSize={!matches ? "45%" : "75%"}
+      slideSize={!matches ? "35%" : "55%"}
       align={"start"}
     >
       {actions.map((action, index) => {
         return (
-          <Carousel.Slide key={index}>
+          <Carousel.Slide key={index} >
             <ActionCard {...action} />
           </Carousel.Slide>
         );

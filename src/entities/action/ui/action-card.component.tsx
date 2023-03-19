@@ -8,7 +8,7 @@ export function ActionCard(props: IActionCardProps) {
   const { amountInCrypto, saleCryptoSymbol, image, community, tokenId } = props;
   return (
     <div className="flex flex-col">
-      <div className="w-full aspect-square rounded-2xl overflow-hidden mb-2">
+      <div className="w-52 aspect-square rounded-2xl overflow-hidden mb-2">
         <UnificationImage image={image} />
       </div>
 

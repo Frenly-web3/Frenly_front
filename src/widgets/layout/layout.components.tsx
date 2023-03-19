@@ -55,15 +55,15 @@ export const Layout = memo((props: IProperties) => {
       </RoutesBar>
 
       <div className="flex flex-col max-lg:w-full lg:w-[37rem] md:ml-4 lg:mr-4">
-        <div className={`flex justify-between mb-6 mt-1 max-md:pl-4 max-md:my-3 bg-background`}>
+        <div
+          className={`flex justify-between mb-6 mt-1 max-md:pl-4 max-md:my-3 bg-background`}
+        >
           <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
         </div>
         <ScrollToTop />
         {children}
       </div>
-      {/* <RoutesBar>
-        {addressHydration && <SmallUserCard address={addressHydration as IAddress} />}
-      </RoutesBar> */}
+
       <div className="">{rightSidebar ?? <div className="lg:w-60"></div>}</div>
     </div>
   );
