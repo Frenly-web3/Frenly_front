@@ -1,4 +1,3 @@
-import { Tooltip } from "@mantine/core";
 import { IAddress, useUserName } from "@shared/lib";
 import { Avatar, Name, Popover } from "@shared/ui";
 import React, { useState } from "react";
