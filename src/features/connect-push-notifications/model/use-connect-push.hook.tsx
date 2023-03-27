@@ -20,12 +20,11 @@ export const useConnectPush = () => {
     }
     return outputArray;
   }, []);
-  console.log(subscribed);
+
   useEffect(() => {
     if (subscribed) return;
 
     setTimeout(() => {
-      console.log(subscribed);
       if (
         typeof window !== "undefined" &&
         "serviceWorker" in navigator &&
@@ -35,7 +34,6 @@ export const useConnectPush = () => {
           reg.pushManager.getSubscription().then((sub) => {
             setIsSubscribed(true);
             setRegistration(reg);
-            console.log(sub);
           });
         });
       }
@@ -51,7 +49,6 @@ export const useConnectPush = () => {
             process.env.NEXT_PUBLIC_PUBLIC_SUBSCRIBE_KEY as string
           ),
         });
-        console.log(subscriptionInfo);
         await createWebPushSubscription({
           subscriptionInfo: JSON.stringify(subscriptionInfo),
         });

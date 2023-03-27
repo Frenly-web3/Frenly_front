@@ -6,6 +6,7 @@ import * as React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NotificationCard } from "./notification-card.component";
 
+
 export interface INotificationCardListProps {}
 
 export function NotificationCardList(props: INotificationCardListProps) {
