@@ -25,7 +25,7 @@ export function SmallUserCard(props: ISmallUserCardProperties) {
     <Link
       href={`/profile/${address}`}
       className={clsx("flex items-center p-2 rounded-full ", {
-        "hover:bg-black/5": isMenu,
+        "md:hover:bg-black/5": isMenu,
       })}
     >
       <img

@@ -10,7 +10,6 @@ export interface IAuthStepsProps {}
 
 export function AuthSteps(props: IAuthStepsProps) {
   const { address } = useAccount();
-  console.log(address);
 
   const [account, setAccount] = React.useState<IAddress>();
 

@@ -28,12 +28,12 @@ export interface IGetNotificationsRequest {
   skip: number;
 }
 
-export interface IGetNotificationsDto  {
-  notifications: NotificationDto[]
+export interface IGetNotificationsDto {
+  notifications: NotificationDto[];
   totalNotifications: number;
 }
 export interface IGetNotificationsTransformedDto {
-  notifications: NotificationDto[]
+  notifications: NotificationDto[];
   hasMore: boolean;
 }
 export interface IGetNotificationsMeta {

@@ -82,8 +82,6 @@ export const notificationsApi = createApi({
       { subscriptionInfo: string }
     >({
       query: ({ subscriptionInfo }) => {
-        console.log(subscriptionInfo);
-
         const {
           endpoint,
           keys: { auth, p256dh },

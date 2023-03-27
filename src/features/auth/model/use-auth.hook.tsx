@@ -23,10 +23,6 @@ export function useAuth() {
 
   const connect = React.useCallback(async (connector: Connector) => {
     setIsLoading(true);
-    if (address && !isWhitelisted(address)) {
-      router.push("/user-not-whitelisted");
-      return;
-    }
 
     try {
       await disconnectAsync();
@@ -40,6 +36,11 @@ export function useAuth() {
 
   const verify = React.useCallback(async () => {
     setIsLoading(true);
+
+    if (address && !isWhitelisted(address)) {
+      router.push("/user-not-whitelisted");
+      return;
+    }
 
     try {
       const { data: nonce } = await getNonce({ address: address as IAddress });

@@ -19,10 +19,11 @@ export function TokenImage(props: ITokenImageProps) {
           height={139}
           src={image}
           // onError={() => setErrorImage(true)}
-          alt=""
+          alt="token"
           // onLoadStart={() => setLoad(true)}
           // loading="lazy"
           className="w-full aspect-square"
+          
         />
       </div>
     </>

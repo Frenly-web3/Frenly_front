@@ -15,7 +15,6 @@ export default function notifications(
   if (req.method == "POST") {
     const { subscription } = req.body;
     // const vapidKeys = webPush.generateVAPIDKeys();
-    console.log(subscription);
 
     webPush
       .sendNotification(
@@ -27,11 +26,11 @@ export default function notifications(
         })
       )
       .then((response: any) => {
-        console.log("SUCCESS", response);
+
         res.writeHead(response.statusCode, response.headers).end(response.body);
       })
       .catch((err: any) => {
-        console.log(err);
+
 
         if ("statusCode" in err) {
           res.writeHead(err.statusCode, err.headers).end(err.body);
