@@ -15,7 +15,6 @@ import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
-import Head from "next/head";
 
 const { provider, webSocketProvider, chains } = configureChains(
   [mainnet],
