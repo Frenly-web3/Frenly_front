@@ -16,6 +16,7 @@ export * from "./metamask-error";
 export * from "./modal";
 export * from "./name";
 export * from "./paper";
+export * from "./popover";
 export * from "./post-carousel";
 export * from "./profile-button";
 export * from "./routes-bar";

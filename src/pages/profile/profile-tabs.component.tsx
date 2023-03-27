@@ -14,12 +14,12 @@ export function ProfileTabs(props: IProfileTabsProps) {
   const [activeTab, setActiveTab] = React.useState<TabsValue>("activity");
 
   return (
-    <div className="">
+    <div className="lg:min-w-[35rem]">
       <Tabs
         className="border-b-none m-auto"
         unstyled
         classNames={{
-          root: "border-b-none md:ml-4",
+          root: "border-b-none",
           tabsList: "flex justify-center my-4",
           tab: "rounded-2xl border-none px-4 py-2",
           tabLabel: "font-rounded font-semibold flex items-center gap-1",

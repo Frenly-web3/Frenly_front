@@ -8,10 +8,10 @@ export function SmallAction(props: ISmallActionProps) {
   const { image, amountInCrypto, saleCryptoSymbol, community, tokenId } = props;
 
   return (
-    <div className="flex justify-between">
-      <div className="flex">
-        <div className="md:w-16 aspect-square rounded-2xl overflow-hidden mr-4">
-          <UnificationImage image={image} />
+    <div className="flex gap-4">
+      <div className="flex gap-4">
+        <div className="w-16 aspect-square rounded-2xl overflow-hidden">
+          <UnificationImage image={image} className={"w-full"} />
         </div>
 
         <div className="flex flex-col">
