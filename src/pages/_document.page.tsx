@@ -12,7 +12,7 @@ class MyDocument extends Document {
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
-      <Html lang={AppConfig.locale} style={{ touchAction: "none" }}>
+      <Html lang={AppConfig.locale}>
         <Head>
           <link rel="manifest" href="/manifest.json" />
 
