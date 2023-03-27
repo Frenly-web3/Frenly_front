@@ -1,26 +1,27 @@
-import type { RoleEnum } from '@shared/lib'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { NextSeo } from 'next-seo'
+import type { RoleEnum } from "@shared/lib";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 type IMetaProperties = {
-  title: RoleEnum | string
-  description: string
-  canonical?: string
-}
+  title: RoleEnum | string;
+  description: string;
+  canonical?: string;
+};
 
 const Meta = (props: IMetaProperties) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <>
       <Head>
         <meta charSet="utf8" key="charset" />
+
         <meta
           name="viewport"
-          content="width=device-width,initial-scale=1"
-          key="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width-1, target-densitydpi=device-dpi"
         />
+
         <link
           rel="apple-touch-icon"
           href={`${router.basePath}/assets/favicon/apple-touch-icon.png`}
@@ -54,12 +55,12 @@ const Meta = (props: IMetaProperties) => {
           title: props.title,
           description: props.description,
           url: props.canonical,
-          locale: 'en',
-          site_name: '',
+          locale: "en",
+          site_name: "",
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export { Meta }
+export { Meta };

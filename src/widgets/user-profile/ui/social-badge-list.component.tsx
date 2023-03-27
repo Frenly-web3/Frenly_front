@@ -10,9 +10,10 @@ export function SocialBadgeList(props: ISocialBadgeListProps) {
   const { socials } = props;
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-3">
-      {socials.map((social) => {
+      {socials.map((social, index) => {
         return (
           <SocialBadge
+            key={index}
             social={social[0] as SocialType}
             label={social[1] as string}
           />
