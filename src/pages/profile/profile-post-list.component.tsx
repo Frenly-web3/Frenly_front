@@ -14,7 +14,7 @@ export function ProfilePostList(props: IProfilePostProps) {
 
   const { hasMore, loadMore, posts } = useGetPosts({ address });
   return (
-    <div className="p-0 lg:max-w-[37rem] w-full">
+    <div className="p-0 lg:max-w-[37rem]">
       <InfiniteScroll
         dataLength={posts?.length ?? 0}
         next={loadMore}

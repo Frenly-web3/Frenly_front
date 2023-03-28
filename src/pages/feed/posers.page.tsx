@@ -24,7 +24,7 @@ export default function FeedPage() {
         <RightSection id={process.env.NEXT_PUBLIC_POSERS_ID as string} />
       }
     >
-      <section className="lg:max-w-[37rem] md:px-4 relative">
+      <section className="w-full relative">
         <InfiniteScroll
           dataLength={posts.length}
           next={nextLoad}

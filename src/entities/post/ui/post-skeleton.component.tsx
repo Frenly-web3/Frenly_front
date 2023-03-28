@@ -5,7 +5,7 @@ export interface IPostSkeletonProps {}
 export function PostSkeleton(props: IPostSkeletonProps) {
   return (
     <>
-      <div className="h-[34.75rem] lg:min-w-[34.75rem] md:max-w-[34.75rem] bg-black/40 animate-pulse mb-4 py-4 rounded-[2rem]">
+      <div className="h-[34.75rem] w-full bg-black/40 animate-pulse mb-4 py-4 rounded-[2rem]">
         <div className="px-4 flex flex-col mb-4">
           <div className="flex mb-4">
             <div className="bg-black/50 animate-pulse rounded-full w-8 aspect-square mr-2"></div>

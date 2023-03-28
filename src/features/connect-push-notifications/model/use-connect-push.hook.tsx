@@ -1,9 +1,13 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { notificationsApi } from "@shared/api";
+import { useState, useEffect, useCallback } from "react";
 
 export const useConnectPush = () => {
   const [registration, setRegistration] = useState<ServiceWorkerRegistration>();
   const [subscribed, setIsSubscribed] = useState(false);
-  const [error, setError] = useState();
+
+  const [createWebPushSubscription] =
+    notificationsApi.useCreateWebPushSubscriptionMutation();
+
   const base64ToUint8Array = useCallback((base64: string) => {
     const padding = "=".repeat((4 - (base64.length % 4)) % 4);
     const b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -18,55 +22,37 @@ export const useConnectPush = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      "serviceWorker" in navigator
-      // window.workbox !== undefined
-    ) {
-      navigator.serviceWorker.ready.then((reg) => {
-        reg.pushManager.getSubscription().then((sub) => {
-          if (
-            sub &&
-            !(
-              sub.expirationTime &&
-              Date.now() > sub.expirationTime - 5 * 60 * 1000
-            )
-          ) {
+    if (subscribed) return;
+
+    setTimeout(() => {
+      if (
+        typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        !subscribed
+      ) {
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.pushManager.getSubscription().then((sub) => {
             setIsSubscribed(true);
-          }
+            setRegistration(reg);
+          });
         });
-        setRegistration(reg);
-      });
-    }
+      }
+    }, 2500);
   }, []);
 
-  const connectPush = useCallback(async () => {
-    if (registration) {
+  useEffect(() => {
+    (async () => {
       try {
-        const subscriptionS = await registration?.pushManager.subscribe({
+        const subscriptionInfo = await registration?.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: base64ToUint8Array(
             process.env.NEXT_PUBLIC_PUBLIC_SUBSCRIBE_KEY as string
           ),
         });
-
-        await fetch("/api/notifications", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({
-            subscription: subscriptionS,
-          }),
+        await createWebPushSubscription({
+          subscriptionInfo: JSON.stringify(subscriptionInfo),
         });
-      } catch (err: any) {
-        setError(err.message);
-      }
-    }
+      } catch (err: any) {}
+    })();
   }, [registration]);
-
-  return useMemo(
-    () => ({ connectPush, subscribed, error }),
-    [connectPush, subscribed, error]
-  );
 };

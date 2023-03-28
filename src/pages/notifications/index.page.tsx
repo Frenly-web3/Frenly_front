@@ -17,7 +17,7 @@ export default function Notifications() {
 
   return (
     <Layout title="notifications">
-      <section className="md:min-w-[35rem] rounded-t-[2rem] p-4 bg-white md:ml-4 md:mr-60 h-full max-md:h-screen">
+      <section className="w-full rounded-t-[2rem] p-4 bg-white  h-full max-md:h-screen">
         <NotificationCardList />
       </section>
     </Layout>

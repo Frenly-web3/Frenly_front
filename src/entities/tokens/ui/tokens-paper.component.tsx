@@ -21,7 +21,6 @@ export function TokensPaper(props: ITokensPaperProps) {
   const { title, maxRows, className, address } = props;
 
   const { tokens, loadMore, hasMore } = useGetNftsByAddress({ address });
-  console.log(tokens, hasMore);
   
   const [showedMore, setShowedMore] = React.useState(false);
   const matches = useMediaQuery("(max-width: 768px)");

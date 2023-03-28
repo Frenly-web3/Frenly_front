@@ -76,5 +76,33 @@ export const notificationsApi = createApi({
       },
       invalidatesTags: ["NOTIFICATIONS_COUNT"],
     }),
+
+    createWebPushSubscription: builder.mutation<
+      void,
+      { subscriptionInfo: string }
+    >({
+      query: ({ subscriptionInfo }) => {
+        const {
+          endpoint,
+          keys: { auth, p256dh },
+        } = JSON.parse(subscriptionInfo) as {
+          endpoint: string;
+          keys: {
+            auth: string;
+            p256dh: string;
+          };
+        };
+        return {
+          url: `/notification/user-identifier`,
+          method: "POST",
+          credentials: "omit",
+          body: {
+            endpoint,
+            auth,
+            p256dh,
+          },
+        };
+      },
+    }),
   }),
 });

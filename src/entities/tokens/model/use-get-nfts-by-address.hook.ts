@@ -15,18 +15,19 @@ export const useGetNftsByAddress = ({
   address: IAddress;
 }): IuseGetNftByAddressResponse => {
   const [skip, setSkip] = useState("");
-  const [randomKey, setRandomKey] = useState("");
 
-  const { data } = alchemyApi.useGetNftsForUserQuery({ address, skip, randomKey });
+  const { data } = alchemyApi.useGetNftsForUserQuery({
+    address,
+    skip
+  });
   const [currentAddress, setCurrentAddress] = useState(address);
 
   useEffect(() => {
     if (currentAddress !== address) {
-      setRandomKey(`${Math.random() * 10e18}`);
-    }
-    setCurrentAddress(address);
+      setCurrentAddress(address);
 
-    setSkip("");
+      setSkip("");
+    }
   }, [address]);
 
   return useMemo(
