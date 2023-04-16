@@ -1,4 +1,4 @@
-import {  clsx } from "@mantine/core";
+import { clsx } from "@mantine/core";
 import type { IAddress } from "@shared/lib";
 // eslint-disable-next-line import/no-cycle
 import { Avatar, Name, TimeDate } from "@shared/ui";
@@ -8,6 +8,7 @@ import React from "react";
 interface IAuthorProperties {
   date?: string;
   address: IAddress;
+  withoutLink?: boolean;
   classNames?: {
     root?: string;
     avatar?: string;
@@ -15,8 +16,43 @@ interface IAuthorProperties {
   };
 }
 
-export const Author = (props: IAuthorProperties) => {
+const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
   const { address, date, classNames } = props;
+  return (
+    <>
+      <div className="border rounded-full border-border-color overflow-hidden">
+        <Avatar
+          width={10}
+          className={clsx(
+            `aspect-square`,
+            classNames?.avatar ? classNames.avatar : "w-10 aspect-square"
+          )}
+          address={address}
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <figcaption>
+          <Name
+            className={clsx(
+              `font-rounded  cursor-pointer`,
+              classNames?.name ? classNames.name : "mb-[-0.25rem] font-medium"
+            )}
+            address={address}
+          />
+        </figcaption>
+        {date && (
+          <div className="font-text text-hidden font-regular text-sm">
+            <TimeDate date={date} />
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export const Author = (props: IAuthorProperties) => {
+  const { classNames, address, withoutLink = false } = props;
 
   return (
     <figure
@@ -25,35 +61,17 @@ export const Author = (props: IAuthorProperties) => {
         classNames?.root ? classNames.root : "items-center"
       )}
     >
-      <Link href={`/profile/${address}`} className="flex gap-2">
-        <div className="border rounded-full border-border-color overflow-hidden">
-          <Avatar
-            width={10}
-            className={clsx(
-              `aspect-square`,
-              classNames?.avatar ? classNames.avatar : "w-10 aspect-square"
-            )}
-            address={address}
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <figcaption>
-            <Name
-              className={clsx(
-                `font-rounded  cursor-pointer`,
-                classNames?.name ? classNames.name : "mb-[-0.25rem] font-medium"
-              )}
-              address={address}
-            />
-          </figcaption>
-          {date && (
-            <div className="font-text text-hidden font-regular text-sm">
-              <TimeDate date={date} />
-            </div>
-          )}
-        </div>
-      </Link>
+      {withoutLink ? (
+        <AuthorContent {...props} />
+      ) : (
+        <Link
+          passHref={true}
+          href={`/profile/${address}`}
+          className="flex gap-2"
+        >
+          <AuthorContent {...props} />
+        </Link>
+      )}
     </figure>
   );
 };

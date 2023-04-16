@@ -1,19 +1,29 @@
-import type { IAddress } from '@shared/lib'
-import { isAddress, isEnsName } from '@shared/lib'
-import { useMemo } from 'react'
-import { useEnsAddress } from 'wagmi'
+import { useDebouncedValue } from "@mantine/hooks";
+import { usernameApi } from "@shared/api";
+import type { IAddress } from "@shared/lib";
+import { useEffect, useMemo, useState } from "react";
 
 export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
-  const { data: ensAddress, isFetching } = useEnsAddress({
-    name: value,
-  })
+  const [debouncedValue] = useDebouncedValue(value, 200);
+  const [takeCount, setTakeCount] = useState(0);
+  console.log(takeCount);
+
+  const { data: usernamesData, isLoading } =
+    usernameApi.useGetENSUsernamesQuery(
+      { usernamePart: debouncedValue, skip: takeCount * 15 },
+      { skip: !value }
+    );
+
+  useEffect(() => {
+    setTakeCount(0);
+  }, [value]);
+
   return useMemo(() => {
-    if (isAddress(value.toLowerCase())) {
-      return { address: value, isLoading: false }
-    }
-    if (isEnsName(value.toLowerCase())) {
-      return { address: ensAddress, isLoading: isFetching }
-    }
-    return { address: null, isLoading: false }
-  }, [ensAddress, isFetching, value])
-}
+    return {
+      usernames: usernamesData?.usernames,
+      isLoading,
+      hasMore: usernamesData?.hasMore as boolean,
+      loadMore: () => setTakeCount((prev) => prev + 1),
+    };
+  }, [usernamesData, value, isLoading]);
+};
