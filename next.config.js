@@ -26,20 +26,20 @@ module.exports = withPWA({
   },
   images: {
     dangerouslyAllowSVG: true,
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
-      },
-      {
-        protocol: "ipfs",
-        hostname: "**",
-      },
-    ],
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "**",
+    //   },
+    //   {
+    //     protocol: "http",
+    //     hostname: "**",
+    //   },
+    //   {
+    //     protocol: "ipfs",
+    //     hostname: "**",
+    //   },
+    // ],
   },
   webpack(config) {
     config.module.rules.push({
