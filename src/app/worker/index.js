@@ -7,28 +7,27 @@ self.addEventListener("push", async function (event) {
     registration.showNotification(data.title, {
       body: data.message,
       icon: "./icon-512x512.png",
+      data: event.data.text(),
     })
   );
 });
 
 self.addEventListener("notificationclick", function (event) {
-  event.notification.close();
+  // const data = JSON.parse(event.data.text());
+  // console.log(event.data);
+  var promise = Promise.resolve();
   event.waitUntil(
-    clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then(function (clientList) {
-        if (clientList.length > 0) {
-          let client = clientList[0];
-          for (let i = 0; i < clientList.length; i++) {
-            if (clientList[i].focused) {
-              client = clientList[i];
-            }
-          }
-          return client.focus();
-        }
-        return client.openWindow("/notifications");
-      })
+    promise.then(() => {
+      console.log(event);
+      const data = JSON.parse(event.notification.data);
+      clients.openWindow(
+        `http://localhost:3000/${data.actionType !== 2 ? "post" : "profile"}/${
+          data.openIdentifier
+        }`
+      );
+    })
   );
+  event.notification.close();
 });
 
 // self.addEventListener('pushsubscriptionchange', function(event) {

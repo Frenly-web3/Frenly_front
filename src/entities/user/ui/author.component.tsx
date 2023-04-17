@@ -55,7 +55,7 @@ export const Author = (props: IAuthorProperties) => {
   const { classNames, address, withoutLink = false } = props;
 
   return (
-    <figure
+    <div
       className={clsx(
         "flex gap-2",
         classNames?.root ? classNames.root : "items-center"
@@ -72,7 +72,7 @@ export const Author = (props: IAuthorProperties) => {
           <AuthorContent {...props} />
         </Link>
       )}
-    </figure>
+    </div>
   );
 };
 

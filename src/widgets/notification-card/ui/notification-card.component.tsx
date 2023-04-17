@@ -25,6 +25,7 @@ export function NotificationCard(props: INotificationCardProps) {
       ) : (
         <NotificationPost
           actions={post?.actions as IAction[]}
+          id={post?.id as number}
           transferType={post?.transferType as TransferTypeEnum}
         />
       )}
