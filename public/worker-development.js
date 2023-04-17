@@ -1,32 +1,25 @@
-"use strict";
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+var __webpack_exports__ = {};
+
 
 self.addEventListener("push", async function (event) {
   const data = JSON.parse(event.data.text());
-
-  event.waitUntil(
-    registration.showNotification(data.title, {
-      body: data.message,
-      icon: "./icon-512x512.png",
-      data: event.data.text(),
-    })
-  );
+  event.waitUntil(registration.showNotification(data.title, {
+    body: data.message,
+    icon: "./icon-512x512.png",
+    data: event.data.text()
+  }));
 });
-
 self.addEventListener("notificationclick", function (event) {
   // const data = JSON.parse(event.data.text());
   // console.log(event.data);
   var promise = Promise.resolve();
-  event.waitUntil(
-    promise.then(() => {
-      console.log(event);
-      const data = JSON.parse(event.notification.data);
-      clients.openWindow(
-        `http://app.frenly.cc/${data.actionType !== 2 ? "post" : "profile"}/${
-          data.openIdentifier
-        }`
-      );
-    })
-  );
+  event.waitUntil(promise.then(() => {
+    console.log(event);
+    const data = JSON.parse(event.notification.data);
+    clients.openWindow(`http://localhost:3000/${data.actionType !== 2 ? "post" : "profile"}/${data.openIdentifier}`);
+  }));
   event.notification.close();
 });
 
@@ -39,3 +32,5 @@ self.addEventListener("notificationclick", function (event) {
 //       ])
 //   )
 // })
+/******/ })()
+;
