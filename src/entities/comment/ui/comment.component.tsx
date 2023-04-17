@@ -3,7 +3,7 @@
 import { Avatar, Name } from "@shared/ui";
 import Link from "next/link";
 
-import type { IComment } from "../model";
+import { IComment, useTransformComment } from "../model";
 
 interface IProperies {
   comment: IComment;
@@ -12,6 +12,9 @@ export const Comment = (props: IProperies) => {
   const { comment } = props;
   const profileLink = `/profile/${comment.creator}`;
 
+  const transformedComment = useTransformComment({
+    comment: comment.description,
+  });
   return (
     <div className="flex gap-2">
       <Link href={profileLink}>
@@ -28,7 +31,7 @@ export const Comment = (props: IProperies) => {
             address={comment.creator}
           />
         </Link>
-        <div className="text-black/80 font-normal">{comment.description}</div>
+        <div className="text-black">{transformedComment}</div>
       </div>
     </div>
   );

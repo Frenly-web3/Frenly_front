@@ -7,10 +7,11 @@ import React, { useEffect, useState } from "react";
 export interface IPostCommentInputProps {
   comment: string;
   setComment: React.Dispatch<React.SetStateAction<string>>;
+  sendMessage: () => void;
 }
 
 export function PostCommentInput(props: IPostCommentInputProps) {
-  const { comment, setComment } = props;
+  const { comment, setComment, sendMessage } = props;
 
   const [autocompleteUsername, setAutocompleteUsername] = useState("");
   const [startedUsernameIndex, setStartedUsernameIndex] = useState<
@@ -21,12 +22,8 @@ export function PostCommentInput(props: IPostCommentInputProps) {
 
   useEffect(() => {
     if (comment.at(-1) === "@") {
-      console.log(comment);
-
       setStartedUsernameIndex(comment.length);
     }
-
-    console.log(startedUsernameIndex);
 
     if (
       comment.slice(-3) === "eth" ||
@@ -52,14 +49,16 @@ export function PostCommentInput(props: IPostCommentInputProps) {
             })) ?? []
           : []
       }
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      }}
       unstyled
       dropdownPosition="top"
       itemComponent={(item) => {
         return (
           <button
-            onKeyDown={(e) => {
-              console.log(e);
-            }}
             onClick={(e) => {
               setComment((prev) => {
                 return (
@@ -80,13 +79,14 @@ export function PostCommentInput(props: IPostCommentInputProps) {
         );
       }}
       filter={() => true}
-      withinPortal
-      className="w-full"
+      // withinPortal
+      className="w-full z-50"
+      initiallyOpened
       transition="slide-up"
       transitionDuration={300}
       transitionTimingFunction="ease"
       classNames={{
-        dropdown: "absolute rounded-xl bg-overlay-1-solid p-1",
+        dropdown: "absolute rounded-xl bg-overlay-1-solid p-1 z-[9999]",
         itemsWrapper: "rounded-3xl",
         input:
           "flex-1 bg-overlay-1-solid py-2 px-4 leading-4 rounded-[1rem] w-full font-rounded",

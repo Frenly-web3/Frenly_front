@@ -6,7 +6,6 @@ import { useEffect, useMemo, useState } from "react";
 export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
   const [debouncedValue] = useDebouncedValue(value, 200);
   const [takeCount, setTakeCount] = useState(0);
-  console.log(takeCount);
 
   const { data: usernamesData, isLoading } =
     usernameApi.useGetENSUsernamesQuery(
