@@ -19,15 +19,17 @@ export function UnificationImage(props: IUnificationImageProps) {
     <div className={clsx(className)}>
       {unificationImage ? (
         <div className="relative">
-          {unificationImage.type === "image" ? (
-            <img
-              src={unificationImage.url}
-              alt={"post_image"}
-              className="m-auto"
-            />
-          ) : (
-            <video src={unificationImage.url.toString()} />
-          )}
+          {/* {unificationImage.type === "image" ? ( */}
+          <img
+            src={unificationImage.url}
+            alt={"post_image"}
+            className="m-auto"
+          />
+          {/* // ) 
+          // : (
+          //   <video src={unificationImage.url.toString()} />
+          // ) */}
+          {/* } */}
         </div>
       ) : (
         <div className="flex flex-col p-10 pb-20 gap-2 items-center justify-center aspect-square w-full bg-gray">
