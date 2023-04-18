@@ -1,13 +1,15 @@
 import { IPost } from "@entities/post";
+import { contentApi } from "@shared/api";
 import { NetworkEnum, TokenTypeEnum, TransferTypeEnum } from "@shared/lib";
 import { Meta } from "@shared/ui";
 import { Layout } from "@widgets/layout";
 import { PostCard } from "@widgets/post";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 export interface IPostPageProps {}
 
-const post = {
+const postasa = {
   creationDate: "2023-04-17T04:53:59.000Z",
   postType: TokenTypeEnum.ERC20,
   id: 103080,
@@ -49,17 +51,26 @@ const post = {
 };
 
 export default function PostPage(props: IPostPageProps) {
+  const { query } = useRouter();
+
+  const { id } = query;
+  const { data: post } = contentApi.useGetPostByIdQuery(
+    { id: id as string },
+    { skip: !id }
+  );
+
   return (
     <Layout title="">
       <Meta title={`post on frenly`} description={`post on frenly`} />
+      <div className="md:mt-14 md:pt-1">
       {post && (
-        <PostCard {...post as IPost} key={post.id}>
+        <PostCard {...(post as unknown as IPost)} key={post.id}>
           <PostCard.Author />
           <PostCard.Content />
           <PostCard.Image />
           <PostCard.Reactions />
         </PostCard>
-      )}
+      )}</div>
     </Layout>
   );
 }
