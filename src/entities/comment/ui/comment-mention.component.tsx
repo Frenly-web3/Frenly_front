@@ -13,7 +13,7 @@ export function CommentMention(props: ICommentMentionProps) {
 
   return (
     <Link
-      className="font-rounded font-semibold bg-background rounded-full px-1"
+      className="font-rounded font-medium"
       href={`/profile/${address}`}
     >
       {username.length > 20
