@@ -8,10 +8,15 @@ export interface IPostCommentInputProps {
   comment: string;
   setComment: React.Dispatch<React.SetStateAction<string>>;
   sendMessage: () => void;
+  setMentionAddresses: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: IAddress;
+    }>
+  >;
 }
 
 export function PostCommentInput(props: IPostCommentInputProps) {
-  const { comment, setComment, sendMessage } = props;
+  const { comment, setComment, sendMessage, setMentionAddresses } = props;
 
   const [autocompleteUsername, setAutocompleteUsername] = useState("");
   const [startedUsernameIndex, setStartedUsernameIndex] = useState<
@@ -39,6 +44,25 @@ export function PostCommentInput(props: IPostCommentInputProps) {
     setAutocompleteUsername(comment.slice(startedUsernameIndex));
   }, [comment, startedUsernameIndex]);
 
+  const itemClickHandle = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    item: any
+  ) => {
+    setComment((prev) => {
+      return (
+        prev.slice(0, prev.length - autocompleteUsername.length) +
+        item.value +
+        " "
+      );
+    });
+    setMentionAddresses((prev) => ({
+      ...prev,
+      [item.value]: item.address,
+    }));
+    setStartedUsernameIndex(null);
+    setAutocompleteUsername("");
+  };
+
   return (
     <Autocomplete
       data={
@@ -58,19 +82,7 @@ export function PostCommentInput(props: IPostCommentInputProps) {
       dropdownPosition="top"
       itemComponent={(item) => {
         return (
-          <button
-            onClick={(e) => {
-              setComment((prev) => {
-                return (
-                  prev.slice(0, prev.length - autocompleteUsername.length) +
-                  item.value +
-                  " "
-                );
-              });
-              setStartedUsernameIndex(null);
-              setAutocompleteUsername("");
-            }}
-          >
+          <button onClick={(e) => itemClickHandle(e, item)}>
             <Author
               withoutLink
               classNames={{ avatar: "w-7", root: "my-1" }}

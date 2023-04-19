@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import type { IBaseResponse } from "@shared/lib";
+import type { IAddress, IBaseResponse } from "@shared/lib";
 
 import { baseQueryWithReauth } from "../base-query";
 import type { ICommentsDto, IReactionsDto } from "../dto/reactions.dto";
@@ -65,11 +65,14 @@ export const reactionsApi = createApi({
         };
       },
     }),
-    createComment: builder.mutation<any, { postId: number; comment: string }>({
+    createComment: builder.mutation<
+      any,
+      { postId: number; comment: string; mentions: IAddress[] }
+    >({
       invalidatesTags: (result, error, arg) => [
         { type: "REACTIONS", id: arg.postId },
       ],
-      query: ({ postId, comment }) => {
+      query: ({ postId, comment, mentions }) => {
         return {
           url: `content/comment/create`,
           method: "Post",
@@ -77,6 +80,7 @@ export const reactionsApi = createApi({
           body: {
             postId,
             comment,
+            mentions: mentions.length === 0 ? undefined : undefined,
           },
         };
       },

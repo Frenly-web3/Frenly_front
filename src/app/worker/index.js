@@ -18,12 +18,11 @@ self.addEventListener("notificationclick", function (event) {
   var promise = Promise.resolve();
   event.waitUntil(
     promise.then(() => {
-      console.log(event);
       const data = JSON.parse(event.notification.data);
       clients.openWindow(
-        `https://frenly-front-git-add-ens-mentions-frenly.vercel.app/${data.actionType !== 2 ? "post" : "profile"}/${
-          data.openIdentifier
-        }`
+        `https://frenly-front-git-add-ens-mentions-frenly.vercel.app/${
+          data.actionType !== 2 ? "post" : "profile"
+        }/${data.openIdentifier}`
       );
     })
   );
