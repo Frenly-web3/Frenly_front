@@ -13,7 +13,7 @@ export const Comment = (props: IProperies) => {
   const profileLink = `/profile/${comment.creator}`;
 
   const transformedComment = useTransformComment({
-    comment: comment.description,
+    comment: comment.description + " ",
   });
   return (
     <div className="flex gap-2">

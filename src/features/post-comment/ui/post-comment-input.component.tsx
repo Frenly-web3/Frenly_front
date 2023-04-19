@@ -63,7 +63,8 @@ export function PostCommentInput(props: IPostCommentInputProps) {
               setComment((prev) => {
                 return (
                   prev.slice(0, prev.length - autocompleteUsername.length) +
-                  item.value
+                  item.value +
+                  " "
                 );
               });
               setStartedUsernameIndex(null);
