@@ -8,6 +8,7 @@ export interface IPostListProperties {
 
 export function PostList(props: IPostListProperties) {
   const { posts } = props;
+  
   return (
     <div>
       {posts?.map((post) => {

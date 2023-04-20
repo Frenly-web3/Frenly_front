@@ -14,12 +14,12 @@ export function ScrollToTop(props: IScrollToTopProps) {
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
             <button
-              className="rounded-full font-icon w-12 text-lg aspect-square bg-white"
+              className="rounded-full font-icon text-2xl w-12 text-lg aspect-square bg-white"
               // leftIcon={}
               style={transitionStyles}
               onClick={() => scrollTo({ y: 0 })}
             >
-              arrow_upward
+              expand_less
             </button>
           )}
         </Transition>

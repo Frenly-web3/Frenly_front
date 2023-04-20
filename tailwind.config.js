@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-
+const { fontFamily } = require("tailwindcss/defaultTheme");
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx}",
@@ -22,10 +22,10 @@ module.exports = {
       display: ["SF Pro Display, sans-serif"],
       rounded: ["SF Pro Rounded, sans-serif"],
       text: ["SF Pro Text, sans-serif"],
-      icon: ["Material Symbols Rounded, sans-serif"],
+      icon: ["var(--font-icon)", ...fontFamily.sans],
     },
     fontSize: {
-      xmicro: '8px',
+      xmicro: "8px",
       micro: "11px",
 
       sm: "0.8rem",

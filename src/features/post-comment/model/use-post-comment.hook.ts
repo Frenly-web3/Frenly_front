@@ -24,7 +24,12 @@ export const usePostComment = (props: IProperties) => {
     if (commentsData?.comments) setComments(commentsData.comments);
   }, [commentsData]);
 
-  const addComment = (description: string) => {
+  const addComment = (
+    description: string,
+    addresses: {
+      [key: string]: IAddress;
+    }
+  ) => {
     setComments((previous) => {
       let newId = 10000;
       return [
@@ -32,7 +37,24 @@ export const usePostComment = (props: IProperties) => {
         { description, creator: address as IAddress, id: newId },
       ];
     });
-    commentMutation({ comment: description, postId });
+    let addressesForNotifications: IAddress[] = [];
+    description.split(" ").forEach((word) => {
+      const wordWithoutTag = word.slice(1);
+
+      const existedWord = Object.keys(addresses).find(
+        (el) => el === wordWithoutTag
+      );
+
+      if (existedWord) {
+        addressesForNotifications.push(addresses[existedWord] as IAddress);
+      }
+    });
+
+    commentMutation({
+      comment: description,
+      postId,
+      mentions: addressesForNotifications,
+    });
   };
 
   return {

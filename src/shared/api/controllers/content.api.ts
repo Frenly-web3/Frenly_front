@@ -5,6 +5,7 @@ import { baseQueryWithReauth } from "../base-query";
 import type {
   ICommunityFeedRequest,
   IFeedRequest,
+  IPostDto,
   IWalletAddressFeedDto,
   IWalletAddressFeedRequest,
 } from "../dto/content.dto";
@@ -27,6 +28,21 @@ export const contentApi = createApi({
         return res.data;
       },
     }),
+
+    getPostById: builder.query<IPostDto, {id: string}>({
+      providesTags: ["CONTENT"],
+      query: ({ id }) => {
+        return {
+          url: `content/${id}`,
+          method: "GET",
+          credentials: "omit",
+        };
+      },
+      transformResponse: (res: IBaseResponse<IPostDto>) => {
+        return res.data;
+      },
+    }),
+
     getCommunityFeed: builder.query<
       IWalletAddressFeedDto,
       ICommunityFeedRequest

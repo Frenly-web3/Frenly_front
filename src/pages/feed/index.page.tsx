@@ -9,7 +9,7 @@ import { RightSection } from "./right-section.component";
 export default function FeedPage() {
   useChangeAddress();
   useConnectPush();
-
+  
   return (
     <Layout title="feed" rightSidebar={<RightSection />}>
       <section className="lg:max-w-[37rem] min-w-[18.5rem] relative">
