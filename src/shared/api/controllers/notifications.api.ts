@@ -52,7 +52,7 @@ export const notificationsApi = createApi({
           res.data.notifications.length !== 0,
       }),
     }),
-    getUnreadCount: builder.query<number, void>({
+    getUnreadCount: builder.query<number, unknown>({
       providesTags: ["NOTIFICATIONS_COUNT"],
       query: () => {
         return {

@@ -1,6 +1,5 @@
-import { NotificationTypeEnum } from '@shared/lib';
+import { NotificationTypeEnum } from "@shared/lib";
 import { useMemo } from "react";
-
 
 import { TNotificationIcons } from "../notification-icon.types";
 
@@ -35,6 +34,20 @@ export const useNotificationTypeInfo = ({
         return {
           icon: "chat",
           content: "commented your transaction:",
+          color: "bg-[#D18E2A]",
+        };
+      }
+      case NotificationTypeEnum.MENTION: {
+        return {
+          icon: "alternate_email",
+          content: "mentioned you:",
+          color: "bg-[#135EDD]",
+        };
+      }
+      case NotificationTypeEnum.COMMENT_ON_COMMENTED_POST: {
+        return {
+          icon: "handshake",
+          content: "left a comment on the post you commented on: ",
           color: "bg-[#D18E2A]",
         };
       }

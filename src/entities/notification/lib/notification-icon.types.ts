@@ -6,4 +6,6 @@ export type TNotificationIcons =
   | "mode_heat"
   | "diamond"
   | "reply"
+  | "alternate_email"
+  | "handshake"
   | "";

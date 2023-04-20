@@ -80,7 +80,7 @@ export const reactionsApi = createApi({
           body: {
             postId,
             comment,
-            mentions: mentions.length === 0 ? undefined : undefined,
+            mentions: mentions.length === 0 ? undefined : mentions,
           },
         };
       },
