@@ -14,7 +14,7 @@ const Index = () => {
   if (address && isWhitelisted(address) && user.isAuth) router.push("/feed");
 
   return (
-    <div className="bg-background h-full">
+    <div className="bg-background h-screen">
       <div className="container flex flex-col items-center justify-center h-full max-md:py-6">
         <div className="flex flex-col items-center justify-center mb-5">
           <img
