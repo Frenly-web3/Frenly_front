@@ -23,7 +23,7 @@ export function AuthSteps(props: IAuthStepsProps) {
     setAccount(address);
   }, [address]);
 
-  const { connect, verify } = useAuth();
+  const { connect, verify, logout } = useAuth();
   return (
     <div className=" border-[1px] p-4 border-black/20 rounded-[2.5rem]">
       <h5 className="text-center text-2xl font-semibold font-rounded text-black mb-6">
@@ -61,6 +61,14 @@ export function AuthSteps(props: IAuthStepsProps) {
               root: "!bg-black/5 !cursor-default",
               content: "!text-black",
             }}
+            leftIcon={
+              <button
+                onClick={() => logout()}
+                className="font-icon text-2xl text-black"
+              >
+                exit_to_app
+              </button>
+            }
           />
           <Button
             onClick={() => verify()}

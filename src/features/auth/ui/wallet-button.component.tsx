@@ -10,34 +10,40 @@ export interface IWalletButtonProps {
     image?: string;
     content?: string;
   };
+  leftIcon?: React.ReactNode;
 }
 
 export function WalletButton(props: IWalletButtonProps) {
-  const { onClick, imageRight, content, classNames } = props;
+  const { onClick, imageRight, content, classNames, leftIcon } = props;
 
   return (
-    <button
-      className={clsx(
-        "bg-black rounded-3xl flex-1 flex px-1 py-1 items-center text-center text-white font-rounded font-bold",
-        classNames?.root ?? ""
-      )}
-      onClick={onClick}
-    >
-      <img
+    <div className="relative w-full">
+      <button
         className={clsx(
-          "w-10 aspect-square items-start rounded-full mr-4",
-          classNames?.image ?? ""
+          "bg-black rounded-3xl w-full flex-1 flex px-1 py-1 items-center text-center text-white font-rounded font-bold",
+          classNames?.root ?? ""
         )}
-        src={imageRight}
-      />
-      <span
-        className={clsx(
-          "text-white font-rounded font-bold",
-          classNames?.content ?? ""
-        )}
+        onClick={onClick}
       >
-        {content}
-      </span>
-    </button>
+        <img
+          className={clsx(
+            "w-10 aspect-square items-start rounded-full mr-4",
+            classNames?.image ?? ""
+          )}
+          src={imageRight}
+        />
+        <span
+          className={clsx(
+            "text-white font-rounded font-bold",
+            classNames?.content ?? ""
+          )}
+        >
+          {content}
+        </span>
+      </button>
+      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+        {leftIcon}
+      </div>
+    </div>
   );
 }
