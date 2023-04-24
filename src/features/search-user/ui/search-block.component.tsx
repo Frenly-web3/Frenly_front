@@ -1,4 +1,4 @@
-import { Author } from "@entities/user";
+import { Author, AuthorSkeleton } from "@entities/user";
 import type { IAddress } from "@shared/lib";
 import { Paper } from "@shared/ui";
 import Link from "next/link";
@@ -7,13 +7,17 @@ import * as React from "react";
 import { useGetAddressFrom } from "../model";
 import { SearchInput } from "./search-input.component";
 import { UserNotFound } from "./user-not-found.component";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export interface ISearchBlockProperties {}
 
 export function SearchBlock(props: ISearchBlockProperties) {
   const {} = props;
   const [value, setValue] = React.useState<IAddress | string>("");
-  const { address, isLoading } = useGetAddressFrom({ value });
+
+  const { usernames, isLoading, loadMore, hasMore } = useGetAddressFrom({
+    value,
+  });
 
   return (
     <Paper className="rounded-[2rem] h-full">
@@ -30,13 +34,24 @@ export function SearchBlock(props: ISearchBlockProperties) {
           </div>
         </div>
       ) : (
-        <div className="mt-4">
-          {address && (
-            <Link href={`profile/${address}`}>
-              <Author address={address as IAddress} />
-            </Link>
-          )}
-          {value.length > 0 && address == null && <UserNotFound />}
+        <div className="">
+          <InfiniteScroll
+            className="mt-4 gap-y-1 flex flex-col"
+            dataLength={usernames?.length ?? 0}
+            next={loadMore}
+            hasMore={hasMore}
+            loader={<AuthorSkeleton />}
+          >
+            {usernames?.map(({ address }) => {
+              return (
+                <Link href={`profile/${address}`}>
+                  <Author address={address as IAddress} />
+                </Link>
+              );
+            })}
+          </InfiniteScroll>
+
+          {!usernames && value && <UserNotFound />}
         </div>
       )}
     </Paper>

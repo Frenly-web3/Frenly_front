@@ -10,7 +10,7 @@ export interface IInfinitePostsProperties {}
 export function InfinitePosts(props: IInfinitePostsProperties) {
   const {} = props;
   const { posts, isSuccess, hasMore, setTakeCount } = useGetFilteredPosts();
-
+  
   const nextLoad = async () => {
     if (isSuccess) {
       setTakeCount((previousState) => previousState + 1);

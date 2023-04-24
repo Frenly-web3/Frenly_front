@@ -29,7 +29,7 @@ export const PostCommentList = (props: IProperties) => {
           })}
           {withShowMore && comments.length > 2  && (
             <button onClick={()=>setIsOpen(true)} className="text-main text-left my-1">
-              {commentsRemaining} more comment...
+              {commentsRemaining} more comments...
             </button>
           )}
         </div>

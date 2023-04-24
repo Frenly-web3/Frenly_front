@@ -5,6 +5,7 @@ import { isWhitelisted, useAppDispatch } from "@shared/lib";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import { disconnect } from "@wagmi/core";
 
 export function useAuth() {
   const { address } = useAccount();
@@ -26,9 +27,11 @@ export function useAuth() {
 
     try {
       await disconnectAsync();
+      await disconnect();
       await connectAsync({ connector: connectors[connector], chainId: 1 });
     } catch (error: any) {
       setIsError(error.message);
+      await disconnectAsync();
     } finally {
       setIsLoading(false);
     }
@@ -38,6 +41,8 @@ export function useAuth() {
     setIsLoading(true);
 
     if (address && !isWhitelisted(address)) {
+      await disconnectAsync();
+      await disconnect();
       router.push("/user-not-whitelisted");
       return;
     }
@@ -67,6 +72,8 @@ export function useAuth() {
         }
       }
     } catch (error: any) {
+      await disconnectAsync();
+      await disconnect();
       setIsError(error.message);
     }
   }, [
@@ -78,8 +85,10 @@ export function useAuth() {
     signMessageAsync,
   ]);
 
-  const logout = React.useCallback(() => {
+  const logout = React.useCallback(async () => {
     deleteTokensDispatch();
+    await disconnectAsync();
+    await disconnect();
   }, [deleteTokensDispatch]);
 
   return { connect, logout, isLoading, isError, verify };

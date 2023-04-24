@@ -7,19 +7,21 @@ import {
   useNotificationPostInfo,
 } from "../../notification/lib";
 import { IndicatorNotification } from "../../notification/ui/indicator-notification.component";
+import Link from "next/link";
+import { IPost } from "@entities/post";
 
-export interface INotificationPostProps {
+export interface INotificationPostProps extends Pick<IPost, "id"> {
   actions: IAction[];
   transferType: TransferTypeEnum;
 }
 
 export function NotificationPost(props: INotificationPostProps) {
-  const { transferType, actions } = props;
+  const { transferType, actions, id } = props;
 
   const notificationPostInfo = useNotificationPostInfo({ transferType });
 
   return (
-    <div className="relative">
+    <Link href={`/post/${id}`} className="relative">
       <div className="relative">
         <div className="grid grid-cols-3 relative w-16 aspect-video">
           {actions?.length > 1 && (
@@ -40,7 +42,7 @@ export function NotificationPost(props: INotificationPostProps) {
                   ]
                 }`}
                 image={action?.image}
-                // alt="post_image"
+
               />
             );
           })}
@@ -50,6 +52,6 @@ export function NotificationPost(props: INotificationPostProps) {
           className="absolute w-3 aspect-square px-2 -top-0 -right-2 z-50"
         />
       </div>
-    </div>
+    </Link>
   );
 }

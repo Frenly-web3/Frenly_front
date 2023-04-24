@@ -15,10 +15,10 @@ export const Modal = (props: IModalProperties) => {
       className={"z-[10000]"}
       centered
       classNames={{
-        modal: "rounded-3xl p-0 w-[40rem] aspect-video",
+        modal: "rounded-3xl p-0 w-[60rem] aspect-video",
         header: `border-b  border-black/20 p-4 ${withoutHeader && "hidden"}`,
         close: "text-black w-8 aspect-square",
-        body: "p-4 ",
+        body: "p-4 h-full",
         ...classNames,
       }}
     />

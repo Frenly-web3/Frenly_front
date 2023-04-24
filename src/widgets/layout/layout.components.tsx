@@ -22,8 +22,10 @@ export const Layout = memo((props: IProperties) => {
   const { address } = useAccount();
   const [addressHydration, setAddressHydration] = useState<IAddress>();
 
-  const { data: unreadNotifications } =
-    notificationsApi.useGetUnreadCountQuery();
+  const { data: unreadNotifications } = notificationsApi.useGetUnreadCountQuery(
+    {},
+    { pollingInterval: 15000 }
+  );
 
   const router = useRouter();
 

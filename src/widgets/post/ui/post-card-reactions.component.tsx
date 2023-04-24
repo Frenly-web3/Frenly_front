@@ -78,10 +78,10 @@ export function PostCardReactions(props: IPostCardReactions) {
           opened={isOpen}
           onClose={() => setIsOpen(false)}
         >
-          <div className="overflow-y-scroll md:h-56 max-md:h-[38rem] mb-1">
+          <div className="overflow-y-scroll md:h-[26rem] max-md:h-[38rem] mb-1">
             <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
           </div>
-          <div className="mt-4">
+          <div className="">
             <PostCommentAdd addComment={addComment} />
           </div>
         </AdaptiveModal>

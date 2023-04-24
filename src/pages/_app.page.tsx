@@ -15,11 +15,18 @@ import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
+import localFont from "next/font/local";
 
 const { provider, webSocketProvider, chains } = configureChains(
   [mainnet],
   [publicProvider()]
 );
+
+const iconFont = localFont({
+  src: "../../public/assets/fonts/Material-Symbols-Rounded.woff2",
+  variable: "--font-icon",
+  preload: true,
+});
 
 const wagmiClient = createClient({
   provider,
@@ -30,9 +37,7 @@ const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-
         qrcode: true,
-         
       },
     }),
   ],
@@ -40,30 +45,37 @@ const wagmiClient = createClient({
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <WagmiConfig client={wagmiClient}>
-      <ApolloProvider client={client}>
-        <Provider store={store}>
-          <AuthContextProvider>
-            <LoaderContextProvider>
-              <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-              />
-              <Component {...pageProps} />
-              <Loader />
-            </LoaderContextProvider>
-          </AuthContextProvider>
-        </Provider>
-      </ApolloProvider>
-    </WagmiConfig>
+    <main className={`${iconFont.variable}`}>
+      <style jsx global>{`
+        :root {
+          --font-icon: ${iconFont.style.fontFamily};
+        }
+      `}</style>
+      <WagmiConfig client={wagmiClient}>
+        <ApolloProvider client={client}>
+          <Provider store={store}>
+            <AuthContextProvider>
+              <LoaderContextProvider>
+                <ToastContainer
+                  position="bottom-left"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
+                <Component {...pageProps} />
+                <Loader />
+              </LoaderContextProvider>
+            </AuthContextProvider>
+          </Provider>
+        </ApolloProvider>
+      </WagmiConfig>
+    </main>
   );
 };
 

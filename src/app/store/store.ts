@@ -10,6 +10,7 @@ import {
   notificationsApi,
   reactionsApi,
   userApi,
+  usernameApi,
 } from "@shared/api";
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +25,7 @@ export const store = configureStore({
     [alchemyApi.reducerPath]: alchemyApi.reducer,
     [reactionsApi.reducerPath]: reactionsApi.reducer,
     [communityApi.reducerPath]: communityApi.reducer,
+    [usernameApi.reducerPath]: usernameApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -35,6 +37,7 @@ export const store = configureStore({
       alchemyApi.middleware,
       reactionsApi.middleware,
       communityApi.middleware,
+      usernameApi.middleware,
       notificationsApi.middleware
     ),
 });

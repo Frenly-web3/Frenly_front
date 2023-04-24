@@ -6,19 +6,20 @@ import * as React from "react";
 import { useNotificationTypeInfo } from "../lib";
 import { INotification } from "../model/notification.entity";
 import { IndicatorNotification } from "./indicator-notification.component";
+import { NotificationTypeEnum } from "@shared/lib";
 
 export interface INotificationAuthorProps extends INotification {}
 
 export function NotificationAuthor(props: INotificationAuthorProps) {
-  const { address, notificationDate, notificationType, comment } = props;
+  const { address, notificationDate, notificationType, comment, post } = props;
 
   const { color, content, icon } = useNotificationTypeInfo({
     notificationType,
   });
 
   return (
-    <Link href={`/profile/${address}`} className="flex items-start gap-3">
-      <div className="relative">
+    <div className="flex items-start gap-3">
+      <Link href={`/profile/${address}`} className="relative">
         <Avatar address={address} className="w-10 aspect-square" />
 
         <IndicatorNotification
@@ -26,9 +27,17 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
           icon={icon}
           className="absolute w-3 aspect-square px-2 -bottom-1 -right-1"
         />
-      </div>
+      </Link>
       <div className="flex flex-col gap-y-1">
-        <figcaption className="flex items-start gap-1 mb-[-0.25rem] ">
+        <Link
+          href={
+            notificationType === NotificationTypeEnum.FOLLOW
+              ? `/profile/${address}`
+              : `/post/${post?.id}`
+          }
+          passHref={notificationType === NotificationTypeEnum.FOLLOW}
+          className="flex items-start gap-1 mb-[-0.25rem] "
+        >
           <Name
             className={clsx(
               `font-rounded text-lg cursor-pointer font-semibold`
@@ -43,12 +52,12 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
                 : ""
             }`}
           />
-        </figcaption>
+        </Link>
 
         <div className="font-text text-hidden font-regular text-sm">
           <TimeDate date={notificationDate} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
