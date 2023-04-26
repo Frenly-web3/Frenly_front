@@ -1,7 +1,7 @@
 import type { IComment } from "@entities/comment";
 import { reactionsApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
-import React from "react";
+import React, { useState } from "react";
 import { useAccount } from "wagmi";
 
 interface IProperties {
@@ -11,11 +11,13 @@ interface IProperties {
 }
 
 export const usePostComment = (props: IProperties) => {
-  const { postId, take, skip } = props;
+  const { postId } = props;
   const { address } = useAccount();
 
+  const [skip, setSkip] = useState(0);
+
   const { data: commentsData, isError: reactionsError } =
-    reactionsApi.useGetCommentsByIdQuery({ postId, take, skip });
+    reactionsApi.useGetCommentsByIdQuery({ postId, take: 10, skip: 10 * skip });
   const [commentMutation, { isError: mutationError }] =
     reactionsApi.useCreateCommentMutation();
   const [comments, setComments] = React.useState<IComment[]>([]);
@@ -60,10 +62,12 @@ export const usePostComment = (props: IProperties) => {
   return {
     addComment,
     comments,
-    commentsRemaining:
-      comments.length < 5
-        ? comments?.length - 2
-        : (commentsData?.commentsRemaining as number) + 3,
+    loadMore: () => {
+      setSkip((prev) => prev + 1);
+    },
+    hasMore: commentsData?.hasMore,
+    commentsQuantity:
+      comments.length + (commentsData?.commentsRemaining as number),
     isError: {
       reactions: reactionsError,
       mutation: mutationError,

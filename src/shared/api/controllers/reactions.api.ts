@@ -43,17 +43,41 @@ export const reactionsApi = createApi({
         result
           ? [{ type: "REACTIONS" as const, id: arg.postId }, "REACTIONS"]
           : ["REACTIONS"],
-      query: ({ postId, take = 2, skip = 0 }) => {
+      query: ({ postId, take, skip }) => {
         return {
-          url: `content/${postId}/comments?${take ? `take=${take}` : ""}${
-            skip ? `&skip=${skip}` : "&skip=0"
-          }`,
+          url: `content/${postId}/comments?take=${take}&skip=${skip}`,
           method: "GET",
           credentials: "omit",
         };
       },
+      serializeQueryArgs: ({ endpointName, queryArgs: { postId } }) => {
+        return { endpointName, postId };
+      },
+      merge: (currentCache, newItems, { arg: { skip } }) => {
+        if (skip === 0) {
+          return newItems;
+        }
+
+        currentCache.comments.push(...newItems.comments);
+        currentCache.commentsRemaining = newItems.commentsRemaining;
+        currentCache.hasMore = newItems.hasMore;
+        return currentCache;
+      },
+
+      forceRefetch({ currentArg, previousArg }) {
+        if (currentArg?.skip === 0) {
+          return false;
+        }
+        return (
+          currentArg !== previousArg
+        );
+      },
       transformResponse: (res: IBaseResponse<ICommentsDto>) => {
-        return res?.data;
+        return {
+          comments: res?.data.comments,
+          commentsRemaining: res.data.commentsRemaining,
+          hasMore: res.data.commentsRemaining !== 0,
+        };
       },
     }),
     postLikeUnlike: builder.mutation<any, { postId: number }>({
@@ -66,12 +90,12 @@ export const reactionsApi = createApi({
       },
     }),
     createComment: builder.mutation<
-      any,
+      void,
       { postId: number; comment: string; mentions: IAddress[] }
     >({
-      invalidatesTags: (result, error, arg) => [
-        { type: "REACTIONS", id: arg.postId },
-      ],
+      // invalidatesTags: (result, error, arg) => [
+      //   { type: "REACTIONS", id: arg.postId },
+      // ],
       query: ({ postId, comment, mentions }) => {
         return {
           url: `content/comment/create`,

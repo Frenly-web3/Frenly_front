@@ -25,8 +25,10 @@ export function PostCardReactions(props: IPostCardReactions) {
     comments,
     addComment,
     isError: commentsError,
-    commentsRemaining,
-  } = usePostComment({ postId: id, take: 5, skip: 0 });
+    hasMore,
+    loadMore,
+    commentsQuantity
+  } = usePostComment({ postId: id });
 
   const {
     isError: likesError,
@@ -41,7 +43,9 @@ export function PostCardReactions(props: IPostCardReactions) {
       comments: comments,
       addComment,
       isError: commentsError,
-      commentsRemaining,
+      loadMore,
+      commentsQuantity,
+      hasMore: hasMore as boolean,
     },
     likes: { isError: likesError, isLiked, likeUnlike, count },
   };

@@ -12,7 +12,9 @@ interface IPostReactionContext {
     ) => void;
     commentsShort: IComment[];
     comments: IComment[];
-    commentsRemaining?: number;
+    loadMore: () => void;
+    hasMore: boolean;
+    commentsQuantity: number;
     isError: {
       reactions: boolean;
       mutation: boolean;
