@@ -18,8 +18,9 @@ export const useGetNftsByAddress = ({
 
   const { data } = alchemyApi.useGetNftsForUserQuery({
     address,
-    skip
+    skip,
   });
+
   const [currentAddress, setCurrentAddress] = useState(address);
 
   useEffect(() => {
@@ -34,15 +35,18 @@ export const useGetNftsByAddress = ({
     () => ({
       loadMore: () => setSkip(data?.pageKey),
       hasMore: !!data?.pageKey,
-      tokens: data?.ownedNfts.map((nft: any): IToken => {
-        return {
-          imageUrl:
-            nft?.media[0]?.gateway ??
-            nft?.tokenUri?.gateway ??
-            nft?.tokenUri?.raw,
-          id: nft?.id?.tokenId,
-        };
-      }),
+      tokens: data?.ownedNfts
+        .filter((nft: any) => nft?.media[0]?.gateway !== "")
+        .map((nft: any): IToken => {
+          return {
+            format: nft?.media[0]?.format,
+            imageUrl:
+              nft?.media[0]?.gateway ??
+              nft?.tokenUri?.gateway ??
+              nft?.tokenUri?.raw,
+            id: nft?.id?.tokenId,
+          };
+        }),
     }),
     [address, data]
   );

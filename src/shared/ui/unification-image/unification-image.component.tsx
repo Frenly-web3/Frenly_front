@@ -8,28 +8,37 @@ import * as React from "react";
 export interface IUnificationImageProps {
   image: string;
   className?: string;
+  fileExtension?: string;
 }
 
 export function UnificationImage(props: IUnificationImageProps) {
-  const { image, className } = props;
+  const { image, className, fileExtension } = props;
   // const matches = useMediaQuery("(min-width: 768px)");
-  const unificationImage = useUnificationFormatImage({ image });
+
+  const unificationImage = useUnificationFormatImage({
+    image,
+    fileExtension: fileExtension as string,
+  });
 
   return (
     <div className={clsx(className)}>
       {unificationImage ? (
         <div className="relative">
-          {/* {unificationImage.type === "image" ? ( */}
-          <img
-            src={unificationImage.url}
-            alt={"post_image"}
-            className="m-auto"
-          />
-          {/* // ) 
-          // : (
-          //   <video src={unificationImage.url.toString()} />
-          // ) */}
-          {/* } */}
+          {unificationImage.type === "image" ? (
+            <img
+              src={unificationImage.url}
+              alt={"post_image"}
+              className="m-auto"
+            />
+          ) : (
+            <video
+              autoPlay
+              loop
+              controls
+              className="m-auto"
+              src={unificationImage.url.toString()}
+            />
+          )}
         </div>
       ) : (
         <div className="flex flex-col p-10 pb-20 gap-2 items-center justify-center aspect-square w-full bg-gray">

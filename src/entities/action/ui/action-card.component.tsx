@@ -5,11 +5,21 @@ import { IAction } from "../model";
 export interface IActionCardProps extends IAction {}
 
 export function ActionCard(props: IActionCardProps) {
-  const { amountInCrypto, saleCryptoSymbol, image, community, tokenId } = props;
+  const {
+    amountInCrypto,
+    saleCryptoSymbol,
+    image,
+    community,
+    tokenId,
+    fileExtension,
+  } = props;
   return (
     <div className="flex flex-col">
       <div className="w-52 aspect-square rounded-2xl overflow-hidden mb-2">
-        <UnificationImage image={image} />
+        <UnificationImage
+          image={image}
+          fileExtension={fileExtension as string}
+        />
       </div>
 
       <span className="font-rounded font-normal text-black/80">
