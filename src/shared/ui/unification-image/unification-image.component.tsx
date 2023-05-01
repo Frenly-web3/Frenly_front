@@ -1,23 +1,25 @@
 // import { Image } from "@mantine/core";
 // import { useMediaQuery } from "@mantine/hooks";
 import { clsx } from "@mantine/core";
-import { useUnificationFormatImage } from "@shared/lib";
+import { ImageProviderEnum, useUnificationFormatImage } from "@shared/lib";
 
 import * as React from "react";
 
 export interface IUnificationImageProps {
   image: string;
   className?: string;
-  fileExtension?: string;
+  fileExtension?: string | null;
+  fileProvider?: ImageProviderEnum;
 }
 
 export function UnificationImage(props: IUnificationImageProps) {
-  const { image, className, fileExtension } = props;
+  const { image, className, fileExtension, fileProvider } = props;
   // const matches = useMediaQuery("(min-width: 768px)");
 
   const unificationImage = useUnificationFormatImage({
     image,
-    fileExtension: fileExtension as string,
+    fileExtension,
+    fileProvider,
   });
 
   return (
@@ -34,7 +36,6 @@ export function UnificationImage(props: IUnificationImageProps) {
             <video
               autoPlay
               loop
-              controls
               className="m-auto"
               src={unificationImage.url.toString()}
             />

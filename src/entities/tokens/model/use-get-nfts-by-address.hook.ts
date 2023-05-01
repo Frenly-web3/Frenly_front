@@ -31,22 +31,33 @@ export const useGetNftsByAddress = ({
     }
   }, [address]);
 
+  const transformedTokens = useMemo(() => {
+    if (
+      data?.ownedNfts.filter((nft: any) => nft?.media[0]?.gateway !== "")
+        .length < 9
+    ) {
+      setSkip(data?.pageKey);
+    }
+
+    return data?.ownedNfts
+      .filter((nft: any) => nft?.media[0]?.gateway !== "")
+      .map((nft: any): IToken => {
+        return {
+          format: nft?.media[0]?.format,
+          imageUrl:
+            nft?.media[0]?.gateway ??
+            nft?.tokenUri?.gateway ??
+            nft?.tokenUri?.raw,
+          id: nft?.id?.tokenId,
+        };
+      });
+  }, [data]);
+
   return useMemo(
     () => ({
       loadMore: () => setSkip(data?.pageKey),
       hasMore: !!data?.pageKey,
-      tokens: data?.ownedNfts
-        .filter((nft: any) => nft?.media[0]?.gateway !== "")
-        .map((nft: any): IToken => {
-          return {
-            format: nft?.media[0]?.format,
-            imageUrl:
-              nft?.media[0]?.gateway ??
-              nft?.tokenUri?.gateway ??
-              nft?.tokenUri?.raw,
-            id: nft?.id?.tokenId,
-          };
-        }),
+      tokens: transformedTokens,
     }),
     [address, data]
   );

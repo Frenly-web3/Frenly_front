@@ -13,6 +13,7 @@ export const Name = (props: INameProperties) => {
 
   const { data, isLoading } = useUserName({ address });
 
+
   return (
     <div className={`flex ${className} ${isLoading && ``}`}>
       {`${data.slice(-4) != ".eth" ? "0x" : ""}${data}`} {content ?? ""}

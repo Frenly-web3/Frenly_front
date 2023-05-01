@@ -1,5 +1,6 @@
 import type {
   IAddress,
+  ImageProviderEnum,
   NetworkEnum,
   TokenTypeEnum,
   TransferTypeEnum,
@@ -33,6 +34,7 @@ export interface IActionDto {
   saleCryptoContractAddress?: string;
   saleCryptoSymbol?: string;
   fileExtension: string | null;
+  fileProvider: ImageProviderEnum
 }
 
 export interface IFeedRequest {

@@ -1,5 +1,5 @@
 import { ICommunity } from "@entities/community";
-import { IAddress, NetworkEnum } from "@shared/lib";
+import { IAddress, ImageProviderEnum, NetworkEnum } from "@shared/lib";
 
 export interface IAction {
   fromAddress: IAddress;
@@ -16,4 +16,5 @@ export interface IAction {
   saleCryptoContractAddress?: string;
   saleCryptoSymbol?: string;
   fileExtension: string | null;
+  fileProvider: ImageProviderEnum
 }

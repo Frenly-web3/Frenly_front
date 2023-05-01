@@ -1,4 +1,5 @@
 export * from "./connector.enum";
+export * from "./image-provider.enum";
 export * from "./network.enum";
 export * from "./notification-type.enum";
 export * from "./role.enum";

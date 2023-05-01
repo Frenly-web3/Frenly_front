@@ -12,6 +12,7 @@ export function SmallAction(props: ISmallActionProps) {
     community,
     tokenId,
     fileExtension,
+    fileProvider
   } = props;
 
   return (
@@ -22,6 +23,7 @@ export function SmallAction(props: ISmallActionProps) {
             image={image}
             className={"w-full"}
             fileExtension={fileExtension as string}
+            fileProvider={fileProvider}
           />
         </div>
 
@@ -34,6 +36,7 @@ export function SmallAction(props: ISmallActionProps) {
               <UnificationImage
                 image={community.image}
                 fileExtension={fileExtension as string}
+                fileProvider={fileProvider}
               />
             </div>
             <span className="text-black/60 font-rounded text-sm font-normal">

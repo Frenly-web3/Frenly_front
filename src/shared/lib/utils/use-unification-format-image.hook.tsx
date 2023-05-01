@@ -1,100 +1,117 @@
 import { useMemo } from "react";
+import { ImageProviderEnum } from "../enums";
+
+const isVideo = (imageUrl: string, fileExtension: string) =>
+  /video/.test(fileExtension as string) ||
+  /mp4/.test(fileExtension as string) ||
+  /mp4/.test(fileExtension as string) ||
+  /video/.test(imageUrl as string) ||
+  /mp4/.test(imageUrl as string) ||
+  /mp4/.test(imageUrl as string);
 
 export const useUnificationFormatImage = ({
   image,
   fileExtension,
+  fileProvider,
 }: {
   image: string;
-  fileExtension: string;
+  fileExtension?: string | null;
+  fileProvider?: ImageProviderEnum;
 }) => {
   return useMemo(() => {
-    if (!image) {
-      return;
-    }
-    if (image == "") {
-      return;
-    }
-    if (image.slice(-3) == "png") {
-      return {
-        type: "image",
-        url: image.replace(".png", ""),
-      };
-    }
-    if (image.slice(-4) == "jpeg") {
-      return {
-        type: "image",
-        url: image.replace(".jpeg", ""),
-      };
-    }
-    if (image.slice(-3) == "gif") {
-      return {
-        type: "image",
-        url: image.replace(".gif", ""),
-      };
-    }
-    if (image.slice(-5) == ".webp") {
-      return {
-        type: "image",
-        url: image.replace(".webp", ""),
-      };
-    }
-    if (image.slice(-3) == "xml") {
-      return {
-        type: "image",
-        url: image.replace(".svg+xml", ""),
-      };
-    }
-    if (image.slice(-3) == "mp4") {
-      return {
-        type: "video",
-        url: image,
-      };
-    }
-    if (image.slice(-4) == "webm") {
-      return {
-        type: "video",
-        url: image.replace(".webm", ""),
-      };
-    }
+    switch (fileProvider) {
+      case ImageProviderEnum.ALCHEMY:
+        if (fileExtension === null) {
+          return getLinkWithoutExt(image);
+        } else {
+          if (fileExtension === "mp4" || fileExtension === "webm") {
+            return {
+              type: "video",
+              url: image,
+            };
+          } else {
+            return { type: "image", url: image };
+          }
+        }
+      case ImageProviderEnum.OPENSEA:
+        return getLinkWithoutExt(image);
+      case ImageProviderEnum.RARIBLE:
+        if (isVideo(image as string, fileExtension as string)) {
+          return {
+            type: "video",
+            url: image,
+          };
+        } else {
+          return { type: "image", url: image };
+        }
 
-    if (image.slice(-9) == "undefined") {
-      return;
-    }
+      default:
+        console.log(
+          image,
+          isVideo(image, fileExtension as string),
+          fileExtension
+        );
 
-    if (image.slice(-4) == "null") {
-      return;
+        if (isVideo(image, fileExtension as string)) {
+          return { type: "video", url: image };
+        } else {
+          return { type: "image", url: image };
+        }
     }
+  }, [image]);
+};
 
-    if (image.slice(0, 34) == "https://gateway.pinata.cloud/ipfs/") {
-      return {
-        type: "video",
-        url: `https://ipfs.io/ipfs/${image.slice(34)}`,
-      };
-    }
-
-    if (/video/.test(fileExtension) || /mp4/.test(fileExtension)) {
-      return { type: "video", url: image };
-    }
-    if (image == "https://gm.frenly.cc/rest/token-images/") {
-      return;
-    }
-
-    if (image.slice(0, 7) == "ipfs://") {
-      return {
-        type: "video",
-        url: `https://ipfs.io/ipfs/${image.slice(7)}`,
-      };
-    }
-
-    if (image.slice(0, 5) == "ar://") {
-      return {
-        type: "video",
-        url: `https://arweave.net/${image.slice(5)}`,
-      };
-    }
+const getLinkWithoutExt = (image: string) => {
+  if (image.slice(-3) == "png") {
     return {
       type: "image",
+      url: image.replace(".png", ""),
+    };
+  }
+  if (image.slice(-4) == "jpeg") {
+    return {
+      type: "image",
+      url: image.replace(".jpeg", ""),
+    };
+  }
+  if (image.slice(-3) == "gif") {
+    return {
+      type: "image",
+      url: image.replace(".gif", ""),
+    };
+  }
+  if (image.slice(-5) == ".webp") {
+    return {
+      type: "image",
+      url: image.replace(".webp", ""),
+    };
+  }
+  if (image.slice(-3) == "xml") {
+    return {
+      type: "image",
+      url: image.replace(".svg+xml", ""),
+    };
+  }
+  if (image.slice(-3) == "mp4") {
+    return {
+      type: "video",
       url: image,
     };
-  }, [image]);
+  }
+  if (image.slice(-4) == "webm") {
+    return {
+      type: "video",
+      url: image.replace(".webm", ""),
+    };
+  }
+
+  if (
+    /video/.test(image as string) ||
+    /mp4/.test(image as string) ||
+    /webm/.test(image as string)
+  ) {
+    return { type: "video", url: image };
+  } else {
+    return { type: "image", url: image };
+  }
 };

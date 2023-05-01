@@ -12,6 +12,7 @@ export function ActionCard(props: IActionCardProps) {
     community,
     tokenId,
     fileExtension,
+    fileProvider
   } = props;
   return (
     <div className="flex flex-col">
@@ -19,6 +20,7 @@ export function ActionCard(props: IActionCardProps) {
         <UnificationImage
           image={image}
           fileExtension={fileExtension as string}
+          fileProvider={fileProvider}
         />
       </div>
 

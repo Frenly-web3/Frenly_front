@@ -12,7 +12,7 @@ export const alchemyApi = createApi({
     getNftsForUser: builder.query({
       query: ({ address, skip }: { address: IAddress; skip: string }) => {
         return {
-          url: `?excludeFilters[]=SPAM&excludeFilters[]=AIRDROPS`,
+          url: `?excludeFilters[]=SPAM`,
           method: "GET",
           redirect: "follow",
           credentials: "omit",
@@ -20,10 +20,8 @@ export const alchemyApi = createApi({
             owner: address,
             spamConfidenceLevel: "LOW",
             withMetadata: true,
-            tokenUriTimeoutInMs: '0',
-            // "excludeFilters[]": "SPAM&excludeFilters[]=AIRDROPS",
-            // "excludeFilters[]": "AIRDROPS",
-            pageSize: 9,
+            tokenUriTimeoutInMs: "0",
+            pageSize: 12,
             pageKey: skip,
           },
         };
