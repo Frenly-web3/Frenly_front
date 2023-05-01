@@ -17,7 +17,7 @@ export const usePostComment = (props: IProperties) => {
   const [skip, setSkip] = useState(0);
 
   const { data: commentsData, isError: reactionsError } =
-    reactionsApi.useGetCommentsByIdQuery({ postId, take: 10, skip: 10 * skip });
+    reactionsApi.useGetCommentsByIdQuery({ postId, take: 20, skip: 20 * skip });
   const [commentMutation, { isError: mutationError }] =
     reactionsApi.useCreateCommentMutation();
   const [comments, setComments] = React.useState<IComment[]>([]);

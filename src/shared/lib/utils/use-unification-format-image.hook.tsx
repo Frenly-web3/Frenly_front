@@ -46,12 +46,6 @@ export const useUnificationFormatImage = ({
         }
 
       default:
-        console.log(
-          image,
-          isVideo(image, fileExtension as string),
-          fileExtension
-        );
-
         if (isVideo(image, fileExtension as string)) {
           return { type: "video", url: image };
         } else {
@@ -95,7 +89,7 @@ const getLinkWithoutExt = (image: string) => {
   if (image.slice(-3) == "mp4") {
     return {
       type: "video",
-      url: image,
+      url: image.replace(".mp4", ""),
     };
   }
   if (image.slice(-4) == "webm") {

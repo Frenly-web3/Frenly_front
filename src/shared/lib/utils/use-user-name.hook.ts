@@ -10,14 +10,7 @@ interface IProperties {
 
 export const useUserName = (props: IProperties) => {
   const { address, with0x } = props;
-  const {
-    data: ensData,
-    isLoading: ensLoading,
-    error,
-    ...rest
-  } = useEnsName({ address });
-
-  console.log(error, ensLoading, ensData, rest);
+  const { data: ensData, isLoading: ensLoading } = useEnsName({ address });
 
   const data =
     ensData && ensData != null ? ensData : shortAddress({ address, with0x });

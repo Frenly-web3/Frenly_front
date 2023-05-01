@@ -24,7 +24,7 @@ export const Comment = (props: IProperies) => {
           address={comment.creator}
         />
       </Link>
-      <div>
+      <div className="w-5/6">
         <Link href={profileLink}>
           <Name
             className={"font-rounded font-medium"}

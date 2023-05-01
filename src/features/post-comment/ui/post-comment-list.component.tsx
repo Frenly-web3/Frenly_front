@@ -1,9 +1,10 @@
 import { Comment } from "@entities/comment";
-import type { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import React from "react";
 
 import { usePostReactionContext } from "../model";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface IProperties {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -22,19 +23,22 @@ export const PostCommentList = (props: IProperties) => {
     commentsQuantity,
   } = usePostReactionContext()!.comments;
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <>
       {(isError.mutation || isError.reactions) && "something went wrong"}
 
       <>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-w-full">
           {!withShowMore && (
             <InfiniteScroll
               hasMore={hasMore}
               loader={"Loading..."}
               dataLength={comments.length ?? 0}
               next={loadMore}
-              height={400}
+              height={isMobile ? 700 : 400}
+              onScroll={(e) => console.log(e)}
               className="flex gap-y-1 flex-col"
             >
               {comments.map((comment, index) => {

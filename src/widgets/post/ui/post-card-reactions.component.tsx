@@ -27,7 +27,7 @@ export function PostCardReactions(props: IPostCardReactions) {
     isError: commentsError,
     hasMore,
     loadMore,
-    commentsQuantity
+    commentsQuantity,
   } = usePostComment({ postId: id });
 
   const {
@@ -66,7 +66,7 @@ export function PostCardReactions(props: IPostCardReactions) {
         <PostCommentAdd addComment={addComment} />
         <AdaptiveModal
           classNamesDrawer={{
-            body: "px-4 pb-4 m-0 py-4",
+            body: "px-4 pb-4 m-0 py-4 h-full",
             header: "p-2 m-0 border-b-black/5 border-b-2",
             title: "w-full m-0",
             closeButton: "absolute right-2 top-2",
@@ -82,11 +82,13 @@ export function PostCardReactions(props: IPostCardReactions) {
           opened={isOpen}
           onClose={() => setIsOpen(false)}
         >
-          <div className="overflow-y-scroll md:h-[26rem] max-md:h-[38rem] mb-1">
-            <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
-          </div>
-          <div className="">
-            <PostCommentAdd addComment={addComment} />
+          <div className="flex flex-col ">
+            <div className="overflow-y-scroll md:h-[26rem] mb-1 max-md:h-5/6">
+              <PostCommentList setIsOpen={setIsOpen} isOpen={isOpen} />
+            </div>
+            <div className="">
+              <PostCommentAdd addComment={addComment} />
+            </div>
           </div>
         </AdaptiveModal>
       </PostReactionContext.Provider>

@@ -41,8 +41,7 @@ export function NotificationPost(props: INotificationPostProps) {
                       : index + 1
                   ]
                 }`}
-                image={action?.image}
-
+                {...action}
               />
             );
           })}
