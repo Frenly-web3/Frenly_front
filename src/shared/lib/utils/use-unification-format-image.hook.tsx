@@ -19,6 +19,7 @@ export const useUnificationFormatImage = ({
   fileProvider?: ImageProviderEnum;
 }) => {
   return useMemo(() => {
+    if (!image) return null;
     switch (fileProvider) {
       case ImageProviderEnum.ALCHEMY:
         if (fileExtension === null) {

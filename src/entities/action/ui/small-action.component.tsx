@@ -29,12 +29,12 @@ export function SmallAction(props: ISmallActionProps) {
 
         <div className="flex flex-col">
           <span className="text-black font-rounded font-semibold">
-            {community.contractName} #{tokenId}
+            {community.contractName ?? "untitled"} #{tokenId}
           </span>
           <div className="flex items-center">
             <div className="rounded-full overflow-hidden w-5 aspect-square mr-2">
               <UnificationImage
-                image={community.image}
+                image={community.image }
                 fileExtension={fileExtension as string}
                 fileProvider={fileProvider}
               />
