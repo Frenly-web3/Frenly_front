@@ -28,6 +28,7 @@ export function PostCardReactions(props: IPostCardReactions) {
     hasMore,
     loadMore,
     commentsQuantity,
+    commentsShort,
   } = usePostComment({ postId: id });
 
   const {
@@ -39,8 +40,8 @@ export function PostCardReactions(props: IPostCardReactions) {
 
   const value = {
     comments: {
-      commentsShort: comments.slice(-2),
-      comments: comments,
+      commentsShort,
+      comments,
       addComment,
       isError: commentsError,
       loadMore,

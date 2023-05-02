@@ -38,7 +38,6 @@ export const PostCommentList = (props: IProperties) => {
               dataLength={comments.length ?? 0}
               next={loadMore}
               height={isMobile ? 700 : 400}
-              onScroll={(e) => console.log(e)}
               className="flex gap-y-1 flex-col"
             >
               {comments.map((comment, index) => {
@@ -47,9 +46,11 @@ export const PostCommentList = (props: IProperties) => {
             </InfiniteScroll>
           )}
           {withShowMore &&
-            commentsShort.map((comment, index) => {
-              return <Comment key={index} comment={comment} />;
-            })}
+            commentsShort
+              .map((comment, index) => {
+                return <Comment key={comment.id} comment={comment} />;
+              })
+              .reverse()}
           {withShowMore && commentsQuantity > 2 && (
             <button
               onClick={() => setIsOpen(true)}

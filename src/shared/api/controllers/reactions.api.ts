@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import type { IAddress, IBaseResponse } from "@shared/lib";
+import { IAddress, IBaseResponse, QueryOrderDirectionEnum } from "@shared/lib";
 
 import { baseQueryWithReauth } from "../base-query";
 import type { ICommentsDto, IReactionsDto } from "../dto/reactions.dto";
@@ -37,21 +37,33 @@ export const reactionsApi = createApi({
     }),
     getCommentsById: builder.query<
       ICommentsDto,
-      { postId: number; take?: number; skip?: number }
+      {
+        postId: number;
+        take?: number;
+        skip?: number;
+        orderDirection: QueryOrderDirectionEnum;
+      }
     >({
-      providesTags: (result, error, arg) =>
-        result
-          ? [{ type: "REACTIONS" as const, id: arg.postId }, "REACTIONS"]
-          : ["REACTIONS"],
-      query: ({ postId, take, skip }) => {
+      providesTags: (result, error, { postId, orderDirection }) => [
+        { type: "REACTIONS" as const, id: postId, orderDirection },
+      ],
+      query: ({ postId, take, skip, orderDirection }) => {
         return {
-          url: `content/${postId}/comments?take=${take}&skip=${skip}`,
+          url: `content/${postId}/comments`,
           method: "GET",
           credentials: "omit",
+          params: {
+            take,
+            skip,
+            orderDirection,
+          },
         };
       },
-      serializeQueryArgs: ({ endpointName, queryArgs: { postId } }) => {
-        return { endpointName, postId };
+      serializeQueryArgs: ({
+        endpointName,
+        queryArgs: { postId, orderDirection },
+      }) => {
+        return { endpointName, postId, orderDirection };
       },
       merge: (currentCache, newItems, { arg: { skip } }) => {
         if (skip === 0) {
@@ -68,9 +80,7 @@ export const reactionsApi = createApi({
         if (currentArg?.skip === 0) {
           return false;
         }
-        return (
-          currentArg !== previousArg
-        );
+        return currentArg !== previousArg;
       },
       transformResponse: (res: IBaseResponse<ICommentsDto>) => {
         return {
@@ -93,9 +103,18 @@ export const reactionsApi = createApi({
       void,
       { postId: number; comment: string; mentions: IAddress[] }
     >({
-      // invalidatesTags: (result, error, arg) => [
-      //   { type: "REACTIONS", id: arg.postId },
-      // ],
+      invalidatesTags: (result, error, arg) => [
+        {
+          type: "REACTIONS",
+          id: arg.postId,
+          orderDirection: QueryOrderDirectionEnum.ASC,
+        },
+        {
+          type: "REACTIONS",
+          id: arg.postId,
+          orderDirection: QueryOrderDirectionEnum.DESC,
+        },
+      ],
       query: ({ postId, comment, mentions }) => {
         return {
           url: `content/comment/create`,
