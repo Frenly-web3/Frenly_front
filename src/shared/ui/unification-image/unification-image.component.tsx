@@ -1,35 +1,45 @@
 // import { Image } from "@mantine/core";
 // import { useMediaQuery } from "@mantine/hooks";
 import { clsx } from "@mantine/core";
-import { useUnificationFormatImage } from "@shared/lib";
+import { ImageProviderEnum, useUnificationFormatImage } from "@shared/lib";
 
 import * as React from "react";
 
 export interface IUnificationImageProps {
   image: string;
   className?: string;
+  fileExtension?: string | null;
+  fileProvider?: ImageProviderEnum;
 }
 
 export function UnificationImage(props: IUnificationImageProps) {
-  const { image, className } = props;
+  const { image, className, fileExtension, fileProvider } = props;
   // const matches = useMediaQuery("(min-width: 768px)");
-  const unificationImage = useUnificationFormatImage({ image });
+
+  const unificationImage = useUnificationFormatImage({
+    image,
+    fileExtension,
+    fileProvider,
+  });
 
   return (
     <div className={clsx(className)}>
       {unificationImage ? (
         <div className="relative">
-          {/* {unificationImage.type === "image" ? ( */}
-          <img
-            src={unificationImage.url}
-            alt={"post_image"}
-            className="m-auto"
-          />
-          {/* // ) 
-          // : (
-          //   <video src={unificationImage.url.toString()} />
-          // ) */}
-          {/* } */}
+          {unificationImage.type === "image" ? (
+            <img
+              src={unificationImage.url}
+              alt={"post_image"}
+              className="m-auto"
+            />
+          ) : (
+            <video
+              autoPlay
+              loop
+              className="m-auto"
+              src={unificationImage.url.toString()}
+            />
+          )}
         </div>
       ) : (
         <div className="flex flex-col p-10 pb-20 gap-2 items-center justify-center aspect-square w-full bg-gray">

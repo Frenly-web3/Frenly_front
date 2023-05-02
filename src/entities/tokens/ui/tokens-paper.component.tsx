@@ -21,7 +21,7 @@ export function TokensPaper(props: ITokensPaperProps) {
   const { title, maxRows, className, address } = props;
 
   const { tokens, loadMore, hasMore } = useGetNftsByAddress({ address });
-  
+
   const [showedMore, setShowedMore] = React.useState(false);
   const matches = useMediaQuery("(max-width: 768px)");
 
@@ -47,13 +47,13 @@ export function TokensPaper(props: ITokensPaperProps) {
           loader={<TokensSkeleton />}
         >
           {tokens?.map((token, index) => {
-            return <TokenImage image={token.imageUrl} key={index} />;
+            return <TokenImage {...token} key={index} />;
           })}
         </InfiniteScroll>
       ) : (
         <div className="grid md:grid-cols-4 grid-cols-3 gap-2">
           {tokens?.slice(0, maxRows * (matches ? 3 : 4)).map((token, index) => {
-            return <TokenImage image={token.imageUrl} key={index} />;
+            return <TokenImage {...token} key={index} />;
           })}
         </div>
       )}

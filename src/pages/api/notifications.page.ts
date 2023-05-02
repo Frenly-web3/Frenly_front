@@ -1,7 +1,6 @@
 const webPush = require("web-push");
 import type { NextApiRequest, NextApiResponse } from "next";
-// const vapidKeys = webPush.generateVAPIDKeys();
-// console.log(vapidKeys);
+
 webPush.setVapidDetails(
   `mailto: ${process.env.NEXT_PUBLIC_EMAIL_SUBSCRIBE}`,
   process.env.NEXT_PUBLIC_PUBLIC_SUBSCRIBE_KEY,

@@ -8,7 +8,7 @@ interface IProperties {
 
 export const PostCommentButton = (props: IProperties) => {
   const { setIsOpen } = props;
-  const { comments, commentsRemaining } = usePostReactionContext()!.comments;
+  const { commentsQuantity } = usePostReactionContext()!.comments;
   return (
     <>
       <style jsx>{`
@@ -23,9 +23,7 @@ export const PostCommentButton = (props: IProperties) => {
         className={`bg-overlay-1-solid text-text px-2 max-w-fit cursor-pointer flex items-center gap-1 transition-colors rounded-full`}
       >
         <div className="font-icon leading-4 icon">chat</div>
-        {comments.length < 5
-          ? comments?.length
-          : (commentsRemaining as number) + 2}
+        {commentsQuantity}
       </button>
     </>
   );
