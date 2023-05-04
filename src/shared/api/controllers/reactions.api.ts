@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import type { IAddress, IBaseResponse } from "@shared/lib";
+import { IAddress, IBaseResponse, QueryOrderDirectionEnum } from "@shared/lib";
 
 import { baseQueryWithReauth } from "../base-query";
 import type { ICommentsDto, IReactionsDto } from "../dto/reactions.dto";
@@ -37,23 +37,57 @@ export const reactionsApi = createApi({
     }),
     getCommentsById: builder.query<
       ICommentsDto,
-      { postId: number; take?: number; skip?: number }
+      {
+        postId: number;
+        take?: number;
+        skip?: number;
+        orderDirection: QueryOrderDirectionEnum;
+      }
     >({
-      providesTags: (result, error, arg) =>
-        result
-          ? [{ type: "REACTIONS" as const, id: arg.postId }, "REACTIONS"]
-          : ["REACTIONS"],
-      query: ({ postId, take = 2, skip = 0 }) => {
+      providesTags: (result, error, { postId, orderDirection }) => [
+        { type: "REACTIONS" as const, id: postId, orderDirection },
+      ],
+      query: ({ postId, take, skip, orderDirection }) => {
         return {
-          url: `content/${postId}/comments?${take ? `take=${take}` : ""}${
-            skip ? `&skip=${skip}` : "&skip=0"
-          }`,
+          url: `content/${postId}/comments`,
           method: "GET",
           credentials: "omit",
+          params: {
+            take,
+            skip,
+            orderDirection,
+          },
         };
       },
+      serializeQueryArgs: ({
+        endpointName,
+        queryArgs: { postId, orderDirection },
+      }) => {
+        return { endpointName, postId, orderDirection };
+      },
+      merge: (currentCache, newItems, { arg: { skip } }) => {
+        if (skip === 0) {
+          return newItems;
+        }
+
+        currentCache.comments.push(...newItems.comments);
+        currentCache.commentsRemaining = newItems.commentsRemaining;
+        currentCache.hasMore = newItems.hasMore;
+        return currentCache;
+      },
+
+      forceRefetch({ currentArg, previousArg }) {
+        if (currentArg?.skip === 0) {
+          return false;
+        }
+        return currentArg !== previousArg;
+      },
       transformResponse: (res: IBaseResponse<ICommentsDto>) => {
-        return res?.data;
+        return {
+          comments: res?.data.comments,
+          commentsRemaining: res.data.commentsRemaining,
+          hasMore: res.data.commentsRemaining !== 0,
+        };
       },
     }),
     postLikeUnlike: builder.mutation<any, { postId: number }>({
@@ -66,11 +100,20 @@ export const reactionsApi = createApi({
       },
     }),
     createComment: builder.mutation<
-      any,
+      void,
       { postId: number; comment: string; mentions: IAddress[] }
     >({
       invalidatesTags: (result, error, arg) => [
-        { type: "REACTIONS", id: arg.postId },
+        {
+          type: "REACTIONS",
+          id: arg.postId,
+          orderDirection: QueryOrderDirectionEnum.ASC,
+        },
+        {
+          type: "REACTIONS",
+          id: arg.postId,
+          orderDirection: QueryOrderDirectionEnum.DESC,
+        },
       ],
       query: ({ postId, comment, mentions }) => {
         return {

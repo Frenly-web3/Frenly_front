@@ -1,5 +1,6 @@
 import type {
   IAddress,
+  ImageProviderEnum,
   NetworkEnum,
   TokenTypeEnum,
   TransferTypeEnum,
@@ -32,6 +33,8 @@ export interface IActionDto {
   amountInUsd?: number;
   saleCryptoContractAddress?: string;
   saleCryptoSymbol?: string;
+  fileExtension: string | null;
+  fileProvider: ImageProviderEnum
 }
 
 export interface IFeedRequest {
@@ -52,6 +55,6 @@ export interface IWalletAddressFeedRequest {
 }
 
 export interface IWalletAddressFeedDto {
-  totalPosts: number
-  posts: IPostDto[]
+  totalPosts: number;
+  posts: IPostDto[];
 }

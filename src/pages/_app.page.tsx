@@ -12,7 +12,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import localFont from "next/font/local";
@@ -33,7 +33,16 @@ const wagmiClient = createClient({
   webSocketProvider,
   autoConnect: true,
   connectors: [
-    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      options: {
+        name: (detectedName) =>
+          `Injected (${
+            typeof detectedName === "string"
+              ? detectedName
+              : detectedName.join(", ")
+          })`,
+      },
+    }),
     new WalletConnectConnector({
       chains,
       options: {

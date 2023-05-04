@@ -29,7 +29,7 @@ export const contentApi = createApi({
       },
     }),
 
-    getPostById: builder.query<IPostDto, {id: string}>({
+    getPostById: builder.query<IPostDto, { id: string }>({
       providesTags: ["CONTENT"],
       query: ({ id }) => {
         return {

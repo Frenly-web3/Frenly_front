@@ -10,6 +10,7 @@ export interface IReactionsDto {
 export interface ICommentsDto {
   comments: IComment[]
   commentsRemaining: number
+  hasMore: boolean
 }
 
 interface IComment {

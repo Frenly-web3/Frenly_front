@@ -15,12 +15,16 @@ interface IPostContentProperties extends IAction {
   userCard?: React.ReactNode;
 }
 export const PostImage = (props: IPostContentProperties) => {
-  const { image, community, tokenId, userCard } = props;
+  const { image, community, tokenId, userCard, fileExtension, fileProvider } = props;
 
   return (
     <div className="">
       <div className="relative overflow-hidden">
-        <UnificationImage image={image} />
+        <UnificationImage
+          image={image}
+          fileExtension={fileExtension}
+          fileProvider={fileProvider}
+        />
         <div className="absolute left-3 bottom-3 ">
           <PostBadge
             community={community}

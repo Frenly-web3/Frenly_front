@@ -17,8 +17,6 @@ interface IGetFilteredPosts {
 export const useGetFilteredPosts = (): IGetFilteredPosts => {
   const [takeCount, setTakeCount] = useState(0);
 
-  const {} = contentApi.useLazyGetFilteredFeedQuery();
-
   const { data: postsData, isSuccess } = contentApi.useGetFilteredFeedQuery({
     take: SIZE_POST_CHUNK,
     skip: SIZE_POST_CHUNK * takeCount,
