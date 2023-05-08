@@ -1,9 +1,10 @@
 import { IAction } from "@entities/action";
-import type { IAddress, TokenTypeEnum, TransferTypeEnum } from "@shared/lib";
+import { IUserWalletDto } from "@shared/api";
+import type { TokenTypeEnum, TransferTypeEnum } from "@shared/lib";
 
 export interface IPost {
   id: number;
-  ownerAddress: IAddress;
+  owner: IUserWalletDto;
   postType: TokenTypeEnum;
   transactionHash: string;
   transferType: TransferTypeEnum;

@@ -1,8 +1,9 @@
 import { IPost } from "@entities/post";
-import { IAddress, NotificationTypeEnum } from "@shared/lib";
+import { IUserWalletDto } from "@shared/api";
+import { NotificationTypeEnum } from "@shared/lib";
 
 export interface INotification {
-  address: IAddress;
+  notificationOwner: IUserWalletDto;
   notificationDate: string;
   notificationType: NotificationTypeEnum;
   post?: IPost;

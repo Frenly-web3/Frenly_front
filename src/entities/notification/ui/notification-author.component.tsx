@@ -11,7 +11,13 @@ import { NotificationTypeEnum } from "@shared/lib";
 export interface INotificationAuthorProps extends INotification {}
 
 export function NotificationAuthor(props: INotificationAuthorProps) {
-  const { address, notificationDate, notificationType, comment, post } = props;
+  const {
+    notificationOwner,
+    notificationDate,
+    notificationType,
+    comment,
+    post,
+  } = props;
 
   const { color, content, icon } = useNotificationTypeInfo({
     notificationType,
@@ -19,8 +25,15 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
 
   return (
     <div className="flex items-start gap-3">
-      <Link href={`/profile/${address}`} className="relative">
-        <Avatar address={address} className="w-10 aspect-square" />
+      <Link
+        href={`/profile/${notificationOwner?.walletAddress}`}
+        className="relative"
+      >
+        <Avatar
+          address={notificationOwner?.walletAddress}
+          usernameType={notificationOwner?.ensType}
+          className="w-10 aspect-square"
+        />
 
         <IndicatorNotification
           color={color}
@@ -32,7 +45,7 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
         <Link
           href={
             notificationType === NotificationTypeEnum.FOLLOW
-              ? `/profile/${address}`
+              ? `/profile/${notificationOwner?.walletAddress}`
               : `/post/${post?.id}`
           }
           passHref={notificationType === NotificationTypeEnum.FOLLOW}
@@ -42,7 +55,8 @@ export function NotificationAuthor(props: INotificationAuthorProps) {
             className={clsx(
               `font-rounded text-lg cursor-pointer font-semibold`
             )}
-            address={address}
+            address={notificationOwner?.walletAddress}
+            usernameType={notificationOwner?.ensType}
             content={`${content}
             ${
               comment

@@ -11,14 +11,15 @@ import type { AppProps } from "next/app";
 import React from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { polygonMumbai, mainnet } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import localFont from "next/font/local";
 
 const { provider, webSocketProvider, chains } = configureChains(
-  [mainnet],
+  [mainnet, polygonMumbai],
   [publicProvider()]
 );
 

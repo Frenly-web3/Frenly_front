@@ -1,36 +1,37 @@
-import { userApi } from '@shared/api'
-import type { IAddress } from '@shared/lib'
-import React from 'react'
+import { userApi } from "@shared/api";
+import type { IAddress } from "@shared/lib";
+import React from "react";
 
-import type { IUser } from './user.entity'
+import type { IUser } from "./user.entity";
 
 interface IProperties {
-  address: IAddress
+  address: IAddress;
 }
 
 export const useUserInfo = (props: IProperties) => {
-  const { address } = props
+  const { address } = props;
 
   const {
     data: userInfo,
     refetch: refetchUserInfo,
     isLoading,
-  } = userApi.useGetUserInfoQuery({ address })
+  } = userApi.useGetUserInfoQuery({ address });
 
   React.useEffect(() => {
-    refetchUserInfo()
-  }, [refetchUserInfo])
+    refetchUserInfo();
+  }, [refetchUserInfo]);
 
   const user: IUser = {
     id: userInfo?.id!,
     totalFollowers: userInfo?.totalFollowers!,
     totalSubscribers: userInfo?.totalSubscribers!,
     walletAddress: address,
-  }
+    usernameType: userInfo?.ensType,
+  };
 
   return {
     user,
     refetchUserInfo,
     isLoading,
-  }
-}
+  };
+};

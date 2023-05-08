@@ -1,5 +1,5 @@
-import { UserStatistic } from "@entities/user";
-import { IAddress } from "@shared/lib";
+import { UserStatistic, useUserInfo } from "@entities/user";
+import { IAddress, UsernameTypeEnum } from "@shared/lib";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import { SubscriptionStateEnum, useFollowUnfollowUser } from "../model";
@@ -14,6 +14,10 @@ const FollowersModal = dynamic(() =>
 
 export function FollowerStatistic(props: IFollowerStatisticProps) {
   const { address } = props;
+
+  const {
+    user: { walletAddress, usernameType },
+  } = useUserInfo({ address });
 
   const { followerAmount, subscriberAmount } = useFollowUnfollowUser({
     address,
@@ -45,7 +49,7 @@ export function FollowerStatistic(props: IFollowerStatisticProps) {
       </button>
       <FollowersModal
         initialTab={initialTab}
-        address={address}
+        creator={{ walletAddress, ensType: usernameType as UsernameTypeEnum }}
         opened={isOpenModal}
         onClose={() => setIsOpenModal(false)}
       />

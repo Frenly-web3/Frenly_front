@@ -5,10 +5,11 @@ import type {
   TokenTypeEnum,
   TransferTypeEnum,
 } from "@shared/lib";
+import { IUserWalletDto } from "./user.dto";
 
 export interface IPostDto {
   id: number;
-  ownerAddress: IAddress;
+  owner: IUserWalletDto;
   postType: TokenTypeEnum;
   transactionHash: string;
   transferType: TransferTypeEnum;
@@ -34,7 +35,7 @@ export interface IActionDto {
   saleCryptoContractAddress?: string;
   saleCryptoSymbol?: string;
   fileExtension: string | null;
-  fileProvider: ImageProviderEnum
+  fileProvider: ImageProviderEnum;
 }
 
 export interface IFeedRequest {

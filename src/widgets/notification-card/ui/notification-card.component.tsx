@@ -13,13 +13,13 @@ import { FOLLOW_UNFOLLOW_BUTTON } from "../lib";
 export interface INotificationCardProps extends INotification {}
 
 export function NotificationCard(props: INotificationCardProps) {
-  const { address, notificationType, post } = props;
+  const { notificationOwner, notificationType, post } = props;
 
   return (
     <Notification {...props}>
       {notificationType === NotificationTypeEnum.FOLLOW ? (
         <FollowUnfollowButton
-          address={address}
+          address={notificationOwner?.walletAddress}
           followButtonContent={FOLLOW_UNFOLLOW_BUTTON}
         />
       ) : (

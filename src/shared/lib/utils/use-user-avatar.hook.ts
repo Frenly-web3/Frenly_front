@@ -1,25 +1,43 @@
-import type { IAddress } from "@shared/lib";
+import { IAddress, UsernameTypeEnum } from "@shared/lib";
 import { useEnsAvatar } from "wagmi";
-
+import { mainnet } from "wagmi/chains";
+import { useGetFrenProfile } from "./use-get-fren-profile.util";
+import { useMemo } from "react";
 interface IProperties {
   address: IAddress;
+  usernameType?: UsernameTypeEnum;
 }
 export const useUserAvatar = (props: IProperties) => {
-  const { address } = props;
+  const { address, usernameType = UsernameTypeEnum.ETH } = props;
 
   const placeholder = "/assets/images/default-avatar.png";
 
-  const { data: ensData, isLoading: ensLoading } = useEnsAvatar({ address });
-  // const { data: backendData, isLoading: backendLoading } = userApi.useGetUserInfoQuery({
-  //   address,
-  // })
+  const { data: ensData, isLoading: ensLoading } = useEnsAvatar({
+    address,
+    chainId: mainnet.id,
+    enabled: usernameType === UsernameTypeEnum.ETH,
+  });
 
-  // const backendAvatar = backendData?.avatar
-  //   ? `https://stage.frenly.cc/rest/avatars/${backendData?.avatar}`
-  //   : null
+  const { data: usernameFrenData, isLoading: frenLoading } = useGetFrenProfile({
+    address,
+    skip: usernameType !== UsernameTypeEnum.FRENLY,
+  });
 
-  const isLoading = ensLoading;
-  const data = ensData || placeholder;
+  const data = useMemo(() => {
+    switch (usernameType) {
+      case null:
+      case UsernameTypeEnum.ETH: {
+        return ensData && ensData != null ? ensData : placeholder;
+      }
+      case UsernameTypeEnum.FRENLY: {
+        return usernameFrenData?.imageURI ?? placeholder;
+      }
+      default:
+        return placeholder;
+    }
+  }, [usernameFrenData, ensData, usernameType]);
+
+  const isLoading = ensLoading || frenLoading;
 
   return { data, isLoading };
 };

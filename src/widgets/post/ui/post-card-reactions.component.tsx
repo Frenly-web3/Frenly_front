@@ -19,7 +19,7 @@ interface IPostCardReactions {}
 
 export function PostCardReactions(props: IPostCardReactions) {
   const {} = props;
-  const { id, ownerAddress } = usePostCardContext();
+  const { id, owner } = usePostCardContext();
   const [isOpen, setIsOpen] = React.useState(false);
   const {
     comments,
@@ -79,7 +79,7 @@ export function PostCardReactions(props: IPostCardReactions) {
             title: "w-full m-0",
             close: "absolute right-2 top-2",
           }}
-          title={<SmallUserCard address={ownerAddress as IAddress} />}
+          title={<SmallUserCard address={owner.walletAddress as IAddress} />}
           opened={isOpen}
           onClose={() => setIsOpen(false)}
         >

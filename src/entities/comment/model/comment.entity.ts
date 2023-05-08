@@ -1,7 +1,7 @@
-import type { IAddress } from '@shared/lib'
+import { IUserWalletDto } from "@shared/api";
 
 export interface IComment {
-  id: number
-  description: string
-  creator: IAddress
+  id: number;
+  description: string;
+  creator: IUserWalletDto;
 }
