@@ -46,7 +46,9 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
       <div className="md:ml-32 max-md:mb-4">
         <SocialBadgeList
           socials={
-            user.usernameType === UsernameTypeEnum.FRENLY ? frenSocials : social
+            (user.usernameType === UsernameTypeEnum.FRENLY
+              ? frenSocials
+              : social) as [string, string | undefined][]
           }
         />
       </div>
