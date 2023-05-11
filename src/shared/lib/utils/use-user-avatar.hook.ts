@@ -21,6 +21,7 @@ export const useUserAvatar = (props: IProperties) => {
   const { data: usernameFrenData, isLoading: frenLoading } = useGetFrenProfile({
     address,
     skip: usernameType !== UsernameTypeEnum.FRENLY,
+    
   });
 
   const data = useMemo(() => {
@@ -30,7 +31,10 @@ export const useUserAvatar = (props: IProperties) => {
         return ensData && ensData != null ? ensData : placeholder;
       }
       case UsernameTypeEnum.FRENLY: {
-        return usernameFrenData?.imageURI ?? placeholder;
+        return usernameFrenData?.imageURI &&
+          (usernameFrenData?.imageURI?.length as number) > 5
+          ? usernameFrenData?.imageURI
+          : placeholder;
       }
       default:
         return placeholder;

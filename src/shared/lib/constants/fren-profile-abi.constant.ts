@@ -23,6 +23,17 @@ export const FREN_PROFILE = [
   {
     inputs: [
       {
+        internalType: "uint16",
+        name: "_maxLength",
+        type: "uint16",
+      },
+    ],
+    name: "MaxLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint8",
         name: "_maxLength",
         type: "uint8",
@@ -338,6 +349,16 @@ export const FREN_PROFILE = [
             name: "frenshipStatus",
             type: "uint8",
           },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "twitterLink",
+            type: "string",
+          },
         ],
         internalType: "struct DataTypes.ProfileStruct",
         name: "",
@@ -384,6 +405,16 @@ export const FREN_PROFILE = [
             name: "frenshipStatus",
             type: "uint8",
           },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "twitterLink",
+            type: "string",
+          },
         ],
         internalType: "struct DataTypes.ProfileStruct",
         name: "",
@@ -429,6 +460,16 @@ export const FREN_PROFILE = [
             internalType: "enum DataTypes.FrenshipStatus",
             name: "frenshipStatus",
             type: "uint8",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "twitterLink",
+            type: "string",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -665,6 +706,19 @@ export const FREN_PROFILE = [
   {
     inputs: [
       {
+        internalType: "string",
+        name: "_newDescription",
+        type: "string",
+      },
+    ],
+    name: "setDescription",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "_newMaxTotalSupply",
         type: "uint256",
@@ -697,6 +751,19 @@ export const FREN_PROFILE = [
       },
     ],
     name: "setProfileTokenURI",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_newTwitterLink",
+        type: "string",
+      },
+    ],
+    name: "setTwitterLink",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

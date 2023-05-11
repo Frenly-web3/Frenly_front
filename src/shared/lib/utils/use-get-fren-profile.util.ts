@@ -22,6 +22,7 @@ export const useGetFrenProfile = ({
     functionName: "getProfileByAddress",
     args: [address],
     chainId: polygonMumbai.id,
+    watch: true,
   });
 
   return data;

@@ -1,7 +1,8 @@
+import { UploadAvatar } from "@features/edit-profile";
 import { Select } from "@mantine/core";
 import { userApi } from "@shared/api";
 import { IAddress, UsernameTypeEnum, useCheckIsOwner } from "@shared/lib";
-import { Avatar, Name } from "@shared/ui";
+import { Name } from "@shared/ui";
 import React, { useEffect, useState } from "react";
 
 interface IInfoUploadProperties {
@@ -41,11 +42,13 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
 
   return (
     <div className="flex gap-8 max-md:flex-col md:items-start max-md:items-center max-md:w-full">
-      <Avatar
+      <UploadAvatar
         width={96}
         className="w-24 aspect-square"
         address={address}
-        usernameType={usernameType}
+        usernameType={usernameType} 
+        
+        
       />
 
       <div className="flex flex-col gap-y-5 max-md:w-full">

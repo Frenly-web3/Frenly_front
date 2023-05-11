@@ -2,13 +2,13 @@ import { IUserENS } from "./user.entity";
 import { IAddress } from "@shared/lib";
 import { useEffect, useMemo, useState } from "react";
 import { ENS } from "@ensdomains/ensjs";
-import { useProvider } from "wagmi";
+import { mainnet, useProvider } from "wagmi";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 export type ProfileENSType = ReturnType<ENS["getProfile"]>;
 
 export const useEnsInfo = ({ address }: { address: IAddress }) => {
-  const provider = useProvider();
+  const provider = useProvider({chainId: mainnet.id});
   // const [ENSInstance, setENSInstance] = useState(new ENS());
   const [profile, setProfile] = useState<Awaited<ProfileENSType>>();
 

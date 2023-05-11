@@ -8,9 +8,11 @@ export interface ISocialBadgeListProps {
 
 export function SocialBadgeList(props: ISocialBadgeListProps) {
   const { socials } = props;
+  console.log(socials);
+  
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-3">
-      {socials.map((social, index) => {
+      {socials?.map((social, index) => {
         return (
           <SocialBadge
             key={index}

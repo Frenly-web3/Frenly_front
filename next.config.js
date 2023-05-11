@@ -6,7 +6,7 @@ const withPWA = require("next-pwa")({
   // runtimeCaching,
   skipWaiting: true,
   register: true,
-  customWorkerDir: 'app/worker'
+  customWorkerDir: "app/worker",
 });
 // const withBundleAnalyzer = require('@next/bundle-analyzer')({
 //   enabled: process.env.ANALYZE === 'true',
@@ -26,20 +26,7 @@ module.exports = withPWA({
   },
   images: {
     dangerouslyAllowSVG: true,
-    // remotePatterns: [
-    //   {
-    //     protocol: "https",
-    //     hostname: "**",
-    //   },
-    //   {
-    //     protocol: "http",
-    //     hostname: "**",
-    //   },
-    //   {
-    //     protocol: "ipfs",
-    //     hostname: "**",
-    //   },
-    // ],
+    unoptimized: true,
   },
   webpack(config) {
     config.module.rules.push({
@@ -62,5 +49,12 @@ module.exports = withPWA({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
-  pageExtensions: ["page.tsx", "page.ts", "page.js", "page.jsx", "api.tsx", "api.ts"],
+  pageExtensions: [
+    "page.tsx",
+    "page.ts",
+    "page.js",
+    "page.jsx",
+    "api.tsx",
+    "api.ts",
+  ],
 });

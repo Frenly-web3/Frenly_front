@@ -1,4 +1,4 @@
-import { useEnsInfo, useUserInfo } from "@entities/user";
+import { useEnsInfo, useGetFrenInfo, useUserInfo } from "@entities/user";
 import {
   FollowerStatistic,
   FollowUnfollowButton,
@@ -15,6 +15,9 @@ interface IUserProfileWidgetProperties {
 export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
   const { name, description, social } = useEnsInfo({ address });
+  const { socials: frenSocials, description: frenDescription } = useGetFrenInfo(
+    { address }
+  );
   const { user } = useUserInfo({ address });
 
   return (
@@ -30,17 +33,24 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
             <FollowerStatistic address={address} />
           </InfoUploadComponent>
           <p className="font-medium font-rounded md:ml-32 mb-4 text-black/80">
-            {description}
+            {user.usernameType === UsernameTypeEnum.FRENLY
+              ? frenDescription
+              : description}
           </p>
         </div>
         <FollowUnfollowButton className="max-md:hidden" address={address} />
       </div>
 
-      {user.usernameType === UsernameTypeEnum.ETH && (
-        <div className="md:ml-32 max-md:mb-4">
-          <SocialBadgeList socials={social} />
-        </div>
-      )}
+      {/* {(user.usernameType === UsernameTypeEnum.ETH ||
+        user.usernameType === null) && ( */}
+      <div className="md:ml-32 max-md:mb-4">
+        <SocialBadgeList
+          socials={
+            user.usernameType === UsernameTypeEnum.FRENLY ? frenSocials : social
+          }
+        />
+      </div>
+      {/* )} */}
 
       <FollowUnfollowButton className="md:hidden w-full" address={address} />
     </div>
