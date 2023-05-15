@@ -12,21 +12,19 @@ export const useSetAvatar = () => {
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
     chainId: polygonMumbai.id,
     functionName: "changeAvatar",
-    mode: "recklesslyUnprepared",
   });
 
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork({
     onSuccess: async () => {
       console.log("SSSSSSSS");
-      
+
       // if (!writeAsync) return;
-      await writeAsync?.({ recklesslySetUnpreparedArgs: [link] });
+      await writeAsync?.({ args: [link] });
     },
   });
 
   const setAvatar: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    
     try {
       setIsLoading(true);
       const link = await upload(e?.target?.files?.[0] as File);
@@ -37,7 +35,7 @@ export const useSetAvatar = () => {
       }
 
       if (!writeAsync) return;
-      await writeAsync({ recklesslySetUnpreparedArgs: [link] });
+      await writeAsync({ args: [link] });
     } catch {
     } finally {
       setIsLoading(false);

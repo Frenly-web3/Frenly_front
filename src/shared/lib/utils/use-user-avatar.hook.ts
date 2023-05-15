@@ -1,5 +1,5 @@
 import { IAddress, UsernameTypeEnum } from "@shared/lib";
-import { useEnsAvatar } from "wagmi";
+import { useEnsAvatar, useEnsName } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { useGetFrenProfile } from "./use-get-fren-profile.util";
 import { useMemo } from "react";
@@ -11,9 +11,9 @@ export const useUserAvatar = (props: IProperties) => {
   const { address, usernameType = UsernameTypeEnum.ETH } = props;
 
   const placeholder = "/assets/images/default-avatar.png";
-
+  const { data: name } = useEnsName({ address });
   const { data: ensData, isLoading: ensLoading } = useEnsAvatar({
-    address,
+    name,
     chainId: mainnet.id,
     enabled: usernameType === UsernameTypeEnum.ETH,
   });
@@ -21,7 +21,6 @@ export const useUserAvatar = (props: IProperties) => {
   const { data: usernameFrenData, isLoading: frenLoading } = useGetFrenProfile({
     address,
     skip: usernameType !== UsernameTypeEnum.FRENLY,
-    
   });
 
   const data = useMemo(() => {
