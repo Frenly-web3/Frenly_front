@@ -11,14 +11,14 @@ import type { AppProps } from "next/app";
 import React from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { createConfig, configureChains, WagmiConfig } from "wagmi";
 import { polygonMumbai, mainnet } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import localFont from "next/font/local";
 
-const { provider, webSocketProvider, chains } = configureChains(
+const { publicClient, webSocketPublicClient, chains } = configureChains(
   [mainnet, polygonMumbai],
   [publicProvider()]
 );
@@ -29,9 +29,9 @@ const iconFont = localFont({
   preload: true,
 });
 
-const wagmiClient = createClient({
-  provider,
-  webSocketProvider,
+const wagmiClient = createConfig({
+  publicClient,
+  webSocketPublicClient,
   autoConnect: true,
   connectors: [
     new InjectedConnector({
@@ -47,7 +47,7 @@ const wagmiClient = createClient({
     new WalletConnectConnector({
       chains,
       options: {
-        qrcode: true,
+        projectId: "fa54d1f8f0ab067cf6a6922aef469134",
       },
     }),
   ],
@@ -61,7 +61,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           --font-icon: ${iconFont.style.fontFamily};
         }
       `}</style>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiClient}>
         <ApolloProvider client={client}>
           <Provider store={store}>
             <AuthContextProvider>
