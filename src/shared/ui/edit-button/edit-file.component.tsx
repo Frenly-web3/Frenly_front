@@ -1,13 +1,13 @@
 import { Loader, clsx } from "@mantine/core";
 import * as React from "react";
 
-export interface IEditButtonProps {
+export interface IEditFileProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   className: string;
   isLoading: boolean;
 }
 
-export function EditButton(props: IEditButtonProps) {
+export function EditFile(props: IEditFileProps) {
   const { onChange, className, isLoading } = props;
 
   return (

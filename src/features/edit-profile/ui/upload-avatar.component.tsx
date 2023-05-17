@@ -1,6 +1,5 @@
-import { Avatar, IAvatarProperties } from "@shared/ui";
+import { Avatar, EditFile, IAvatarProperties } from "@shared/ui";
 import * as React from "react";
-import { EditButton } from "./edit-button.component";
 import { clsx } from "@mantine/core";
 import { useCheckIsOwner } from "@shared/lib";
 import { useSetAvatar } from "../model";
@@ -18,19 +17,19 @@ export function UploadAvatar(props: IUploadAvatarProps) {
         "relative flex items-center justify-center group/edit",
         avatarProps.className
       )}
-      
     >
       {isOwner && (
-        <EditButton
+        <EditFile
           onChange={setAvatar}
           className={clsx({
-            "group-hover/edit:visible md:invisible z-10": !isLoading,
+            "group-hover/edit:visible md:invisible z-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2":
+              !isLoading,
             "z-10": isLoading,
           })}
           isLoading={isLoading}
         />
       )}
-      <Avatar {...avatarProps} className="w-full absolute" />
+      <Avatar {...avatarProps} className="w-full " />
     </div>
   );
 }

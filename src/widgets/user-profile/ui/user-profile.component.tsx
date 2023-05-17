@@ -7,6 +7,7 @@ import { InfoUploadComponent } from "@features/update-user-info";
 import { IAddress, UsernameTypeEnum } from "@shared/lib";
 import React from "react";
 import { SocialBadgeList } from "./social-badge-list.component";
+import { EditModal } from "@features/edit-profile/ui/edit-modal.component";
 
 interface IUserProfileWidgetProperties {
   address: IAddress;
@@ -14,6 +15,7 @@ interface IUserProfileWidgetProperties {
 
 export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
+
   const { name, description, social } = useEnsInfo({ address });
   const { socials: frenSocials, description: frenDescription } = useGetFrenInfo(
     { address }
@@ -22,6 +24,14 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
 
   return (
     <div className="p-4 top-0 bg-white rounded-[2rem] relative">
+      {user.usernameType === UsernameTypeEnum.FRENLY && (
+        <EditModal
+          userWallet={{
+            walletAddress: address,
+            ensType: UsernameTypeEnum.FRENLY,
+          }}
+        />
+      )}
       <div className="flex items-start justify-between">
         <div className="max-md:w-full">
           <InfoUploadComponent

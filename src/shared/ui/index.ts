@@ -6,6 +6,7 @@ export * from "./button";
 export * from "./description-modal";
 export * from "./dialog";
 export * from "./drawer";
+export * from "./edit-button";
 export * from "./end-of-page";
 export * from "./header";
 export * from "./icon-button";

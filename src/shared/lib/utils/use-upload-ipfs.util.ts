@@ -5,6 +5,8 @@ export const useUploadIpfs = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const upload = useCallback(async (file: File) => {
+    console.log("IPFS", file);
+
     setIsLoading(true);
 
     const client = new NFTStorage({
