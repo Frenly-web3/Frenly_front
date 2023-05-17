@@ -17,7 +17,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import localFont from "next/font/local";
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+// import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 const { publicClient, webSocketPublicClient, chains } = configureChains(
   [mainnet, polygonMumbai],
   [publicProvider()]
@@ -34,14 +34,14 @@ const wagmiClient = createConfig({
   webSocketPublicClient,
   autoConnect: true,
   connectors: [
-    new MetaMaskConnector({
+    new InjectedConnector({
       options: {
-        // name: (detectedName) =>
-        //   `Injected (${
-        //     typeof detectedName === "string"
-        //       ? detectedName
-        //       : detectedName.join(", ")
-        //   })`,
+        name: (detectedName) =>
+          `Injected (${
+            typeof detectedName === "string"
+              ? detectedName
+              : detectedName.join(", ")
+          })`,
       },
     }),
     new WalletConnectConnector({
