@@ -30,7 +30,7 @@ export const useSetAvatar = () => {
 
       setLink(link);
       if (chain?.id !== polygon.id) {
-        await switchNetworkAsync?.(polygon?.id as number);
+        await switchNetworkAsync?.(polygonMumbai?.id as number);
       }
 
       if (!writeAsync) return;
