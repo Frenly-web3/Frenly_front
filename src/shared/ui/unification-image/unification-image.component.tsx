@@ -21,6 +21,7 @@ export function UnificationImage(props: IUnificationImageProps) {
     fileExtension,
     fileProvider,
   });
+  
 
   return (
     <div className={clsx(className)}>

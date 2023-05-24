@@ -11,17 +11,21 @@ export interface IuseGetNftByAddressResponse {
 
 export const useGetNftsByAddress = ({
   address,
+  contractAddress,
 }: {
   address: IAddress;
+  contractAddress: IAddress;
 }): IuseGetNftByAddressResponse => {
   const [skip, setSkip] = useState("");
 
   const { data } = alchemyApi.useGetNftsForUserQuery({
     address,
     skip,
+    contractAddress,
   });
 
   const [currentAddress, setCurrentAddress] = useState(address);
+  console.log(data);
 
   useEffect(() => {
     if (currentAddress !== address) {
@@ -32,23 +36,21 @@ export const useGetNftsByAddress = ({
   }, [address]);
 
   const transformedTokens = useMemo(() => {
-    if (
-      data?.ownedNfts.filter((nft: any) => nft?.media[0]?.gateway !== "")
-        .length < 9
-    ) {
-      setSkip(data?.pageKey);
-    }
+    // if (
+    //   data?.ownedNfts.filter((nft: any) => !nft?.image?.cachedUrl).length < 9
+    // ) {
+    //   setSkip(data?.pageKey);
+    // }
 
     return data?.ownedNfts
-      .filter((nft: any) => nft?.media[0]?.gateway !== "")
+      // .filter((nft: any) => !nft?.image?.cachedUrl)
       .map((nft: any): IToken => {
         return {
-          format: nft?.media[0]?.format,
-          imageUrl:
-            nft?.media[0]?.gateway ??
-            nft?.tokenUri?.gateway ??
-            nft?.tokenUri?.raw,
-          id: nft?.id?.tokenId,
+          format: nft?.image?.contentType,
+          imageUrl: nft?.image?.cachedUrl,
+          id: nft?.tokenId,
+          name: nft?.name ?? "untitled",
+          price: nft?.contract?.openSeaMetadata?.floorPrice,
         };
       });
   }, [data]);

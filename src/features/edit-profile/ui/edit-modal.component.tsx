@@ -41,7 +41,7 @@ export function EditModal(props: IEditModalProps) {
   };
 
   const changeLinkInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
+
 
     setLink((prev) => ({ ...prev, value: e.target.value }));
   };

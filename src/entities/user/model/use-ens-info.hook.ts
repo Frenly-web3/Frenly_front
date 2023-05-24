@@ -11,7 +11,7 @@ export const useEnsInfo = ({ address }: { address: IAddress }) => {
   // const {  } = usePublicClient({ chainId: mainnet.id });
   // const [ENSInstance, setENSInstance] = useState(new ENS());
   const [profile, setProfile] = useState<Awaited<ProfileENSType>>();
-  console.log(profile);
+
 
   useEffect(() => {
     const provider = new JsonRpcProvider({
@@ -23,7 +23,6 @@ export const useEnsInfo = ({ address }: { address: IAddress }) => {
       const profileInst = await ENSInstance.withProvider(provider).getProfile(
         address
       );
-      console.log(profileInst);
 
       setProfile(profileInst);
     };

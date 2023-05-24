@@ -11,7 +11,7 @@ import { useAccount } from "wagmi";
 import { ScrollToTop } from "./scroll-to-top.component";
 
 interface IProperties {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
   rightSidebar?: React.ReactNode;
 }

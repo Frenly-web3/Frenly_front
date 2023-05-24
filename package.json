@@ -86,7 +86,7 @@
     "tw-elements": "^1.0.0-alpha12",
     "usehooks-ts": "2.6.0",
     "viem": "^0.3.24",
-    "wagmi": "^1.0.4",
+    "wagmi": "^1.0.5",
     "web-push": "^3.5.0",
     "yup": "^0.32.11"
   },
