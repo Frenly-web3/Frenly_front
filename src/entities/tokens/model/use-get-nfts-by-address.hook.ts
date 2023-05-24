@@ -33,7 +33,7 @@ export const useGetNftsByAddress = ({
 
       setSkip("");
     }
-  }, [address]);
+  }, [address, contractAddress]);
 
   const transformedTokens = useMemo(() => {
     // if (

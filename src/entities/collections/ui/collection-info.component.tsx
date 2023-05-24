@@ -11,7 +11,7 @@ export interface ICollectionInfoProps {
 export function CollectionInfo(props: ICollectionInfoProps) {
   const { collectionAddress } = props;
 
-  const { imageUrl, description, address } = useGetCollectionByAddress({
+  const { imageUrl, description, address, name } = useGetCollectionByAddress({
     address: collectionAddress,
   });
   return (
@@ -25,12 +25,13 @@ export function CollectionInfo(props: ICollectionInfoProps) {
       </div>
 
       <div className="flex flex-col gap-y-4 w-full">
-        <p className="font-rounded font-semibold text-xl leading-6">
-          {description}
-        </p>
+        <h3 className="font-rounded font-semibold text-xl leading-6">
+          {name}
+        </h3>
+        <p className="font-rounded font-semibold text-base leading-6 text-black/40 w-full">{description}</p>
         <Link
           href={`https://rarible.com/collection/${address}`}
-          className="w-[168px]"
+          className="w-[180px] flex justify-center items-center"
         >
           <div className="font-medium text-white flex gap-1 items-center bg-main py-[3px] px-3 rounded-full">
             <span>explore collection</span>

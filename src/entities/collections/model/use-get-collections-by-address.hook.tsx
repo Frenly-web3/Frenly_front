@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { alchemyApi } from "@shared/api";
+import { alchemyApi, openseaApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
 import { ICollection } from "./collection.entity";
 
@@ -19,6 +19,13 @@ export const useGetCollectionsByAddress = ({
     address,
     skip,
   });
+  const { data: openseaCollections } = openseaApi.useGetCollectionsForUserQuery({
+    address,
+    skip,
+  });
+
+  console.log(openseaCollections);
+  
 
   const [currentAddress, setCurrentAddress] = useState(address);
 

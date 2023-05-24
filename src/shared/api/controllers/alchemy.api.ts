@@ -49,8 +49,7 @@ export const alchemyApi = createApi({
       // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
         return (
-          currentArg?.address !== previousArg?.address ||
-          currentArg?.skip !== previousArg?.skip
+          currentArg !== previousArg
         );
       },
     }),

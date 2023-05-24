@@ -1,7 +1,4 @@
-import {
-  CollectionInfo,
-  useGetCollectionByAddress,
-} from "@entities/collections";
+import { CollectionInfo } from "@entities/collections";
 import { TokenImage, TokensSkeleton } from "@entities/tokens";
 import { useGetNftsByAddress } from "@entities/tokens/model";
 import { IAddress } from "@shared/lib";
@@ -17,11 +14,7 @@ export default function CollectionsPage(props: ICollectionsPageProps) {
 
   const { address, user } = query;
 
-  const { name } = useGetCollectionByAddress({
-    address: address as IAddress,
-  });
-
-  const { tokens,hasMore, loadMore } = useGetNftsByAddress({
+  const { tokens, hasMore, loadMore } = useGetNftsByAddress({
     address: user as IAddress,
     contractAddress: address as IAddress,
   });
@@ -29,13 +22,7 @@ export default function CollectionsPage(props: ICollectionsPageProps) {
   console.log(tokens);
 
   return (
-    <Layout
-      title={
-        <div className="truncate max-md:w-[90vw]">
-          {name?.toLowerCase()} gallery
-        </div>
-      }
-    >
+    <Layout title="collection">
       <section className="w-full rounded-t-[2rem] p-4 bg-white h-full">
         <CollectionInfo collectionAddress={address as IAddress} />
 

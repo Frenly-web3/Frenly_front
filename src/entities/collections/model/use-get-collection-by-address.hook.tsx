@@ -1,4 +1,4 @@
-import { alchemyApi } from "@shared/api";
+import { openseaApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
 import { useMemo } from "react";
 import { ICollectionInfo } from "./collection.entity";
@@ -8,18 +8,20 @@ export const useGetCollectionByAddress = ({
 }: {
   address: IAddress;
 }) => {
-  const { data } = alchemyApi.useGetCollectionByAddressQuery({
-    contractAddress: address,
-  });
-  console.log(data);
+  console.log(address);
+  
+  const { data: openseaCollection } = openseaApi.useGetCollectionByAddressQuery(
+    { contractAddress: address }
+  );
+  console.log(openseaCollection);
 
   return useMemo(
     (): ICollectionInfo => ({
-      address: data?.address,
-      imageUrl: data?.openSeaMetadata?.imageUrl ?? "avatar_placeholder",
-      name: data?.name ?? data?.openSeaMetadata?.collectionName ?? "unknown collection",
-      description: data?.openSeaMetadata?.description ?? 'unknown collection',
+      address: openseaCollection?.address,
+      imageUrl: openseaCollection?.image_url ?? "avatar_placeholder",
+      name: openseaCollection?.collection?.name ?? "unknown collection",
+      description: openseaCollection?.description ?? "unknown collection",
     }),
-    [data]
+    [openseaCollection, address]
   );
 };

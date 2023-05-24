@@ -3,6 +3,7 @@ import { IAddress } from "@shared/lib";
 import * as React from "react";
 import { ProfilePostList } from "./profile-post-list.component";
 import { ProfileTokens } from "./profile-tokens.component";
+import { useRouter } from "next/router";
 
 export interface IProfileTabsProps {
   address: IAddress;
@@ -11,7 +12,16 @@ export interface IProfileTabsProps {
 export function ProfileTabs(props: IProfileTabsProps) {
   const { address } = props;
 
-  const [activeTab, setActiveTab] = React.useState<TabsValue>("activity");
+  const router = useRouter();
+
+  const [activeTab, setActiveTab] = React.useState<TabsValue>(
+    () => router.asPath.split("#")[1] ?? "activity"
+  );
+
+  const tabChangeHandler = (tab: TabsValue) => {
+    router.push({ hash: tab });
+    setActiveTab(tab);
+  };
 
   return (
     <div className="lg:min-w-[35rem]">
@@ -25,7 +35,7 @@ export function ProfileTabs(props: IProfileTabsProps) {
           tabLabel: "font-rounded font-semibold flex items-center gap-1",
         }}
         value={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={tabChangeHandler}
       >
         <Tabs.List>
           <Tabs.Tab
@@ -52,7 +62,7 @@ export function ProfileTabs(props: IProfileTabsProps) {
           <ProfilePostList address={address} />
         </Tabs.Panel>
         <Tabs.Panel value="tokens">
-          <ProfileTokens address={address}/>
+          <ProfileTokens address={address} />
         </Tabs.Panel>
       </Tabs>
     </div>
