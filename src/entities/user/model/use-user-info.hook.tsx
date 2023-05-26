@@ -1,6 +1,6 @@
 import { userApi } from "@shared/api";
-import type { IAddress } from "@shared/lib";
-import React from "react";
+import { IAddress, UsernameTypeEnum, useCheckFrenProfile } from "@shared/lib";
+import React, { useMemo } from "react";
 
 import type { IUser } from "./user.entity";
 
@@ -10,6 +10,8 @@ interface IProperties {
 
 export const useUserInfo = (props: IProperties) => {
   const { address } = props;
+
+  const isHaveFrenUsername = useCheckFrenProfile({ address });
 
   const {
     data: userInfo,
@@ -21,13 +23,18 @@ export const useUserInfo = (props: IProperties) => {
     refetchUserInfo();
   }, [refetchUserInfo]);
 
-  const user: IUser = {
-    id: userInfo?.id!,
-    totalFollowers: userInfo?.totalFollowers!,
-    totalSubscribers: userInfo?.totalSubscribers!,
-    walletAddress: address,
-    usernameType: userInfo?.ensType,
-  };
+  const user: IUser = useMemo(
+    () => ({
+      id: userInfo?.id as number,
+      totalFollowers: userInfo?.totalFollowers!,
+      totalSubscribers: userInfo?.totalSubscribers!,
+      walletAddress: address,
+      usernameType: isHaveFrenUsername
+        ? userInfo?.ensType
+        : UsernameTypeEnum.ETH,
+    }),
+    [userInfo]
+  );
 
   return {
     user,

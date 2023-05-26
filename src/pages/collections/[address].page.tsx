@@ -19,8 +19,6 @@ export default function CollectionsPage(props: ICollectionsPageProps) {
     contractAddress: address as IAddress,
   });
 
-  console.log(tokens);
-
   return (
     <Layout title="collection">
       <section className="w-full rounded-t-[2rem] p-4 bg-white h-full">

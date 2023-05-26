@@ -9,15 +9,15 @@ export interface ISuggestedFriendsProps {}
 const mockSuggestedFriends = [
   {
     walletAddress: "0xb44841a1968ab22344c8fa029aa0bb3d24a3dbc5" as IAddress,
-    ensType: 0,
+    ensType: 1,
   },
   {
     walletAddress: "0x16ef8a3fc841df2f8af42396ca849bc6dc27132b" as IAddress,
-    ensType: 0,
+    ensType: 1,
   },
   {
-    walletAddress: "0x297f0458cdda6a60116eac648ed2419293131114" as IAddress,
-    ensType: 0,
+    walletAddress: "0xe7b5B35181eeB87A6f2EE68ef923c4016Cd552fa" as IAddress,
+    ensType: 1,
   },
   {
     walletAddress: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045" as IAddress,

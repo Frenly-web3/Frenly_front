@@ -8,12 +8,11 @@ export const useGetCollectionByAddress = ({
 }: {
   address: IAddress;
 }) => {
-  console.log(address);
+
   
   const { data: openseaCollection } = openseaApi.useGetCollectionByAddressQuery(
     { contractAddress: address }
   );
-  console.log(openseaCollection);
 
   return useMemo(
     (): ICollectionInfo => ({

@@ -45,6 +45,7 @@ export const useGetFilteredPosts = (): IGetFilteredPosts => {
     const posts: IPost[] = postsWithoutZeroX!.map((post: IPostDto): IPost => {
       return post as unknown as IPost;
     });
+
     if (posts?.length === 0) {
       setHasMore(false);
     }

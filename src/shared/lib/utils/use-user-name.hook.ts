@@ -15,6 +15,8 @@ interface IProperties {
 
 export const useUserName = (props: IProperties) => {
   const { address, with0x, usernameType = UsernameTypeEnum.ETH } = props;
+  
+
   const { data: ensData, isLoading: ensLoading } = useEnsName({
     address,
     chainId: mainnet.id,
@@ -24,6 +26,7 @@ export const useUserName = (props: IProperties) => {
     address,
     skip: usernameType !== UsernameTypeEnum.FRENLY,
   });
+
 
   const data = useMemo(() => {
     switch (usernameType) {

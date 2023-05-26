@@ -25,7 +25,6 @@ export const useGetNftsByAddress = ({
   });
 
   const [currentAddress, setCurrentAddress] = useState(address);
-  console.log(data);
 
   useEffect(() => {
     if (currentAddress !== address) {
@@ -33,7 +32,7 @@ export const useGetNftsByAddress = ({
 
       setSkip("");
     }
-  }, [address, contractAddress]);
+  }, [address, contractAddress, currentAddress]);
 
   const transformedTokens = useMemo(() => {
     // if (
@@ -42,17 +41,19 @@ export const useGetNftsByAddress = ({
     //   setSkip(data?.pageKey);
     // }
 
-    return data?.ownedNfts
-      // .filter((nft: any) => !nft?.image?.cachedUrl)
-      .map((nft: any): IToken => {
-        return {
-          format: nft?.image?.contentType,
-          imageUrl: nft?.image?.cachedUrl,
-          id: nft?.tokenId,
-          name: nft?.name ?? "untitled",
-          price: nft?.contract?.openSeaMetadata?.floorPrice,
-        };
-      });
+    return (
+      data?.ownedNfts
+        // .filter((nft: any) => !nft?.image?.cachedUrl)
+        .map((nft: any): IToken => {
+          return {
+            format: nft?.image?.contentType,
+            imageUrl: nft?.image?.cachedUrl,
+            id: nft?.tokenId,
+            name: nft?.name ?? "untitled",
+            price: nft?.contract?.openSeaMetadata?.floorPrice,
+          };
+        })
+    );
   }, [data]);
 
   return useMemo(

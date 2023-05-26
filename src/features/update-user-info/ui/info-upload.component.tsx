@@ -1,7 +1,11 @@
-
 import { Select } from "@mantine/core";
 import { userApi } from "@shared/api";
-import { IAddress, UsernameTypeEnum, useCheckIsOwner } from "@shared/lib";
+import {
+  IAddress,
+  UsernameTypeEnum,
+  useCheckFrenProfile,
+  useCheckIsOwner,
+} from "@shared/lib";
 import { Avatar, Name } from "@shared/ui";
 import React, { useEffect, useState } from "react";
 
@@ -18,7 +22,7 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const isOwner = useCheckIsOwner(address);
   const [currentUsernameType, setCurrentUsernameType] =
     useState<UsernameTypeEnum>();
-
+  const isHaveFrenUsername = useCheckFrenProfile({ address });
   const [changeUsernameType] = userApi.useChangeUsernameTypeMutation();
 
   // const nameButtonHandler = async () => {
@@ -56,7 +60,7 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
             usernameType={usernameType}
             className="text-2xl font-bold font-rounded"
           />
-          {isOwner && (
+          {isHaveFrenUsername && isOwner && (
             <Select
               classNames={{
                 input: "border-none bg-[#00000000]",
@@ -76,7 +80,6 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
               onChange={typeNameSelectHandler}
             />
           )}
-          
         </div>
         <div className="w-full">{children && children}</div>
       </div>
