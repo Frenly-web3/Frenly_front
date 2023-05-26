@@ -1,4 +1,4 @@
-import type { IAddress } from "@shared/lib";
+import type { IAddress, UsernameTypeEnum } from "@shared/lib";
 import { useUserName } from "@shared/lib";
 import React from "react";
 
@@ -6,17 +6,21 @@ interface INameProperties {
   address: IAddress;
   className?: string;
   content?: string;
+  usernameType?: UsernameTypeEnum;
 }
 
 export const Name = (props: INameProperties) => {
-  const { address, className, content } = props;
+  const { address, className, content, usernameType } = props;
 
-  const { data, isLoading } = useUserName({ address });
-
+  const { data, isLoading } = useUserName({
+    address,
+    with0x: true,
+    usernameType,
+  });
 
   return (
     <div className={`flex ${className} ${isLoading && ``}`}>
-      {`${data.slice(-4) != ".eth" ? "0x" : ""}${data}`} {content ?? ""}
+      {data} {content ?? ""}
     </div>
   );
 };

@@ -11,7 +11,9 @@ export const useTransformBadgeData = ({
 }: ItransformBadgeDataProperties) =>
   useMemo(() => {
     let transformedTokenId: string;
-    let transformedCommunityContractName: string = communityContractName ? communityContractName + ' ' : 'Untitled ';
+    let transformedCommunityContractName: string = communityContractName
+      ? communityContractName + " "
+      : "Untitled ";
 
     if (typeof tokenId == "string") {
       if (tokenId.length > 10) {
@@ -25,4 +27,4 @@ export const useTransformBadgeData = ({
       tokenId: transformedTokenId,
       communityContractName: transformedCommunityContractName,
     };
-  }, []);
+  }, [tokenId, communityContractName]);

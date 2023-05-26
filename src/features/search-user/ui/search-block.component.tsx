@@ -45,7 +45,12 @@ export function SearchBlock(props: ISearchBlockProperties) {
             {usernames?.map(({ address }) => {
               return (
                 <Link href={`profile/${address}`}>
-                  <Author address={address as IAddress} />
+                  <Author
+                    postOwner={{
+                      walletAddress: address as IAddress,
+                      ensType: 0,
+                    }}
+                  />
                 </Link>
               );
             })}

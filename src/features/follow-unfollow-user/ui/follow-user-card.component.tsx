@@ -1,25 +1,26 @@
 import { SmallUserCard } from "@entities/user";
-import { IAddress, Subscription } from "@shared/lib";
+import { Subscription } from "@shared/lib";
 import { ProfileButton } from "@shared/ui";
 import * as React from "react";
 import { useAccount } from "wagmi";
 import { useFollowUnfollowUser } from "../model";
+import { IUserWalletDto } from "@shared/api";
 
 export interface IFollowUserCardProps {
-  address: IAddress;
+  creator: IUserWalletDto;
 }
 
 export function FollowUserCard(props: IFollowUserCardProps) {
-  const { address } = props;
+  const { creator } = props;
   const { address: currentUserAddress } = useAccount();
   const { followUnfollowHandler, followUnfollowState } = useFollowUnfollowUser({
-    address,
-  });
+    address: creator.walletAddress,
+  });  
 
   return (
     <div className="flex justify-between items-center ">
-      <SmallUserCard address={address} />
-      {currentUserAddress?.toLowerCase() !== address ? (
+      <SmallUserCard address={creator.walletAddress} />
+      {currentUserAddress?.toLowerCase() !== creator.walletAddress ? (
         <ProfileButton
           classNames="mx-0 mb-0"
           followUnfollowState={followUnfollowState as Subscription}

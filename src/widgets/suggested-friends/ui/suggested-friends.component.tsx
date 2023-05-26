@@ -7,10 +7,22 @@ import * as React from "react";
 export interface ISuggestedFriendsProps {}
 
 const mockSuggestedFriends = [
-  "0xb44841a1968ab22344c8fa029aa0bb3d24a3dbc5",
-  "0x16ef8a3fc841df2f8af42396ca849bc6dc27132b",
-  "0x297f0458cdda6a60116eac648ed2419293131114",
-  "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
+  {
+    walletAddress: "0xb44841a1968ab22344c8fa029aa0bb3d24a3dbc5" as IAddress,
+    ensType: 1,
+  },
+  {
+    walletAddress: "0x16ef8a3fc841df2f8af42396ca849bc6dc27132b" as IAddress,
+    ensType: 1,
+  },
+  {
+    walletAddress: "0xe7b5B35181eeB87A6f2EE68ef923c4016Cd552fa" as IAddress,
+    ensType: 1,
+  },
+  {
+    walletAddress: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045" as IAddress,
+    ensType: 0,
+  },
 ];
 
 export function SuggestedFriends(props: ISuggestedFriendsProps) {
@@ -28,21 +40,19 @@ export function SuggestedFriends(props: ISuggestedFriendsProps) {
           {suggestionAddresses &&
             !isError &&
             suggestionAddresses?.length > 0 &&
-            suggestionAddresses
-            ?.slice(0, 4)
-            ?.map((address) => {
+            suggestionAddresses?.slice(0, 4)?.map((address) => {
               return (
-                <Author classNames={{ avatar: "w-6" }} address={address} />
+                <Author
+                  classNames={{ avatar: "w-6" }}
+                  postOwner={address}
+                />
               );
             })}
           {((suggestionAddresses && suggestionAddresses?.length == 0) ||
             isError) &&
-            mockSuggestedFriends.map((address) => {
+            mockSuggestedFriends.map((owner) => {
               return (
-                <Author
-                  classNames={{ avatar: "w-6" }}
-                  address={address as IAddress}
-                />
+                <Author classNames={{ avatar: "w-6" }} postOwner={owner} />
               );
             })}
         </div>

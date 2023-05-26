@@ -5,7 +5,7 @@ import {
   SubscriptionStateEnum,
 } from "@features/follow-unfollow-user";
 import { Paper } from "@mantine/core";
-import type { IAddress } from "@shared/lib";
+import type { IAddress, UsernameTypeEnum } from "@shared/lib";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 
@@ -25,7 +25,9 @@ export const CommunitySingle = (props: IProperties) => {
 
   const { address } = useAccount();
 
-  const { user } = useUserInfo({ address: address as IAddress });
+  const {
+    user: { usernameType, walletAddress, totalSubscribers },
+  } = useUserInfo({ address: address as IAddress });
 
   return (
     <Paper className="rounded-[2rem] w-60 p-4 flex flex-col max-md:hidden mt-16 h-fit items-start ">
@@ -52,7 +54,7 @@ export const CommunitySingle = (props: IProperties) => {
             `${community.membersAmount} frens`
           ) : (
             <button onClick={() => setOpened(true)}>
-              {user.totalSubscribers}
+              {totalSubscribers}
               {" frens"}
             </button>
           )}
@@ -61,7 +63,7 @@ export const CommunitySingle = (props: IProperties) => {
       <FollowersModal
         onClose={() => setOpened(false)}
         opened={opened}
-        address={address as IAddress}
+        creator={{ walletAddress, ensType: usernameType as UsernameTypeEnum }}
         initialTab={SubscriptionStateEnum.following}
       />
     </Paper>

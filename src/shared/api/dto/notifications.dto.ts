@@ -1,17 +1,18 @@
-import { IAddress, NotificationTypeEnum } from "@shared/lib";
+import { NotificationTypeEnum } from "@shared/lib";
 import { IPostDto } from "./content.dto";
+import { IUserWalletDto } from "./user.dto";
 export interface CommentNotificationDto {
-  walletAddress: IAddress;
+  creator: IUserWalletDto;
   post: IPostDto;
   comment: string;
 }
 
 export interface SubscribeNotificationDto {
-  walletAddress: IAddress;
+  creator: IUserWalletDto;
 }
 
 export interface LikeNotificationDto {
-  walletAddress: string;
+  creator: IUserWalletDto;
   post: IPostDto;
 }
 

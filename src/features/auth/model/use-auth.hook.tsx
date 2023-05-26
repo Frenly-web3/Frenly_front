@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { disconnect } from "@wagmi/core";
+import { mainnet } from "viem/chains";
 
 export function useAuth() {
   const { address } = useAccount();
@@ -28,7 +29,7 @@ export function useAuth() {
     try {
       await disconnectAsync();
       await disconnect();
-      await connectAsync({ connector: connectors[connector], chainId: 1 });
+      await connectAsync({ connector: connectors[connector], chainId: mainnet.id });
     } catch (error: any) {
       setIsError(error.message);
       await disconnectAsync();

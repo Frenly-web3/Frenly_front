@@ -20,7 +20,7 @@ export interface ITokensPaperProps {
 export function TokensPaper(props: ITokensPaperProps) {
   const { title, maxRows, className, address } = props;
 
-  const { tokens, loadMore, hasMore } = useGetNftsByAddress({ address });
+  const { tokens, loadMore, hasMore } = useGetNftsByAddress({ address, contractAddress: address });
 
   const [showedMore, setShowedMore] = React.useState(false);
   const matches = useMediaQuery("(max-width: 768px)");

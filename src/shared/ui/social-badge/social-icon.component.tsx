@@ -7,12 +7,14 @@ const url = dynamic(() => import("/public/assets/icons/web.svg"));
 const orgtelegram = dynamic(() => import("/public/assets/icons/telegram.svg"));
 const cominstagram = dynamic(() => import("/public/assets/icons/instagram.svg"));
 const email = dynamic(() => import("/public/assets/icons/mail.svg"));
+const comtwitter = dynamic(() => import("/public/assets/icons/twitter.svg"));
 
  export const iconTypes = {
   url,
   orgtelegram,
   cominstagram,
-  email
+  email,
+  comtwitter
 };
 
 export interface ISocialIconProperties extends React.SVGAttributes<SVGElement> {

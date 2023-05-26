@@ -4,13 +4,16 @@ import * as React from "react";
 
 export interface ISocialBadgeListProps {
   socials: [string, string | undefined][];
+  children?: React.ReactNode;
 }
 
 export function SocialBadgeList(props: ISocialBadgeListProps) {
-  const { socials } = props;
+  const { socials, children } = props;
+
+
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-3">
-      {socials.map((social, index) => {
+      {socials?.map((social, index) => {
         return (
           <SocialBadge
             key={index}
@@ -19,6 +22,7 @@ export function SocialBadgeList(props: ISocialBadgeListProps) {
           />
         );
       })}
+      {children}
     </div>
   );
 }
