@@ -30,13 +30,16 @@ export function CollectionInfo(props: ICollectionInfoProps) {
         <Spoiler
           hideLabel={<span className="font-rounded text-main">hide</span>}
           maxHeight={50}
-          showLabel={<span className="font-rounded text-main">show more...</span>}
+          showLabel={
+            <span className="font-rounded text-main">show more...</span>
+          }
           className="font-rounded font-semibold text-base leading-6 text-black/40 w-full"
         >
           {description}
         </Spoiler>
         <Link
           href={`https://rarible.com/collection/${address}`}
+          target="_blank"
           className="w-[180px] flex justify-center items-center"
         >
           <div className="font-medium text-white flex gap-1 items-center bg-main py-[3px] px-3 rounded-full">

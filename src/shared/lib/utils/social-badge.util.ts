@@ -25,7 +25,7 @@ export const useSocialBadgeInfo = ({
         commonLink = `https://www.instagram.com/${linkContent}`;
         break;
       case "com.twitter":
-        commonLink = `${linkContent}`;
+        commonLink = `https://twitter.com/${linkContent}`;
         break;
       default:
         commonLink = "";
