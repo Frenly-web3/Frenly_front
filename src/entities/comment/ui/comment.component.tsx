@@ -10,7 +10,7 @@ interface IProperies {
 }
 export const Comment = (props: IProperies) => {
   const { comment } = props;
-  const profileLink = `/profile/${comment.creator}`;
+  const profileLink = `/profile/${comment.creator.walletAddress}`;
 
   const transformedComment = useTransformComment({
     comment: comment.description + " ",
@@ -21,14 +21,16 @@ export const Comment = (props: IProperies) => {
         <Avatar
           width={24}
           className={"w-6 aspect-square"}
-          address={comment.creator}
+          address={comment.creator.walletAddress}
+          usernameType={comment.creator.ensType}
         />
       </Link>
       <div className="w-5/6">
         <Link href={profileLink}>
           <Name
             className={"font-rounded font-medium"}
-            address={comment.creator}
+            address={comment.creator.walletAddress}
+            usernameType={comment.creator.ensType}
           />
         </Link>
         <div className="text-black">{transformedComment}</div>

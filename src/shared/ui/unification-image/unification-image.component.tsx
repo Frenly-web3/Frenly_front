@@ -21,16 +21,19 @@ export function UnificationImage(props: IUnificationImageProps) {
     fileExtension,
     fileProvider,
   });
+  
 
   return (
     <div className={clsx(className)}>
       {unificationImage ? (
-        <div className="relative">
+        <div className="relative w-full h-full">
           {unificationImage.type === "image" ? (
             <img
               src={unificationImage.url}
               alt={"post_image"}
-              className="m-auto"
+              className="m-auto w-full h-full"
+
+              // quality={1}
             />
           ) : (
             <video

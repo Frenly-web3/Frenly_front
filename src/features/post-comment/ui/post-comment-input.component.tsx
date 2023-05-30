@@ -86,7 +86,7 @@ export function PostCommentInput(props: IPostCommentInputProps) {
             <Author
               withoutLink
               classNames={{ avatar: "w-7", root: "my-1" }}
-              address={item.address as IAddress}
+              postOwner={{ walletAddress: item.address as IAddress, ensType: 0 }}
             />
           </button>
         );

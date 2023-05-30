@@ -1,6 +1,6 @@
 import { Author } from "@entities/user";
 import { clsx, Tabs, TabsValue } from "@mantine/core";
-import { userApi } from "@shared/api";
+import { IUserWalletDto, userApi } from "@shared/api";
 import { IAddress } from "@shared/lib";
 import { AdaptiveModal } from "@shared/ui";
 import * as React from "react";
@@ -8,27 +8,27 @@ import { SubscriptionStateEnum } from "../model";
 import { FollowUserCard } from "./follow-user-card.component";
 
 export interface IFollowersModalProps {
-  address: IAddress;
+  creator: IUserWalletDto;
   opened: boolean;
   onClose: () => void;
   initialTab: SubscriptionStateEnum;
 }
 
 export function FollowersModal(props: IFollowersModalProps) {
-  const { address, onClose, opened, initialTab } = props;
+  const { creator, onClose, opened, initialTab } = props;
 
   const [currentTab, setCurrentTab] = React.useState<TabsValue>(initialTab);
 
   const { data: followers } = userApi.useGetUserFollowersQuery({
-    address: address as IAddress,
+    address: creator?.walletAddress as IAddress,
   });
   const { data: subscriptions } = userApi.useGetUserSubscriptionsQuery({
-    address: address as IAddress,
+    address: creator?.walletAddress as IAddress,
   });
 
   React.useEffect(() => {
     onClose();
-  }, [address]);
+  }, [creator.walletAddress]);
 
   React.useEffect(() => {
     setCurrentTab(initialTab);
@@ -51,7 +51,10 @@ export function FollowersModal(props: IFollowersModalProps) {
           title={
             <div className="flex flex-col">
               <div className="px-4">
-                <Author classNames={{avatar: 'w-6 aspect-square', root: 'mt-2'}} address={address} />
+                <Author
+                  classNames={{ avatar: "w-6 aspect-square", root: "mt-2" }}
+                  postOwner={creator}
+                />
               </div>
               <Tabs.List>
                 <Tabs.Tab
@@ -93,13 +96,13 @@ export function FollowersModal(props: IFollowersModalProps) {
         >
           <Tabs.Panel value={SubscriptionStateEnum.followers}>
             {followers?.map((follower, index) => {
-              return <FollowUserCard address={follower} key={index} />;
+              return <FollowUserCard creator={follower} key={index} />;
             })}
           </Tabs.Panel>
 
           <Tabs.Panel value={SubscriptionStateEnum.following}>
             {subscriptions?.map((follower, index) => {
-              return <FollowUserCard address={follower} key={index} />;
+              return <FollowUserCard creator={follower} key={index} />;
             })}
           </Tabs.Panel>
         </AdaptiveModal>

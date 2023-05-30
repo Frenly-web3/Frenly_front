@@ -19,13 +19,15 @@ export const useUnificationFormatImage = ({
   fileProvider?: ImageProviderEnum;
 }) => {
   return useMemo(() => {
+    if (image === "avatar_placeholder")
+      return { url: "/assets/images/default-avatar.png", type: "image" };
     if (!image) return null;
     switch (fileProvider) {
       case ImageProviderEnum.ALCHEMY:
         if (fileExtension === null) {
           return getLinkWithoutExt(image);
         } else {
-          if (fileExtension === "mp4" || fileExtension === "webm") {
+          if (fileExtension === "mp4" || fileExtension === "webm" || isVideo(image, fileExtension as string)) {
             return {
               type: "video",
               url: image,

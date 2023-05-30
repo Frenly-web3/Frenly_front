@@ -11,9 +11,9 @@ export function PostList(props: IPostListProperties) {
   
   return (
     <div>
-      {posts?.map((post) => {
+      {posts?.map((post, index) => {
         return (
-          <PostCard {...post} key={post.id}>
+          <PostCard {...post} key={post.id + index}>
             <PostCard.Author />
             <PostCard.Content />
             <PostCard.Image />

@@ -37,7 +37,12 @@
       "@features/*": ["src/features/*"],
       "@widgets/*": ["src/widgets/*"],
       "@assets/*": ["public/assets/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": ["./build/**/*", "./node_modules/**/*", "**/*.cy.ts"],
   "include": [
@@ -46,6 +51,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/shared/ui/icons/icon.component.tsx",
-    "src/shared/ui/icon-button"
+    "src/shared/ui/icon-button",
+    ".next/types/**/*.ts"
   ]
 }

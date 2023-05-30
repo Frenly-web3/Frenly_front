@@ -1,13 +1,12 @@
 import { clsx } from "@mantine/core";
-import type { IAddress } from "@shared/lib";
-// eslint-disable-next-line import/no-cycle
+import { IUserWalletDto } from "@shared/api";
 import { Avatar, Name, TimeDate } from "@shared/ui";
 import Link from "next/link";
 import React from "react";
 
 interface IAuthorProperties {
   date?: string;
-  address: IAddress;
+  postOwner: IUserWalletDto;
   withoutLink?: boolean;
   classNames?: {
     root?: string;
@@ -17,7 +16,7 @@ interface IAuthorProperties {
 }
 
 const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
-  const { address, date, classNames } = props;
+  const { postOwner, date, classNames } = props;
   return (
     <>
       <div className="border rounded-full border-border-color overflow-hidden">
@@ -27,7 +26,8 @@ const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
             `aspect-square`,
             classNames?.avatar ? classNames.avatar : "w-10 aspect-square"
           )}
-          address={address}
+          address={postOwner?.walletAddress}
+          usernameType={postOwner?.ensType}
         />
       </div>
 
@@ -38,7 +38,8 @@ const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
               `font-rounded  cursor-pointer`,
               classNames?.name ? classNames.name : "mb-[-0.25rem] font-medium"
             )}
-            address={address}
+            address={postOwner?.walletAddress}
+            usernameType={postOwner?.ensType}
           />
         </figcaption>
         {date && (
@@ -52,7 +53,7 @@ const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
 };
 
 export const Author = (props: IAuthorProperties) => {
-  const { classNames, address, withoutLink = false } = props;
+  const { classNames, postOwner, withoutLink = false } = props;
 
   return (
     <div
@@ -66,7 +67,7 @@ export const Author = (props: IAuthorProperties) => {
       ) : (
         <Link
           passHref={true}
-          href={`/profile/${address}`}
+          href={`/profile/${postOwner?.walletAddress}`}
           className="flex gap-2"
         >
           <AuthorContent {...props} />

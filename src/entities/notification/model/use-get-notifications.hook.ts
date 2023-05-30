@@ -1,6 +1,7 @@
+import { notificationsApi } from "./../../../shared/api/controllers/notifications.api";
 import { useCallback, useMemo, useState } from "react";
 import { INotification, NOTIFICATION_TAKE } from "@entities/notification";
-import { notificationsApi } from "@shared/api";
+
 import { IPost } from "@entities/post";
 
 export interface IuseGetNotificationsResp {
@@ -31,7 +32,7 @@ export const useGetNotifications = (): IuseGetNotificationsResp => {
       notifications: notificationsData?.notifications?.map(
         ({ actionData, actionDate, actionType }) => {
           return {
-            address: actionData?.walletAddress,
+            notificationOwner: actionData?.creator,
             notificationDate: actionDate,
             notificationType: actionType,
             comment: actionData?.comment,

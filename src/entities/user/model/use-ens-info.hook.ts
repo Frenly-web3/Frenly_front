@@ -2,22 +2,27 @@ import { IUserENS } from "./user.entity";
 import { IAddress } from "@shared/lib";
 import { useEffect, useMemo, useState } from "react";
 import { ENS } from "@ensdomains/ensjs";
-import { useProvider } from "wagmi";
+import { mainnet } from "wagmi";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 export type ProfileENSType = ReturnType<ENS["getProfile"]>;
 
 export const useEnsInfo = ({ address }: { address: IAddress }) => {
-  const provider = useProvider();
+  // const {  } = usePublicClient({ chainId: mainnet.id });
   // const [ENSInstance, setENSInstance] = useState(new ENS());
   const [profile, setProfile] = useState<Awaited<ProfileENSType>>();
 
+
   useEffect(() => {
+    const provider = new JsonRpcProvider({
+      url: mainnet.rpcUrls.default.http[0],
+
+    });
     const defineProfile = async () => {
       const ENSInstance = new ENS();
-      const profileInst = await ENSInstance.withProvider(
-        provider as JsonRpcProvider
-      ).getProfile(address);
+      const profileInst = await ENSInstance.withProvider(provider).getProfile(
+        address
+      );
 
       setProfile(profileInst);
     };

@@ -9,3 +9,4 @@ export * from "./subscription.enum";
 export * from "./token-type.enum";
 export * from "./transfer-type.enum";
 export * from "./user-status.enum";
+export * from "./username-type.enum";

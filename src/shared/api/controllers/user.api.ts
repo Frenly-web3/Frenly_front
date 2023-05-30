@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/dist/query/react";
-import type { IAddress, IBaseResponse } from "@shared/lib";
+import type { IAddress, IBaseResponse, UsernameTypeEnum } from "@shared/lib";
 
 import { baseQueryWithReauth } from "../base-query";
 import type { IUserDto, IUserSubscriptionsDto } from "../dto/user.dto";
@@ -96,6 +96,20 @@ export const userApi = createApi({
           url: `user`,
           method: "PUT",
           body: { username, description },
+          credentials: "omit",
+        };
+      },
+    }),
+    changeUsernameType: builder.mutation<
+      void,
+      { usernameType: UsernameTypeEnum }
+    >({
+      invalidatesTags: ["USER", "ADMIN"],
+      query: ({ usernameType }) => {
+        return {
+          url: `user/ens/change-main-type`,
+          method: "PUT",
+          body: { ensType: usernameType },
           credentials: "omit",
         };
       },

@@ -1,4 +1,4 @@
-import type { IAddress } from '@shared/lib'
+import { IUserWalletDto } from './user.dto'
 
 export interface IReactionsDto {
   likes: number
@@ -16,7 +16,7 @@ export interface ICommentsDto {
 interface IComment {
   id: number
   description: string
-  creator: IAddress
+  creator: IUserWalletDto
 }
 // interface ICreator {
 //   id: number
