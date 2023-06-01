@@ -17,12 +17,12 @@ export function AdaptiveModal(props: IAdaptiveModalProps) {
   const { classNamesDrawer, classNamesModal, ...restProps } = props;
   const matches = useMediaQuery("(max-width: 768px)");
   return (
-    <div >
+    <>
       {matches ? (
         <Drawer {...restProps} classNames={classNamesDrawer} />
       ) : (
         <Modal {...restProps} classNames={classNamesModal} />
       )}
-    </div>
+    </>
   );
 }
