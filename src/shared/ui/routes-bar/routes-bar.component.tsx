@@ -1,4 +1,4 @@
-import { clsx, Image } from "@mantine/core";
+import { clsx } from "@mantine/core";
 import { ROUTES } from "@shared/lib";
 import Link from "next/link";
 import * as React from "react";
@@ -15,10 +15,7 @@ export function RoutesBar(props: IRoutesBarProperties) {
   const { children, chosedMenu, unreadBadge } = props;
 
   return (
-    <div className="flex flex-col h-fit items-center max-md:border max-md:border-t-2 max-md:border-white/20 max-md:left-0 max-md:z-[999] md:sticky fixed md:top-4 max-md:w-screen max-md:bottom-0">
-      <div className="max-w-32 h-9 mb-9 max-md:hidden">
-        <Image alt={"logo"} src={"/assets/icons/logo.svg"} />
-      </div>
+    
       <Paper className="md:rounded-[2rem] justify-between md:w-60 max-md:w-full flex md:flex-col">
         {ROUTES.map((route, index) => {
           return (
@@ -56,6 +53,6 @@ export function RoutesBar(props: IRoutesBarProperties) {
 
         {children}
       </Paper>
-    </div>
+    
   );
 }

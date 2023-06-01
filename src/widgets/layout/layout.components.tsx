@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { memo, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
 import { ScrollToTop } from "./scroll-to-top.component";
+import { BookUsernameBanner } from "@features/book-username";
+import { Image } from "@mantine/core";
 
 interface IProperties {
   title: React.ReactNode;
@@ -43,24 +45,36 @@ export const Layout = memo((props: IProperties) => {
     <div className="bg-background min-h-screen md:flex justify-center max-xl:px-4 max-md:px-0">
       <Meta title="frenly feed" description="your frenly feed" />
 
-      <RoutesBar
-        chosedMenu={currentIndexMenu}
-        unreadBadge={unreadNotifications}
-      >
-        {addressHydration && (
-          <SmallUserCard
-            chosenInMenu={currentIndexMenu === -1}
-            address={addressHydration as IAddress}
-            isMenu
-          />
-        )}
-      </RoutesBar>
+      <div className="flex flex-col h-fit items-center max-md:border max-md:border-t-2 max-md:border-white/20 max-md:left-0 max-md:z-[999] md:sticky fixed md:top-4 max-md:w-screen max-md:bottom-0">
+        <div className="max-w-32 h-9 mb-9 max-md:hidden">
+          <Image alt={"logo"} src={"/assets/icons/logo.svg"} />
+        </div>
+        <div className="flex flex-col gap-y-4 w-full">
+          <RoutesBar
+            chosedMenu={currentIndexMenu}
+            unreadBadge={unreadNotifications}
+          >
+            {addressHydration && (
+              <SmallUserCard
+                chosenInMenu={currentIndexMenu === -1}
+                address={addressHydration as IAddress}
+                isMenu
+              />
+            )}
+          </RoutesBar>
+          <BookUsernameBanner classNames={{ root: "max-md:hidden" }} />
+        </div>
+      </div>
 
       <div className="flex flex-col max-lg:w-full lg:w-[37rem] md:ml-4 lg:mr-4 max-md:pb-20">
+        <BookUsernameBanner classNames={{ root: "md:hidden" }} />
+
         <div
           className={`flex justify-between mb-6 mt-1 max-md:pl-4 max-md:my-3 bg-background`}
         >
-          <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
+          <div className="flex flex-col">
+            <h1 className={`font-rounded font-bold text-4xl`}>{title}</h1>
+          </div>
         </div>
         <ScrollToTop />
         {children}
