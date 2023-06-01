@@ -5,7 +5,7 @@ import * as React from "react";
 import { UploadAvatar } from "./upload-avatar.component";
 import { SocialBadgeList } from "@widgets/user-profile/ui/social-badge-list.component";
 import { Select, Textarea } from "@mantine/core";
-import { useEditProfile } from "../model";
+import { BIO_TYPES, useEditProfile } from "../model";
 
 export interface IEditModalProps {
   userWallet: IUserWalletDto;
@@ -88,7 +88,7 @@ export function EditModal(props: IEditModalProps) {
 
           <div className="">
             <Select
-              data={[{ label: "twitter", value: "com.twitter" }]}
+              data={BIO_TYPES}
               onChange={changeLinkSelectHandler}
               value={link.type}
               placeholder="choose type"
@@ -108,6 +108,7 @@ export function EditModal(props: IEditModalProps) {
           </div>
           <div className="max-md:mb-4">
             <SocialBadgeList
+              isEdit
               socials={frenSocials as [string, string | undefined][]}
             >
               <EditButton

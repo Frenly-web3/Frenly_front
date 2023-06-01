@@ -1,4 +1,4 @@
-import { useEnsName } from "wagmi";
+import { useEnsName, useEnsResolver } from "wagmi";
 
 import type { IAddress } from "../types";
 import { shortAddress } from "./format-short-address";
@@ -22,6 +22,12 @@ export const useUserName = (props: IProperties) => {
     chainId: mainnet.id,
     enabled: usernameType === UsernameTypeEnum.ETH,
   });
+
+  const {data: resolver} = useEnsResolver({name: ensData})
+
+  console.log("Resolver", resolver);
+  
+
   const { data: usernameFrenData } = useGetFrenProfile({
     address,
     skip: usernameType !== UsernameTypeEnum.FRENLY,

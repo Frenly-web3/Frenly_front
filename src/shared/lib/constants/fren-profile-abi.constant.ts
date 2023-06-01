@@ -355,9 +355,21 @@ export const FREN_PROFILE = [
             type: "string",
           },
           {
-            internalType: "string",
-            name: "twitterLink",
-            type: "string",
+            components: [
+              {
+                internalType: "string",
+                name: "name",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "value",
+                type: "string",
+              },
+            ],
+            internalType: "struct DataTypes.ProfileBioStruct[]",
+            name: "bio",
+            type: "tuple[]",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -411,9 +423,21 @@ export const FREN_PROFILE = [
             type: "string",
           },
           {
-            internalType: "string",
-            name: "twitterLink",
-            type: "string",
+            components: [
+              {
+                internalType: "string",
+                name: "name",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "value",
+                type: "string",
+              },
+            ],
+            internalType: "struct DataTypes.ProfileBioStruct[]",
+            name: "bio",
+            type: "tuple[]",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -467,9 +491,21 @@ export const FREN_PROFILE = [
             type: "string",
           },
           {
-            internalType: "string",
-            name: "twitterLink",
-            type: "string",
+            components: [
+              {
+                internalType: "string",
+                name: "name",
+                type: "string",
+              },
+              {
+                internalType: "string",
+                name: "value",
+                type: "string",
+              },
+            ],
+            internalType: "struct DataTypes.ProfileBioStruct[]",
+            name: "bio",
+            type: "tuple[]",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -706,6 +742,31 @@ export const FREN_PROFILE = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "string",
+            name: "name",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "value",
+            type: "string",
+          },
+        ],
+        internalType: "struct DataTypes.ProfileBioStruct",
+        name: "_newBio",
+        type: "tuple",
+      },
+    ],
+    name: "setBio",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "string",
         name: "_newDescription",
         type: "string",
@@ -751,19 +812,6 @@ export const FREN_PROFILE = [
       },
     ],
     name: "setProfileTokenURI",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "_newTwitterLink",
-        type: "string",
-      },
-    ],
-    name: "setTwitterLink",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

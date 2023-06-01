@@ -21,7 +21,7 @@ export const useEditProfile = () => {
     abi: FREN_PROFILE,
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
     chainId: polygonMumbai.id,
-    functionName: "setTwitterLink",
+    functionName: "setBio",
     onSuccess: async () => {
       if (chain?.id !== mainnet.id) {
         await switchNetworkAsync?.(mainnet?.id as number);
@@ -42,7 +42,7 @@ export const useEditProfile = () => {
         }
 
         if (!writeAsync) return;
-        await changeTwitter({ args: [value] });
+        await changeTwitter({ args: [{ name: type, value }] });
       } catch {
       } finally {
         setLinkLoading(false);

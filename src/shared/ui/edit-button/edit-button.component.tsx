@@ -3,11 +3,12 @@ import * as React from "react";
 
 export interface IEditButtonProps extends React.ButtonHTMLAttributes<unknown> {
   isLoading?: boolean;
-  editType: "add" | "edit" | "save";
+  editType?: "add" | "edit" | "save";
+  children?: React.ReactNode;
 }
 
 export function EditButton(props: IEditButtonProps) {
-  const { isLoading, editType, ...buttonProps } = props;
+  const { isLoading, editType, children, ...buttonProps } = props;
   return (
     <button
       {...buttonProps}
@@ -16,7 +17,8 @@ export function EditButton(props: IEditButtonProps) {
       )}
     >
       {isLoading && <Loader className="w-4" />}
-      {!isLoading && (
+      {!isLoading && !editType && children}
+      {!isLoading && editType && (
         <div className="flex items-center gap-1">
           <span className="font-icon text-black/40">{editType}</span>
           <span className="font-rounded text-black/80 ">{editType}</span>
