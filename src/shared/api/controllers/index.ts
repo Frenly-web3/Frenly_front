@@ -8,3 +8,4 @@ export * from "./opensea.api";
 export * from "./reactions.api";
 export * from "./user.api";
 export * from "./username.api";
+export * from "./whitelist.api";
