@@ -5,6 +5,17 @@ export const FREN_PROFILE = [
     type: "error",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_price",
+        type: "uint256",
+      },
+    ],
+    name: "InsufficientFunds",
+    type: "error",
+  },
+  {
     inputs: [],
     name: "InvalidSymbols",
     type: "error",
@@ -45,6 +56,11 @@ export const FREN_PROFILE = [
   {
     inputs: [],
     name: "OnlyAdmins",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "OnlyUsernameOwner",
     type: "error",
   },
   {
@@ -112,6 +128,87 @@ export const FREN_PROFILE = [
     inputs: [
       {
         indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "avatar",
+        type: "string",
+      },
+    ],
+    name: "AvatarChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "key",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "value",
+        type: "string",
+      },
+    ],
+    name: "BioChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+    ],
+    name: "DescriptionChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint8",
         name: "version",
         type: "uint8",
@@ -137,6 +234,37 @@ export const FREN_PROFILE = [
       },
     ],
     name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "username",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "avatar",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+    ],
+    name: "ProfileCreated",
     type: "event",
   },
   {
@@ -283,6 +411,41 @@ export const FREN_PROFILE = [
   {
     inputs: [
       {
+        components: [
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "username",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "imageURI",
+            type: "string",
+          },
+        ],
+        internalType: "struct DataTypes.CreateProfileData",
+        name: "args",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "sig",
+        type: "bytes",
+      },
+    ],
+    name: "createProfileWithApprove",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "_admin",
         type: "address",
@@ -307,6 +470,30 @@ export const FREN_PROFILE = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_username",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "key",
+        type: "string",
+      },
+    ],
+    name: "getBios",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -353,23 +540,6 @@ export const FREN_PROFILE = [
             internalType: "string",
             name: "description",
             type: "string",
-          },
-          {
-            components: [
-              {
-                internalType: "string",
-                name: "name",
-                type: "string",
-              },
-              {
-                internalType: "string",
-                name: "value",
-                type: "string",
-              },
-            ],
-            internalType: "struct DataTypes.ProfileBioStruct[]",
-            name: "bio",
-            type: "tuple[]",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -422,23 +592,6 @@ export const FREN_PROFILE = [
             name: "description",
             type: "string",
           },
-          {
-            components: [
-              {
-                internalType: "string",
-                name: "name",
-                type: "string",
-              },
-              {
-                internalType: "string",
-                name: "value",
-                type: "string",
-              },
-            ],
-            internalType: "struct DataTypes.ProfileBioStruct[]",
-            name: "bio",
-            type: "tuple[]",
-          },
         ],
         internalType: "struct DataTypes.ProfileStruct",
         name: "",
@@ -489,23 +642,6 @@ export const FREN_PROFILE = [
             internalType: "string",
             name: "description",
             type: "string",
-          },
-          {
-            components: [
-              {
-                internalType: "string",
-                name: "name",
-                type: "string",
-              },
-              {
-                internalType: "string",
-                name: "value",
-                type: "string",
-              },
-            ],
-            internalType: "struct DataTypes.ProfileBioStruct[]",
-            name: "bio",
-            type: "tuple[]",
           },
         ],
         internalType: "struct DataTypes.ProfileStruct",
@@ -745,7 +881,12 @@ export const FREN_PROFILE = [
         components: [
           {
             internalType: "string",
-            name: "name",
+            name: "username",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "key",
             type: "string",
           },
           {

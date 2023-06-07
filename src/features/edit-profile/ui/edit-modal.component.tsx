@@ -109,7 +109,8 @@ export function EditModal(props: IEditModalProps) {
           <div className="max-md:mb-4">
             <SocialBadgeList
               isEdit
-              socials={frenSocials as [string, string | undefined][]}
+              // socials={frenSocials as [string, string | undefined][]}
+              socials={[]}
             >
               <EditButton
                 editType="add"

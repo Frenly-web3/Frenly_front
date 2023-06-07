@@ -9,11 +9,11 @@ export interface IuseGetFrenLinks {
 
 export const useGetFrenInfo = ({ address, skip = false }: IuseGetFrenLinks) => {
   const { data } = useGetFrenProfile({ address, skip });
-  
+
   return useMemo(() => {
     return {
       description: data?.description,
-      socials: data?.bio.map((bioLink) => Object.values(bioLink)) ?? [],
+      socials: [],
     };
   }, [address, data]);
 };

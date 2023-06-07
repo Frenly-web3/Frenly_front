@@ -42,7 +42,7 @@ export const useEditProfile = () => {
         }
 
         if (!writeAsync) return;
-        await changeTwitter({ args: [{ name: type, value }] });
+        // await changeTwitter({ args: [{ name: type, value }] });
       } catch {
       } finally {
         setLinkLoading(false);

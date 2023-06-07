@@ -15,9 +15,12 @@ export function SearchBlock(props: ISearchBlockProperties) {
   const {} = props;
   const [value, setValue] = React.useState<IAddress | string>("");
 
-  const { usernames, isLoading, loadMore, hasMore } = useGetAddressFrom({
+  const { usernames, isLoading, loadMore, hasMore, frens } = useGetAddressFrom({
     value,
   });
+
+  console.log(frens);
+  
 
   return (
     <Paper className="rounded-[2rem] h-full">
@@ -42,6 +45,7 @@ export function SearchBlock(props: ISearchBlockProperties) {
             hasMore={hasMore}
             loader={<AuthorSkeleton />}
           >
+            
             {usernames?.map(({ address }) => {
               return (
                 <Link href={`profile/${address}`}>

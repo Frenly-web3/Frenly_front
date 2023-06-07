@@ -29,7 +29,7 @@ export function UploadAvatar(props: IUploadAvatarProps) {
           isLoading={isLoading}
         />
       )}
-      <Avatar {...avatarProps} className="w-full " />
+      <Avatar {...avatarProps} className="w-full" />
     </div>
   );
 }

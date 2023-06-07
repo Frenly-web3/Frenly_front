@@ -24,8 +24,6 @@ export const useUserName = (props: IProperties) => {
   });
 
   const {data: resolver} = useEnsResolver({name: ensData})
-
-  console.log("Resolver", resolver);
   
 
   const { data: usernameFrenData } = useGetFrenProfile({

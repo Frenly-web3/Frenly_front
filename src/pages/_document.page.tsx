@@ -28,6 +28,7 @@ class MyDocument extends Document {
           </Script>
         </Head>
         <body>
+          
           <Main />
           <div id="portal" />
           <NextScript />
