@@ -1,12 +1,19 @@
-import type { IAddress } from '../types'
+import { whitelistApi } from "@shared/api";
+import type { IAddress } from "../types";
+import { useCallback } from "react";
 
-export const isWhitelisted = (address: IAddress) => {
-  const whitelist = process.env.NEXT_PUBLIC_WHITELIST
+export const useIsWhitelisted = () => {
+  const { data } = whitelistApi.useGetWhitelistedAddressQuery();
 
-  return whitelist
-    ?.split(',')
-    .map((whitelistAddress) => {
-      return whitelistAddress.toLowerCase()
-    })
-    .includes(address?.toLowerCase())
-}
+  return useCallback(
+    (checkedAddress: IAddress) => {
+      if (!data) return false;
+      return data?.users
+        .map(({ address }) => {
+          return address.toLowerCase();
+        })
+        .includes(checkedAddress?.toLowerCase());
+    },
+    [data]
+  );
+};
