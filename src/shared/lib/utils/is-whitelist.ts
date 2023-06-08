@@ -7,7 +7,7 @@ export const useIsWhitelisted = () => {
 
   return useCallback(
     (checkedAddress: IAddress) => {
-      if (!data) return false;
+      if (!data) return undefined;
       return data?.users
         .map(({ address }) => {
           return address.toLowerCase();

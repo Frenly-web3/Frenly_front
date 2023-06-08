@@ -33,6 +33,7 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   //   }, 2500);
   // };
 
+  
   useEffect(() => {
     setCurrentUsernameType(usernameType as UsernameTypeEnum);
   }, [usernameType]);

@@ -8,11 +8,9 @@ const baseQuery = fetchBaseQuery({
 export const whitelistApi = createApi({
   reducerPath: "whitelistApi",
   baseQuery,
+  tagTypes: ["WHITELIST"],
   endpoints: (builder) => ({
-    getWhitelistedAddress: builder.query<
-      IWhitelistedUsersDto,
-      void
-    >({
+    getWhitelistedAddress: builder.query<IWhitelistedUsersDto, void>({
       query: () => {
         return {
           url: ``,
@@ -21,6 +19,7 @@ export const whitelistApi = createApi({
           credentials: "omit",
         };
       },
+      providesTags: ["WHITELIST"],
     }),
   }),
 });
