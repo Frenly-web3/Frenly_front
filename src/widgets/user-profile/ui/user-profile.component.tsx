@@ -17,10 +17,11 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
   const isOwner = useCheckIsOwner(address);
   const { name, description, social } = useEnsInfo({ address });
-  const { socials: frenSocials, description: frenDescription } = useGetFrenInfo(
+  const { socials: frenSocials, description: frenDescription, name: frenUsername,  } = useGetFrenInfo(
     { address }
   );
   const { user } = useUserInfo({ address });
+console.log(frenSocials);
 
   return (
     <div className="p-4 top-0 bg-white rounded-[2rem] relative">
@@ -36,7 +37,7 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
         <div className="max-md:w-full">
           <InfoUploadComponent
             address={address}
-            name={name}
+            name={frenUsername}
             description={description}
             usernameType={user.usernameType}
           >

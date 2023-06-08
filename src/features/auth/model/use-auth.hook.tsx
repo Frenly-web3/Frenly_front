@@ -1,7 +1,11 @@
 import { revertInitialState, setAuth, setTokens } from "@entities/user";
 import { authApi } from "@shared/api";
-import type { Connector, IAddress } from "@shared/lib";
-import { isWhitelisted, useAppDispatch } from "@shared/lib";
+import {
+  Connector,
+  IAddress,
+  useIsWhitelisted,
+  useAppDispatch,
+} from "@shared/lib";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
@@ -18,6 +22,7 @@ export function useAuth() {
   const deleteTokensDispatch = useAppDispatch(revertInitialState);
   const { signMessageAsync } = useSignMessage();
   const { connectAsync, connectors } = useConnect();
+  const isWhitelisted = useIsWhitelisted();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = React.useState(false);
@@ -29,7 +34,10 @@ export function useAuth() {
     try {
       await disconnectAsync();
       await disconnect();
-      await connectAsync({ connector: connectors[connector], chainId: mainnet.id });
+      await connectAsync({
+        connector: connectors[connector],
+        chainId: mainnet.id,
+      });
     } catch (error: any) {
       setIsError(error.message);
       await disconnectAsync();

@@ -1,6 +1,6 @@
 import { userSelector } from "@entities/user";
 import { AuthButton } from "@features/auth";
-import { isWhitelisted } from "@shared/lib";
+import { useIsWhitelisted } from "@shared/lib";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useAccount } from "wagmi";
@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 const Index = () => {
   const { address } = useAccount();
   const router = useRouter();
-
+  const isWhitelisted = useIsWhitelisted();
   const user = useSelector(userSelector);
   if (address && isWhitelisted(address) && user.isAuth) router.push("/feed");
 

@@ -10,6 +10,7 @@ export interface ISocialBadgeListProps {
 
 export function SocialBadgeList(props: ISocialBadgeListProps) {
   const { socials, children, isEdit = false } = props;
+console.log(socials);
 
   return (
     <div className="flex flex-wrap gap-x-2 gap-y-3">

@@ -13,6 +13,7 @@ import {
   reactionsApi,
   userApi,
   usernameApi,
+  whitelistApi,
 } from "@shared/api";
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +32,7 @@ export const store = configureStore({
     [notificationsApi.reducerPath]: notificationsApi.reducer,
     [openseaApi.reducerPath]: openseaApi.reducer,
     [frenGraphApi.reducerPath]: frenGraphApi.reducer,
+    [whitelistApi.reducerPath]: whitelistApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -44,7 +46,8 @@ export const store = configureStore({
       usernameApi.middleware,
       notificationsApi.middleware,
       openseaApi.middleware,
-      frenGraphApi.middleware
+      frenGraphApi.middleware,
+      whitelistApi.middleware
     ),
 });
 

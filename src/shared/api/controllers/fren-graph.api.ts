@@ -83,17 +83,17 @@ export const frenGraphApi = createApi({
       providesTags: ["USERNAME-FREN"],
       query: ({ address }) => ({
         document: gql`
-          query getFrenUsernames($usernamePart: String, $skip: Int) {
-            profiles(
-              first: 15
-              skip: $skip
-              where: { username_starts_with: $usernamePart }
-            ) {
+          query getFrenUsernames($owner: Bytes) {
+            profiles(first: 15, where: { owner: $owner }) {
               id
               avatar
               username
               owner
-              
+              description
+              bios(first: 10) {
+                key
+                value
+              }
             }
           }
         `,
@@ -101,6 +101,9 @@ export const frenGraphApi = createApi({
           owner: address,
         },
       }),
+      transformResponse: (data) =>{
+        return data?.profiles[0]
+      }
     }),
   }),
 });

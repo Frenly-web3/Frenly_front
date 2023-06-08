@@ -1,12 +1,12 @@
 import { useAuth } from "@features/auth";
-import { isWhitelisted } from "@shared/lib";
+import { useIsWhitelisted } from "@shared/lib";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Connector, useAccount, useConnect } from "wagmi";
 
 export const useChangeAddress = () => {
   const { address, connector } = useAccount();
-
+  const isWhitelisted = useIsWhitelisted();
   const { connect, connectors } = useConnect();
 
   const [previousAddress, setPreviousAddress] = useState(address);
