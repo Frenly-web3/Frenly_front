@@ -96,13 +96,13 @@ export function FollowersModal(props: IFollowersModalProps) {
         >
           <Tabs.Panel value={SubscriptionStateEnum.followers}>
             {followers?.map((follower, index) => {
-              return <FollowUserCard creator={follower} key={index} />;
+              return <FollowUserCard creator={follower as unknown as IUserWalletDto} key={index} />;
             })}
           </Tabs.Panel>
 
           <Tabs.Panel value={SubscriptionStateEnum.following}>
             {subscriptions?.map((follower, index) => {
-              return <FollowUserCard creator={follower} key={index} />;
+              return <FollowUserCard creator={follower as unknown as IUserWalletDto} key={index} />;
             })}
           </Tabs.Panel>
         </AdaptiveModal>

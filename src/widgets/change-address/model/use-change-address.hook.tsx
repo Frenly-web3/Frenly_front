@@ -24,7 +24,12 @@ export const useChangeAddress = () => {
   }, [address]);
 
   useEffect(() => {
-    if (address && !isWhitelisted(address)) {
+    if (
+      address &&
+      isWhitelisted(address) !== undefined &&
+      !isWhitelisted(address)
+    ) {
+
       router.push("/user-not-whitelisted");
       return;
     }
@@ -37,5 +42,5 @@ export const useChangeAddress = () => {
         await verify();
       })();
     }
-  }, [address]);
+  }, [address, isWhitelisted]);
 };
