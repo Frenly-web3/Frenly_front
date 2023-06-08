@@ -1,7 +1,18 @@
+import { userSelector } from "@entities/user";
+import { useIsWhitelisted } from "@shared/lib";
 import { Button, Meta } from "@shared/ui";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { useAccount } from "wagmi";
 
 export default function UserNotWhitelistedPage() {
+  const { address } = useAccount();
+  const router = useRouter();
+  const isWhitelisted = useIsWhitelisted();
+  const user = useSelector(userSelector);
+  if (address && isWhitelisted(address) && user.isAuth) router.push("/feed");
+
   return (
     <>
       <Meta title="Frenly" description="Not whitelisted" />
