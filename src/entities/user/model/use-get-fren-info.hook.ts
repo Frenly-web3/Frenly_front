@@ -1,4 +1,6 @@
-import { IAddress, useGetFrenProfile } from "@shared/lib";
+import { frenGraphApi } from "@shared/api";
+import { IAddress } from "@shared/lib";
+
 import { useMemo } from "react";
 
 export interface IuseGetFrenLinks {
@@ -7,12 +9,19 @@ export interface IuseGetFrenLinks {
 }
 
 export const useGetFrenInfo = ({ address, skip = false }: IuseGetFrenLinks) => {
-  const { data } = useGetFrenProfile({ address, skip });
+  const { data: fren } = frenGraphApi.useGetFrenUsernameInfoQuery(
+    { address },
+    { skip }
+  );
 
   return useMemo(() => {
     return {
-      description: data?.description,
-      socials: data?.twitterLink ? [["com.twitter", data?.twitterLink]] : [],
+      name: fren?.username,
+      address,
+      description: fren?.description ?? "",
+      socials: fren?.bios.map((bio) => {
+        return Object.values(bio) as Array<string>;
+      }),
     };
-  }, [address, data]);
+  }, [address, fren]);
 };

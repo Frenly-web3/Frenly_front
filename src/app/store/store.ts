@@ -7,6 +7,7 @@ import {
   authApi,
   communityApi,
   contentApi,
+  frenGraphApi,
   notificationsApi,
   openseaApi,
   reactionsApi,
@@ -30,6 +31,7 @@ export const store = configureStore({
     [usernameApi.reducerPath]: usernameApi.reducer,
     [notificationsApi.reducerPath]: notificationsApi.reducer,
     [openseaApi.reducerPath]: openseaApi.reducer,
+    [frenGraphApi.reducerPath]: frenGraphApi.reducer,
     [whitelistApi.reducerPath]: whitelistApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -44,6 +46,7 @@ export const store = configureStore({
       usernameApi.middleware,
       notificationsApi.middleware,
       openseaApi.middleware,
+      frenGraphApi.middleware,
       whitelistApi.middleware
     ),
 });

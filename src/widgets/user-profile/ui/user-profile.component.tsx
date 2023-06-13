@@ -17,9 +17,12 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
   const isOwner = useCheckIsOwner(address);
   const { name, description, social } = useEnsInfo({ address });
-  const { socials: frenSocials, description: frenDescription } = useGetFrenInfo(
-    { address }
-  );
+  const {
+    socials: frenSocials,
+    description: frenDescription,
+    name: frenUsername,
+  } = useGetFrenInfo({ address });
+  
   const { user } = useUserInfo({ address });
 
   return (
@@ -36,7 +39,7 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
         <div className="max-md:w-full">
           <InfoUploadComponent
             address={address}
-            name={name}
+            name={frenUsername}
             description={description}
             usernameType={user.usernameType}
           >
@@ -55,6 +58,11 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
         user.usernameType === null) && ( */}
       <div className="md:ml-32 max-md:mb-4">
         <SocialBadgeList
+          name={
+            (user.usernameType === UsernameTypeEnum.FRENLY
+              ? frenUsername
+              : name) as string
+          }
           socials={
             (user.usernameType === UsernameTypeEnum.FRENLY
               ? frenSocials

@@ -17,7 +17,7 @@ const mockSuggestedFriends = [
   },
   {
     walletAddress: "0xe7b5B35181eeB87A6f2EE68ef923c4016Cd552fa" as IAddress,
-    ensType: 0,
+    ensType: 1,
   },
   {
     walletAddress: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045" as IAddress,

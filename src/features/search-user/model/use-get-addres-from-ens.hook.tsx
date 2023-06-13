@@ -1,5 +1,5 @@
 import { useDebouncedValue } from "@mantine/hooks";
-import { usernameApi } from "@shared/api";
+import { frenGraphApi, usernameApi } from "@shared/api";
 import type { IAddress } from "@shared/lib";
 import { useEffect, useMemo, useState } from "react";
 
@@ -13,6 +13,12 @@ export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
       { skip: !value }
     );
 
+  const { data: usernamesFren, isLoading: frenLoading } =
+    frenGraphApi.useGetFrenUsernamesQuery(
+      { usernamePart: debouncedValue, skip: takeCount * 15 },
+      { skip: !value }
+    );
+
   useEffect(() => {
     setTakeCount(0);
   }, [value]);
@@ -20,7 +26,8 @@ export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
   return useMemo(() => {
     return {
       usernames: usernamesData?.usernames,
-      isLoading,
+      frens: usernamesFren?.usernames,
+      isLoading: isLoading && frenLoading,
       hasMore: usernamesData?.hasMore as boolean,
       loadMore: () => setTakeCount((prev) => prev + 1),
     };

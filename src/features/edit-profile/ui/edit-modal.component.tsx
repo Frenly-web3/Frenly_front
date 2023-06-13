@@ -5,7 +5,7 @@ import * as React from "react";
 import { UploadAvatar } from "./upload-avatar.component";
 import { SocialBadgeList } from "@widgets/user-profile/ui/social-badge-list.component";
 import { Select, Textarea } from "@mantine/core";
-import { useEditProfile } from "../model";
+import { BIO_TYPES, useEditProfile } from "../model";
 
 export interface IEditModalProps {
   userWallet: IUserWalletDto;
@@ -14,12 +14,19 @@ export interface IEditModalProps {
 export function EditModal(props: IEditModalProps) {
   const { userWallet } = props;
 
-  const { socials: frenSocials, description: frenDescription } = useGetFrenInfo(
-    { address: userWallet.walletAddress }
-  );
+  const {
+    socials: frenSocials,
+    description: frenDescription,
+    name,
+  } = useGetFrenInfo({ address: userWallet.walletAddress });
 
-  const { addLink, changeDescription, descriptionLoading, linkLoading } =
-    useEditProfile();
+  const {
+    addLink,
+    changeDescription,
+    descriptionLoading,
+    linkLoading,
+    deleteLink,
+  } = useEditProfile();
 
   const [description, setDescription] = React.useState<string>(
     frenDescription ?? ""
@@ -41,8 +48,6 @@ export function EditModal(props: IEditModalProps) {
   };
 
   const changeLinkInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-
     setLink((prev) => ({ ...prev, value: e.target.value }));
   };
 
@@ -88,7 +93,7 @@ export function EditModal(props: IEditModalProps) {
 
           <div className="">
             <Select
-              data={[{ label: "twitter", value: "com.twitter" }]}
+              data={BIO_TYPES}
               onChange={changeLinkSelectHandler}
               value={link.type}
               placeholder="choose type"
@@ -106,13 +111,17 @@ export function EditModal(props: IEditModalProps) {
               placeholder="type link"
             />
           </div>
-          <div className="max-md:mb-4">
+          <div className="max-md:mb-4 md:px-52 px-16">
             <SocialBadgeList
+              isEdit
               socials={frenSocials as [string, string | undefined][]}
+              onClickBadge={deleteLink}
+              name={name as string}
+              // socials={[]}
             >
               <EditButton
                 editType="add"
-                onClick={() => addLink(link)}
+                onClick={() => addLink({ ...link, username: name as string })}
                 isLoading={linkLoading}
               />
             </SocialBadgeList>
