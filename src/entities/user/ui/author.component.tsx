@@ -54,7 +54,6 @@ const AuthorContent = (props: Omit<IAuthorProperties, "withoutLink">) => {
 
 export const Author = (props: IAuthorProperties) => {
   const { classNames, postOwner, withoutLink = false } = props;
-
   return (
     <div
       className={clsx(

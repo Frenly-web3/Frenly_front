@@ -17,11 +17,13 @@ export const UserProfileWidget = (props: IUserProfileWidgetProperties) => {
   const { address } = props;
   const isOwner = useCheckIsOwner(address);
   const { name, description, social } = useEnsInfo({ address });
-  const { socials: frenSocials, description: frenDescription, name: frenUsername,  } = useGetFrenInfo(
-    { address }
-  );
+  const {
+    socials: frenSocials,
+    description: frenDescription,
+    name: frenUsername,
+  } = useGetFrenInfo({ address });
+  
   const { user } = useUserInfo({ address });
-console.log(frenSocials);
 
   return (
     <div className="p-4 top-0 bg-white rounded-[2rem] relative">
@@ -56,6 +58,11 @@ console.log(frenSocials);
         user.usernameType === null) && ( */}
       <div className="md:ml-32 max-md:mb-4">
         <SocialBadgeList
+          name={
+            (user.usernameType === UsernameTypeEnum.FRENLY
+              ? frenUsername
+              : name) as string
+          }
           socials={
             (user.usernameType === UsernameTypeEnum.FRENLY
               ? frenSocials

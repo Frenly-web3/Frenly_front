@@ -19,8 +19,6 @@ export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
       { skip: !value }
     );
 
-  console.log("FREN", usernamesFren);
-
   useEffect(() => {
     setTakeCount(0);
   }, [value]);
@@ -29,7 +27,7 @@ export const useGetAddressFrom = ({ value }: { value: IAddress | string }) => {
     return {
       usernames: usernamesData?.usernames,
       frens: usernamesFren?.usernames,
-      isLoading,
+      isLoading: isLoading && frenLoading,
       hasMore: usernamesData?.hasMore as boolean,
       loadMore: () => setTakeCount((prev) => prev + 1),
     };

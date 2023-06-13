@@ -1,14 +1,13 @@
-import type { IAddress, Subscription } from "@shared/lib";
+import { useCheckIsOwner, type IAddress, type Subscription } from "@shared/lib";
 import { IFollowButtonContent, ProfileButton } from "@shared/ui";
 import React from "react";
-import { useAccount } from "wagmi";
 
 import { useFollowUnfollowUser } from "../model";
 
 interface IFollowUnfollowButtonProperties {
   address: IAddress;
   className?: string;
-  followButtonContent?: IFollowButtonContent; 
+  followButtonContent?: IFollowButtonContent;
 }
 
 export const FollowUnfollowButton = (
@@ -18,12 +17,11 @@ export const FollowUnfollowButton = (
   const { followUnfollowHandler, followUnfollowState } = useFollowUnfollowUser({
     address,
   });
-
-  const { address: connectedAddress } = useAccount();
+  const isOwner = useCheckIsOwner(address);
 
   return (
     <div className="flex  items-center">
-      {connectedAddress != address && (
+      {!isOwner && (
         <ProfileButton
           classNames={className}
           followUnfollowState={followUnfollowState as Subscription}

@@ -4,6 +4,7 @@ import { createApi } from "@reduxjs/toolkit/dist/query/react";
 import { IUsernameRequest } from "../dto";
 import { gql } from "@apollo/client";
 import {
+  IGetUsernameFrenAddressResponse,
   IUsernameFrenDto,
   IUsernameFrenInfoDto,
   IUsernameFrenInfoResponse,
@@ -15,7 +16,7 @@ export const frenGraphApi = createApi({
   baseQuery: graphqlRequestBaseQuery({
     url: "https://api.studio.thegraph.com/query/47786/fren-profiles/version/latest",
   }),
-  tagTypes: ["USERNAME-FREN"],
+  tagTypes: ["USERNAME-FREN", "USERNAME-FREN-INFO"],
   endpoints: (builder) => ({
     getFrenUsernames: builder.query<
       IUsernameFrenTransformedDto,
@@ -80,7 +81,7 @@ export const frenGraphApi = createApi({
       IUsernameFrenInfoDto,
       IUsernameFrenInfoResponse
     >({
-      providesTags: ["USERNAME-FREN"],
+      providesTags: ["USERNAME-FREN-INFO"],
       query: ({ address }) => ({
         document: gql`
           query getFrenUsernames($owner: Bytes) {
@@ -101,9 +102,31 @@ export const frenGraphApi = createApi({
           owner: address,
         },
       }),
-      transformResponse: (data) =>{
-        return data?.profiles[0]
-      }
+      transformResponse: (data: any) => {
+        return data?.profiles[0];
+      },
+    }),
+    getFrenUsernameAddress: builder.query<
+      Pick<IUsernameFrenInfoDto, "owner">,
+      IGetUsernameFrenAddressResponse
+    >({
+      providesTags: ["USERNAME-FREN-INFO"],
+      query: ({ username }) => ({
+        document: gql`
+          query getFrenUsernames($owner: String) {
+            profiles(first: 15, where: { username: $owner }) {
+              username
+              owner
+            }
+          }
+        `,
+        variables: {
+          owner: username,
+        },
+      }),
+      transformResponse: (data: any) => {       
+        return data?.profiles[0].owner;
+      },
     }),
   }),
 });

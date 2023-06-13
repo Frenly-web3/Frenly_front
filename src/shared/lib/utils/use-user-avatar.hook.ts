@@ -1,8 +1,8 @@
 import { IAddress, UsernameTypeEnum } from "@shared/lib";
 import { useEnsAvatar, useEnsName } from "wagmi";
 import { mainnet } from "wagmi/chains";
-import { useGetFrenProfile } from "./use-get-fren-profile.util";
 import { useMemo } from "react";
+import { frenGraphApi } from "@shared/api";
 interface IProperties {
   address: IAddress;
   usernameType?: UsernameTypeEnum;
@@ -15,28 +15,28 @@ export const useUserAvatar = (props: IProperties) => {
   const { data: ensData, isLoading: ensLoading } = useEnsAvatar({
     name,
     chainId: mainnet.id,
-    enabled: usernameType === UsernameTypeEnum.ETH,
   });
 
-  const { data: usernameFrenData, isLoading: frenLoading } = useGetFrenProfile({
-    address,
-    skip: usernameType !== UsernameTypeEnum.FRENLY,
-  });
+  const { data: usernameFrenData, isLoading: frenLoading } =
+    frenGraphApi.useGetFrenUsernameInfoQuery(
+      {
+        address,
+      },
+      { skip: usernameType === UsernameTypeEnum.ETH }
+    );
 
   const data = useMemo(() => {
     switch (usernameType) {
-      case null:
-      case UsernameTypeEnum.ETH: {
-        return ensData && ensData != null ? ensData : placeholder;
-      }
       case UsernameTypeEnum.FRENLY: {
-        return usernameFrenData?.imageURI &&
-          (usernameFrenData?.imageURI?.length as number) > 5
-          ? usernameFrenData?.imageURI
+        if (!usernameFrenData)
+          return ensData && ensData != null ? ensData : placeholder;
+        return usernameFrenData?.avatar &&
+          (usernameFrenData?.avatar?.length as number) > 5
+          ? usernameFrenData?.avatar
           : placeholder;
       }
       default:
-        return placeholder;
+        return ensData && ensData != null ? ensData : placeholder;
     }
   }, [usernameFrenData, ensData, usernameType]);
 

@@ -1,5 +1,5 @@
 import type { IAddress } from "@shared/lib";
-import { useUserName } from "@shared/lib";
+import { UsernameTypeEnum, useUserName } from "@shared/lib";
 import { Meta } from "@shared/ui";
 import { useChangeAddress } from "@widgets/change-address";
 import { Layout } from "@widgets/layout";
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   const { query } = router;
   const { slug } = query;
   const address = slug as IAddress;
-  const { data: name } = useUserName({ address });
+  const { data: name } = useUserName({ address, usernameType: 1, with0x: true });
 
   useChangeAddress();
 

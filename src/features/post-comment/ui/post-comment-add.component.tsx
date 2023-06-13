@@ -18,6 +18,7 @@ export const PostCommentAdd = (props: IProperies) => {
   const [mentionAddresses, setMentionAddresses] = useState<{
     [key: string]: IAddress;
   }>({});
+  
 
   const handler = () => {
     addComment(comment, mentionAddresses);

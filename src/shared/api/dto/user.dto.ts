@@ -17,4 +17,4 @@ export interface IUserWalletDto {
   ensType: UsernameTypeEnum;
 }
 
-export type IUserSubscriptionsDto = IUserWalletDto[];
+export type IUserSubscriptionsDto = IAddress[];

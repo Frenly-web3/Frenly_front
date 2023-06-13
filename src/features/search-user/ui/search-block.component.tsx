@@ -1,5 +1,5 @@
 import { Author, AuthorSkeleton } from "@entities/user";
-import type { IAddress } from "@shared/lib";
+import { UsernameTypeEnum, type IAddress } from "@shared/lib";
 import { Paper } from "@shared/ui";
 import Link from "next/link";
 import * as React from "react";
@@ -18,9 +18,6 @@ export function SearchBlock(props: ISearchBlockProperties) {
   const { usernames, isLoading, loadMore, hasMore, frens } = useGetAddressFrom({
     value,
   });
-
-  console.log(frens);
-  
 
   return (
     <Paper className="rounded-[2rem] h-full">
@@ -45,14 +42,15 @@ export function SearchBlock(props: ISearchBlockProperties) {
             hasMore={hasMore}
             loader={<AuthorSkeleton />}
           >
-            
-            {usernames?.map(({ address }) => {
+            {[...(frens ?? []), ...(usernames ?? [])]?.map((user) => {
               return (
-                <Link href={`profile/${address}`}>
+                <Link href={`profile/${user.address}`}>
                   <Author
                     postOwner={{
-                      walletAddress: address as IAddress,
-                      ensType: 0,
+                      walletAddress: user.address,
+                      ensType: Object.keys(user).includes("avatar")
+                        ? UsernameTypeEnum.FRENLY
+                        : UsernameTypeEnum.ETH,
                     }}
                   />
                 </Link>

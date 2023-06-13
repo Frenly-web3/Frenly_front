@@ -1,7 +1,7 @@
 import { Author } from "@entities/user";
 import { useGetAddressFrom } from "@features/search-user/model";
 import { Autocomplete } from "@mantine/core";
-import { IAddress } from "@shared/lib";
+import { IAddress, UsernameTypeEnum } from "@shared/lib";
 
 import React, { useEffect, useState } from "react";
 export interface IPostCommentInputProps {
@@ -23,7 +23,9 @@ export function PostCommentInput(props: IPostCommentInputProps) {
     number | null
   >(null);
 
-  const { usernames } = useGetAddressFrom({ value: autocompleteUsername });
+  const { usernames, frens } = useGetAddressFrom({
+    value: autocompleteUsername,
+  });
 
   useEffect(() => {
     if (comment.at(-1) === "@") {
@@ -32,6 +34,7 @@ export function PostCommentInput(props: IPostCommentInputProps) {
 
     if (
       comment.slice(-3) === "eth" ||
+      comment.slice(-4) === "fren" ||
       comment === "" ||
       comment.at(-1) === " "
     ) {
@@ -52,12 +55,15 @@ export function PostCommentInput(props: IPostCommentInputProps) {
       return (
         prev.slice(0, prev.length - autocompleteUsername.length) +
         item.value +
+        (item.usernameType === UsernameTypeEnum.FRENLY ? ".fren" : "") +
         " "
       );
     });
     setMentionAddresses((prev) => ({
       ...prev,
-      [item.value]: item.address,
+      [item.value +
+      (item.usernameType === UsernameTypeEnum.FRENLY ? ".fren" : "")]:
+        item.address,
     }));
     setStartedUsernameIndex(null);
     setAutocompleteUsername("");
@@ -67,10 +73,20 @@ export function PostCommentInput(props: IPostCommentInputProps) {
     <Autocomplete
       data={
         startedUsernameIndex
-          ? usernames?.map((username) => ({
-              value: username.name,
-              address: username.address,
-            })) ?? []
+          ? [...(frens ?? []), ...(usernames ?? [])]?.map((username) => {
+              if (Object.keys(username).includes("avatar")) {
+                return {
+                  value: username.name,
+                  address: username.address,
+                  usernameType: UsernameTypeEnum.FRENLY,
+                };
+              }
+              return {
+                value: username.name,
+                address: username.address,
+                usernameType: UsernameTypeEnum.ETH,
+              };
+            }) ?? []
           : []
       }
       onKeyDown={(e) => {
@@ -82,11 +98,14 @@ export function PostCommentInput(props: IPostCommentInputProps) {
       dropdownPosition="top"
       itemComponent={(item) => {
         return (
-          <button onClick={(e) => itemClickHandle(e, item)}>
+          <button key={item.key} onClick={(e) => itemClickHandle(e, item)}>
             <Author
               withoutLink
               classNames={{ avatar: "w-7", root: "my-1" }}
-              postOwner={{ walletAddress: item.address as IAddress, ensType: 0 }}
+              postOwner={{
+                walletAddress: item.address as IAddress,
+                ensType: item.usernameType,
+              }}
             />
           </button>
         );

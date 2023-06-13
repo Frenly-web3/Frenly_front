@@ -18,7 +18,22 @@ export interface IUsernameFrenDto {
   }[];
 }
 
-export interface IUsernameFrenInfoDto {}
+export interface IBio {
+  key: string;
+  value: string;
+}
+
+export interface IUsernameFrenInfoDto {
+  username: string;
+  description: string;
+  owner: IAddress;
+  bios: IBio[];
+  avatar: string;
+}
 export interface IUsernameFrenInfoResponse {
   address: IAddress;
+}
+
+export interface IGetUsernameFrenAddressResponse {
+  username: string;
 }

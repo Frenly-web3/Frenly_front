@@ -25,14 +25,7 @@ export const InfoUploadComponent = (props: IInfoUploadProperties) => {
   const isHaveFrenUsername = useCheckFrenProfile({ address });
   const [changeUsernameType] = userApi.useChangeUsernameTypeMutation();
 
-  // const nameButtonHandler = async () => {
-  //   setOpenedPopover(true);
-  //   await navigator.clipboard.writeText(address);
-  //   setTimeout(() => {
-  //     setOpenedPopover(false);
-  //   }, 2500);
-  // };
-
+  
   useEffect(() => {
     setCurrentUsernameType(usernameType as UsernameTypeEnum);
   }, [usernameType]);

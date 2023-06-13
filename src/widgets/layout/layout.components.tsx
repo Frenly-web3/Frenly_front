@@ -24,7 +24,6 @@ export const Layout = memo((props: IProperties) => {
 
   const { data: unreadNotifications } = notificationsApi.useGetUnreadCountQuery(
     {},
-    { pollingInterval: 15000 }
   );
 
   const router = useRouter();
