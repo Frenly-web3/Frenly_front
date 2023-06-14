@@ -14,14 +14,6 @@ export const ROUTES = [
     unreadContent: false,
   },
   {
-    path: "/feed/posers/",
-    name: "posers",
-    icon: "account_box",
-    isNew: true,
-    unreadContent: false,
-  },
-
-  {
     path: "/notifications/",
     name: "notifications",
     icon: "notifications",
