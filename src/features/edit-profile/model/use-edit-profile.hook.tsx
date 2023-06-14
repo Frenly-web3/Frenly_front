@@ -3,7 +3,7 @@ import { frenGraphApi } from "@shared/api";
 import { FREN_PROFILE, IAddress } from "@shared/lib";
 import { useCallback, useState } from "react";
 import { toast } from "react-toastify";
-import { polygonMumbai } from "viem/chains";
+import { polygon } from "viem/chains";
 import { mainnet, useContractWrite, useNetwork, useSwitchNetwork } from "wagmi";
 
 export const useEditProfile = () => {
@@ -21,7 +21,7 @@ export const useEditProfile = () => {
   const { writeAsync } = useContractWrite({
     abi: FREN_PROFILE,
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
-    chainId: polygonMumbai.id,
+    chainId: polygon.id,
     functionName: "setDescription",
     onSuccess: async () => {
       invalidateUsernameInfo();
@@ -33,7 +33,7 @@ export const useEditProfile = () => {
   const { writeAsync: addBio } = useContractWrite({
     abi: FREN_PROFILE,
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
-    chainId: polygonMumbai.id,
+    chainId: polygon.id,
     functionName: "setBio",
     onSuccess: async () => {
       if (chain?.id !== mainnet.id) {
@@ -59,8 +59,8 @@ export const useEditProfile = () => {
       try {
         setLinkLoading(true);
 
-        if (chain?.id !== polygonMumbai.id) {
-          await switchNetworkAsync?.(polygonMumbai?.id as number);
+        if (chain?.id !== polygon.id) {
+          await switchNetworkAsync?.(polygon?.id as number);
         }
 
         // if (!addLink) return;
@@ -81,8 +81,8 @@ export const useEditProfile = () => {
       try {
         setLinkLoading(true);
 
-        if (chain?.id !== polygonMumbai.id) {
-          await switchNetworkAsync?.(polygonMumbai?.id as number);
+        if (chain?.id !== polygon.id) {
+          await switchNetworkAsync?.(polygon?.id as number);
         }
 
         // if (!addLink) return;
@@ -105,8 +105,8 @@ export const useEditProfile = () => {
       try {
         setDescriptionLoading(true);
 
-        if (chain?.id !== polygonMumbai.id) {
-          await switchNetworkAsync?.(polygonMumbai?.id as number);
+        if (chain?.id !== polygon.id) {
+          await switchNetworkAsync?.(polygon?.id as number);
         }
 
         if (!writeAsync) return;

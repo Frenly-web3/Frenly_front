@@ -1,8 +1,7 @@
 import { FREN_PROFILE, IAddress, useUploadIpfs } from "@shared/lib";
 import { ChangeEventHandler, useState } from "react";
-import { polygon } from "viem/chains";
 import { mainnet, useContractWrite, useNetwork, useSwitchNetwork } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
+import { polygon } from "wagmi/chains";
 
 export const useSetAvatar = () => {
   const { upload } = useUploadIpfs();
@@ -11,7 +10,7 @@ export const useSetAvatar = () => {
   const { writeAsync } = useContractWrite({
     abi: FREN_PROFILE,
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
-    chainId: polygonMumbai.id,
+    chainId: polygon.id,
     functionName: "changeAvatar",
     onSuccess: async () => {
       if (chain?.id !== mainnet.id) {
@@ -30,7 +29,7 @@ export const useSetAvatar = () => {
 
       setLink(link);
       if (chain?.id !== polygon.id) {
-        await switchNetworkAsync?.(polygonMumbai?.id as number);
+        await switchNetworkAsync?.(polygon?.id as number);
       }
 
       if (!writeAsync) return;

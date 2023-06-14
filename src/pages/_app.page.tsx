@@ -12,14 +12,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { createConfig, configureChains, WagmiConfig } from "wagmi";
-import { polygonMumbai, mainnet } from "wagmi/chains";
+import { polygon, mainnet } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { publicProvider } from "wagmi/providers/public";
 import localFont from "next/font/local";
 // import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 const { publicClient, webSocketPublicClient, chains } = configureChains(
-  [mainnet, polygonMumbai],
+  [mainnet, polygon],
   [publicProvider()]
 );
 

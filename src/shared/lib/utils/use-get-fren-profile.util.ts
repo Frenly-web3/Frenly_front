@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
+import { polygon } from "wagmi/chains";
 import { FREN_PROFILE } from "../constants";
 import { IAddress } from "../types";
 
@@ -21,7 +21,7 @@ export const useGetFrenProfile = ({
     address: process.env.NEXT_PUBLIC_USERNAME_FREN_ADDRESS as IAddress,
     functionName: "getProfileByAddress",
     args: [address],
-    chainId: polygonMumbai.id,
+    chainId: polygon.id,
     watch: true,
   });
 
