@@ -84,14 +84,14 @@ export function FollowersModal(props: IFollowersModalProps) {
             header: "p-0 m-0",
             title: "w-full m-0",
             closeButton: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-scroll h-56",
+            body: "px-4 py-2 overflow-y-auto ",
           }}
           classNamesModal={{
             // modal: 'h-96',
             header: "p-0 m-0",
             title: "w-full m-0",
             close: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-y-auto h-64",
+            body: "px-4 py-2 overflow-y-auto h-[27rem]",
           }}
         >
           <Tabs.Panel value={SubscriptionStateEnum.followers}>
