@@ -84,7 +84,7 @@ export function FollowersModal(props: IFollowersModalProps) {
             header: "p-0 m-0",
             title: "w-full m-0",
             closeButton: "absolute right-2 top-2",
-            body: "px-4 py-2 overflow-y-auto ",
+            body: "px-4 py-2 overflow-scroll h-56",
           }}
           classNamesModal={{
             // modal: 'h-96',
